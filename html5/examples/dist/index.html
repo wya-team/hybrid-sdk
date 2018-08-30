@@ -17,14 +17,12 @@
 <body>
     <div id="pages"></div>
     <script>
-        document.write('<script src="/js/webpack-assets.js?v=' + Math.random() + '"><\/script>');
+        document.write('<script src="/hybrid-sdk/html5/examples/dist/js/webpack-assets.js?v=' + Math.random() + '"><\/script>');
     </script>
     <script>
-        if (/test.com|\/\/www.test-test.com/.test(window.location.origin)) {
-            // 微信中浏览器会生产好html, 如?admin_id=1, 相关资源会被缓存,  ?admin_id=1&多带个参数可解决
-            document.write('<script src="/eruda.min.js"><\/script>');
-            document.write('<script>eruda.init();<\/script>');
-        };
+    
+        document.write('<script src="/hybrid-sdk/html5/examples/dist/eruda.min.js"><\/script>');
+        document.write('<script>eruda.init();<\/script>');
 
         function loadCss(url) {
             var link = document.createElement("link");
