@@ -3,7 +3,7 @@
 		"rollup": {
 			"presets": [
 				[
-					"es2015", 
+					"env", 
 					{
 						"modules": false
 					}
@@ -17,7 +17,7 @@
 		},
 		"default": {
 			"presets": [
-				"es2015",
+				"env",
 				"stage-0"
 			],
 			"plugins": [
