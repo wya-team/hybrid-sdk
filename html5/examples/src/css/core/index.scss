@@ -1,0 +1,14 @@
+@import "../themes/index";
+@import "../mixins/index";
+
+// 基础样式
+@import "~wya-sass/lib/core/basic/index.scss";
+
+// pc
+// @import "~wya-sass/lib/core/pc/index.scss";
+
+// mobile
+// @import "~wya-sass/lib/core/mobile/index.scss";
+
+// 基于业务涉及的样式
+@import "reset.scss";

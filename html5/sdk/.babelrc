@@ -1,0 +1,28 @@
+{
+	"env": {
+		"rollup": {
+			"presets": [
+				[
+					"es2015", 
+					{
+						"modules": false
+					}
+				],
+				"stage-0"
+			],
+			"plugins": [
+				"external-helpers",
+				"transform-decorators-legacy"
+			]
+		},
+		"default": {
+			"presets": [
+				"es2015",
+				"stage-0"
+			],
+			"plugins": [
+				"transform-decorators-legacy"
+			]
+		}
+	}
+}

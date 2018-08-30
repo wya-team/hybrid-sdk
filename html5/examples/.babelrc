@@ -1,0 +1,23 @@
+{
+	"presets": [
+		"es2015",
+		"stage-0"
+	],
+	"plugins": [
+		[
+			"transform-vue-jsx"
+		],
+		[
+			"transform-decorators-legacy"
+		],
+		[
+			"import",
+			[
+				{
+					"libraryName": "wya-vc",
+					"libraryDirectory": "lib/"
+				}
+			]
+		]
+	]
+}
