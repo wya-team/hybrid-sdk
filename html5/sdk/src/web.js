@@ -39,7 +39,7 @@ class WebSDK {
 			this.__readyArr__.push(fn);
 		}
 	}
-	error(fn) {
+	onError(fn) {
 		this.useJSBridgeFn('on', '_error_', fn);
 	}
 	// -- start 不推荐外部使用

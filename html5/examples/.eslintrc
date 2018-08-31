@@ -58,6 +58,7 @@
 		"no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
 		"object-curly-newline": 0, // { a, b, c } 允许不换行
 		"arrow-body-style": 0, // a => 1
+		"arrow-parens": 0, // a => 1
 		"quote-props": 0, // "a-1": 2
 		"guard-for-in": 0, // xx.hasOwnProperty(key)
 		"no-restricted-syntax": 0,

@@ -12,7 +12,7 @@ describe('web.js', () => {
 		expect(typeof wya.first).toBe('function');
 		expect(typeof wya.last).toBe('function');
 		expect(typeof wya.off).toBe('function');
-		expect(typeof wya.error).toBe('function');
+		expect(typeof wya.onError).toBe('function');
 	});
 	test('验证ready', () => {
 		wya.ready(() => {
@@ -33,7 +33,7 @@ describe('web.js', () => {
 			expect(1).toBe(1);
 		});
 
-		wya.error((res) => {
+		wya.onError((res) => {
 			expect(res.msg).toBe('error');
 		});
 
@@ -41,7 +41,7 @@ describe('web.js', () => {
 			expect(res.msg).toBe('error');
 		});
 
-		// Native 莫奈触发
+		// Native 模拟触发
 		WYAJSBridge.emit('_error_', {
 			status: 1,
 			data: {
