@@ -22,4 +22,14 @@ const app = new Vue({
 // 先不考虑服务端渲染情况
 router.onReady(() => {
 	app.$mount('#pages');
+	const { redirect } = sessionStorage;
+	delete sessionStorage.redirect;
+
+	if (redirect && redirect != `${location.pathname}${location.search}${location.hash}`) {
+		try {
+			router.push(redirect);
+		} catch (e) {
+			location.href = redirect;
+		}
+	}
 });
