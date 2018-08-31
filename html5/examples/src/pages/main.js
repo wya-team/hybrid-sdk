@@ -2,7 +2,7 @@ import '../css/global.scss';
 import Vue from 'vue';
 import Router from 'vue-router';
 import { routeConfig } from './router/routes';
-import { beforeEach } from './router/auth';
+import { beforeEach, afterEach } from './router/auth';
 import { PRE_ROUTER_URL } from './constants/constants';
 
 Vue.config.productionTip = false;
@@ -11,6 +11,7 @@ Vue.config.productionTip = false;
 Vue.use(Router);
 const router = new Router(routeConfig);
 router.beforeEach(beforeEach);
+router.afterEach(afterEach);
 // -- end
 
 // 视图

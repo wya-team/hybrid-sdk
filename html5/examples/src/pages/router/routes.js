@@ -1,44 +1,33 @@
-import { tplConfig, tplOtherConfig } from '../containers/__tpl__/app';
 import { loginConfig } from '../containers/login/app';
-import layout from '../components/layout/layout';
+import { constsConfig } from '../containers/consts/app';
+import { eventsConfig } from '../containers/events/app';
+import { methodsConfig } from '../containers/methods/app';
 import { PRE_ROUTER_URL } from '../constants/constants';
+import layout from '../components/layout/layout';
 
 export const routeConfig = {
+	base: PRE_ROUTER_URL,
 	mode: 'history',
 	routes: [
+		...loginConfig,
 		{
-			path: PRE_ROUTER_URL,
-			component: { template: '<router-view></router-view>' },
+			path: '/',
+			component: layout,
 			children: [
-				...loginConfig,
-				...tplOtherConfig,
 				{
-					path: '',
-					component: layout,
-					children: [
-						{
-							path: '',
-							redirect: { name: 'tpl' }
-						},
-						...tplConfig
-					]
-				}
+					path: '/',
+					redirect: { name: 'consts' }
+				},
+				...constsConfig,
+				...eventsConfig,
+				...methodsConfig
 			]
 		},
 		{
 			path: '*',
 			redirect: (to) => {
-				let { path } = to;
-
-				path = path.includes(PRE_ROUTER_URL)
-					? `${PRE_ROUTER_URL}login`
-					: `${PRE_ROUTER_URL}${path}`;
-					
-				path = path.replace(/\/\//g, '/');
-
-				return path;
+				return '/login';
 			}
 		}
 	]
 };
-console.log(routeConfig);

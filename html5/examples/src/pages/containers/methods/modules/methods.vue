@@ -1,12 +1,13 @@
 <template>
-	<div @click="$router.push('/login')">
-		tpl-nolayout
+	<div>
+		methods
 	</div>
 </template>
 
 <script>
+
 export default {
-	name: 'tpl-nolayout',
+	name: 'methods',
 	data() {
 		return {
 		};

@@ -1,12 +1,12 @@
 <template>
-	<div @click="$router.push('/login')">
-		tpl
+	<div>
+		events
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'tpl',
+	name: 'events',
 	data() {
 		return {
 		};
