@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import { routeConfig } from './router/routes';
 import { beforeEach } from './router/auth';
+import { PRE_ROUTER_URL } from './constants/constants';
 
 Vue.config.productionTip = false;
 
@@ -25,7 +26,9 @@ router.onReady(() => {
 	const { redirect } = sessionStorage;
 	delete sessionStorage.redirect;
 
-	if (redirect && redirect != `${location.pathname}${location.search}${location.hash}`) {
+	// github pages hack
+	const curUrl = `${location.pathname}${location.search}${location.hash}`;
+	if (redirect && redirect.includes(PRE_ROUTER_URL) && redirect != curUrl) {
 		try {
 			router.push(redirect);
 		} catch (e) {
