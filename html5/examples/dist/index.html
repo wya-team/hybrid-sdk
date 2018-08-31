@@ -17,6 +17,16 @@
 <body>
     <div id="pages"></div>
     <script>
+      // 这段代码要放在其他js的前面
+      (function(){
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect != location.href) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
+    <script>
         document.write('<script src="/hybrid-sdk/html5/examples/dist/js/webpack-assets.js?v=' + Math.random() + '"><\/script>');
     </script>
     <script>
