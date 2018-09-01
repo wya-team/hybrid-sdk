@@ -2,7 +2,7 @@ import '../css/global.scss';
 import Vue from 'vue';
 import Router from 'vue-router';
 import { routeConfig } from './router/routes';
-import { beforeEach, afterEach } from './router/auth';
+import { beforeEach, afterEach } from './router/hooks';
 import { PRE_ROUTER_URL } from './constants/constants';
 
 Vue.config.productionTip = false;
@@ -37,3 +37,5 @@ router.onReady(() => {
 		}
 	}
 });
+
+window.app = app;
