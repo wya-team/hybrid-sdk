@@ -1,6 +1,10 @@
 <template>
 	<div class="vcm-toast">
-		<div class="__bg" @click="handleClose"/>
+		<div 
+			v-show="showClose"
+			class="__bg" 
+			@click="handleClose" 
+		/>
 		<transition name="fade">
 			<div v-show="visible" class="__fixed">{{ message }}</div>
 		</transition>
@@ -11,7 +15,10 @@
 export default {
 	props: {
 		message: String,
-		onClose: Function,
+		// onClose: Function,
+		// onCallback: Function,
+		showClose: Boolean,
+		duration: Number,
 	},
 
 	data() {
@@ -22,17 +29,25 @@ export default {
 	},
 	mounted() {
 		this.visible = true;
-	},
-	beforeDestroy() {
-		console.log(222);
+		if (this.duration !== 0) {
+			this.timer = setTimeout(() => {
+				// 主线程
+				this.handleClose();
+			}, this.duration * 1000 - 300); // 动画时间
+		}
 	},
 	destroyed() {
-		console.log(22);
+		this.timer && clearTimeout(this.timer);
+		this.$el.removeEventListener('transitionend', this.handleRemove);
 	},
 	methods: {
-		handleClose() {
+		handleRemove() {
 			this.$emit('close');
-			// this.onClose();
+			this.$emit('callback');
+		},
+		handleClose(e) {
+			this.visible = false;
+			this.$el.addEventListener('transitionend', this.handleRemove);
 		}
 	}
 };
@@ -66,7 +81,7 @@ export default {
 		line-height: 1.5;
 		color: #fff;
 		text-align: center;
-		transition: opacity 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+		transition: opacity 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 	}
 }
 .fade-enter, .fade-leave-active {

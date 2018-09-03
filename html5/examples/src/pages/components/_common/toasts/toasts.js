@@ -15,23 +15,25 @@ const Target = {
 		const div = document.createElement('div');
 		const VueComponent = Vue.extend(Toasts);
 		let vm;
-
 		vm = new VueComponent({
 			el: div,
 			propsData: {
 				...opts,
 				message,
 				duration: duration == 0 ? 1 * 60 * 60 * 24 : duration,
-				onCallback,
 				showClose
 			}
 		});
 
-		vm.$on('on-close', () => {
+		vm.$on('close', () => {
 			vm.$destroy();
 			// 主动卸载节点
 			Dom.removeChild(vm.$el);
 			delete RcInstance.APIS[cName];
+		});
+
+		vm.$on('callback', () => {
+			onCallback && onCallback();
 		});
 
 		RcInstance.APIS[cName] = vm;

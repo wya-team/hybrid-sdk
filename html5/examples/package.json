@@ -6,10 +6,10 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "npm run prompt && npm run all",
-    "serve": "node --max_old_space_size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server --config  ./config/webpack.config.dev.js --hot",
+    "serve": "cross-env BABEL_ENV=default node --max_old_space_size=8192 ./node_modules/webpack-dev-server/bin/webpack-dev-server --config  ./config/webpack.config.dev.js --hot",
     "dist": "npm run remove:dist && npm run lint && node --max_old_space_size=8192 ./node_modules/webpack/bin/webpack --config ./config/webpack.config.dist.js",
-    "build": "cross-env UGLIFY_JS=true npm run dist -- -p && npm run copy",
-    "build:dev": "cross-env UGLIFY_JS=false npm run dist && npm run copy",
+    "build": "cross-env UGLIFY_JS=true BABEL_ENV=default npm run dist -- -p && npm run copy",
+    "build:dev": "cross-env UGLIFY_JS=false BABEL_ENV=default npm run dist && npm run copy",
     "remove:dist": "rm -rf ./dist",
     "copy": "echo 'end'",
     "lint": "esw ./config/*.config.* ./src/pages/**/*.{js,vue}",
@@ -27,6 +27,8 @@
   "license": "MIT",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "highlight.js": "^9.12.0",
+    "js-beautify": "^1.8.1",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "wya-fetch": "^0.3.1",

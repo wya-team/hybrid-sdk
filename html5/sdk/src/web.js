@@ -6,17 +6,19 @@ import modules from './modules/root';
 class WebSDK {
 	version = '1.0.0';
 	constructor() {
-		this.__readyArr__ = [];
+
+		// 不使用this.__readyArr__, 避免被遍历
+		WebSDK.prototype.__readyArr__ = [];
 
 		// 是否初始化
-		this.__isInit__ = false;
+		this.isInit = false;
 
 		// 初始化
 		window.addEventListener('_init_', (e) => {
 			const { status, data = {} } = e.data || {};
 			if (status === 1) {
 
-				this.__isInit__ = true;
+				this.isInit = true;
 
 				// 设置常量
 				for (let key in data) {
@@ -33,23 +35,24 @@ class WebSDK {
 		});
 	}
 	ready(fn) {
-		if (this.__isInit__) {
+		if (this.isInit) {
 			fn && fn();
 		} else {
 			this.__readyArr__.push(fn);
 		}
 	}
 	onError(fn) {
-		this.useJSBridgeFn('on', '_error_', fn);
+		// this.useJSBridgeFn('on', '_error_', fn);
+		window.addEventListener('_error_', (e) => {
+			fn && fn(e.data);
+		});
 	}
 	// -- start 不推荐外部使用
 	useJSBridgeFn(key, ...rest) {
 		let fn = window.WYAJSBridge ? window.WYAJSBridge[key] : undefined;
 		let msg = 'WYAJSBridge API未注入';
-
 		// 异常处理
-		!fn && throwError(msg); 
-		return fn ? fn.apply(WYAJSBridge, rest) : Promise.reject({ msg });
+		return fn ? fn.apply(WYAJSBridge, rest) : throwError(msg); 
 	}
 	invoke(eventName, param) {
 		return this.useJSBridgeFn('invoke', eventName, param);

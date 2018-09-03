@@ -82,6 +82,7 @@
 		"func-names": 0,
 		"prefer-arrow-callback": 0,
 		"no-bitwise": 0,
+		"padded-blocks": 0, // {} 允许空行
 		// tab缩进
 		"indent": ["warn", "tab",
 		{

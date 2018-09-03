@@ -53,7 +53,12 @@ const webpackConfig = {
 			 */
 			'vue$': 'vue/dist/vue.esm.js',
 			'wya-js-sdk': path.resolve(APP_ROOT, '../sdk/src/web.js'),
-			'@': path.resolve(APP_ROOT, './src/pages'),
+			'@components': path.resolve(APP_ROOT, './src/pages/components'),
+			'@constants': path.resolve(APP_ROOT, './src/pages/constants'),
+			'@extends': path.resolve(APP_ROOT, './src/pages/extends'),
+			'@containers': path.resolve(APP_ROOT, './src/pages/containers'),
+			'@router': path.resolve(APP_ROOT, './src/pages/router'),
+			'@utils': path.resolve(APP_ROOT, './src/pages/utils'),
 			'@common': path.resolve(APP_ROOT, './src/pages/components/_common'),
 		}
 	},
@@ -80,6 +85,10 @@ const webpackConfig = {
 					 * 在node_modules的文件不被babel理会
 					 */
 					path.resolve(APP_ROOT, 'node_modules')
+				],
+				include: [
+					path.resolve(APP_ROOT, 'src/'),
+					path.resolve(APP_ROOT, '../sdk/src/')
 				],
 				use: [
 					{
