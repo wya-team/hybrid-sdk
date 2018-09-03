@@ -21,7 +21,7 @@ export default {
 				},
 				{
 					title: 'xxx',
-					to: '/events/xxx2'
+					to: '/events/xx2'
 				}
 			]
 		};

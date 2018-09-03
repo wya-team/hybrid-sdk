@@ -35,6 +35,7 @@ export default {
 				this.handleClose();
 			}, this.duration * 1000 - 300); // 动画时间
 		}
+		console.log(this.$router);
 	},
 	destroyed() {
 		this.timer && clearTimeout(this.timer);

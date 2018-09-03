@@ -6,5 +6,9 @@ export const methodsConfig = [
 		meta: {
 			title: "方法",
 		}
+	},
+	{ 
+		path: '/methods/*',
+		redirect: { name: 'methods' }
 	}
 ];

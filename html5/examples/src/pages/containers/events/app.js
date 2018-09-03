@@ -6,5 +6,9 @@ export const eventsConfig = [
 		meta: {
 			title: "事件",
 		}
+	},
+	{ 
+		path: '/events/*',
+		redirect: { name: 'events' }
 	}
 ];
