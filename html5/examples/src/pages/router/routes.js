@@ -26,7 +26,7 @@ export const routeConfig = {
 		{
 			path: '*',
 			redirect: (to) => {
-				return '/login';
+				return '/consts';
 			}
 		}
 	]

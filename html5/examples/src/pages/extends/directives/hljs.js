@@ -1,7 +1,8 @@
 
 export const hljs = async (el, opts = {}, vm = {}) => {
 	let html = vm.data.domProps.innerHTML;
-	
+	el.style.display = 'none';
+
 	let { default: _ } = await import('highlight.js');
 	let { default: js } = await import('js-beautify/js/lib/beautify');
 	let blocks = el.querySelectorAll('pre code');
@@ -22,7 +23,7 @@ export const hljs = async (el, opts = {}, vm = {}) => {
 		el.appendChild(pre);
 		blocks = el.querySelectorAll('pre code');
 	}
-
+	el.style.display = 'block';
 	blocks.forEach((block) => {
 		_.highlightBlock(block);
 	});
