@@ -40,8 +40,8 @@ router.onReady(() => {
 	delete sessionStorage.redirect;
 
 	// github pages hack
-	const curUrl = `${location.pathname}${location.search}${location.hash}`;
-	if (redirect && redirect.includes(PRE_ROUTER_URL) && redirect != curUrl) {
+	// const curUrl = `${location.pathname}${location.search}${location.hash}`;
+	if (redirect && redirect.includes(PRE_ROUTER_URL)) {
 		try {
 			router.push(redirect);
 		} catch (e) {
