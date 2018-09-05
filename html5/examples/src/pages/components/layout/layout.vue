@@ -9,7 +9,7 @@
 	</div>
 </template>
 <script>
-import FooterNav from '../footer-nav/footer-nav.vue';
+import FooterNav from '@common/footer-nav/footer-nav.vue';
 
 export default {
 	components: {
@@ -21,7 +21,7 @@ export default {
 	},
 	computed: {
 		isShow() {
-			return ['/events', '/consts', '/methods'].includes(this.$router.currentRoute.path);
+			return ['/events', '/consts', '/methods'].includes(this.$route.path);
 		}
 	},
 	mounted() {

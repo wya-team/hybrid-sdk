@@ -4,7 +4,7 @@
 import 'babel-polyfill';
 import Vue from 'vue';
 import Router from 'vue-router';
-import SetTitle from '@components/set-title/set-title';
+import SetTitle from '@common/set-title/set-title';
 import { routeConfig } from './routes';
 import { beforeEach, afterEach } from './hooks';
 import { PRE_ROUTER_URL } from '../constants/constants';

@@ -3,10 +3,12 @@ const APP_ROOT = process.cwd();
 const ENV_IS_DEV = process.env.NODE_ENV === 'development';
 
 const path = require('path');
+// const marked = require("marked");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpackMerge = require('webpack-merge');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const userConfig = require('./user.config.js');
+
 
 const localPort = (() => {
 	if (ENV_IS_DEV) {
@@ -141,6 +143,25 @@ const webpackConfig = {
 			{
 				test: /\.html$/i,
 				use: 'html-loader'
+			},
+			{
+				test: /\.md$/,
+				use: [
+					"html-loader"
+					// {
+					// 	loader: "markdown-loader",
+					// 	options: {
+					// 		renderer: new marked.Renderer(),
+					// 		gfm: true,
+					// 		tables: true,
+					// 		breaks: false,
+					// 		sanitize: false,
+					// 		smartLists: true,
+					// 		smartypants: false,
+					// 		pedantic: true,
+					// 	}
+					// }
+				]
 			}
 		]
 	},

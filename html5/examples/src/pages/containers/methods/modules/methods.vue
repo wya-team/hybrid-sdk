@@ -1,11 +1,11 @@
 <template>
 	<set-title title="Methods 方法">
-		<links v-for="item in routes" :key="item.to" v-bind="item" />
+		<links />
 	</set-title>
 </template>
 
 <script>
-import Links from '@components/links/links';
+import Links from '@components/methods/links';
 
 export default {
 	name: 'methods',
@@ -14,20 +14,10 @@ export default {
 	},
 	data() {
 		return {
-			routes: [
-				{
-					title: 'xx2x',
-					to: '/methods/xxx2'
-				},
-				{
-					title: 'xxx',
-					to: '/methods/xx2'
-				}
-			]
+			
 		};
 	},
 	created() {
-		console.log('?');
 	},
 	methods: {
 	},

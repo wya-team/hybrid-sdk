@@ -46,7 +46,7 @@ export default {
 	background-image: linear-gradient(180deg,#d9d9d9,#d9d9d9 50%,transparent 0);
 	background-size: 120% 1px;
 	background-repeat: no-repeat;
-	background-position: 0 0;
+	background-position: 0 100%;
 	background-origin: content-box;
 	align-items: center;
 	box-sizing: border-box;

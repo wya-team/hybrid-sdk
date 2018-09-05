@@ -1,11 +1,11 @@
 <template>
-	<set-title title="Events 时间">
-		<links v-for="item in routes" :key="item.to" v-bind="item" />
+	<set-title title="Events 事件">
+		<links />
 	</set-title>
 </template>
 
 <script>
-import Links from '@components/links/links';
+import Links from '@components/events/links';
 
 export default {
 	name: 'events',
@@ -14,20 +14,10 @@ export default {
 	},
 	data() {
 		return {
-			routes: [
-				{
-					title: 'xx2x',
-					to: '/events/xxx2'
-				},
-				{
-					title: 'xxx',
-					to: '/events/xx2'
-				}
-			]
+			
 		};
 	},
 	created() {
-		console.log('?');
 	},
 	methods: {
 	},
