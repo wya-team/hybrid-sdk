@@ -1,1 +1,1 @@
-const obj = {};module.exports = obj;
+const obj = {}; module.exports = obj;
