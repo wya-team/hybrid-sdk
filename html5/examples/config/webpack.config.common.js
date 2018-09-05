@@ -167,7 +167,7 @@ const webpackConfig = {
 	},
 	optimization: {
 		// 默认关闭压缩
-		minimize: ENV_IS_DEV ? false : JSON.parse(process.env.UGLIFY_JS),
+		minimize: ENV_IS_DEV ? false : JSON.parse(process.env.UGLIFY_JS || 'false'),
 		// 原：NamedModulesPlugin()
 		namedModules: true,
 		// 原：NoEmitOnErrorsPlugin() - 异常继续执行
