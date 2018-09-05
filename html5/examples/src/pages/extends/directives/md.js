@@ -1,7 +1,6 @@
 export const md = async (el, opts = {}, vm = {}) => {
 	try {
 		let html = vm.data.domProps.innerHTML;
-		console.log('html: ', html);
 		el.innerHTML = '';
 
 		let { default: marked } = await import('marked');
@@ -9,7 +8,7 @@ export const md = async (el, opts = {}, vm = {}) => {
 		let { default: js } = await import('js-beautify/js/lib/beautify');
 
 		let newHtml = marked(html, {
-			renderer: new marked.Renderer(),
+			// renderer: new marked.Renderer(),
 			gfm: true,
 			tables: true,
 			breaks: false,
@@ -21,12 +20,10 @@ export const md = async (el, opts = {}, vm = {}) => {
 				if (['javascript', 'js', 'json'].includes(lang)) {
 					code = js.js_beautify(code);
 				}
-				console.log('code: ', code);
 				return hljs.highlight(lang || 'js', code).value;
 			}
 		});
 		el.innerHTML = newHtml;
-		console.log('newHtml: ', newHtml);
 		// 高亮
 		let blocks = el.querySelectorAll('pre code');
 		blocks.forEach((block) => {

@@ -147,7 +147,12 @@ const webpackConfig = {
 			{
 				test: /\.md$/,
 				use: [
-					"html-loader"
+					{ 
+						loader: "html-loader",
+						options: {
+							minimize: false // 如果被压缩了，就无法正常解析了
+						}
+					}
 					// {
 					// 	loader: "markdown-loader",
 					// 	options: {
