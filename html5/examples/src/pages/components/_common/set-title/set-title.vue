@@ -30,7 +30,7 @@ export default {
 	},
 	computed: {
 		visible() {
-			return ['/consts', '/events', '/methods'].indexOf(this.$route.path) < 0;
+			return ['/consts', '/events', '/methods', '/assists'].indexOf(this.$route.path) < 0;
 		}
 	},
 	mounted() {

@@ -32,6 +32,10 @@ export default {
 				{
 					router: '/methods',
 					name: '方法'
+				},
+				{
+					router: '/assists',
+					name: '辅助'
 				}
 			]
 		};

@@ -21,7 +21,7 @@ export default {
 	},
 	computed: {
 		isShow() {
-			return ['/events', '/consts', '/methods'].includes(this.$route.path);
+			return ['/events', '/consts', '/methods', '/assists'].includes(this.$route.path);
 		}
 	},
 	mounted() {
@@ -32,10 +32,10 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.v-router {
-	transition: opacity 0.1s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
-.fade-enter, .fade-leave-active {
-	opacity: 0;
-}
+// .v-router {
+// 	transition: opacity 0.1s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+// }
+// .fade-enter, .fade-leave-active {
+// 	opacity: 0;
+// }
 </style>

@@ -62,6 +62,7 @@ const webpackConfig = {
 			'@router': path.resolve(APP_ROOT, './src/pages/router'),
 			'@utils': path.resolve(APP_ROOT, './src/pages/utils'),
 			'@common': path.resolve(APP_ROOT, './src/pages/components/_common'),
+			'@docs': path.resolve(APP_ROOT, '../../docs'),
 		}
 	},
 	entry: {
