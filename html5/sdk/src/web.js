@@ -14,7 +14,7 @@ class WebSDK {
 		this.isInit = false;
 
 		// 初始化
-		window.addEventListener('_init_', (e) => {
+		window.addEventListener('_ready_', (e) => {
 			const { status, data = {} } = e.data || {};
 			if (status === 1) {
 

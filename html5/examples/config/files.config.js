@@ -7,10 +7,10 @@ const mdDir = resolve(__dirname, '../../../docs');
 const jsDir = resolve(__dirname, '../../examples/src/pages/components');
 
 const filesName = {
-	assists: ['ready', 'error'],
-	events: [],
-	methods: [],
-	consts: [],
+	assists: require('./files/assists'),
+	events: require('./files/events'),
+	methods: require('./files/methods'),
+	consts: require('./files/consts'),
 };
 const jsTemplate = (category, filename) => {
 	let contents = '';

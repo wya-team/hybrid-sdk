@@ -1,7 +1,7 @@
 import WYAJSBridge from '../native.js';
 describe('native.js', () => {
 	let initCount = 0;
-	window.addEventListener('_init_', ({ data }) => {
+	window.addEventListener('_ready_', ({ data }) => {
 		if (!initCount) {
 			expect(data.status).toBe(1);
 			expect(data.data.appVersion).toBe("1.0.0");
@@ -40,7 +40,7 @@ describe('native.js', () => {
 	test('验证初始化', () => {
 
 		// 模拟触发一次
-		WYAJSBridge.emit('_init_', {
+		WYAJSBridge.emit('_ready_', {
 			status: 1,
 			data: {
 				appVersion: '1.0.0' 
@@ -48,7 +48,7 @@ describe('native.js', () => {
 		});
 
 		// 模拟触发两次
-		WYAJSBridge.emit('_init_', {
+		WYAJSBridge.emit('_ready_', {
 			status: 1,
 			data: {
 				appVersion: '1.0.0' 

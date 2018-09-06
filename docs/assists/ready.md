@@ -28,7 +28,7 @@ wya.ready(() => {
 #### 5. 不引入sdk示例代码
 
 ```javascript
-window.addEventListener('_init_', (e) => {
+window.addEventListener('_ready_', (e) => {
 	// 这个只被允许执行一次
 })
 ```
@@ -36,7 +36,7 @@ window.addEventListener('_init_', (e) => {
 #### 6. Native端示例代码
 
 ```javascript
-WYAJSBridge.emit('_init_', '@Object');
+WYAJSBridge.emit('_ready_', '@Object');
 ```
 
 #### 7. 可用性

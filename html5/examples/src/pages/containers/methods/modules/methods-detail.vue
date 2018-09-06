@@ -1,5 +1,5 @@
 <template>
-	<set-title :title="id | capitalize">
+	<set-title :title="id">
 		<contents :id="id"/>
 	</set-title>
 </template>
