@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/pause',
 	title: 'pause',
-	label: '',
+	label: '应用进入后台',
 	invoke,
 	markdown
 };

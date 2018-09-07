@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/screenWidth',
 	title: 'screenWidth',
-	label: '',
+	label: '屏幕分辨率宽',
 	invoke,
 	markdown
 };

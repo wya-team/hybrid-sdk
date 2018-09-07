@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/appParam',
 	title: 'appParam',
-	label: '',
+	label: '第三方 -> 参数',
 	invoke,
 	markdown
 };

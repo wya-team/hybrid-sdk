@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/deviceModel',
 	title: 'deviceModel',
-	label: '',
+	label: '设备型号',
 	invoke,
 	markdown
 };

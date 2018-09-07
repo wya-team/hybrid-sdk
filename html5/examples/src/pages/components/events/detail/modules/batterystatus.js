@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/batteryStatus',
 	title: 'batteryStatus',
-	label: '',
+	label: '电池状态',
 	invoke,
 	markdown
 };

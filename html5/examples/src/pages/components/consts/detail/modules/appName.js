@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/appName',
 	title: 'appName',
-	label: '',
+	label: '应用名称',
 	invoke,
 	markdown
 };

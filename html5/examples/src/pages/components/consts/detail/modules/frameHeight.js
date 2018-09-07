@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/frameHeight',
 	title: 'frameHeight',
-	label: '',
+	label: 'frame 高度',
 	invoke,
 	markdown
 };

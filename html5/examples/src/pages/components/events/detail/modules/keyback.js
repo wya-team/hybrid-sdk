@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/keyBack',
 	title: 'keyBack',
-	label: '',
+	label: '返回',
 	invoke,
 	markdown
 };

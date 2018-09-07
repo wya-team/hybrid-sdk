@@ -3,7 +3,10 @@
 		<div class="__wrapper">
 			<div>
 				<!-- <i :class="icon" class="__icon" /> -->
-				<span class="__title">{{ title }}</span>
+				<span 
+					class="__title"
+					@click.stop="$emit('click', title)"
+				>{{ extra || '' }} {{ title }}</span>
 			</div>
 			<label class="__label">{{ label }}</label>
 			<i class="__arrow-right" />
@@ -18,6 +21,7 @@ export default {
 		icon: String,
 		title: String,
 		label: String,
+		extra: String
 	},
 
 	computed: {

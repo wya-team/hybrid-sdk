@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/wgtRootDir',
 	title: 'wgtRootDir',
-	label: '',
+	label: '网页根目录',
 	invoke,
 	markdown
 };

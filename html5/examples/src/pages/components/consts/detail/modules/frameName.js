@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/frameName',
 	title: 'frameName',
-	label: '',
+	label: 'frame 名称',
 	invoke,
 	markdown
 };

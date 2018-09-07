@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/volumeUp',
 	title: 'volumeUp',
-	label: '',
+	label: '音量加键',
 	invoke,
 	markdown
 };

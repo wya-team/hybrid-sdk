@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/wgtParam',
 	title: 'wgtParam',
-	label: '',
+	label: 'widget 参数',
 	invoke,
 	markdown
 };

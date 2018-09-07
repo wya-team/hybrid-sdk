@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/online',
 	title: 'online',
-	label: '',
+	label: '连接网络',
 	invoke,
 	markdown
 };

@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/uiMode',
 	title: 'uiMode',
-	label: '',
+	label: '设备类型',
 	invoke,
 	markdown
 };

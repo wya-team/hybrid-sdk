@@ -4,6 +4,8 @@
 			v-for="(item, key) in routes" 
 			:key="key" 
 			v-bind="item"
+			extra="☞ "
+			@click="handleClick"
 		/>
 	</div>
 </template>
@@ -26,6 +28,9 @@ export default {
 		// console.log('?');
 	},
 	methods: {
+		handleClick(name) {
+			rootConfig[name] && rootConfig[name].invoke();
+		}
 	},
 };
 </script>

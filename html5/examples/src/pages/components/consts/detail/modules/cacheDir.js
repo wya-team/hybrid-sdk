@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/cacheDir',
 	title: 'cacheDir',
-	label: '',
+	label: '缓存目录',
 	invoke,
 	markdown
 };

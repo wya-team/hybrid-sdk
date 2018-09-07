@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/frameWidth',
 	title: 'frameWidth',
-	label: '',
+	label: 'frame 宽度',
 	invoke,
 	markdown
 };

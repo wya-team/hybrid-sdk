@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/offline',
 	title: 'offline',
-	label: '',
+	label: '断开网络',
 	invoke,
 	markdown
 };

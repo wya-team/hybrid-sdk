@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/fsDir',
 	title: 'fsDir',
-	label: '',
+	label: '根目录',
 	invoke,
 	markdown
 };

@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/safeArea',
 	title: 'safeArea',
-	label: '',
+	label: '安全距离',
 	invoke,
 	markdown
 };

@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/screenHeight',
 	title: 'screenHeight',
-	label: '',
+	label: '屏幕分辨率高',
 	invoke,
 	markdown
 };

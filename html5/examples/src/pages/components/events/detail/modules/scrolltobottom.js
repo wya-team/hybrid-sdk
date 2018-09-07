@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/scrollToBottom',
 	title: 'scrollToBottom',
-	label: '',
+	label: '页面滑动到底部事件',
 	invoke,
 	markdown
 };

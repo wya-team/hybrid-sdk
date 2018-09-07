@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/launchViewClick',
 	title: 'launchViewClick',
-	label: '',
+	label: '?',
 	invoke,
 	markdown
 };

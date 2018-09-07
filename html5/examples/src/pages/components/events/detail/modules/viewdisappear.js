@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/viewDisappear',
 	title: 'viewDisappear',
-	label: '',
+	label: '离开屏幕的事件',
 	invoke,
 	markdown
 };

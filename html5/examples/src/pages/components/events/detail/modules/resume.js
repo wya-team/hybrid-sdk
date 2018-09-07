@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/resume',
 	title: 'resume',
-	label: '',
+	label: '应用从后台回到前台',
 	invoke,
 	markdown
 };

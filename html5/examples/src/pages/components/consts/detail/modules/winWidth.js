@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/winWidth',
 	title: 'winWidth',
-	label: '',
+	label: 'window 宽度',
 	invoke,
 	markdown
 };

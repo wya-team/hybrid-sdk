@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/keyboardShow',
 	title: 'keyboardShow',
-	label: '',
+	label: '系统键盘弹出的回调',
 	invoke,
 	markdown
 };

@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/systemVersion',
 	title: 'systemVersion',
-	label: '',
+	label: '系统版本',
 	invoke,
 	markdown
 };

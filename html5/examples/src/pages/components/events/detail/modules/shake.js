@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/shake',
 	title: 'shake',
-	label: '',
+	label: '摇动事件',
 	invoke,
 	markdown
 };

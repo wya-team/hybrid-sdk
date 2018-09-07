@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/keyMenu',
 	title: 'keyMenu',
-	label: '',
+	label: '菜单键',
 	invoke,
 	markdown
 };

@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/noticeClick',
 	title: 'noticeClick',
-	label: '',
+	label: '状态栏通知点击',
 	invoke,
 	markdown
 };

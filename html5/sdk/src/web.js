@@ -51,8 +51,14 @@ class WebSDK {
 	useJSBridgeFn(key, ...rest) {
 		let fn = window.WYAJSBridge ? window.WYAJSBridge[key] : undefined;
 		let msg = 'WYAJSBridge API未注入';
+
+		!fn && throwError(msg);
 		// 异常处理
-		return fn ? fn.apply(WYAJSBridge, rest) : throwError(msg); 
+		return fn 
+			? fn.apply(WYAJSBridge, rest) 
+			: key === 'invoke' 
+				? Promise.reject({ msg })
+				: undefined; 
 	}
 	invoke(eventName, param) {
 		return this.useJSBridgeFn('invoke', eventName, param);

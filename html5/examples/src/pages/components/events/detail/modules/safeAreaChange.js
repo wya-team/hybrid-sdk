@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/safeAreaChange',
 	title: 'safeAreaChange',
-	label: '',
+	label: '安全区域变化',
 	invoke,
 	markdown
 };

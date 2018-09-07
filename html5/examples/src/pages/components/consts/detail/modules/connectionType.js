@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/connectionType',
 	title: 'connectionType',
-	label: '',
+	label: '网络连接类型',
 	invoke,
 	markdown
 };

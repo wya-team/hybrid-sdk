@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/keyboardHide',
 	title: 'keyboardHide',
-	label: '',
+	label: '系统键盘隐藏的回调',
 	invoke,
 	markdown
 };

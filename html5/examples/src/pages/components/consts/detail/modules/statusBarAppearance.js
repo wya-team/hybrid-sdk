@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/statusBarAppearance',
 	title: 'statusBarAppearance',
-	label: '',
+	label: '是否状态栏底透明',
 	invoke,
 	markdown
 };

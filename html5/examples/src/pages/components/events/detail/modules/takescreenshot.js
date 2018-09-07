@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/takeScreenshot',
 	title: 'takeScreenshot',
-	label: '',
+	label: '用户屏幕截图',
 	invoke,
 	markdown
 };

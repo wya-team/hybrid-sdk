@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/appId',
 	title: 'appId',
-	label: '',
+	label: '应用的ID',
 	invoke,
 	markdown
 };

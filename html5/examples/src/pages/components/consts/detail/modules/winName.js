@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/winName',
 	title: 'winName',
-	label: '',
+	label: 'window 名称',
 	invoke,
 	markdown
 };

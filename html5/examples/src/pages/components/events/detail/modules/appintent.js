@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/appIntent',
 	title: 'appIntent',
-	label: '',
+	label: '应用被调起',
 	invoke,
 	markdown
 };

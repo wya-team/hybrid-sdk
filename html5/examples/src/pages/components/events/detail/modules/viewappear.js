@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/viewAppear',
 	title: 'viewAppear',
-	label: '',
+	label: '显示到屏幕的事件',
 	invoke,
 	markdown
 };

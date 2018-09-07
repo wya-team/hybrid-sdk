@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/jailbreak',
 	title: 'jailbreak',
-	label: '',
+	label: '是否越狱',
 	invoke,
 	markdown
 };

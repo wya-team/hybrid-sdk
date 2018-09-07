@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/version',
 	title: 'version',
-	label: '',
+	label: '引擎版本信息',
 	invoke,
 	markdown
 };

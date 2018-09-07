@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/pageParam',
 	title: 'pageParam',
-	label: '',
+	label: '页面参数',
 	invoke,
 	markdown
 };

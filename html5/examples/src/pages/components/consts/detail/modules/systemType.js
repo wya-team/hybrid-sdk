@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/systemType',
 	title: 'systemType',
-	label: '',
+	label: '系统类型',
 	invoke,
 	markdown
 };

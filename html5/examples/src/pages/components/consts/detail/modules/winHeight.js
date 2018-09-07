@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/winHeight',
 	title: 'winHeight',
-	label: '',
+	label: 'window 高度',
 	invoke,
 	markdown
 };

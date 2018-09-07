@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/longPress',
 	title: 'longPress',
-	label: '',
+	label: '长按',
 	invoke,
 	markdown
 };

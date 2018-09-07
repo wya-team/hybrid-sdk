@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/tap',
 	title: 'tap',
-	label: '',
+	label: '单击',
 	invoke,
 	markdown
 };

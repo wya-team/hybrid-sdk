@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/fullScreen',
 	title: 'fullScreen',
-	label: '',
+	label: '是否全屏',
 	invoke,
 	markdown
 };

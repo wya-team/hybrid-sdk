@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/batteryLow',
 	title: 'batteryLow',
-	label: '',
+	label: '低电量',
 	invoke,
 	markdown
 };

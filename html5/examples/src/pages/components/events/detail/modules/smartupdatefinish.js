@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/smartUpdateFinish',
 	title: 'smartUpdateFinish',
-	label: '',
+	label: '静默修复',
 	invoke,
 	markdown
 };

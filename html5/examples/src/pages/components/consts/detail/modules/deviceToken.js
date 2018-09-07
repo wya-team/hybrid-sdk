@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/deviceToken',
 	title: 'deviceToken',
-	label: '',
+	label: '推送的Token',
 	invoke,
 	markdown
 };

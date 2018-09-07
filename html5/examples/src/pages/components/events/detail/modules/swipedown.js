@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/swipeDown',
 	title: 'swipeDown',
-	label: '',
+	label: '向下',
 	invoke,
 	markdown
 };

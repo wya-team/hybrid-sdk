@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/channel',
 	title: 'channel',
-	label: '',
+	label: 'app来源',
 	invoke,
 	markdown
 };

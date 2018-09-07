@@ -9,7 +9,7 @@ const invoke = () => {
 export default {
 	to: '/consts/operatorName',
 	title: 'operatorName',
-	label: '',
+	label: '运营商',
 	invoke,
 	markdown
 };
