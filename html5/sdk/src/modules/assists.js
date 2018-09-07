@@ -1,4 +1,4 @@
 module.exports = [
 	'error',
-	'ready'
+	'ready',
 ];

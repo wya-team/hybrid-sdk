@@ -5,9 +5,7 @@
 #### 2. Client传递参数给Native
 
 ```javascript
-{
-    // ...
-}
+// 不需要传递
 ```
 #### 3. Native 传递参数给 Client
 

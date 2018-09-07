@@ -31,5 +31,5 @@ module.exports = [
 	'cacheDir',
 	'debug',
 	'channel',
-	'jailbreak'
+	'jailbreak',
 ];

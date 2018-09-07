@@ -5,14 +5,12 @@
 #### 2. Client传递参数给Native
 
 ```javascript
-{
-    // ...
-}
+// 不需要传递
 ```
 #### 3. Native 传递参数给 Client
 
 ```javascript
-// 直接返回异常信息
+// 返回常量
 ```
 
 #### 4. Client端示例代码

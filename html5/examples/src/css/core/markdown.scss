@@ -3,6 +3,11 @@
 	word-wrap: break-word;
 }
 
+.g-md-reset {
+	ol, ul, li {
+		list-style: unset;
+	}
+}
 .g-md-reset::before {
 	display: table;
 	content: "";

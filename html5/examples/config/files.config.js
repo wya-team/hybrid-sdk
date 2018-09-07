@@ -2,28 +2,25 @@
 const fs = require('fs-extra');
 const upath = require('upath');
 const { resolve, join } = require('path');
+const comboTpl = require('./tpls/combo');
 
 const mdDir = resolve(__dirname, '../../../docs');
 const jsDir = resolve(__dirname, '../../examples/src/pages/components');
 
 const filesName = {
-	assists: require('./files/assists'),
-	events: require('./files/events'),
-	methods: require('./files/methods'),
-	consts: require('./files/consts'),
+	assists: require('../../sdk/src/modules/assists'),
+	events: require('../../sdk/src/modules/events'),
+	methods: require('../../sdk/src/modules/methods'),
+	consts: require('../../sdk/src/modules/consts'),
 };
-const jsTemplate = (category, filename) => {
-	let contents = '';
-	contents += `import markdown from '@docs/${category}/${filename}.md';\n`;
-	contents += `\n`;
-	contents += `export default {\n`;
-	contents += `	to: '/${category}/${filename}',\n`;
-	contents += `	title: '${filename}',\n`;
-	contents += `	label: '',\n`;
-	contents += `	markdown\n`;
-	contents += `};\n`;
-	return contents;
+
+const filesTpl = {
+	assists: require('./tpls/assists'),
+	events: require('./tpls/events'),
+	methods: require('./tpls/methods'),
+	consts: require('./tpls/consts'),
 };
+
 
 Object.entries(filesName).forEach((item, index) => {
 	let [category, fileArr] = item;
@@ -44,11 +41,11 @@ Object.entries(filesName).forEach((item, index) => {
 		let jsPath = upath.normalize(`${jsDir}/${category}/detail/modules/${filename}.js`);
 		
 		if (!fs.existsSync(mdPath)) {
-			fs.outputFileSync(mdPath, '');
+			fs.outputFileSync(mdPath, filesTpl[category](filename));
 		}
 
 		if (!fs.existsSync(jsPath)) {
-			fs.outputFileSync(jsPath, jsTemplate(category, filename));
+			fs.outputFileSync(jsPath, comboTpl(category, filename));
 		}
 		let content = `export ${filename} from './${filename}';`;
 		if (rootContents.includes(content) === false) {

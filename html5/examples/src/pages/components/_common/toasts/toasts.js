@@ -22,6 +22,16 @@ const Target = {
 				message,
 				duration: duration == 0 ? 1 * 60 * 60 * 24 : duration,
 				showClose
+			},
+			methods: {
+				// init() {
+				// 	Dom.appendChild(this.$el);
+				// },
+				// destroy() {
+				// 	this.$destroy();
+				// 	Dom.removeChild(this.$el);
+				// 	delete RcInstance.APIS[cName];
+				// }
 			}
 		});
 
@@ -39,6 +49,8 @@ const Target = {
 		RcInstance.APIS[cName] = vm;
 
 		document.body.appendChild(vm.$el);
+
+		return vm;
 	}
 };
 
