@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'WYAWebViewDemo' do
+  pod 'WYAWebView', :path => '../../'
+
+  target 'WYAWebViewDemo_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

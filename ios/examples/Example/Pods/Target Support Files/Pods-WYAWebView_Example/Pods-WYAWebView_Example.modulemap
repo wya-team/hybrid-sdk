@@ -1,6 +1,0 @@
-framework module Pods_WYAWebView_Example {
-  umbrella header "Pods-WYAWebView_Example-umbrella.h"
-
-  export *
-  module * { export * }
-}

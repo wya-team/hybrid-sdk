@@ -205,12 +205,12 @@ extension WYAWebView {
                 //加载文件夹内已有的js文件
             }
         } else {
-            let jsNames = ["bridge-sdk", "init-test"]
+            let jsNames = ["WYAJSBridge.umd"]
 
             for jsName in jsNames {
                 let bund = Bundle(for: self.classForCoder)
 
-                let jsString = bund.path(forResource: jsName, ofType: "js", inDirectory: "WYAWebView.bundle")
+                let jsString = bund.path(forResource: jsName, ofType: "js")
                 var jsPath = String()
                 do {
                     jsPath = try String(contentsOfFile: jsString!)
