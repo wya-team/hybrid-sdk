@@ -108,7 +108,7 @@
 [noticeClick][noticeClick] |  状态栏通知被用户点击后的回调（推送） | 0 | 0 | 0
 [appIntent][appIntent] |  本应用被其他应用调起来  | 1 | 0 | 0
 [smartUpdateFinish][smartUpdateFinish] |  云修复使用静默修复时，更新完毕事件,通知用户做是否强制重启应用等操作或者提示，以使更新生效 | 0 | 0 | 0
-[launchViewClick][launchViewClick] |  闪屏广告被用户点击后的回调 | 0 | 0 | 0
+[launchViewClick][launchViewClick] |  启动页被点击后的回调 | 0 | 0 | 0
 [keyboardShow][keyboardShow] |  系统键盘弹出的回调 | 1 | 0 | 0
 [keyboardHide][keyboardHide] |  系统键盘隐藏的回调 | 1 | 0 | 0
 [safeAreaChange][safeAreaChange] |  安全区域发生变化的回调(iOS11) | 0 | 0 | 0

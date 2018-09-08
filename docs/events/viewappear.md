@@ -1,13 +1,15 @@
 #### 1. 说明
 
-~
+Window 显示到屏幕的事件，字符串类型。收到 viewappear 事件回调，即标识当前 Window 已经动画结束，并且完全显示到屏幕上。
+
+该事件的作用对象为 Window，Frame 的显示不会收到事件
 
 #### 2. Native传递参数给Client
 
 ```javascript
 {
 	status: 1,
-	msg: '调用成功',
+	msg: '响应成功',
 	data: {
 		// ....
 	}

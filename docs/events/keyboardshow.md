@@ -1,15 +1,15 @@
 #### 1. 说明
 
-~
+系统键盘弹出的回调
 
 #### 2. Native传递参数给Client
 
 ```javascript
 {
 	status: 1,
-	msg: '调用成功',
+	msg: '响应成功',
 	data: {
-		// ....
+		height: 260        // 键盘高度，数字类型
 	}
 }
 ```

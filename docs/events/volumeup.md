@@ -1,15 +1,19 @@
 #### 1. 说明
 
-~
+设备音量加键被点击事件
+
+该事件必须在 Window 中注册才有效，Frame 中注册无效，并且只在当前屏幕上的 window 才能收到回调。
+
 
 #### 2. Native传递参数给Client
 
 ```javascript
 {
 	status: 1,
-	msg: '调用成功',
+	msg: '响应成功',
 	data: {
-		// ....
+		keyCode: 0                // 被点击的按键
+		longPress: false          // 是否是长按
 	}
 }
 ```
