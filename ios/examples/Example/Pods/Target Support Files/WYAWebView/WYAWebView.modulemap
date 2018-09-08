@@ -1,0 +1,6 @@
+framework module WYAWebView {
+  umbrella header "WYAWebView-umbrella.h"
+
+  export *
+  module * { export * }
+}

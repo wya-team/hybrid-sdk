@@ -1,0 +1,508 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		21FADB1621439BE800C37689 /* WYAWebView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21FADB0C21439BE800C37689 /* WYAWebView.framework */; };
+		21FADB1B21439BE800C37689 /* WYAWebViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB1A21439BE800C37689 /* WYAWebViewTests.swift */; };
+		21FADB1D21439BE800C37689 /* WYAWebView.h in Headers */ = {isa = PBXBuildFile; fileRef = 21FADB0F21439BE800C37689 /* WYAWebView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		21FADB3421439CB300C37689 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB2C21439CB300C37689 /* Reachability.m */; };
+		21FADB3521439CB300C37689 /* checkSystemStatus.h in Headers */ = {isa = PBXBuildFile; fileRef = 21FADB2D21439CB300C37689 /* checkSystemStatus.h */; };
+		21FADB3621439CB300C37689 /* WYAWebViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB2E21439CB300C37689 /* WYAWebViewManager.swift */; };
+		21FADB3721439CB300C37689 /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 21FADB2F21439CB300C37689 /* Reachability.h */; };
+		21FADB3821439CB300C37689 /* WYASystemConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB3021439CB300C37689 /* WYASystemConfig.swift */; };
+		21FADB3921439CB300C37689 /* WYAWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB3121439CB300C37689 /* WYAWebView.swift */; };
+		21FADB3A21439CB300C37689 /* WYAImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB3221439CB300C37689 /* WYAImagePicker.swift */; };
+		21FADB3B21439CB300C37689 /* checkSystemStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB3321439CB300C37689 /* checkSystemStatus.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		21FADB1721439BE800C37689 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 21FADB0321439BE800C37689 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 21FADB0B21439BE800C37689;
+			remoteInfo = WYAWebView;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		21FADB0C21439BE800C37689 /* WYAWebView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WYAWebView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		21FADB0F21439BE800C37689 /* WYAWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WYAWebView.h; sourceTree = "<group>"; };
+		21FADB1021439BE800C37689 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21FADB1521439BE800C37689 /* WYAWebViewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WYAWebViewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		21FADB1A21439BE800C37689 /* WYAWebViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WYAWebViewTests.swift; sourceTree = "<group>"; };
+		21FADB1C21439BE800C37689 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21FADB2C21439CB300C37689 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		21FADB2D21439CB300C37689 /* checkSystemStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = checkSystemStatus.h; sourceTree = "<group>"; };
+		21FADB2E21439CB300C37689 /* WYAWebViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WYAWebViewManager.swift; sourceTree = "<group>"; };
+		21FADB2F21439CB300C37689 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		21FADB3021439CB300C37689 /* WYASystemConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WYASystemConfig.swift; sourceTree = "<group>"; };
+		21FADB3121439CB300C37689 /* WYAWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WYAWebView.swift; sourceTree = "<group>"; };
+		21FADB3221439CB300C37689 /* WYAImagePicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WYAImagePicker.swift; sourceTree = "<group>"; };
+		21FADB3321439CB300C37689 /* checkSystemStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = checkSystemStatus.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		21FADB0821439BE800C37689 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21FADB1221439BE800C37689 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21FADB1621439BE800C37689 /* WYAWebView.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		21FADB0221439BE800C37689 = {
+			isa = PBXGroup;
+			children = (
+				21FADB0E21439BE800C37689 /* WYAWebView */,
+				21FADB1921439BE800C37689 /* WYAWebViewTests */,
+				21FADB0D21439BE800C37689 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		21FADB0D21439BE800C37689 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				21FADB0C21439BE800C37689 /* WYAWebView.framework */,
+				21FADB1521439BE800C37689 /* WYAWebViewTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		21FADB0E21439BE800C37689 /* WYAWebView */ = {
+			isa = PBXGroup;
+			children = (
+				21FADB2A21439CB300C37689 /* Resources */,
+				21FADB2B21439CB300C37689 /* Sources */,
+				21FADB0F21439BE800C37689 /* WYAWebView.h */,
+				21FADB1021439BE800C37689 /* Info.plist */,
+			);
+			path = WYAWebView;
+			sourceTree = "<group>";
+		};
+		21FADB1921439BE800C37689 /* WYAWebViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				21FADB1A21439BE800C37689 /* WYAWebViewTests.swift */,
+				21FADB1C21439BE800C37689 /* Info.plist */,
+			);
+			path = WYAWebViewTests;
+			sourceTree = "<group>";
+		};
+		21FADB2A21439CB300C37689 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		21FADB2B21439CB300C37689 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				21FADB2C21439CB300C37689 /* Reachability.m */,
+				21FADB2D21439CB300C37689 /* checkSystemStatus.h */,
+				21FADB2E21439CB300C37689 /* WYAWebViewManager.swift */,
+				21FADB2F21439CB300C37689 /* Reachability.h */,
+				21FADB3021439CB300C37689 /* WYASystemConfig.swift */,
+				21FADB3121439CB300C37689 /* WYAWebView.swift */,
+				21FADB3221439CB300C37689 /* WYAImagePicker.swift */,
+				21FADB3321439CB300C37689 /* checkSystemStatus.m */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		21FADB0921439BE800C37689 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21FADB3721439CB300C37689 /* Reachability.h in Headers */,
+				21FADB3521439CB300C37689 /* checkSystemStatus.h in Headers */,
+				21FADB1D21439BE800C37689 /* WYAWebView.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		21FADB0B21439BE800C37689 /* WYAWebView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21FADB2021439BE800C37689 /* Build configuration list for PBXNativeTarget "WYAWebView" */;
+			buildPhases = (
+				21FADB0721439BE800C37689 /* Sources */,
+				21FADB0821439BE800C37689 /* Frameworks */,
+				21FADB0921439BE800C37689 /* Headers */,
+				21FADB0A21439BE800C37689 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WYAWebView;
+			productName = WYAWebView;
+			productReference = 21FADB0C21439BE800C37689 /* WYAWebView.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		21FADB1421439BE800C37689 /* WYAWebViewTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 21FADB2321439BE800C37689 /* Build configuration list for PBXNativeTarget "WYAWebViewTests" */;
+			buildPhases = (
+				21FADB1121439BE800C37689 /* Sources */,
+				21FADB1221439BE800C37689 /* Frameworks */,
+				21FADB1321439BE800C37689 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				21FADB1821439BE800C37689 /* PBXTargetDependency */,
+			);
+			name = WYAWebViewTests;
+			productName = WYAWebViewTests;
+			productReference = 21FADB1521439BE800C37689 /* WYAWebViewTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		21FADB0321439BE800C37689 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0940;
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = WeiYiAn;
+				TargetAttributes = {
+					21FADB0B21439BE800C37689 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+					21FADB1421439BE800C37689 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+				};
+			};
+			buildConfigurationList = 21FADB0621439BE800C37689 /* Build configuration list for PBXProject "WYAWebView" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 21FADB0221439BE800C37689;
+			productRefGroup = 21FADB0D21439BE800C37689 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				21FADB0B21439BE800C37689 /* WYAWebView */,
+				21FADB1421439BE800C37689 /* WYAWebViewTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		21FADB0A21439BE800C37689 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21FADB1321439BE800C37689 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		21FADB0721439BE800C37689 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21FADB3821439CB300C37689 /* WYASystemConfig.swift in Sources */,
+				21FADB3B21439CB300C37689 /* checkSystemStatus.m in Sources */,
+				21FADB3921439CB300C37689 /* WYAWebView.swift in Sources */,
+				21FADB3A21439CB300C37689 /* WYAImagePicker.swift in Sources */,
+				21FADB3421439CB300C37689 /* Reachability.m in Sources */,
+				21FADB3621439CB300C37689 /* WYAWebViewManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		21FADB1121439BE800C37689 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				21FADB1B21439BE800C37689 /* WYAWebViewTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		21FADB1821439BE800C37689 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 21FADB0B21439BE800C37689 /* WYAWebView */;
+			targetProxy = 21FADB1721439BE800C37689 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		21FADB1E21439BE800C37689 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		21FADB1F21439BE800C37689 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		21FADB2121439BE800C37689 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JU7A4SE6U5;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = WYAWebView/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = www.weiyian.com.WYAWebView;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		21FADB2221439BE800C37689 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JU7A4SE6U5;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = WYAWebView/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = www.weiyian.com.WYAWebView;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		21FADB2421439BE800C37689 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JU7A4SE6U5;
+				INFOPLIST_FILE = WYAWebViewTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = www.weiyian.com.WYAWebViewTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		21FADB2521439BE800C37689 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JU7A4SE6U5;
+				INFOPLIST_FILE = WYAWebViewTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = www.weiyian.com.WYAWebViewTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		21FADB0621439BE800C37689 /* Build configuration list for PBXProject "WYAWebView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21FADB1E21439BE800C37689 /* Debug */,
+				21FADB1F21439BE800C37689 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		21FADB2021439BE800C37689 /* Build configuration list for PBXNativeTarget "WYAWebView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21FADB2121439BE800C37689 /* Debug */,
+				21FADB2221439BE800C37689 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		21FADB2321439BE800C37689 /* Build configuration list for PBXNativeTarget "WYAWebViewTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21FADB2421439BE800C37689 /* Debug */,
+				21FADB2521439BE800C37689 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 21FADB0321439BE800C37689 /* Project object */;
+}
