@@ -1,15 +1,17 @@
 #### 1. 说明
 
-~
+监听设备连接到网络的事件
 
 #### 2. Native传递参数给Client
+
+> 取值范围参考常量
 
 ```javascript
 {
 	status: 1,
-	msg: '调用成功',
+	msg: '响应成功',
 	data: {
-		// ....
+		connectionType: '' // 当前网络连接类型，如2g、3g、4g、wifi等
 	}
 }
 ```

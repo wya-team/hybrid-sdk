@@ -1,13 +1,13 @@
 #### 1. 说明
 
-~
+应用进入后台事件
 
 #### 2. Native传递参数给Client
 
 ```javascript
 {
 	status: 1,
-	msg: '调用成功',
+	msg: '响应成功',
 	data: {
 		// ....
 	}

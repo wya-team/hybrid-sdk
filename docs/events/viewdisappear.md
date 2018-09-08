@@ -1,13 +1,17 @@
 #### 1. 说明
 
-~
+Window 离开屏幕的事件，字符串类型。收到 viewdisappear 事件回调，即标识当前 Window 已经动画结束，并且完全从屏幕上移除。
+
+该事件的作用对象为 Window，Frame 的隐藏不会收到事件
+
+若是 Window 被关闭，此事件不会再回调
 
 #### 2. Native传递参数给Client
 
 ```javascript
 {
 	status: 1,
-	msg: '调用成功',
+	msg: '响应成功',
 	data: {
 		// ....
 	}

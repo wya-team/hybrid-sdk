@@ -21,7 +21,7 @@ const invoke = () => {
 export default {
 	to: '/events/launchViewClick',
 	title: 'launchViewClick',
-	label: '?',
+	label: '启动页被点击后的回调',
 	invoke,
 	markdown
 };

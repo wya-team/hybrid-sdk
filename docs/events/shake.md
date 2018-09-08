@@ -9,7 +9,7 @@
 ```javascript
 {
 	status: 1,
-	msg: '调用成功',
+	msg: '响应成功',
 	data: {
 		// ....
 	}

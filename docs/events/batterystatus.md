@@ -1,15 +1,16 @@
 #### 1. 说明
 
-~
+设备电池状态改变事件，如电量变化或正在充电
 
 #### 2. Native传递参数给Client
 
 ```javascript
 {
 	status: 1,
-	msg: '调用成功',
+	msg: '响应成功',
 	data: {
-		// ....
+		level: 100,            // 电池电量（0-100）
+		isPlugged: true        // 是否连接电源
 	}
 }
 ```

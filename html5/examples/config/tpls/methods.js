@@ -17,7 +17,7 @@ module.exports = (name) => {
 	contents += '```javascript\n';
 	contents += `{\n`;
 	contents += `	status: 1,\n`;
-	contents += `	msg: '调用成功',\n`;
+	contents += `	msg: '响应成功',\n`;
 	contents += `	data: {\n`;
 	contents += `		// ....\n`;
 	contents += `	}\n`;

@@ -1,13 +1,13 @@
 #### 1. 说明
 
-~
+监听设备断开网络的事件，字符串类型
 
 #### 2. Native传递参数给Client
 
 ```javascript
 {
 	status: 1,
-	msg: '调用成功',
+	msg: '响应成功',
 	data: {
 		// ....
 	}

@@ -1,12 +1,5 @@
 ## 一、常量
 
-#### 触发事件
-
-事件 | 说明  | 开发 | Android | iOS
----|---|---|---|---
-[\_ready\_](#_ready_) | 初始化事件,sdk注入完成后调用 | 1 | 0 | 0
-
-
 参数 | 说明 | 如 | 开发 | Android | iOS
 ---|---|---|---|---|---
 [version][version] | 引擎版本信息 | `1.0.0` | 1 | 0 | 0
@@ -79,6 +72,17 @@
 
 
 ## 二、事件系统
+
+#### 辅助事件
+
+事件 | 说明  | 开发 | Android | iOS
+---|---|---|---|---
+[\_ready\_][ready] | 初始化事件,sdk注入完成后调用 | 1 | 0 | 0
+[\_error\_][error] | 异常回调 | 1 | 0 | 0
+
+[ready]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/assists/ready.md
+[error]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/assists/error.md
+
 ### 通用事件（on）
 
 事件 | 说明  | 开发 | Android | iOS
@@ -104,7 +108,7 @@
 [noticeClick][noticeClick] |  状态栏通知被用户点击后的回调（推送） | 0 | 0 | 0
 [appIntent][appIntent] |  本应用被其他应用调起来  | 1 | 0 | 0
 [smartUpdateFinish][smartUpdateFinish] |  云修复使用静默修复时，更新完毕事件,通知用户做是否强制重启应用等操作或者提示，以使更新生效 | 0 | 0 | 0
-[launchViewClick][launchViewClick] |  闪屏广告被用户点击后的回调 | 0 | 0 | 0
+[launchViewClick][launchViewClick] |  启动页被点击后的回调 | 0 | 0 | 0
 [keyboardShow][keyboardShow] |  系统键盘弹出的回调 | 1 | 0 | 0
 [keyboardHide][keyboardHide] |  系统键盘隐藏的回调 | 1 | 0 | 0
 [safeAreaChange][safeAreaChange] |  安全区域发生变化的回调(iOS11) | 0 | 0 | 0

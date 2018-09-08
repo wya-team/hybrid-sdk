@@ -1,13 +1,17 @@
+> web/native均可处理
+
 #### 1. 说明
 
-~
+Window 或者 Frame 页面滑动到底部事件，字符串类型
+
+可用于实现滚动到底部，加载更多功能
 
 #### 2. Native传递参数给Client
 
 ```javascript
 {
 	status: 1,
-	msg: '调用成功',
+	msg: '响应成功',
 	data: {
 		// ....
 	}
