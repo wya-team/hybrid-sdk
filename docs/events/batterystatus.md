@@ -19,12 +19,12 @@
 ```javascript
 import wya from 'wya-js-sdk';
 
-// on / once / last / first
+// on / once / last / first / off
 wya.on('batteryStatus', () => {
 
 });
 
-// on / once / last / first
+// on / once / last / first / off
 wya.onBatteryStatus(() => {
 
 });
@@ -33,7 +33,7 @@ wya.onBatteryStatus(() => {
 #### 4. 不引入sdk示例代码
 
 ```javascript
-// on / once / last / first
+// on / once / last / first / off
 WYAJSBridge.on('batteryStatus', () => {
 
 });

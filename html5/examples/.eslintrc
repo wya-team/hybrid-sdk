@@ -70,6 +70,7 @@
 		"no-unused-vars": 0,
 		"import/no-extraneous-dependencies": 0,
 		"import/prefer-default-export": 0,
+		"import/newline-after-import": ["warn"],
 		"import/first": 0,
 		"import/no-unresolved": 0,
 		"no-multiple-empty-lines": 0,
@@ -84,6 +85,9 @@
 		"no-bitwise": 0,
 		"padded-blocks": 0, // {} 允许空行
 		"no-return-assign": 0,
+		"max-len": ["warn", { "code": 120, "ignoreComments": true }],
+		"prefer-destructuring": 0,
+		"prefer-template": 0,
 		// tab缩进
 		"indent": ["warn", "tab",
 		{

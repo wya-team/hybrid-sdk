@@ -1,5 +1,6 @@
 let Mock = require('mockjs');
-let Random = Mock.Random;
+
+let { Random } = Mock;
 
 let items = [];
 for (let i = 0; i <= 2; i++) {
