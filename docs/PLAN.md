@@ -11,38 +11,38 @@
 参数 | 说明 | 如 | 开发 | Android | iOS
 ---|---|---|---|---|---
 [version][version] | 引擎版本信息 | `1.0.0` | 1 | 0 | 0
-[appId][appId] 应用的 ID | - | 1 | 0 | 0
-[appName][appName] 应用在名称 | - | 1 | 0 | 0
-[appVersion][appVersion] 应用版本号 | `1.0.0` | 1 | 0 | 0
-[systemType][systemType] 系统类型 | `ios、android` | 1 | 0 | 0
-[systemVersion][systemVersion] 系统版本号 | - `11.1` | 1 | 0 | 0
-[deviceId][deviceId] 设备唯一标识 | `FC408F8B-9598-48B6-A740-B9037ADCXXXE` | 1 | 0 | 0
-[deviceToken][deviceToken] iOS中用于推送的Token | - | 1 | 0 | 0
-[deviceModel][deviceModel] 设备型号 | `iPhone 7` | 1 | 0 | 0
-[deviceName][deviceName] 设备名称 | `“柚子”的 iPhone` | 1 | 0 | 0
-[uiMode][uiMode] 设备类型 | `pad/phone..` | 1 | 0 | 0
-[operatorName][operatorName] 运营商名称 | `中国移动` | 1 | 0 | 0
-[connectionType][connectionType] 当前网络连接类型 | `wifi,2g,3g,4g,none` | 1 | 0 | 0
-[fullScreen][fullScreen] 应用是否全屏 | - | 1 | 0 | 0
-[screenWidth][screenWidth] 屏幕分辨率宽（物理） | `750` | 1 | 0 | 0
-[screenHeight][screenHeight] 屏幕分辨率高（物理） | `1334` | 1 | 0 | 0
-[winName][winName] 当前 window 名称） | `home` | 1 | 0 | 0
-[winWidth][winWidth] 当前 window 宽度（逻辑） | `350` | 1 | 0 | 0
-[winHeight][winHeight] 当前 window 高度（逻辑） | `667` | 1 | 0 | 0
-[frameName][frameName] frame 名称, 若当前环境为 window 中，则该属性值为空字符串 | - | 1 | 0 | 0
-[frameWidth][frameWidth] frame 宽度，环境为window时，与winWidth 相同 | - | 1 | 0 | 0
-[frameHeight][frameHeight] frame 高度，环境为window时，与winHeight 相同 | - | 1 | 0 | 0
-[safeArea][safeArea] 页面不被其它内容（如状态栏）遮住的区域 | `{ top: 0, left, ... }` | 1 | 0 | 0
-[pageParam][pageParam] 页面参数, 获取页面间传递的参数值，为 openWin()、openFrame() 等方法 | `{ name: '' ... }` | 1 | 0 | 0
-[wgtParam][wgtParam] widget 参数, 获取 widget 间传递的参数值，为 openWidget() 方法 | `{ top: 0, left, ... }` | 0 | 0 | 0
-[appParam][appParam] 当应用被第三方应用打开时，传递过来的参数 | `{ value: 'sss' }` | 1 | 0 | 0
-[statusBarAppearance][statusBarAppearance] 是否支持沉浸式效果，状态栏底透明 | `true` | 1 | 0 | 0
-[wgtRootDir][wgtRootDir] widget: //协议对应的真实目录，即 widget 网页包的根目录(只读) `/private/.../App.app/widget` | 0 | 0 | 0
-[fsDir][fsDir] fs: //协议对应地真实目录 | - | 0 | 0 | 0
+[appId][appId] | 应用的 ID | - | 1 | 0 | 0
+[appName][appName] | 应用在名称 | - | 1 | 0 | 0
+[appVersion][appVersion] | 应用版本号 | `1.0.0` | 1 | 0 | 0
+[systemType][systemType] | 系统类型 | `ios、android` | 1 | 0 | 0
+[systemVersion][systemVersion] | 系统版本号 | - `11.1` | 1 | 0 | 0
+[deviceId][deviceId] | 设备唯一标识 | `FC408F8B-9598-48B6-A740-B9037ADCXXXE` | 1 | 0 | 0
+[deviceToken][deviceToken] | iOS中用于推送的Token | - | 1 | 0 | 0
+[deviceModel][deviceModel] | 设备型号 | `iPhone 7` | 1 | 0 | 0
+[deviceName][deviceName] | 设备名称 | `“柚子”的 iPhone` | 1 | 0 | 0
+[uiMode][uiMode] | 设备类型 | `pad/phone..` | 1 | 0 | 0
+[operatorName][operatorName] | 运营商名称 | `中国移动` | 1 | 0 | 0
+[connectionType][connectionType] | 当前网络连接类型 | `wifi,2g,3g,4g,none` | 1 | 0 | 0
+[fullScreen][fullScreen] | 应用是否全屏 | - | 1 | 0 | 0
+[screenWidth][screenWidth] | 屏幕分辨率宽（物理） | `750` | 1 | 0 | 0
+[screenHeight][screenHeight] | 屏幕分辨率高（物理） | `1334` | 1 | 0 | 0
+[winName][winName] | 当前 window 名称） | `home` | 1 | 0 | 0
+[winWidth][winWidth] | 当前 window 宽度（逻辑） | `350` | 1 | 0 | 0
+[winHeight][winHeight] | 当前 window 高度（逻辑） | `667` | 1 | 0 | 0
+[frameName][frameName] | frame 名称, 若当前环境为 window 中，则该属性值为空字符串 | - | 1 | 0 | 0
+[frameWidth][frameWidth] | frame 宽度，环境为window时，与winWidth 相同 | - | 1 | 0 | 0
+[frameHeight][frameHeight] | frame 高度，环境为window时，与winHeight 相同 | - | 1 | 0 | 0
+[safeArea][safeArea] | 页面不被其它内容（如状态栏）遮住的区域 | `{ top: 0, left, ... }` | 1 | 0 | 0
+[pageParam][pageParam] | 页面参数, 获取页面间传递的参数值，为 openWin()、openFrame() 等方法 | `{ name: '' ... }` | 1 | 0 | 0
+[wgtParam][wgtParam] | widget 参数, 获取 widget 间传递的参数值，为 openWidget() 方法 | `{ top: 0, left, ... }` | 0 | 0 | 0
+[appParam][appParam] | 当应用被第三方应用打开时，传递过来的参数 | `{ value: 'sss' }` | 1 | 0 | 0
+[statusBarAppearance][statusBarAppearance] | 是否支持沉浸式效果，状态栏底透明 | `true` | 1 | 0 | 0
+[wgtRootDir][wgtRootDir] | widget: //协议对应的真实目录，即 widget 网页包的根目录(只读) `/private/.../App.app/widget` | 0 | 0 | 0
+[fsDir][fsDir] | fs: //协议对应地真实目录 | - | 0 | 0 | 0
 [cacheDir][cacheDir] cache://协议对应的真实目录, iOS 平台下载的文件一般存放于该目录下，否则提交 boxDir | box://协议对应的真实目录 | `` | 0 | 0 | 0
-[debug][debug] - | `` | 1 | 0 | 0
-[channel][channel] app来源 | `Apple App Store` | 1 | 0 | 0
-[jailbreak][jailbreak] 设备是否越狱 | `` | 1 | 0 | 0
+[debug][debug] | - | `` | 1 | 0 | 0
+[channel][channel] | app来源 | `Apple App Store` | 1 | 0 | 0
+[jailbreak][jailbreak] | 设备是否越狱 | `` | 1 | 0 | 0
 
 [version]: https://github.com/wya-team/hybrid-sdk/tree/master/docs/consts/version.md
 [appId]: https://github.com/wya-team/hybrid-sdk/tree/master/docs/consts/appId.md
