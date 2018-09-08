@@ -2,12 +2,13 @@
 [version]: https://github.com/wya-team/hybrid-sdk/tree/master/docs/events/version.md
 
 #### 触发事件
-<div style="width: 150px">事件</div> | 说明  | <div style="width: 30px">开发</div> | <div style="width: 55px">Android</div> | <div style="width: 30px">iOS</div>
+
+事件 | 说明  | 开发 | Android | iOS
 ---|---|---|---|---
 [\_ready\_](#_ready_) | 初始化事件,sdk注入完成后调用 | 1 | 0 | 0
 
 
-<div style="width: 150px">参数</div> | 说明 | 如 | <div style="width: 30px">开发</div> | <div style="width: 55px">Android</div> | <div style="width: 30px">iOS</div>
+参数 | 说明 | 如 | 开发 | Android | iOS
 ---|---|---|---|---|---
 [version][version] | 引擎版本信息 | `1.0.0` | 1 | 0 | 0
 [appId][appId] 应用的 ID | - | 1 | 0 | 0
@@ -81,7 +82,7 @@
 ## 二、事件系统
 ### 通用事件（on）
 
-<div style="width: 150px">事件</div> | 说明  | <div style="width: 30px">开发</div> | <div style="width: 55px">Android</div> | <div style="width: 30px">iOS</div>
+事件 | 说明  | 开发 | Android | iOS
 ---|---|---|---|---
 [batteryow][batteryow] | 低电量 | 1 | 0 | 0
 [batteryStatus][batteryStatus] | 电池状态，如电量变化或正在充电 | 1 | 0 | 0
@@ -137,7 +138,7 @@
 
 ### 按键事件 (key) (on)
 
-<div style="width: 150px">事件</div> | 说明  | <div style="width: 30px">开发</div> | <div style="width: 55px">Android</div> | <div style="width: 30px">iOS</div>
+事件 | 说明  | 开发 | Android | iOS
 ---|---|---|---|---
 [keyBack][keyBack] | 返回  | 1 | 0 | 0
 [keyMenu][keyMenu] | 菜单键  | 1 | 0 | 0
@@ -152,7 +153,7 @@
 ## 三、方法
 
 
-<div style="width: 150px">方法</div> | 说明 | <div style="width: 30px">开发</div> | <div style="width: 55px">Android</div> | <div style="width: 30px">iOS</div>
+方法 | 说明 | 开发 | Android | iOS
 ---|---|---|---|---
 [openWin][openWin] | 打开window  | 0 | 0 | 0 
 [closeWin][closeWin] | 关闭 window  | 0 | 0 | 0  
