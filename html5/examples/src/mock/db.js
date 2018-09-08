@@ -1,5 +1,6 @@
-let Mock  = require('mockjs');
-module.exports = function() {
+let Mock = require('mockjs');
+
+module.exports = () => {
 	let res = {};
 	res.test = require('./data/test');
 	res.filters = require('./data/filters');

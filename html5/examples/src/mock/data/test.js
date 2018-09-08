@@ -1,5 +1,6 @@
-let Mock  = require('mockjs');
-let Random = Mock.Random;
+let Mock = require('mockjs');
+
+let { Random } = Mock;
 let size = [
 	'300x250', '250x250', '240x400', '336x280', 
 	'180x150', '720x300', '468x260', '234x360', 
@@ -14,13 +15,13 @@ for (let i = 0; i < 30; i++) {
 	let content = Random.cparagraph(0, 10);
 
 	data.push({
-		id: i  + '_' + i,
+		id: i + '_' + i,
 		// title: Random.cword(8, 20),
 		// desc: content.substr(0, 40),
 		// tag: Random.cword(2, 6),
 		// views: Random.integer(100, 5000),
 		// images: images.slice(0, Random.integer(1, 3))
-		img: Random.image(size[parseInt(Math.random() * 16)], Random.color(), Random.word(2, 6))
+		img: Random.image(size[parseInt(Math.random() * 16, 10)], Random.color(), Random.word(2, 6))
 	});
 }
 

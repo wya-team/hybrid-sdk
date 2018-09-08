@@ -5,7 +5,7 @@
 			class="__bg" 
 			@click="handleClose" 
 		/>
-		<transition name="fade">
+		<transition name="fade" @after-leave="handleRemove">
 			<div v-show="visible" class="__fixed">{{ message }}</div>
 		</transition>
 	</div>
@@ -38,7 +38,6 @@ export default {
 	},
 	destroyed() {
 		this.timer && clearTimeout(this.timer);
-		this.$el.removeEventListener('transitionend', this.handleRemove);
 	},
 	methods: {
 		handleRemove() {
@@ -47,7 +46,6 @@ export default {
 		},
 		handleClose(e) {
 			this.visible = false;
-			this.$el.addEventListener('transitionend', this.handleRemove);
 		}
 	}
 };
@@ -81,7 +79,7 @@ export default {
 		line-height: 1.5;
 		color: #fff;
 		text-align: center;
-		transition: opacity 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+		transition: opacity .3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
 	}
 }
 .fade-enter, .fade-leave-active {

@@ -26,12 +26,12 @@ module.exports = (name) => {
 	contents += '```javascript\n';
 	contents += `import wya from 'wya-js-sdk';\n\n`;
 
-	contents += `// on / once / last / first\n`;
+	contents += `// on / once / last / first / off\n`;
 	contents += `wya.on('${name}', () => {\n\n`;
 
 	contents += `});\n\n`;
 
-	contents += `// on / once / last / first\n`;
+	contents += `// on / once / last / first / off\n`;
 	contents += `wya.on${capitalize(name)}(() => {\n\n`;
 
 	contents += `});\n`;
@@ -40,7 +40,7 @@ module.exports = (name) => {
 	contents += `#### 4. 不引入sdk示例代码\n\n`;
 
 	contents += '```javascript\n';
-	contents += `// on / once / last / first\n`;
+	contents += `// on / once / last / first / off\n`;
 	contents += `WYAJSBridge.on('${name}', () => {\n\n`;
 
 	contents += `});\n`;

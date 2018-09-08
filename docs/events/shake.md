@@ -1,6 +1,8 @@
 #### 1. 说明
 
-~
+设备摇动事件，字符串类型。设置该监听后，当前 APP 将立即开启摇动检测功能。
+
+可用于实现摇一摇功能
 
 #### 2. Native传递参数给Client
 
@@ -19,12 +21,12 @@
 ```javascript
 import wya from 'wya-js-sdk';
 
-// on / once / last / first
+// on / once / last / first / off
 wya.on('shake', () => {
 
 });
 
-// on / once / last / first
+// on / once / last / first / off
 wya.onShake(() => {
 
 });
@@ -33,7 +35,7 @@ wya.onShake(() => {
 #### 4. 不引入sdk示例代码
 
 ```javascript
-// on / once / last / first
+// on / once / last / first / off
 WYAJSBridge.on('shake', () => {
 
 });

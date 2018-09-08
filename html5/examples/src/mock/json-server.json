@@ -1,9 +1,9 @@
 {
-    "host": "localhost",
-    "port": "3000",
-    "watch": true,
-    "delay": 500,
-    "quiet": false,
-    "routes": "./routes.json",
-    "middlewares": "./api.js"
+	"host": "localhost",
+	"port": "3000",
+	"watch": true,
+	"delay": 500,
+	"quiet": false,
+	"routes": "./routes.json",
+	"middlewares": "./api.js"
 }
