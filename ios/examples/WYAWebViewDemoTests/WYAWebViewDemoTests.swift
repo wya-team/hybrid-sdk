@@ -1,7 +1,15 @@
-import XCTest
-import WYAWebView
+//
+//  WYAWebViewDemoTests.swift
+//  WYAWebViewDemoTests
+//
+//  Created by 李世航 on 2018/9/8.
+//  Copyright © 2018年 WeiYiAn. All rights reserved.
+//
 
-class Tests: XCTestCase {
+import XCTest
+@testable import WYAWebViewDemo
+
+class WYAWebViewDemoTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
@@ -15,12 +23,12 @@ class Tests: XCTestCase {
     
     func testExample() {
         // This is an example of a functional test case.
-        XCTAssert(true, "Pass")
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measure() {
+        self.measure {
             // Put the code you want to measure the time of here.
         }
     }

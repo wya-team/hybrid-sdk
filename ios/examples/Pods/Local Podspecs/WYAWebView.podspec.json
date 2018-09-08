@@ -18,10 +18,8 @@
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": [
-    "ios/sdk/WYAWebView/WYAWebView/**/*",
-    "pre-build/*.{js}"
-  ],
+  "source_files": "ios/sdk/WYAWebView/WYAWebView/**/*.{h,m,swift}",
+  "resources": "pre-build/*.js",
   "resource_bundles": {
     "WYAWebView": [
       "WYAWebView/Assets/WYAWebView.bundle/*"

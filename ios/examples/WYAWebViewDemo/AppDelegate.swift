@@ -1,13 +1,13 @@
 //
 //  AppDelegate.swift
-//  WYAWebView
+//  WYAWebViewDemo
 //
-//  Created by 1228506851@qq.com on 08/15/2018.
-//  Copyright (c) 2018 1228506851@qq.com. All rights reserved.
+//  Created by 李世航 on 2018/9/8.
+//  Copyright © 2018年 WeiYiAn. All rights reserved.
 //
 
 import UIKit
-import WYAWebView
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -40,12 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
-        //其他应用调起发生变化
-//        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "TunedByOtherApp"), object: nil, userInfo: ["":""])
-        return true
-    }
+
 
 }
 

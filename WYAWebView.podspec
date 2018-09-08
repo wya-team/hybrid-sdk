@@ -29,8 +29,10 @@ TODO: Add long description of the pod here.
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
-
-  s.source_files = 'ios/sdk/WYAWebView/WYAWebView/**/*','pre-build/*.{js}'
+  
+  s.source_files = 'ios/sdk/WYAWebView/WYAWebView/**/*.{h,m,swift}'
+  
+  s.resources = 'pre-build/*.js'
   
   s.resource_bundles = {
     'WYAWebView' => ['WYAWebView/Assets/WYAWebView.bundle/*']

@@ -10,7 +10,7 @@ import UIKit
 import WYAWebView
 
 class ViewController: UIViewController {
-
+    
     let web = WYAWebView()
     
     
@@ -20,17 +20,17 @@ class ViewController: UIViewController {
         
         
         web.frame = self.view.bounds
-
+        
         web.configWebView()
-
-
-
+        
+        
+        
         web.loadLocalHtml(htmlName: "index")
         self.view.addSubview(web)
         web.vc = self
-
-
-
+        
+        
+        
         let system = SystemConfig()
         let aa = system.appId
         print(aa)
@@ -54,12 +54,13 @@ class ViewController: UIViewController {
         print("摇晃被意外终止")
         web.shakeStateAction(shakeState: .shakeCancel)
     }
-
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
 }
+
 

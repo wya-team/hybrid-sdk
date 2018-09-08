@@ -71,14 +71,14 @@ public class WYAWebView: UIView {
         webManager.nativeDelegate = self as WebViewDelegate
         webManager.registerSystemNotice()
 
-        let imageP = ImagePicker()
-        let captureVideoPreviewLayer = imageP.previewLayer
-        let layer = self.layer
-        layer.masksToBounds = true
-        captureVideoPreviewLayer.frame = self.frame
-//        layer.addSublayer(captureVideoPreviewLayer)
-        layer.insertSublayer(captureVideoPreviewLayer, below: self.webView?.layer)
-        imageP.startRecordFunction()
+//        let imageP = ImagePicker()
+//        let captureVideoPreviewLayer = imageP.previewLayer
+//        let layer = self.layer
+//        layer.masksToBounds = true
+//        captureVideoPreviewLayer.frame = self.frame
+////        layer.addSublayer(captureVideoPreviewLayer)
+//        layer.insertSublayer(captureVideoPreviewLayer, below: self.webView?.layer)
+//        imageP.startRecordFunction()
 
 
     }
@@ -211,6 +211,7 @@ extension WYAWebView {
                 let bund = Bundle(for: self.classForCoder)
 
                 let jsString = bund.path(forResource: jsName, ofType: "js")
+                
                 var jsPath = String()
                 do {
                     jsPath = try String(contentsOfFile: jsString!)
