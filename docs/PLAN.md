@@ -1,12 +1,5 @@
 ## 一、常量
 
-#### 触发事件
-
-事件 | 说明  | 开发 | Android | iOS
----|---|---|---|---
-[\_ready\_](#_ready_) | 初始化事件,sdk注入完成后调用 | 1 | 0 | 0
-
-
 参数 | 说明 | 如 | 开发 | Android | iOS
 ---|---|---|---|---|---
 [version][version] | 引擎版本信息 | `1.0.0` | 1 | 0 | 0
@@ -79,6 +72,17 @@
 
 
 ## 二、事件系统
+
+#### 辅助事件
+
+事件 | 说明  | 开发 | Android | iOS
+---|---|---|---|---
+[\_ready\_][ready] | 初始化事件,sdk注入完成后调用 | 1 | 0 | 0
+[\_error\_][error] | 异常回调 | 1 | 0 | 0
+
+[ready]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/assists/ready.md
+[error]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/assists/error.md
+
 ### 通用事件（on）
 
 事件 | 说明  | 开发 | Android | iOS
