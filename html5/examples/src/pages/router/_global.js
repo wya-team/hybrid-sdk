@@ -14,9 +14,6 @@ wya.ready(() => {
 });
 
 wya.onError((error) => {
-	Toasts.info(
-		typeof error === 'string' 
-			? error 
-			: JSON.stringify(error)
-	);
+	typeof error === 'object' ? JSON.stringify(error) : error;
+	Toasts.info(`全局异常捕获： ${error}`);
 });

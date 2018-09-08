@@ -125,7 +125,7 @@ class WYAJSBridge {
 	emit(id, data) {
 		const { eventName = id } = this.store[id] || {};
 		switch (eventName) {
-			case '_init_':
+			case '_ready_':
 				this.initCount++;
 				if (this.initCount === 1) {
 					useDispatchEvent(eventName, data);
@@ -135,7 +135,7 @@ class WYAJSBridge {
 					});
 					this.waitEmit = [];
 				} else {
-					let msg = '_init_ 事件, 只允许初始化一次';
+					let msg = '_ready_ 事件, 只允许初始化一次';
 					useDispatchEvent(eventName, {
 						status: 0,
 						msg

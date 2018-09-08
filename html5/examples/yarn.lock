@@ -6120,9 +6120,20 @@ markdown-escapes@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/markdown-escapes/-/markdown-escapes-1.0.2.tgz#e639cbde7b99c841c0bacc8a07982873b46d2122"
 
+markdown-loader@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/markdown-loader/-/markdown-loader-4.0.0.tgz#502eb94f5db1673beb1721bed82dac9e1d333b9a"
+  dependencies:
+    loader-utils "^1.1.0"
+    marked "^0.5.0"
+
 markdown-table@^1.1.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/markdown-table/-/markdown-table-1.1.2.tgz#c78db948fa879903a41bce522e3b96f801c63786"
+
+marked@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-0.5.0.tgz#9e590bad31584a48ff405b33ab1c0dd25172288e"
 
 math-expression-evaluator@^1.2.14:
   version "1.2.17"
@@ -9958,7 +9969,7 @@ unzip-response@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/unzip-response/-/unzip-response-2.0.1.tgz#d2f0f737d16b0615e72a6935ed04214572d56f97"
 
-upath@^1.0.5:
+upath@^1.0.5, upath@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/upath/-/upath-1.1.0.tgz#35256597e46a581db4793d0ce47fa9aebfc9fabd"
 
@@ -10557,9 +10568,9 @@ wya-fetch@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/wya-fetch/-/wya-fetch-0.3.1.tgz#41917f1ace47d7418cf60eb44a5a62ee23ffff68"
 
-wya-sass@^0.2.9:
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/wya-sass/-/wya-sass-0.2.9.tgz#08ced0fd102cafed60af4e644067cce215baa461"
+wya-sass@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/wya-sass/-/wya-sass-0.3.1.tgz#1eb97d23e7301199752006f32bd440fa26800b6c"
 
 wya-utils@^0.1.19:
   version "0.1.19"

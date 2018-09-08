@@ -1,25 +1,24 @@
 <template>
 	<set-title title="Constants 常量">
-		<div 
-			v-hljs="'json'" 
-			v-html="html" 
-		/>
+		<contents />
+		<links />
 	</set-title>
 </template>
 
 <script>
-import wya from 'wya-js-sdk';
-import Toasts from '@common/toasts/toasts';
-import { hljs } from '@extends/directives/hljs';
+import Contents from '@components/consts/contents';
+import Links from '@components/consts/links';
+
 
 export default {
 	name: 'consts',
-	directives: {
-		hljs
+	components: {
+		Contents,
+		Links
 	},
 	data() {
 		return {
-			html: `${JSON.stringify(wya)}`
+			
 		};
 	},
 	created() {
@@ -28,11 +27,7 @@ export default {
 		
 	},
 	methods: {
-		handleClick() {
-			Toasts.info("222", 1.5, () => {
-				console.log('回调');
-			});
-		}
+		
 	},
 };
 </script>

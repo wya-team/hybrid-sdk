@@ -37,3 +37,12 @@ export const useDispatchEvent = (eventName, data) => {
 export const createMixins = (...mixins) => target => {
 	Object.assign(target.prototype, ...mixins);
 };
+
+/**
+ * 首字母大写
+ */
+export const capitalize = (value, content = '') => {
+	if (!value) return '';
+	value = value.toString();
+	return content + value.charAt(0).toUpperCase() + value.slice(1);
+};

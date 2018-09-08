@@ -20,7 +20,7 @@ describe('web.js', () => {
 		});
 
 		// 模拟触发一次
-		WYAJSBridge.emit('_init_', {
+		WYAJSBridge.emit('_ready_', {
 			status: 1,
 			data: {
 				appVersion: '1.0.0' 

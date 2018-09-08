@@ -6,5 +6,17 @@ export const constsConfig = [
 		meta: {
 			title: "常量",
 		}
+	},
+	{ 
+		path: '/consts/:id',
+		name: 'consts-detail',
+		component: () => import('./modules/consts-detail.vue'),
+		meta: {
+			title: "常量",
+		}
+	},
+	{ 
+		path: '/consts/*',
+		redirect: { name: 'consts' }
 	}
 ];

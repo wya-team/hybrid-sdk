@@ -12,6 +12,6 @@ prompt.get(['port'], (err, result) => {
 	const strObj = JSON.stringify(result || {});
 
 	// 输出
-	contents = `const obj = ${strObj};module.exports = obj;`;
+	contents = `const obj = ${strObj}; module.exports = obj;`;
 	fs.outputFileSync('./config/user.config.js', contents);
 });

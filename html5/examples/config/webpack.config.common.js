@@ -3,10 +3,12 @@ const APP_ROOT = process.cwd();
 const ENV_IS_DEV = process.env.NODE_ENV === 'development';
 
 const path = require('path');
+// const marked = require("marked");
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpackMerge = require('webpack-merge');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const userConfig = require('./user.config.js');
+
 
 const localPort = (() => {
 	if (ENV_IS_DEV) {
@@ -60,6 +62,7 @@ const webpackConfig = {
 			'@router': path.resolve(APP_ROOT, './src/pages/router'),
 			'@utils': path.resolve(APP_ROOT, './src/pages/utils'),
 			'@common': path.resolve(APP_ROOT, './src/pages/components/_common'),
+			'@docs': path.resolve(APP_ROOT, '../../docs'),
 		}
 	},
 	entry: {
@@ -141,12 +144,36 @@ const webpackConfig = {
 			{
 				test: /\.html$/i,
 				use: 'html-loader'
+			},
+			{
+				test: /\.md$/,
+				use: [
+					{ 
+						loader: "html-loader",
+						options: {
+							minimize: false // 如果被压缩了，就无法正常解析了
+						}
+					}
+					// {
+					// 	loader: "markdown-loader",
+					// 	options: {
+					// 		renderer: new marked.Renderer(),
+					// 		gfm: true,
+					// 		tables: true,
+					// 		breaks: false,
+					// 		sanitize: false,
+					// 		smartLists: true,
+					// 		smartypants: false,
+					// 		pedantic: true,
+					// 	}
+					// }
+				]
 			}
 		]
 	},
 	optimization: {
 		// 默认关闭压缩
-		minimize: ENV_IS_DEV ? false : JSON.parse(process.env.UGLIFY_JS),
+		minimize: ENV_IS_DEV ? false : JSON.parse(process.env.UGLIFY_JS || 'false'),
 		// 原：NamedModulesPlugin()
 		namedModules: true,
 		// 原：NoEmitOnErrorsPlugin() - 异常继续执行

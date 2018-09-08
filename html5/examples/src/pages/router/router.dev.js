@@ -4,9 +4,9 @@
 import 'babel-polyfill';
 import Vue from 'vue';
 import Router from 'vue-router';
-import SetTitle from '@components/set-title/set-title';
+import SetTitle from '@common/set-title/set-title';
 import { routeConfig } from './routes';
-import { beforeEach, afterEach } from './hooks';
+import { beforeEach, afterEach, beforeResolve } from './hooks';
 import { PRE_ROUTER_URL } from '../constants/constants';
 
 // 全局变量 _global
@@ -43,7 +43,7 @@ router.onReady(() => {
 	const curUrl = `${location.pathname}${location.search}${location.hash}`;
 	if (redirect && redirect.includes(PRE_ROUTER_URL) && redirect != curUrl) {
 		try {
-			router.push(redirect);
+			router.push(redirect.replace(PRE_ROUTER_URL, '/'));
 		} catch (e) {
 			location.href = redirect;
 		}
