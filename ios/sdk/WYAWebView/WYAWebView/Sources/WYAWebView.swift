@@ -14,7 +14,7 @@ import MJRefresh
 /// 初始版本号
 let jsBuildVersion = 0.1
 
-public class WYAWebView: UIView {
+public class WYAWebView: UIView{
 
     let webManager = WYAWebViewManager()
     var actionID: String?
@@ -65,11 +65,11 @@ public class WYAWebView: UIView {
         self.webView!.scrollView.showsHorizontalScrollIndicator = false
         self.addSubview(self.webView!)
         //在调用相机显示的时候设置：isOpaque  scrollView.backgroundColor
-        self.webView?.isOpaque = false
-        self.webView?.scrollView.backgroundColor = UIColor.white.withAlphaComponent(0.0)
+//        self.webView?.isOpaque = false
+//        self.webView?.scrollView.backgroundColor = UIColor.white.withAlphaComponent(0.0)
 //        self.getNativeActionResult(obj: "_viewappear_")
-        webManager.nativeDelegate = self as WebViewDelegate
-        webManager.registerSystemNotice()
+//        webManager.nativeDelegate = self as WebViewDelegate
+//        webManager.registerSystemNotice()
 
 //        let imageP = ImagePicker()
 //        let captureVideoPreviewLayer = imageP.previewLayer
@@ -133,12 +133,13 @@ public class WYAWebView: UIView {
     }
     */
 
+    
 }
 
 //MARK: 负责处理文件之间的相互调用
 extension WYAWebView {
     //MARK: 加载url
-    func loadUrl(url: String) -> Void {
+    public func loadUrl(url: String) -> Void {
 //        whiteList.add(url)
         let ul = URL(string: url)
         let request = URLRequest.init(url: ul!)
@@ -284,9 +285,9 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
         //addScriptMessageHandler 是注册JS的MessageHandler，但是WKWebView在多次调用loadRequest，会出现JS无法调用iOS端。我们需要在loadRequest和reloadWebView的时候需要重新注入。（在注入之前需要移除再注入，避免造成内存泄漏）
         //如果message.body中没有参数，JS代码中需要传null防止iOS端不会接收到JS的交互
         //window.webkit.messageHandlers.<事件名>.postMessage(需要传递的数据)
-
+        
     }
-
+    
     //MARK: WKUIDelegate
     /*
      public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
@@ -297,21 +298,21 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
         //ios9
         //窗口关闭时调用
     }
-
+    
     public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Swift.Void) {
         //ios8
         //在JS端调用alert函数时，会触发此代理方法。JS端调用alert时所传的数据可以通过message拿到。在原生得到结果后，需要回调JS，是通过completionHandler回调
         print("alert" + message)
         completionHandler()
     }
-
+    
     public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Swift.Void) {
         //js调用原生的方法
         //ios8
         //JS端调用confirm函数时，会触发此方法，通过message可以拿到JS端所传的数据，在iOS端显示原生alert得到YES/NO后，通过completionHandler回调给JS端
-
+        
     }
-
+    
     public func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Swift.Void) {
         //ios8
         //JS端调用prompt函数时，会触发此方法,要求输入一段文本,在原生输入得到文本内容后，通过completionHandler回调给JS
@@ -329,27 +330,27 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
      //ios10
      }
      */
-
-
+    
+    
     //MARK: WKNavigationDelegate
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Swift.Void) {
         //ios8
         //判断链接是否允许跳转
         let url = navigationAction.request.url?.absoluteString.removingPercentEncoding
-
+        
         if (url?.hasPrefix("command://"))! {
-
+            
             /** 分解url，返回字典，字典中包含（协议名，方法名，ID）
              * key: protocol 协议名
              * key: method   方法名
              * key: id       id
              */
-
+            
             let dic = self.webManager.cutString(urlString: url!)
-
+            
             self.actionID = (dic["id"] as! String)
             guard (self.actionID != nil) else { return }
-
+            
             let arrContain = dic.allKeys.contains { (string) -> Bool in
                 if (string as! String) == "method" {
                     return true
@@ -357,7 +358,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                     return false
                 }
             }
-
+            
             if arrContain {
                 self.getParams(self.actionID!) { (params) in
                     //获取到参数执行调用原生
@@ -366,77 +367,78 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             } else {
                 //不需要参数执行原生
             }
-
+            
         }
         decisionHandler(.allow)
-
+        
     }
-
+    
     public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Swift.Void) {
         //ios8
         //拿到响应后决定是否允许跳转
-
+        
         decisionHandler(WKNavigationResponsePolicy.allow)
     }
-
-
+    
+    
     public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         //ios8
         //链接开始加载时调用
-//        self.progressView.isHidden = false
+        //        self.progressView.isHidden = false
     }
-
-
+    
+    
     public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
         //ios8
         //收到服务器重定向时调用
     }
-
+    
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         //ios8
         //加载错误时调用
         print("加载失败" + error.localizedDescription)
     }
-
+    
     public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         //ios8
         //当内容开始到达主帧时被调用（即将完成）
     }
-
-
+    
+    
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         //ios8
         //加载完成
-
-
+        
+        
         let dic = NSMutableDictionary()
         dic.setValue("0.1.0", forKey: "version")
         dic.setValue("wya", forKey: "user")
-
+        
         let jsParams = self.webManager.mutableDicToJSString(dic: dic)
-
-
-        let jsString = "JSBridge.emit('_init_', {\(jsParams)})"
+        
+        
+        let jsString = "WYAJSBridge.emit('_ready_', {\(jsParams)})"
         webView.evaluateJavaScript(jsString) { (result, error) in
             print(result ?? "没有数据")
             print(error ?? "没有错误")
         }
-
+        
     }
-
+    
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         //ios8
         //在提交的主帧中发生错误时调用
         print("主帧错误" + error.localizedDescription)
     }
-
-
-    public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
-        //ios8
-        //当webView需要响应身份验证时调用(如需验证服务器证书)
-    }
-
-
+    
+    
+    //    public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
+    //        //ios8
+    //        //当webView需要响应身份验证时调用(如需验证服务器证书)
+    //        completionHandler(.cancelAuthenticationChallenge, nil)
+    //    }
+    
+    
     public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         //ios9
         //当webView的web内容进程被终止时调用。(iOS 9.0之后)

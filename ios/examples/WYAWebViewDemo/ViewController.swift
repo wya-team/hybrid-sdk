@@ -25,7 +25,9 @@ class ViewController: UIViewController {
         
         
         
-        web.loadLocalHtml(htmlName: "index")
+        web.loadUrl(url: "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/")
+//        web.loadUrl(url: "https://www.baidu.com")
+//        web.loadLocalHtml(htmlName: "q1")
         self.view.addSubview(web)
         web.vc = self
         
