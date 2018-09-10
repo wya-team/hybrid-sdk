@@ -9,7 +9,8 @@
 import UIKit
 import WYAWebView
 
-fileprivate let DEMO_URL = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/"
+// fileprivate let DEMO_URL = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/"
+fileprivate let DEMO_URL = "http://192.168.23.115:8088/consts"
 
 class ViewController: UIViewController {
     
@@ -21,7 +22,7 @@ class ViewController: UIViewController {
         h5.frame = self.view.bounds
         
         // 配置项
-        h5.config()
+        h5.register()
         
         // 打开网页
         h5.loadUrl(url: DEMO_URL)

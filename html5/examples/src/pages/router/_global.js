@@ -17,5 +17,10 @@ wya.onError((error) => {
 	typeof error === 'object' ? JSON.stringify(error) : error;
 	let msg = `全局异常捕获： ${error}`;
 	// Toasts.info(msg);
-	console.log(msg);
+});
+
+window.addEventListener('keypress', (e) => {
+	if (e.keyCode == 114) {
+		location.reload();
+	}
 });

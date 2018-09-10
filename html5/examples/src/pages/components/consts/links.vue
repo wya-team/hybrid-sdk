@@ -1,5 +1,5 @@
 <template>
-	<div class="g-m-t-10">
+	<div class="g-m-t-10" style="height: 100%; overflow: auto">
 		<cell 
 			v-for="(item, key) in routes" 
 			:key="key" 

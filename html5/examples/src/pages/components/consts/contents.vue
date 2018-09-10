@@ -18,10 +18,13 @@ export default {
 	},
 	data() {
 		return {
-			html: `${JSON.stringify(wya)}`
+			wya
 		};
 	},
 	computed: {
+		html() {
+			return `${JSON.stringify(this.wya)}`;
+		} 
 	},
 	created() {
 	},
