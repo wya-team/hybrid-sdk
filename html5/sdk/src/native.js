@@ -124,6 +124,10 @@ class WYAJSBridge {
 	 */
 	emit(id, data) {
 		const { eventName = id } = this.store[id] || {};
+		if (eventName !== '_error_' && (typeof data !== 'object' || data.status === 'undefined')) {
+			throwError(`Native端返回格式错误: ${data}`);
+			return;
+		}
 		switch (eventName) {
 			case '_ready_':
 				this.initCount++;
