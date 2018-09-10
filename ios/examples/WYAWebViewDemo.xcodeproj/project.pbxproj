@@ -13,7 +13,6 @@
 		21FADB5C2143CD0C00C37689 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21FADB5B2143CD0C00C37689 /* Assets.xcassets */; };
 		21FADB5F2143CD0C00C37689 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21FADB5D2143CD0C00C37689 /* LaunchScreen.storyboard */; };
 		21FADB6A2143CD0C00C37689 /* WYAWebViewDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB692143CD0C00C37689 /* WYAWebViewDemoTests.swift */; };
-		21FADB752143DD5900C37689 /* q1.html in Resources */ = {isa = PBXBuildFile; fileRef = 21FADB742143DD5900C37689 /* q1.html */; };
 		A338848F5962BF5499690063 /* Pods_WYAWebViewDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 870E87E8B19EE6FC35FE44EC /* Pods_WYAWebViewDemo.framework */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +39,6 @@
 		21FADB652143CD0C00C37689 /* WYAWebViewDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WYAWebViewDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FADB692143CD0C00C37689 /* WYAWebViewDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WYAWebViewDemoTests.swift; sourceTree = "<group>"; };
 		21FADB6B2143CD0C00C37689 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		21FADB742143DD5900C37689 /* q1.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = q1.html; sourceTree = "<group>"; };
 		870E87E8B19EE6FC35FE44EC /* Pods_WYAWebViewDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WYAWebViewDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -88,7 +86,6 @@
 			children = (
 				21FADB542143CD0B00C37689 /* AppDelegate.swift */,
 				21FADB562143CD0B00C37689 /* ViewController.swift */,
-				21FADB742143DD5900C37689 /* q1.html */,
 				21FADB582143CD0B00C37689 /* Main.storyboard */,
 				21FADB5B2143CD0C00C37689 /* Assets.xcassets */,
 				21FADB5D2143CD0C00C37689 /* LaunchScreen.storyboard */,
@@ -206,7 +203,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				21FADB752143DD5900C37689 /* q1.html in Resources */,
 				21FADB5F2143CD0C00C37689 /* LaunchScreen.storyboard in Resources */,
 				21FADB5C2143CD0C00C37689 /* Assets.xcassets in Resources */,
 				21FADB5A2143CD0B00C37689 /* Main.storyboard in Resources */,
@@ -433,14 +429,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JU7A4SE6U5;
+				DEVELOPMENT_TEAM = J5265ZP7QT;
 				INFOPLIST_FILE = WYAWebViewDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = www.weiyian.com.WYAWebViewDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.weiyian.hybrid;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -453,14 +449,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = JU7A4SE6U5;
+				DEVELOPMENT_TEAM = J5265ZP7QT;
 				INFOPLIST_FILE = WYAWebViewDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = www.weiyian.com.WYAWebViewDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.weiyian.hybrid;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

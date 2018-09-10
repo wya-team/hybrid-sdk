@@ -49,7 +49,7 @@ public class WYAWebView: UIView{
     */
 
     /// 配置webview，注入js代码（先执行）
-    public func configWebView() -> Void {
+    public func register() -> Void {
 
 
         self.loadJSFolder()
@@ -417,7 +417,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
         let jsParams = self.webManager.mutableDicToJSString(dic: dic)
         
         
-        let jsString = "WYAJSBridge.emit('_ready_', {\(jsParams)})"
+        let jsString = "WYAJSBridge.emit('_ready_', { status: 1, data: { test: 1 } })"
         webView.evaluateJavaScript(jsString) { (result, error) in
             print(result ?? "没有数据")
             print(error ?? "没有错误")

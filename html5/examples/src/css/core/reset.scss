@@ -2,12 +2,17 @@
  * @file
  * reset.scss
  */
-html, body {
-	// height: auto !important;
-}
 body {
+	height: 100% !important;
+	overflow: hidden;
 	// background: rgba(0, 0, 0, 0.6) !important;
+}
+#pages {
+	// overflow: unset !important;
 }
 .g-br-sem {
 	border-radius: 3px !important;
+}
+.g-of-a {
+	overflow: auto!important;
 }

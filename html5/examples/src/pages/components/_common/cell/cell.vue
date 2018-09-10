@@ -1,11 +1,10 @@
 <template>
 	<div class="c-cell" @click="handleClick">
 		<div class="__wrapper">
-			<div>
+			<div @click.stop="$emit('click', title)">
 				<!-- <i :class="icon" class="__icon" /> -->
 				<span 
 					class="__title"
-					@click.stop="$emit('click', title)"
 				>{{ extra || '' }} {{ title }}</span>
 			</div>
 			<label class="__label">{{ label }}</label>

@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div style="height: 60px" />
+		<div style="height: 40px" />
 		<div class="g-flex g-bg-white g-tc g-reset g-pd-tb-10 g-fixed c-footer-nav">
 			<router-link 
 				v-for="item in routes" 
