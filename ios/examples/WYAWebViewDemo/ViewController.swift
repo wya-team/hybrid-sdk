@@ -9,8 +9,8 @@
 import UIKit
 import WYAWebView
 
-// fileprivate let DEMO_URL = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/"
-fileprivate let DEMO_URL = "http://192.168.23.115:8088/consts"
+ fileprivate let DEMO_URL = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/"
+//fileprivate let DEMO_URL = "http://192.168.23.115:8088/consts"
 
 class ViewController: UIViewController {
     

@@ -410,13 +410,16 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
         //加载完成
         
         
-        let dic = NSMutableDictionary()
-        dic.setValue("0.1.0", forKey: "version")
-        dic.setValue("wya", forKey: "user")
-        
-        let jsParams = self.webManager.mutableDicToJSString(dic: dic)
-        
-        
+        var dic = [String : Any]()
+//        dic.setValue("0.1.0", forKey: "version")
+//        dic.setValue("wya", forKey: "user")
+        dic.updateValue("0.1.0", forKey: "version")
+        dic.updateValue("wya", forKey: "user")
+//        let jsParams = self.webManager.mutableDicToJSString(dic: dic)
+
+        let jsParams = self.webManager.dicValueString(dic)
+
+//        let jsString = "WYAJSBridge.emit('_ready_', \(jsParams))"
         let jsString = "WYAJSBridge.emit('_ready_', { status: 1, data: { test: 1 } })"
         webView.evaluateJavaScript(jsString) { (result, error) in
             print(result ?? "没有数据")
