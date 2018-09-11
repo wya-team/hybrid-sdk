@@ -418,9 +418,11 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 //        let jsParams = self.webManager.mutableDicToJSString(dic: dic)
 
         let jsParams = self.webManager.dicValueString(dic)
-
-//        let jsString = "WYAJSBridge.emit('_ready_', \(jsParams))"
-        let jsString = "WYAJSBridge.emit('_ready_', { status: 1, data: { test: 1 } })"
+//        let jsDic = self.webManager.stringValueDic(jsParams)
+//
+        let jsP = jsParams.replacingOccurrences(of: StringProtocol, with: <#T##StringProtocol#>)
+        let jsString = "WYAJSBridge.emit('_ready_', \(jsP))"
+//        let jsString = "WYAJSBridge.emit('_ready_', { status: 1, data: { test: 1 } })"
         webView.evaluateJavaScript(jsString) { (result, error) in
             print(result ?? "没有数据")
             print(error ?? "没有错误")
