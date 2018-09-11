@@ -7,7 +7,7 @@
 					class="__title"
 				>{{ extra || '' }} {{ title }}</span>
 			</div>
-			<label class="__label">{{ label }}</label>
+			<span class="__span">{{ label }}</span>
 			<i class="__arrow-right" />
 		</div>
 	</div>
@@ -71,7 +71,7 @@ export default {
 		width: 30px;
 		vertical-align: middle;
 	}
-	.__label {
+	.__span {
 		flex: 1;
 		text-align: right;
 		padding-right: 32px;

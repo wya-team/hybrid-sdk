@@ -11,30 +11,66 @@
 			<h1 class="title">{{ title }}</h1>
 		</div>
 		<div class="fixed-placeholder" />
-		<slot />
+		<better-scroll ref="bs" :style="{ height: height + 'px' }">
+			<slot />
+		</better-scroll>
 	</div>
 </template>
 <script>
+import BetterScroll from '@common/better-scroll/better-scroll';
+
+let oldPos = {
+	// [this.$route.path] : {
+	// 	x:
+	// 	y:
+	// }
+};	
+
 export default {
 	name: "set-title",
+	components: {
+		BetterScroll
+	},
 	props: {
 		title: String,
 		isShowBack: {
 			default: true,
 			type: Boolean
+		},
+		offset: {
+			type: Number,
+			default: -45
 		}
 	},
 	data() {
 		return {
+			path: this.$route.path
 		};
 	},
 	computed: {
 		visible() {
 			return ['/consts', '/events', '/methods', '/assists'].indexOf(this.$route.path) < 0;
+		},
+		height() {
+			let h = window.innerHeight + this.offset + (!this.visible ? (-41) : 0);
+			return h;
 		}
 	},
 	mounted() {
 		document.title = this.title || document.title;
+		let instance = this.$refs.bs.betterScroller;
+		let { x = 0, y = 0 } = oldPos[this.path] || {};
+		instance.scrollTo(x, y);
+	},
+	beforeDestroy() {
+		let { x, y } = this.$refs.bs.betterScroller;
+		oldPos = {
+			...oldPos,
+			[this.path]: {
+				x,
+				y
+			}
+		};
 	},
 	methods: {
 		handleClick() {

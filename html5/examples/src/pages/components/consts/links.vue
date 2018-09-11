@@ -1,5 +1,5 @@
 <template>
-	<div class="g-m-t-10" style="height: 100%; overflow: auto">
+	<div>
 		<cell 
 			v-for="(item, key) in routes" 
 			:key="key" 
@@ -15,7 +15,8 @@ import * as rootConfig from './detail/modules/root';
 export default {
 	name: 'consts',
 	components: {
-		Cell
+		Cell,
+		// BetterScroll
 	},
 	data() {
 		return {

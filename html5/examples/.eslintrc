@@ -85,9 +85,11 @@
 		"no-bitwise": 0,
 		"padded-blocks": 0, // {} 允许空行
 		"no-return-assign": 0,
-		"max-len": ["warn", { "code": 120, "ignoreComments": true }],
+		"max-len": ["warn", { "code": 150, "ignoreComments": true }],
 		"prefer-destructuring": 0,
 		"prefer-template": 0,
+		"no-nested-ternary": 0,
+		"prefer-rest-params": 0,
 		// tab缩进
 		"indent": ["warn", "tab",
 		{

@@ -8,7 +8,8 @@ body {
 	// background: rgba(0, 0, 0, 0.6) !important;
 }
 #pages {
-	// overflow: unset !important;
+	height: 100% !important;
+	overflow: hidden;
 }
 .g-br-sem {
 	border-radius: 3px !important;
