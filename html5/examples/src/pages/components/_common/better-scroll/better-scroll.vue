@@ -28,7 +28,6 @@ export default {
 	},
 	mounted() {
 		this.betterScroller = new Core(this.$refs.betterWrapper, this.opts);
-		window.betterScroller = 	this.betterScroller;
 	},
 	updated() {
 		this.betterScroller.refresh();
