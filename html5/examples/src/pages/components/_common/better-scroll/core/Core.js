@@ -386,8 +386,9 @@ class Core {
 			// 未启用，已销毁，事件类型改变
 			return;
 		}
-
-		if (this.options.preventDefault) {
+		// 排除在规则内的，可以触发滚动条 2018-09-12 10:40:40
+		if (this.options.preventDefault && !preventDefaultException(e.target, this.options.preventDefaultException)) {
+		// if (this.options.preventDefault) {
 			// 去除默认事件， 可阻止滚动
 			e.preventDefault();
 		}

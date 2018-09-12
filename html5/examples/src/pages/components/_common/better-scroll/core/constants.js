@@ -63,7 +63,7 @@ export const DEFAULT_OPTIONS = {
 	preventDefault: true,
 	preventDefaultException: {
 		tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT)$/,
-		className: /(^|\s)g-copy(\s|$)/ // 带上该标签可以复制，并且必须是最下层元素
+		className: /(^|\s)(g-copy|hljs)/ // 带上该标签可以复制，并且必须是最下层元素
 	},
 	/**
 	 * 是否启用硬件加速
