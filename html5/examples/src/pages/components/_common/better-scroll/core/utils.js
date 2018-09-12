@@ -239,23 +239,25 @@ export const createScrollbar = (direction) => {
 	let scrollbar = document.createElement('div');
 	let indicator = document.createElement('div');
 
-	scrollbar.style.cssText = 'position:absolute;z-index:9999;pointerEvents:none';
+	scrollbar.style.cssText = 'position:absolute; z-index:9999; pointerEvents:none';
+
+	// 样式
 	indicator.style.cssText = `
-		box-sizing:border-box;
-		position:absolute;
-		background:rgba(0,0,0,0.5);
-		border:1px solid rgba(255,255,255,0.9);
-		border-radius:3px;
+		box-sizing: border-box;
+		position: absolute;
+		background: rgba(0,0,0,0.2);
+		border: 1px solid rgba(0,0,0,0.2);
+		border-radius: 3px;
 	`;
 
 	indicator.className = 'bscroll-indicator';
 
 	if (direction === 'horizontal') {
-		scrollbar.style.cssText += ';height:7px;left:2px;right:2px;bottom:0';
+		scrollbar.style.cssText += ';height:2px; left:2px; right:2px; bottom:0';
 		indicator.style.height = '100%';
 		scrollbar.className = 'bscroll-horizontal-scrollbar';
 	} else {
-		scrollbar.style.cssText += ';width:7px;bottom:2px;top:2px;right:1px';
+		scrollbar.style.cssText += ';width:2px; bottom:2px; top:2px; right:1px';
 		indicator.style.width = '100%';
 		scrollbar.className = 'bscroll-vertical-scrollbar';
 	}

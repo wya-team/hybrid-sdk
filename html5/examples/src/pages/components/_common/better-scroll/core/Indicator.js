@@ -1,4 +1,5 @@
-import { style } from './utils.js';
+import { style } from './utils';
+
 const INDICATOR_MIN_LEN = 10; // 滚动条最小的长度
 class Indicator {
 	constructor(scroller, opts = {}) {

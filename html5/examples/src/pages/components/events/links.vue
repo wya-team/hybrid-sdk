@@ -1,8 +1,8 @@
 <template>
 	<div>
-		<cell 
-			v-for="(item, key) in routes" 
-			:key="key" 
+		<cell
+			v-for="(item, key) in routes"
+			:key="key"
 			v-bind="item"
 			extra="☞ "
 			@click="handleClick"

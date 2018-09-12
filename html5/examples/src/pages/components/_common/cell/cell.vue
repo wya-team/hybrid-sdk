@@ -3,7 +3,7 @@
 		<div class="__wrapper">
 			<div @click.stop="$emit('click', title)">
 				<!-- <i :class="icon" class="__icon" /> -->
-				<span 
+				<span
 					class="__title"
 				>{{ extra || '' }} {{ title }}</span>
 			</div>
@@ -24,7 +24,7 @@ export default {
 	},
 
 	computed: {
-		
+
 	},
 
 	methods: {

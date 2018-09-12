@@ -1,6 +1,7 @@
 import {
-	hasTouch,
-} from './utils.js';
+	hasTouch
+} from './utils';
+
 export const DEFAULT_OPTIONS = {
 	// 默认位置
 	startX: 0,
@@ -61,9 +62,13 @@ export const DEFAULT_OPTIONS = {
 	 * 是否屏蔽默认事件
 	 */
 	preventDefault: true,
+	/**
+	 * 带上该标签可以复制，并且必须是最下层元素
+	 * 不阻止原生的滚动就意味着，可能就出现了部分弹性问题
+	 */
 	preventDefaultException: {
 		tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT)$/,
-		className: /(^|\s)(g-copy|hljs)/ // 带上该标签可以复制，并且必须是最下层元素
+		className: /(^|\s)(g-copy)/
 	},
 	/**
 	 * 是否启用硬件加速

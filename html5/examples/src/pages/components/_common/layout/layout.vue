@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<transition name="fade" mode="out-in">
-			<router-view 
-				class="v-router"
-			/>
-		</transition>
+		<!-- <transition name="fade" mode="out-in"> -->
+		<router-view 
+			class="v-router"
+		/>
+		<!-- </transition> -->
 		<footer-nav v-show="isShow"/>
 	</div>
 </template>
