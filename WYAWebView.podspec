@@ -40,5 +40,6 @@ Pod::Spec.new do |s|
   # s.frameworks = 'UIKit', 'MapKit'
   s.dependency 'Alamofire', '~> 4.7'
   s.dependency 'MJRefresh'
+  s.dependency 'SnapKit'
   # s.dependency 'ReachabilitySwift'
 end

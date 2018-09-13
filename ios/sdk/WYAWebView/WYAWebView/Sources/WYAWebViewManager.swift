@@ -18,6 +18,9 @@ class WYAWebViewManager: NSObject {
     
     var nativeDelegate : WebViewDelegate?
     
+    var config = SystemConfig()
+    
+    
     let netManager = NetworkReachabilityManager(host: "www.apple.com")
     
     
@@ -74,84 +77,16 @@ extension WYAWebViewManager {
     }
     
     
-    /// 字典转js字符串传递参数
-    ///
-    /// - Parameter dic: 字典
-    /// - Returns: js字符串
-    @objc func mutableDicToJSString(dic:NSMutableDictionary) -> String {
-        let jsCopyTwo = "\(dic)"
-        
-        let a = jsCopyTwo.replacingOccurrences(of: "\n", with: "")
-        let b = a.replacingOccurrences(of: " ", with: "")
-        let c = b.replacingOccurrences(of: ";", with: "")
-        let d = c.replacingOccurrences(of: "=", with: ":")
-        
-        var f : String?
-        
-        for value in dic.allValues {
-            let str1 = value as! String
-            let str2 = "'"
-            
-            
-            
-            let string = str2 + str1 + str2
-            
-            f = d.replacingOccurrences(of: (value as! String), with: string)
-        }
-        
-        return f!
-    }
     
-    /// json字符串转字典
-    ///
-    /// - Parameter jsonString: json字符串
-    /// - Returns: 字典
-    func jsonStringToMutableDic(jsonString: String) -> Any {
-        var dic : Any
-        
-        let data:Data = jsonString.data(using : .utf8)!
-        
-        do{
-            dic = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
-        }catch{
-            dic = [String:String]()
-            print(error)
-        }
-        return dic
-    }
-    
-    func getDictionaryFromJSONString(jsonString:String) ->NSDictionary{
-        
-        let jsonData:Data = jsonString.data(using: .utf8)!
-        
-        let dict = try? JSONSerialization.jsonObject(with: jsonData, options: .mutableContainers)
-        if dict != nil {
-            return dict as! NSDictionary
-        }
-        return NSDictionary()
-        
-        
-    }
-    
-    func getJSONStringFromDictionary(dictionary:NSDictionary) -> String {
-        if (!JSONSerialization.isValidJSONObject(dictionary)) {
-            print("无法解析出JSONString")
-            return ""
-        }
-        let data : NSData! = try? JSONSerialization.data(withJSONObject: dictionary, options: []) as NSData!
-        let JSONString = NSString(data:data as Data,encoding: String.Encoding.utf8.rawValue)
-        return JSONString! as String
-        
-    }
     // MARK: 字典转字符串
-    func dicValueString(_ dic:[String : Any]) -> String{
+    func dicTosJsonString(_ dic:[String : Any]) -> String{
         let data = try? JSONSerialization.data(withJSONObject: dic, options: [])
         let str = String(data: data!, encoding: String.Encoding.utf8)
         return str!
     }
     
     // MARK: 字符串转字典
-    func stringValueDic(_ str: String) -> [String : Any]?{
+    func jsonStringToDic(_ str: String) -> [String : Any]?{
         let data = str.data(using: String.Encoding.utf8)
         if let dict = try? JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String : Any] {
             return dict

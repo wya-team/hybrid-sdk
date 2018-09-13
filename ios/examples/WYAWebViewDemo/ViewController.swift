@@ -19,10 +19,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        h5.frame = self.view.bounds
-        
-        // 配置项
-        h5.register()
+        h5.frame = CGRect(x: 0, y: UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.size.width, height: self.view.frame.size.height-44)
         
         // 打开网页
         h5.loadUrl(url: DEMO_URL)
@@ -32,7 +29,7 @@ class ViewController: UIViewController {
         
         self.view.addSubview(h5)
         
-        h5.vc = self
+       
     }
     
     override func didReceiveMemoryWarning() {
