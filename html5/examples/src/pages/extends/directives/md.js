@@ -1,3 +1,5 @@
+import { findBSInstance } from './utils';
+
 export const md = async (el, opts = {}, vm = {}) => {
 	try {
 		let html = vm.data.domProps.innerHTML;
@@ -29,6 +31,8 @@ export const md = async (el, opts = {}, vm = {}) => {
 		blocks.forEach((block) => {
 			hljs.highlightBlock(block);
 		});
+		let betterScroller = findBSInstance(vm.context);
+		betterScroller && betterScroller.refresh();
 	} catch (e) {
 		console.log(e);
 	}

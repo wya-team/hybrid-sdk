@@ -9,7 +9,6 @@
 import Contents from '@components/consts/contents';
 import Links from '@components/consts/links';
 
-
 export default {
 	name: 'consts',
 	components: {
@@ -24,7 +23,6 @@ export default {
 	created() {
 	},
 	mounted() {
-		
 	},
 	methods: {
 		

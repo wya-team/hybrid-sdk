@@ -1,5 +1,5 @@
 <template>
-	<div class="g-m-t-10">
+	<div>
 		<cell 
 			v-for="(item, key) in routes" 
 			:key="key" 
