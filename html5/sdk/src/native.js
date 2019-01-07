@@ -1,4 +1,4 @@
-import EventStore from './utils/event';
+import { EventStore } from 'wya-ps';
 import { useDispatchEvent, throwError } from './utils/utils';
 class WYAJSBridge {
 	// 版本号
@@ -11,7 +11,7 @@ class WYAJSBridge {
 		this.count = 0;
 		
 		// 事件源
-		this.source = new EventStore();
+		this.source = new EventStore({}, { throwError });
 
 		// 初始化事件触发的次数
 		this.initCount = 0;

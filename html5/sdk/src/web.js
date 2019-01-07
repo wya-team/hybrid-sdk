@@ -8,7 +8,10 @@ class WebSDK {
 	constructor() {
 
 		// 不使用this.__readyArr__, 避免被遍历
-		WebSDK.prototype.__readyArr__ = [];
+		Object.defineProperty(this, '__readyArr__', {
+			value: [],
+			writable: true
+		});
 
 		// 是否初始化
 		this.isInit = false;

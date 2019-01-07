@@ -43,10 +43,9 @@ describe('web.js', () => {
 
 		// Native 模拟触发
 		WYAJSBridge.emit('_error_', {
-			status: 1,
-			data: {
-				msg: 'error' 
-			}
+			status: 0,
+			msg: 'error',
+			data: {}
 		});
 
 	});

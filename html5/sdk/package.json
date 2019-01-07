@@ -30,7 +30,9 @@
   "bugs": {
     "url": "https://github.com/wya-team/hybrid-sdk/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "wya-ps": "^0.1.4"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.1.2",
