@@ -5,9 +5,9 @@
 //  Created by 李世航 on 2018/8/15.
 //
 
-import UIKit
-import CoreTelephony
 import CoreLocation
+import CoreTelephony
+import UIKit
 
 extension UIDevice {
     //获取设备具体详细的型号
@@ -54,7 +54,7 @@ extension UIDevice {
     }
 
     var contentType: String {
-        let reach = Reachability.init(hostName: "www.apple.com")
+        let reach = Reachability(hostName: "www.apple.com")
         let status = reach?.currentReachabilityStatus()
         switch status {
         case ReachableViaWiFi: return "WIFI"
@@ -80,7 +80,6 @@ extension UIDevice {
         default: return ""
         }
     }
-
 }
 
 public struct frame {
@@ -91,26 +90,28 @@ public struct frame {
 }
 
 public class SystemConfig: NSObject {
-
     public var version = "1.0.0"
 
+    /// bundleID
     public lazy var appId: String = {
         let infoDictionary = Bundle.main.infoDictionary!
         let appid = infoDictionary["CFBundleIdentifier"]
         return appid as! String
-    }() //bundleID
+    }()
 
-    public lazy var appName: String = {
+    /// APP名称
+    public lazy var appName: Any = {
         let infoDictionary = Bundle.main.infoDictionary!
-        let appname = infoDictionary["CFBundleDisplayName"]
-        return appname as! String
-    }() //APP名称
+        let appname = infoDictionary["CFBundleName"]
+        return appname ?? ""
+    }()
 
+    /// 获取开发版本号
     public lazy var appVersion: String = {
         let infoDictionary = Bundle.main.infoDictionary!
         let majorVersion = infoDictionary["CFBundleShortVersionString"]
         return majorVersion as! String
-    }() //获取开发版本号
+    }()
 
     public let systemType = "iOS"
 
@@ -169,8 +170,7 @@ public class SystemConfig: NSObject {
 
     public var channel = "App Store" //APP来源
 
-    lazy public var jailbreak: Bool = {
-
+    public lazy var jailbreak: Bool = {
         var jailbroken = false
 
         jailbroken = checkSystemStatus.isJailBreak()
@@ -180,20 +180,14 @@ public class SystemConfig: NSObject {
 
     let localizedModel = UIDevice.current.localizedModel //设备区域化型号如A1533
 
-
-
-
-
     /// 获取build版本号
     ///
     /// - Returns: 版本号
     func getBuildVersion() -> String {
         let infoDictionary = Bundle.main.infoDictionary!
-        let minorVersion = infoDictionary["CFBundleVersion"]//版本号（内部标示）
+        let minorVersion = infoDictionary["CFBundleVersion"] //版本号（内部标示）
         return minorVersion as! String
     }
-
-
 
     /*
     /// 识别网络
@@ -201,7 +195,7 @@ public class SystemConfig: NSObject {
     /// - Returns: 网络字段
     func connectionType() -> String {
         var string = String()
-        
+
         let reach = Reachability.init(hostName: "www.apple.com")
         let status = reach?.currentReachabilityStatus()
         switch status {
@@ -219,8 +213,7 @@ public class SystemConfig: NSObject {
         }
         return string
     }
-    
-    
+
     /// 识别数据网络类型
     ///
     /// - Returns: 网络类型字段
@@ -250,11 +243,10 @@ public class SystemConfig: NSObject {
             string = "4G"
         }
         return string
-        
+
     }
     */
 //    func startLocation() -> String {
 //
 //    }
-
 }

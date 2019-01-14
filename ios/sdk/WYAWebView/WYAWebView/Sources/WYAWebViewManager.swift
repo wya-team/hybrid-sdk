@@ -9,23 +9,18 @@ import UIKit
 
 import Alamofire
 
-
 protocol WebViewDelegate {
-    func getNativeActionResult(obj:Any) -> Void
+    func getNativeActionResult(obj: Any) -> Void
 }
 
 class WYAWebViewManager: NSObject {
-    
-    var nativeDelegate : WebViewDelegate?
+    var nativeDelegate: WebViewDelegate?
     
     var config = SystemConfig()
     
-    
     let netManager = NetworkReachabilityManager(host: "www.apple.com")
     
-    
-    
-    func nativeAction(_ method:String, params:[String : String]) -> Void {
+    func nativeAction(_ method: String, params: [String: String]) {
         /// 第一种方式
         let methodAndParams = method + "WithParams:"
         let sel = NSSelectorFromString(methodAndParams)
@@ -34,14 +29,12 @@ class WYAWebViewManager: NSObject {
 //        let sel : Selector = "aaaWithAsd:"
         self.performSelector(inBackground: sel, with: params)
         
-        //执行原生过程
+        // 执行原生过程
 //        let string = system.connectionType()
         
-        //返回原生方法执行结果
+        // 返回原生方法执行结果
 //        self.nativeDelegate?.getNativeActionResult(obj: string)
     }
-    
-    
 }
 
 extension WYAWebViewManager {
@@ -49,7 +42,7 @@ extension WYAWebViewManager {
     ///
     /// - Parameter urlString: urlString
     /// - Returns: dic
-    func cutString(urlString:String) -> NSMutableDictionary {
+    func cutString(urlString: String) -> NSMutableDictionary {
         print(urlString)
         let dic = NSMutableDictionary()
         if !urlString.contains("//") {
@@ -67,7 +60,7 @@ extension WYAWebViewManager {
         dic.setValue(methodArray?.first ?? "不存在", forKey: "method")
         
         let queryString = methodArray?.last
-        if (queryString != nil) {
+        if queryString != nil {
             let arra = queryString?.components(separatedBy: "=")
             
             dic.setValue(arra?.last, forKey: "id")
@@ -76,29 +69,27 @@ extension WYAWebViewManager {
         return dic
     }
     
-    
-    
     // MARK: 字典转字符串
-    func dicTosJsonString(_ dic:[String : Any]) -> String{
+    
+    func dicTosJsonString(_ dic: [String: Any]) -> String {
         let data = try? JSONSerialization.data(withJSONObject: dic, options: [])
         let str = String(data: data!, encoding: String.Encoding.utf8)
         return str!
     }
     
     // MARK: 字符串转字典
-    func jsonStringToDic(_ str: String) -> [String : Any]?{
+    
+    func jsonStringToDic(_ str: String) -> [String: Any]? {
         let data = str.data(using: String.Encoding.utf8)
-        if let dict = try? JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String : Any] {
+        if let dict = try? JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any] {
             return dict
         }
         return nil
     }
-    
 }
 
 extension WYAWebViewManager {
-    func registerSystemNotice(){
-        
+    func registerSystemNotice() {
         weak var weak = self
         let note = NotificationCenter.default
         let device = UIDevice.current
@@ -110,14 +101,14 @@ extension WYAWebViewManager {
             
             if (self.netManager?.isReachable)! {
                 print("有网")
-            }else{
+            } else {
                 print("没网")
             }
         }
         self.netManager?.startListening()
         
-        note.addObserver(forName: NSNotification.Name.UIDeviceBatteryLevelDidChange, object: nil, queue: OperationQueue.main) { (not) in
-            //电池电量变化调用这个
+        note.addObserver(forName: NSNotification.Name.UIDeviceBatteryLevelDidChange, object: nil, queue: OperationQueue.main) { not in
+            // 电池电量变化调用这个
             print("电池电量变化")
             print(not.userInfo as Any)
             let params = NSMutableDictionary(capacity: 0)
@@ -143,7 +134,6 @@ extension WYAWebViewManager {
             case .full:
                 subParams.setValue(false, forKey: "isPlugged")
                 break
-                
             }
             params.setValue(subParams, forKey: "data")
             
@@ -152,49 +142,49 @@ extension WYAWebViewManager {
             //            self.nativeDelegate?.getNativeActionResult(obj: string)
         }
         
-        note.addObserver(forName: NSNotification.Name.UIDeviceBatteryStateDidChange, object: nil, queue: OperationQueue.main) { (not) in
-            //检测电池状态
+        note.addObserver(forName: NSNotification.Name.UIDeviceBatteryStateDidChange, object: nil, queue: OperationQueue.main) { not in
+            // 检测电池状态
             print("电池状态")
             print(not.userInfo as Any)
         }
         
-        note.addObserver(forName: NSNotification.Name.UIApplicationDidEnterBackground, object: nil, queue: OperationQueue.main) { (not) in
-            //进入后台
+        note.addObserver(forName: NSNotification.Name.UIApplicationDidEnterBackground, object: nil, queue: OperationQueue.main) { _ in
+            // 进入后台
             print("后台")
         }
         
-        note.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main) { (not) in
-            //进入前台
+        note.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main) { _ in
+            // 进入前台
             print("前台")
         }
         
-        note.addObserver(forName: NSNotification.Name.UIApplicationWillResignActive, object: nil, queue: OperationQueue.main) { (not) in
-            //进入休眠
+        note.addObserver(forName: NSNotification.Name.UIApplicationWillResignActive, object: nil, queue: OperationQueue.main) { _ in
+            // 进入休眠
             print("休眠")
         }
         
-        note.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: nil, queue: OperationQueue.main) { (not) in
-            //键盘弹出
+        note.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: nil, queue: OperationQueue.main) { _ in
+            // 键盘弹出
             print("键盘将要弹出")
         }
         
-        note.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: OperationQueue.main) { (not) in
-            //键盘弹出
+        note.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: OperationQueue.main) { _ in
+            // 键盘弹出
             print("键盘已经弹出")
         }
         
-        note.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: OperationQueue.main) { (not) in
-            //键盘将要消失
+        note.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: OperationQueue.main) { _ in
+            // 键盘将要消失
             print("键盘消失")
         }
         
-        note.addObserver(forName: NSNotification.Name.UIKeyboardDidHide, object: nil, queue: OperationQueue.main) { (not) in
-            //键盘消失
+        note.addObserver(forName: NSNotification.Name.UIKeyboardDidHide, object: nil, queue: OperationQueue.main) { _ in
+            // 键盘消失
             print("键盘消失")
         }
         
-        note.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil, queue: OperationQueue.main) { (not) in
-            //截屏
+        note.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil, queue: OperationQueue.main) { not in
+            // 截屏
             print("截屏")
             print(not)
             
@@ -206,16 +196,14 @@ extension WYAWebViewManager {
             
             print(image as Any)
         }
-        
-        
     }
 }
 
 extension WYAWebViewManager {
-    func getNetWork(params:[String : String]) -> Void {
-        //获取网络状态
+    func getNetWork(params: [String: String]) {
+        // 获取网络状态
         
-        //回传信息
+        // 回传信息
         self.nativeDelegate?.getNativeActionResult(obj: "sss")
     }
 }

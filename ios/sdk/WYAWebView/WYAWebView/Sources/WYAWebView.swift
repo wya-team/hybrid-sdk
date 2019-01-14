@@ -6,32 +6,31 @@
 //  Copyright © 2018年 WeiYiAn. All rights reserved.
 //
 
-import UIKit
-import WebKit
 import MJRefresh
 import SnapKit
+import UIKit
+import WebKit
 
 /// 初始版本号
 fileprivate let jsBuildVersion = 0.1
 
-public class WYAWebView: UIView{
-
+public class WYAWebView: UIView {
     let webManager = WYAWebViewManager()
     var actionID: String?
-
+    
     var webView: WKWebView?
-
+    
     /// 记录加载在哪个控制器的
     public var vc: UIViewController?
-
+    
     /// 进度条
-    var progressView : UIProgressView = {
+    var progressView: UIProgressView = {
         let progress = UIProgressView()
-        progress.trackTintColor = UIColor(red: 240.0/255, green: 240.0/255, blue: 240.0/255, alpha: 1.0)
+        progress.trackTintColor = UIColor(red: 240.0 / 255, green: 240.0 / 255, blue: 240.0 / 255, alpha: 1.0)
         progress.progressTintColor = .blue
         return progress
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -44,7 +43,7 @@ public class WYAWebView: UIView{
         self.webView!.navigationDelegate = self as WKNavigationDelegate
         self.webView!.scrollView.delegate = self as UIScrollViewDelegate
         self.webView!.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
-        self.webView!.allowsBackForwardNavigationGestures = true;
+        self.webView!.allowsBackForwardNavigationGestures = true
         self.webView!.sizeToFit()
         self.webView!.scrollView.showsVerticalScrollIndicator = false
         self.webView!.scrollView.showsHorizontalScrollIndicator = false
@@ -68,20 +67,20 @@ public class WYAWebView: UIView{
         //        layer.insertSublayer(captureVideoPreviewLayer, below: self.webView?.layer)
         //        imageP.startRecordFunction()
     }
-
-    override public func layoutSubviews() {
+    
+    public override func layoutSubviews() {
         super.layoutSubviews()
         
-        self.webView?.snp.makeConstraints({ (make) in
+        self.webView?.snp.makeConstraints({ make in
             make.edges.equalTo(UIEdgeInsetsMake(0, 0, 0, 0))
         })
         
-        self.progressView.snp.makeConstraints { (make) in
+        self.progressView.snp.makeConstraints { make in
             make.left.right.top.equalTo(self)
             make.height.equalTo(1)
         }
     }
-
+    
     /*
     func addRefreshView() -> Void {
         if (self.vc?.navigationController != nil) {
@@ -89,24 +88,23 @@ public class WYAWebView: UIView{
         }else{
             self.progressView.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: 1)
         }
-        
-        
+     
         self.addSubview(self.progressView)
-        
+     
         self.webView!.scrollView.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(headerRefresh))
     }
-    
+     
     @objc func headerRefresh() {
         print("刷新")
         self.webView?.reload()
         //        self.webView?.scrollView.mj_header.endRefreshing()
     }
     */
-
-    required public init?(coder: NSCoder) {
+    
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.
@@ -114,76 +112,71 @@ public class WYAWebView: UIView{
         // Drawing code
     }
     */
-
-    
 }
 
 //MARK: 负责处理文件之间的相互调用
+
 extension WYAWebView {
-    
     /// 加载网址链接
     ///
     /// - Parameter url: url
-    public func loadUrl(url: String) -> Void {
+    public func loadUrl(url: String) {
         let ul = URL(string: url)
-        let request = URLRequest.init(url: ul!)
+        let request = URLRequest(url: ul!)
         self.webView!.load(request)
     }
-
+    
     /// 加载本地HTML
     ///
     /// - Parameter htmlName: html名字
-    public func loadLocalHtml(htmlName: String) -> Void {
+    public func loadLocalHtml(htmlName: String) {
         let string = Bundle.main.path(forResource: htmlName, ofType: "html")
         var path = String()
         do {
             path = try String(contentsOfFile: string!)
-        }
-        catch {
+        } catch {
             print(error)
         }
         self.webView!.loadHTMLString(path, baseURL: Bundle.main.bundleURL)
     }
-
-    override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
+    
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "estimatedProgress" {
-            
             self.progressView.alpha = 1
             let animated = (self.webView?.estimatedProgress)! > Double(self.progressView.progress)
             self.progressView.setProgress(Float((self.webView?.estimatedProgress)!), animated: animated)
             if self.webView!.estimatedProgress >= 1.0 {
                 UIView.animate(withDuration: 0.3, delay: 0.3, options: .curveEaseOut, animations: {
                     self.progressView.alpha = 0.0
-                }) { (finish) in
+                }) { _ in
+                    print("进度结束")
                     self.progressView.setProgress(0.0, animated: false)
                 }
             }
             
-        }else{
+        } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
     
-    public func shakeStateAction(shakeState: ShakeState) -> Void {
+    public func shakeStateAction(shakeState: ShakeState) {
         //传递手机摇晃事件
         self.getNativeActionResult(obj: shakeState)
     }
-
+    
     /// 获取参数
     ///
     /// - Parameters:
     ///   - id: 事件ID
     ///   - handler: 回调
     func getParams(_ id: String, handler: @escaping (Any) -> Void) {
-
         let jsSrring = "JSBridge.getParam(\(id)"
-        self.webView?.evaluateJavaScript(jsSrring) { (params, error) in
+        self.webView?.evaluateJavaScript(jsSrring) { params, error in
             print(params ?? "没有参数")
             print(error ?? "没有错误")
-
+            
             var dictory: Any
-
+            
             if params == nil {
                 //没有参数
                 dictory = [String: Any]()
@@ -194,16 +187,15 @@ extension WYAWebView {
                 dictory = self.webManager.jsonStringToDic(params as! String)
                 print(dictory)
             }
-
+            
             handler(dictory)
         }
-
     }
 }
 
 // MARK: 负责处理webview的代理方法
+
 extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
-    
     // MARK: WKScriptMessageHandler
     
     /// WKScriptMessageHandler 回调方法(采用原生注入方法会回调)，addScriptMessageHandler 是注册JS的MessageHandler，但是WKWebView在多次调用loadRequest，会出现JS无法调用iOS端。我们需要在loadRequest和reloadWebView的时候需要重新注入。（在注入之前需要移除再注入，避免造成内存泄漏），如果message.body中没有参数，JS代码中需要传null防止iOS端不会接收到JS的交互，window.webkit.messageHandlers.<事件名>.postMessage(需要传递的数据)
@@ -211,11 +203,9 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     /// - Parameters:
     ///   - userContentController: userContentController
     ///   - message: APP端收到的信息
-    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        
-    }
+    public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {}
     
-     // MARK: WKUIDelegate
+    // MARK: WKUIDelegate
     
      /*
      /// ios8
@@ -234,9 +224,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     /// 窗口关闭时调用 ios9
     ///
     /// - Parameter webView: webView
-    public func webViewDidClose(_ webView: WKWebView) {
-        
-    }
+    public func webViewDidClose(_ webView: WKWebView) {}
     
     /// 在JS端调用alert函数时，会触发此代理方法。JS端调用alert时所传的数据可以通过message拿到。在原生得到结果后，需要回调JS，是通过completionHandler回调（ios8）
     ///
@@ -246,7 +234,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     ///   - frame: 窗口配置
     ///   - completionHandler: 回调
     public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Swift.Void) {
-        
         print("alert" + message)
         completionHandler()
     }
@@ -258,9 +245,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     ///   - message: comfirm函数传递的信息
     ///   - frame: 窗口配置
     ///   - completionHandler: 回调
-    public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Swift.Void) {
-        
-    }
+    public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Swift.Void) {}
     
     /// JS端调用prompt函数时，会触发此方法,要求输入一段文本,在原生输入得到文本内容后，通过completionHandler回调给JS （ios8）
     ///
@@ -270,9 +255,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     ///   - defaultText: <#defaultText description#>
     ///   - frame: 窗口配置
     ///   - completionHandler: 回调
-    public func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Swift.Void) {
-        
-    }
+    public func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Swift.Void) {}
     
     /*
      public func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
@@ -288,7 +271,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
      }
      */
     
-    
     // MARK: WKNavigationDelegate
     
     /// 判断链接是否允许跳转（ios8）
@@ -298,11 +280,9 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     ///   - navigationAction: 跳转事件
     ///   - decisionHandler: 回调
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Swift.Void) {
-        
         let url = navigationAction.request.url?.absoluteString.removingPercentEncoding
         
         if (url?.hasPrefix("command://"))! {
-            
             /** 分解url，返回字典，字典中包含（协议名，方法名，ID）
              * key: protocol 协议名
              * key: method   方法名
@@ -312,7 +292,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             let dic = self.webManager.cutString(urlString: url!)
             
             self.actionID = (dic["id"] as! String)
-            guard (self.actionID != nil) else { return }
+            guard self.actionID != nil else { return }
             
             let arrContain = dic.allKeys.contains { (string) -> Bool in
                 if (string as! String) == "method" {
@@ -323,17 +303,15 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             }
             
             if arrContain {
-                self.getParams(self.actionID!) { (params) in
+                self.getParams(self.actionID!) { params in
                     //获取到参数执行调用原生
                     self.webManager.nativeAction(dic["method"] as! String, params: params as! [String: String])
                 }
             } else {
                 //不需要参数执行原生
             }
-            
         }
         decisionHandler(.allow)
-        
     }
     
     /// 拿到响应后决定是否允许跳转（ios8）
@@ -343,10 +321,8 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     ///   - navigationResponse: 响应数据
     ///   - decisionHandler: 回调
     public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Swift.Void) {
-        
         decisionHandler(WKNavigationResponsePolicy.allow)
     }
-    
     
     /// 链接开始加载时调用（ios8）
     ///
@@ -357,15 +333,12 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
         self.progressView.isHidden = false
     }
     
-    
     /// 收到服务器重定向时调用（ios8）
     ///
     /// - Parameters:
     ///   - webView: webView
     ///   - navigation: <#navigation description#>
-    public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-        
-    }
+    public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {}
     
     /// 加载错误时调用 （ios8）
     ///
@@ -382,9 +355,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     /// - Parameters:
     ///   - webView: <#webView description#>
     ///   - navigation: <#navigation description#>
-    public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        
-    }
+    public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {}
     
     /// 加载完成 （ios8）
     ///
@@ -392,21 +363,21 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     ///   - webView: <#webView description#>
     ///   - navigation: <#navigation description#>
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        
-        var params = [String : Any]()
+        print("加载完成")
+        var params = [String: Any]()
         params.updateValue(self.webManager.config.version, forKey: "version")
         params.updateValue(self.webManager.config.appId, forKey: "appId")
-        
-        var outParams = [String : Any]()
+        params.updateValue(self.webManager.config.appName, forKey: "appName")
+        var outParams = [String: Any]()
         outParams.updateValue(1, forKey: "status")
         outParams.updateValue(params, forKey: "data")
         
         let jsParams = self.webManager.dicTosJsonString(outParams)
         print(jsParams)
-
-        let jsString = "WYAJSBridge.emit('_ready_', \(jsParams))"
-
-        webView.evaluateJavaScript(jsString) { (result, error) in
+        
+        var jsString = "WYAJSBridge.emit('_ready_', \(jsParams))"
+        jsString = jsString.removingPercentEncoding!
+        webView.evaluateJavaScript(jsString) { result, error in
             print(result ?? "没有数据")
             print(error ?? "没有错误")
         }
@@ -422,7 +393,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
         print("主帧错误" + error.localizedDescription)
     }
     
-    
     /// 当webView需要响应身份验证时调用(如需验证服务器证书)(ios8)
     ///
     /// - Parameters:
@@ -434,7 +404,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     //        completionHandler(.cancelAuthenticationChallenge, nil)
     //    }
     
-    
     /// 当webView的web内容进程被终止时调用。(iOS 9.0之后)
     ///
     /// - Parameter webView: webView
@@ -444,13 +413,11 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 }
 
 // MARK: 负责处理scrollView的代理
+
 extension WYAWebView: UIScrollViewDelegate {
-    
     // MARK: UIScrollViewDelegate
     
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-
-    }
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {}
     
     /// 回到头部
     ///
@@ -461,21 +428,20 @@ extension WYAWebView: UIScrollViewDelegate {
     }
 }
 
-// MARK:  负责和webviewManager的代理
+// MARK: 负责和webviewManager的代理
+
 extension WYAWebView: WebViewDelegate {
-    
     /// 获取原生方法处理结果
     ///
     /// - Parameter obj: 参数
     func getNativeActionResult(obj: Any) {
-        
-        var result = [String : Any]()
+        var result = [String: Any]()
         result.updateValue(1, forKey: "status")
-
+        
         let resultString = self.webManager.dicTosJsonString(result)
         let jsString = "JSBridge.emit(\(self.actionID!), \(resultString))"
-
-        self.webView?.evaluateJavaScript(jsString, completionHandler: { (result, error) in
+        
+        self.webView?.evaluateJavaScript(jsString, completionHandler: { result, error in
             print(result ?? "没有结果")
             print(error ?? "没有错误")
         })
@@ -483,10 +449,9 @@ extension WYAWebView: WebViewDelegate {
 }
 
 extension WYAWebView {
-    
     // FIXME: 待修复问题
     /// 获取js版本号与本地做对比，更新js
-    func loadJSFolder() -> Void {
+    func loadJSFolder() {
         let cachePath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).last! as String
         let path = cachePath + "/WYAWebViewJsFile"
         
@@ -498,17 +463,13 @@ extension WYAWebView {
             } catch {
                 //创建失败
                 print(error)
-                
             }
-            
         }
         
         /// 请求js版本接口
         /// 判断版本号，下载到本地，文件目录路径在上面的path字段
         /// - Returns: 是否需要更新
         func checkJSVersion() -> Bool {
-            
-            
             let buildVersion = false
             
             //if ... {
@@ -528,7 +489,6 @@ extension WYAWebView {
                  * 下载之前先把原来的删掉
                  */
                 
-                
             } else {
                 //加载文件夹内已有的js文件
             }
@@ -543,20 +503,21 @@ extension WYAWebView {
                 var jsPath = String()
                 do {
                     jsPath = try String(contentsOfFile: jsString!)
-                }
-                catch {
-                    print(error);
+                } catch {
+                    print(error)
                 }
                 
                 let userScript = WKUserScript(source: jsPath, injectionTime: WKUserScriptInjectionTime.atDocumentStart, forMainFrameOnly: true)
 //                userContentControll.addUserScript(userScript)
             }
         }
-        
     }
 }
 
+extension WYAWebView {}
+
 //MARK: 摇晃状态
+
 public enum ShakeState {
     case shakeStart
     case shakeEnd
