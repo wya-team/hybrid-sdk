@@ -11,7 +11,7 @@ import UIKit
 
 extension UIDevice {
     //获取设备具体详细的型号
-    var modelName: String {
+    var phoneModel : String {
         var systemInfo = utsname()
         uname(&systemInfo)
         let machineMirror = Mirror(reflecting: systemInfo.machine)
@@ -19,8 +19,13 @@ extension UIDevice {
             guard let value = element.value as? Int8, value != 0 else { return identifier }
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
-
-        switch identifier {
+        return identifier
+    }
+    
+    
+    var modelName: String {
+        
+        switch self.phoneModel {
         case "iPod5,1": return "iPod Touch 5"
         case "iPod7,1": return "iPod Touch 6"
         case "iPhone3,1", "iPhone3,2", "iPhone3,3": return "iPhone 4"
@@ -49,12 +54,12 @@ extension UIDevice {
         case "iPad6,7", "iPad6,8": return "iPad Pro"
         case "AppleTV5,3": return "Apple TV"
         case "i386", "x86_64": return "Simulator"
-        default: return identifier
+        default: return self.phoneModel
         }
     }
 
     var contentType: String {
-        let reach = Reachability(hostName: "www.apple.com")
+        let reach = WYAHybridReachability(hostName: "www.apple.com")
         let status = reach?.currentReachabilityStatus()
         switch status {
         case ReachableViaWiFi: return "WIFI"
@@ -131,9 +136,9 @@ public class SystemConfig: NSObject {
 
     public var deviceToken = UserDefaults.standard.object(forKey: "DEVICE_TOKEN") ?? "" // deviceToken
 
-    public let deviceModel = UIDevice.current.modelName //设备具体型号
+    public let deviceModel = UIDevice.current.phoneModel //设备具体型号
 
-    public let deviceName = UIDevice.current.systemName //设备名称
+    public let deviceName = UIDevice.current.name //设备名称
 
     public let uiMode = UIDevice.current.model //设备型号
 
@@ -183,7 +188,7 @@ public class SystemConfig: NSObject {
 //    public lazy var debug : String = {
 //        if
 //    }()
-
+    
     public var channel = "App Store" //APP来源
 
     public lazy var jailbreak: Bool = {
