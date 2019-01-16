@@ -18,7 +18,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         return true
     }
-
+    
+    /// 第三方应用打开本程序调用的方法
+    ///
+    /// - Parameters:
+    ///   - app: <#app description#>
+    ///   - url: <#url description#>
+    ///   - options: <#options description#>
+    /// - Returns: <#return value description#>
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        if url.absoluteString.hasPrefix("hybrid") {
+            return true
+        }
+        return false
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
