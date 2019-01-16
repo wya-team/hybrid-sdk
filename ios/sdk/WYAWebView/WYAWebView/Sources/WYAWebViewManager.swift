@@ -9,12 +9,12 @@ import UIKit
 
 import Alamofire
 
-protocol WebViewDelegate {
-    func getNativeActionResult(obj: Any) -> Void
+protocol WebViewDelegate : AnyObject{
+    func getNativeActionResult(_ type : String, _ obj: String) -> Void
 }
 
 class WYAWebViewManager: NSObject {
-    var nativeDelegate: WebViewDelegate?
+    weak var nativeDelegate: WebViewDelegate?
     
     var config = SystemConfig()
     
@@ -35,6 +35,13 @@ class WYAWebViewManager: NSObject {
         // 返回原生方法执行结果
 //        self.nativeDelegate?.getNativeActionResult(obj: string)
     }
+    
+    func listenAction(_ actionType: String, _ params : [String : Any]) {
+        let string = self.dicTosJsonString(params)
+        self.nativeDelegate?.getNativeActionResult(actionType, string)
+        
+    }
+    
 }
 
 extension WYAWebViewManager {
@@ -72,7 +79,7 @@ extension WYAWebViewManager {
     // MARK: 字典转字符串
     
     func dicTosJsonString(_ dic: [String: Any]) -> String {
-        let data = try? JSONSerialization.data(withJSONObject: dic, options: [])
+        let data = try? JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
         let str = String(data: data!, encoding: String.Encoding.utf8)
         return str!
     }
@@ -86,11 +93,13 @@ extension WYAWebViewManager {
         }
         return nil
     }
+    
+    
 }
 
 extension WYAWebViewManager {
     func registerSystemNotice() {
-        weak var weak = self
+
         let note = NotificationCenter.default
         let device = UIDevice.current
         device.isBatteryMonitoringEnabled = true
@@ -98,12 +107,22 @@ extension WYAWebViewManager {
         self.netManager?.listener = { status in
             print("网络状态: \(status)")
             //            self.netManager?.networkReachabilityStatus
+            var params = [String : Any]()
+            params.updateValue("1", forKey: "status")
+            params.updateValue("调用成功", forKey: "msg")
+            
+            var inParams = [String : Any]()
+            var actionType : String
             
             if (self.netManager?.isReachable)! {
                 print("有网")
+                actionType = "online"
             } else {
+                actionType = "offline"
                 print("没网")
             }
+            params.updateValue(inParams, forKey: "data")
+            self.listenAction(actionType, params)
         }
         self.netManager?.startListening()
         
@@ -111,35 +130,32 @@ extension WYAWebViewManager {
             // 电池电量变化调用这个
             print("电池电量变化")
             print(not.userInfo as Any)
-            let params = NSMutableDictionary(capacity: 0)
-            params.setValue("1", forKey: "status")
-            params.setValue("调用成功", forKey: "msg")
+            var params = [String : Any]()
+            params.updateValue("1", forKey: "status")
+            params.updateValue("调用成功", forKey: "msg")
             
-            let subParams = NSMutableDictionary(capacity: 0)
-            subParams.setValue(device.batteryLevel, forKey: "level")
-            
+            var subParams = [String : Any]()
+            subParams.updateValue(device.batteryLevel, forKey: "level")
             switch device.batteryState {
             case .unknown:
-                subParams.setValue(false, forKey: "isPlugged")
+                subParams.updateValue(false, forKey: "isPlugged")
                 break
                 
             case .unplugged:
-                subParams.setValue(false, forKey: "isPlugged")
+                subParams.updateValue(false, forKey: "isPlugged")
                 break
                 
             case .charging:
-                subParams.setValue(true, forKey: "isPlugged")
+                subParams.updateValue(true, forKey: "isPlugged")
                 break
                 
             case .full:
-                subParams.setValue(false, forKey: "isPlugged")
+                subParams.updateValue(false, forKey: "isPlugged")
                 break
             }
-            params.setValue(subParams, forKey: "data")
+            params.updateValue(subParams, forKey: "data")
             
-            //            let string = self.mutableDicToJSString(dic: params)
-            
-            //            self.nativeDelegate?.getNativeActionResult(obj: string)
+            self.listenAction("batteryStatus", params)
         }
         
         note.addObserver(forName: NSNotification.Name.UIDeviceBatteryStateDidChange, object: nil, queue: OperationQueue.main) { not in
@@ -151,36 +167,92 @@ extension WYAWebViewManager {
         note.addObserver(forName: NSNotification.Name.UIApplicationDidEnterBackground, object: nil, queue: OperationQueue.main) { _ in
             // 进入后台
             print("后台")
+            var params = [String : Any]()
+            params.updateValue("1", forKey: "status")
+            params.updateValue("调用成功", forKey: "msg")
+            
+            let inParams = [String : Any]()
+            params.updateValue(inParams, forKey: "data")
+            
+            self.listenAction("pause", params)
         }
         
         note.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main) { _ in
             // 进入前台
             print("前台")
+            var params = [String : Any]()
+            params.updateValue("1", forKey: "status")
+            params.updateValue("调用成功", forKey: "msg")
+            
+            let inParams = [String : Any]()
+            params.updateValue(inParams, forKey: "data")
+            
+            self.listenAction("resume", params)
         }
         
         note.addObserver(forName: NSNotification.Name.UIApplicationWillResignActive, object: nil, queue: OperationQueue.main) { _ in
             // 进入休眠
             print("休眠")
+            var params = [String : Any]()
+            params.updateValue("1", forKey: "status")
+            params.updateValue("调用成功", forKey: "msg")
+            
+            let inParams = [String : Any]()
+            params.updateValue(inParams, forKey: "data")
+            
+            self.listenAction("appIdle", params)
         }
         
         note.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: nil, queue: OperationQueue.main) { _ in
             // 键盘弹出
             print("键盘将要弹出")
+            var params = [String : Any]()
+            params.updateValue("1", forKey: "status")
+            params.updateValue("调用成功", forKey: "msg")
+            
+            let inParams = [String : Any]()
+            params.updateValue(inParams, forKey: "data")
+            
+            self.listenAction("", params)
         }
         
         note.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: OperationQueue.main) { _ in
             // 键盘弹出
             print("键盘已经弹出")
+            var params = [String : Any]()
+            params.updateValue("1", forKey: "status")
+            params.updateValue("调用成功", forKey: "msg")
+            
+            let inParams = [String : Any]()
+            params.updateValue(inParams, forKey: "data")
+            
+            self.listenAction("keyboardShow", params)
         }
         
         note.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: OperationQueue.main) { _ in
             // 键盘将要消失
-            print("键盘消失")
+            print("键盘将要消失")
+            var params = [String : Any]()
+            params.updateValue("1", forKey: "status")
+            params.updateValue("调用成功", forKey: "msg")
+            
+            let inParams = [String : Any]()
+            params.updateValue(inParams, forKey: "data")
+            
+            self.listenAction("", params)
         }
         
         note.addObserver(forName: NSNotification.Name.UIKeyboardDidHide, object: nil, queue: OperationQueue.main) { _ in
             // 键盘消失
-            print("键盘消失")
+            print("键盘已经消失")
+            var params = [String : Any]()
+            params.updateValue("1", forKey: "status")
+            params.updateValue("调用成功", forKey: "msg")
+            
+            let inParams = [String : Any]()
+            params.updateValue(inParams, forKey: "data")
+            
+            self.listenAction("keyboardHide", params)
         }
         
         note.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil, queue: OperationQueue.main) { not in
@@ -195,6 +267,15 @@ extension WYAWebViewManager {
             UIGraphicsEndImageContext()
             
             print(image as Any)
+            
+            var params = [String : Any]()
+            params.updateValue("1", forKey: "status")
+            params.updateValue("调用成功", forKey: "msg")
+            
+            let inParams = [String : Any]()
+            params.updateValue(inParams, forKey: "data")
+            
+            self.listenAction("takeScreenshot", params)
         }
     }
 }
@@ -204,6 +285,6 @@ extension WYAWebViewManager {
         // 获取网络状态
         
         // 回传信息
-        self.nativeDelegate?.getNativeActionResult(obj: "sss")
+        self.nativeDelegate?.getNativeActionResult("", "sss")
     }
 }

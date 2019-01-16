@@ -15,11 +15,20 @@ import WebKit
 fileprivate let jsBuildVersion = 0.1
 
 public class WYAWebView: UIView {
+    
+    override public var canResignFirstResponder: Bool{
+        return false
+    }
+    
+    override public var canBecomeFirstResponder: Bool{
+        return true
+    }
+    
     let webManager = WYAWebViewManager()
     var actionID: String?
     
     var webView: WKWebView?
-    
+    let userContentControll = WKUserContentController()
     /// 记录加载在哪个控制器的
     public var vc: UIViewController?
     
@@ -34,7 +43,7 @@ public class WYAWebView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        let userContentControll = WKUserContentController()
+        loadJSFolder()
         let config = WKWebViewConfiguration()
         config.userContentController = userContentControll
         
@@ -55,8 +64,8 @@ public class WYAWebView: UIView {
         //        self.webView?.isOpaque = false
         //        self.webView?.scrollView.backgroundColor = UIColor.white.withAlphaComponent(0.0)
         //        self.getNativeActionResult(obj: "_viewappear_")
-        //        webManager.nativeDelegate = self as WebViewDelegate
-        //        webManager.registerSystemNotice()
+        webManager.nativeDelegate = self as WebViewDelegate
+        webManager.registerSystemNotice()
         
         //        let imageP = ImagePicker()
         //        let captureVideoPreviewLayer = imageP.previewLayer
@@ -105,16 +114,10 @@ public class WYAWebView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+    
 }
 
-//MARK: 负责处理文件之间的相互调用
+// MARK: 负责处理文件之间的相互调用
 
 extension WYAWebView {
     /// 加载网址链接
@@ -157,11 +160,6 @@ extension WYAWebView {
         } else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
-    }
-    
-    public func shakeStateAction(shakeState: ShakeState) {
-        //传递手机摇晃事件
-        self.getNativeActionResult(obj: shakeState)
     }
     
     /// 获取参数
@@ -364,19 +362,13 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     ///   - navigation: <#navigation description#>
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         print("加载完成")
-        var params = [String: Any]()
-        params.updateValue(self.webManager.config.version, forKey: "version")
-        params.updateValue(self.webManager.config.appId, forKey: "appId")
-        params.updateValue(self.webManager.config.appName, forKey: "appName")
-        var outParams = [String: Any]()
-        outParams.updateValue(1, forKey: "status")
-        outParams.updateValue(params, forKey: "data")
+        
+        let outParams = self.webManager.config.getSystemConfigDic()
         
         let jsParams = self.webManager.dicTosJsonString(outParams)
         print(jsParams)
         
-        var jsString = "WYAJSBridge.emit('_ready_', \(jsParams))"
-        jsString = jsString.removingPercentEncoding!
+        let jsString = "WYAJSBridge.emit('_ready_', \(jsParams))"
         webView.evaluateJavaScript(jsString) { result, error in
             print(result ?? "没有数据")
             print(error ?? "没有错误")
@@ -434,17 +426,40 @@ extension WYAWebView: WebViewDelegate {
     /// 获取原生方法处理结果
     ///
     /// - Parameter obj: 参数
-    func getNativeActionResult(obj: Any) {
-        var result = [String: Any]()
-        result.updateValue(1, forKey: "status")
-        
-        let resultString = self.webManager.dicTosJsonString(result)
-        let jsString = "JSBridge.emit(\(self.actionID!), \(resultString))"
+    func getNativeActionResult(_ type: String, _ obj: String) {
+        let jsString = "WYAJSBridge.emit(\(type), \(obj))"
         
         self.webView?.evaluateJavaScript(jsString, completionHandler: { result, error in
             print(result ?? "没有结果")
             print(error ?? "没有错误")
         })
+    }
+    
+}
+
+extension WYAWebView {
+    
+    public override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
+        print("开始摇晃")
+        
+        var params = [String : Any]()
+        params.updateValue("1", forKey: "status")
+        params.updateValue("调用成功", forKey: "msg")
+        
+        let inParams = [String : Any]()
+        params.updateValue(inParams, forKey: "data")
+        let string = self.webManager.dicTosJsonString(params)
+        
+        self.getNativeActionResult("shake", string)
+        
+    }
+    
+    public override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        print("结束摇晃")
+    }
+    
+    public override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
+        print("取消摇晃")
     }
 }
 
@@ -508,15 +523,13 @@ extension WYAWebView {
                 }
                 
                 let userScript = WKUserScript(source: jsPath, injectionTime: WKUserScriptInjectionTime.atDocumentStart, forMainFrameOnly: true)
-//                userContentControll.addUserScript(userScript)
+                userContentControll.addUserScript(userScript)
             }
         }
     }
 }
 
-extension WYAWebView {}
-
-//MARK: 摇晃状态
+// MARK: 摇晃状态
 
 public enum ShakeState {
     case shakeStart

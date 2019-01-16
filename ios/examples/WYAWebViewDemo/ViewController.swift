@@ -16,6 +16,16 @@ class ViewController: UIViewController {
     
     let h5 = WYAWebView()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        h5.becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        h5.resignFirstResponder()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,7 +36,6 @@ class ViewController: UIViewController {
         
         // 打开本地文件
         // web.loadLocalHtml(htmlName: "index")
-        
         self.view.addSubview(h5)
         
        

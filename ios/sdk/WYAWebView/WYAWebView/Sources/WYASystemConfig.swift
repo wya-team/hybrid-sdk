@@ -89,6 +89,16 @@ public struct frame {
     var bottom: Float
 }
 
+struct Platform {
+    static let isSimulator: Bool = {
+        var isSim = false
+        #if arch(i386) || arch(x86_64)
+        isSim = true
+        #endif
+        return isSim
+    }()
+}
+
 public class SystemConfig: NSObject {
     public var version = "1.0.0"
 
@@ -117,7 +127,7 @@ public class SystemConfig: NSObject {
 
     public let systemVersion = UIDevice.current.systemVersion //iOS版本
 
-    public let deviceId = UIDevice.current.identifierForVendor //设备udid
+    public let deviceId = UIDevice.current.identifierForVendor?.uuidString //设备udid
 
     public var deviceToken: String? // deviceToken
 
@@ -130,19 +140,25 @@ public class SystemConfig: NSObject {
     public lazy var operatorName: String = {
         var operatorName = String()
         let info = CTTelephonyNetworkInfo()
-        if let carrier = info.subscriberCellularProvider {
-            operatorName = carrier.carrierName!
+        if Platform.isSimulator {
+            return "";
+        } else {
+            
+            if let carrier = info.subscriberCellularProvider {
+                operatorName = carrier.carrierName!
+            }
+            return operatorName
         }
-        return operatorName
+        
     }() // 运营商名称
 
     public var connectionType = UIDevice.current.contentType //获取网络连接状态
 
-    public var fullScreen: String?
+    public var fullScreen: Bool?
 
-    public let screenWidth = UIScreen.main.bounds.size.width * UIScreen.main.scale //像素尺寸宽度
+    public let screenWidth = UIScreen.main.bounds.size.width //像素尺寸宽度
 
-    public let screenHeight = UIScreen.main.bounds.size.height * UIScreen.main.scale //像素尺寸高度
+    public let screenHeight = UIScreen.main.bounds.size.height //像素尺寸高度
 
     public var winName: String? //当前window名称
 
@@ -180,6 +196,53 @@ public class SystemConfig: NSObject {
 
     let localizedModel = UIDevice.current.localizedModel //设备区域化型号如A1533
 
+    func getSystemConfigDic() -> [String : Any] {
+        var params = [String: Any]()
+        params.updateValue(self.version, forKey: "version")
+        params.updateValue(self.appId, forKey: "appId")
+        params.updateValue(self.appName, forKey: "appName")
+        params.updateValue(self.systemType, forKey: "systemType")
+        params.updateValue(self.systemVersion, forKey: "systemVersion")
+        params.updateValue(self.deviceId ?? "", forKey: "deviceId")
+        params.updateValue(self.deviceToken ?? "", forKey: "deviceToken")
+        params.updateValue(self.deviceModel, forKey: "deviceModel")
+        params.updateValue(self.deviceName, forKey: "deviceName")
+        params.updateValue(self.uiMode, forKey: "uiMode")
+        params.updateValue(self.operatorName, forKey: "operatorName")
+        params.updateValue(self.connectionType, forKey: "connectionType")
+        params.updateValue(self.fullScreen ?? false, forKey: "fullScreen")
+        params.updateValue(self.screenWidth, forKey: "screenWidth")
+        params.updateValue(self.screenHeight, forKey: "screenHeight")
+        params.updateValue(self.winName ?? "", forKey: "winName")
+        params.updateValue(self.winWidth, forKey: "winWidth")
+        params.updateValue(self.winHeight, forKey: "winHeight")
+        params.updateValue(self.frameName ?? "", forKey: "frameName")
+        params.updateValue(self.frameWidth ?? 0, forKey: "frameWidth")
+        params.updateValue(self.frameHeight ?? 0, forKey: "frameHeight")
+        
+        var safe = [String : Float]()
+        safe.updateValue(self.safeArea.left, forKey: "left")
+        safe.updateValue(self.safeArea.right, forKey: "right")
+        safe.updateValue(self.safeArea.top, forKey: "top")
+        safe.updateValue(self.safeArea.bottom, forKey: "bottom")
+        
+        params.updateValue(safe, forKey: "safeArea")
+        params.updateValue(self.pageParam ?? [String : String](), forKey: "pageParam")
+        //        params.updateValue(self.webManager.config.wgtParam, forKey: "wgtParam")
+        params.updateValue(self.appParam ?? [String : String](), forKey: "appParam")
+        params.updateValue(self.statusBarAppearance, forKey: "statusBarAppearance")
+        //        params.updateValue(self.webManager.config.wgtRootDir, forKey: "wgtRootDir")
+        //        params.updateValue(self.webManager.config.fsDir, forKey: "fsDir")
+        //        params.updateValue(self.webManager.config.cacheDir, forKey: "cacheDir")
+        //        params.updateValue(self.webManager.config.debug, forKey: "debug")
+        params.updateValue(self.channel, forKey: "channel")
+        params.updateValue(self.jailbreak, forKey: "jailbreak")
+        var outParams = [String: Any]()
+        outParams.updateValue(1, forKey: "status")
+        outParams.updateValue(params, forKey: "data")
+        return outParams
+    }
+    
     /// 获取build版本号
     ///
     /// - Returns: 版本号
