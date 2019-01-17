@@ -7,6 +7,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.google.gson.Gson;
 import com.wya.utils.utils.LogUtil;
 
 import java.io.UnsupportedEncodingException;
@@ -20,6 +21,8 @@ import java.net.URLDecoder;
  */
 public class WYAWebViewClient extends WebViewClient {
 	private WYAWebView webView;
+	private Gson gson = new Gson();
+	private SystemConstant systemConstant;
 
 	public WYAWebViewClient(WYAWebView webView) {
 		this.webView = webView;
@@ -85,27 +88,26 @@ public class WYAWebViewClient extends WebViewClient {
 		if (WYAWebView.WYA_JS_BRIDGE_UMD_JS != null) {
 			BridgeUtil.webViewLoadLocalJs(view, WYAWebView.WYA_JS_BRIDGE_UMD_JS);
 		}
+		systemConstant = new SystemConstant();
+		systemConstant.setStatus(1);
+		systemConstant.setVersion("0.1.0");
+		emit("_ready_", systemConstant, view);
+	}
 
-
-//		//
-//		if (webView.getStartupMessage() != null) {
-//			for (Message m : webView.getStartupMessage()) {
-//				webView.dispatchMessage(m);
-//			}
-//			webView.setStartupMessage(null);
-//		}
-//
-//		//
-//		onCustomPageFinishd(view, url);
-
+	/**
+	 * 提交数据
+	 *
+	 * @param event 事件名称
+	 * @param data  数据
+	 * @param view  WebView
+	 */
+	public void emit(String event, Object data, WebView view) {
+		String jsString = "WYAJSBridge.emit('" + event + "'," + gson.toJson(data) + ")";
+		//调用js中的函数：showInfoFromJava(msg)
+		view.loadUrl("javascript:" + jsString);
 	}
 
 	protected boolean onCustomShouldOverrideUrlLoading(String url) {
 		return false;
 	}
-
-	protected void onCustomPageFinishd(WebView view, String url) {
-
-	}
-
 }
