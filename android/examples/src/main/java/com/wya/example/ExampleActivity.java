@@ -3,6 +3,12 @@ package com.wya.example;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * @date: 2019/1/16 16:18
+ * @author: Chunjiang Mao
+ * @classname: ExampleActivity
+ * @describe:
+ */
 public class ExampleActivity extends AppCompatActivity {
 
 	@Override
