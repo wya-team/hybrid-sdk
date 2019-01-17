@@ -3,12 +3,15 @@ package com.wya.hybrid;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
+import android.webkit.ValueCallback;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.google.gson.Gson;
-import com.wya.utils.utils.LogUtil;
+import com.wya.hybrid.bean.BaseEmitData;
+import com.wya.hybrid.bean.BatteryLow;
+import com.wya.hybrid.bean.KeyBack;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -22,10 +25,12 @@ import java.net.URLDecoder;
 public class WYAWebViewClient extends WebViewClient {
 	private WYAWebView webView;
 	private Gson gson = new Gson();
+	private EventManger eventManger;
 	private SystemConstant systemConstant;
 
-	public WYAWebViewClient(WYAWebView webView) {
+	public WYAWebViewClient(WYAWebView webView, EventManger eventManger) {
 		this.webView = webView;
+		this.eventManger = eventManger;
 	}
 
 	@Override
@@ -36,8 +41,9 @@ public class WYAWebViewClient extends WebViewClient {
 			e.printStackTrace();
 		}
 		if (!TextUtils.isEmpty(url) && url.startsWith(BridgeUtil.COMMAND_OVERRIDE_SCHEMA)) {
-			// 如果是返回数据
-			LogUtil.d(url);
+			// 假设注册了返回监听
+			String id = url.split("id=")[1];
+			getEvent(id, view);
 			return true;
 		} else {
 			return this.onCustomShouldOverrideUrlLoading(url) ? true : super.shouldOverrideUrlLoading(view, url);
@@ -62,8 +68,9 @@ public class WYAWebViewClient extends WebViewClient {
 				ex.printStackTrace();
 			}
 			if (!TextUtils.isEmpty(url) && url.startsWith(BridgeUtil.COMMAND_OVERRIDE_SCHEMA)) {
-				// 如果是返回数据
-				LogUtil.d(url);
+				// 假设注册了返回监听
+				String id = url.split("id=")[1];
+				getEvent(id, view);
 				return true;
 			} else {
 				return this.onCustomShouldOverrideUrlLoading(url) ? true : super.shouldOverrideUrlLoading(view, url);
@@ -81,33 +88,48 @@ public class WYAWebViewClient extends WebViewClient {
 	@Override
 	public void onPageFinished(WebView view, String url) {
 		super.onPageFinished(view, url);
+		BridgeUtil.webViewLoadLocalJs(view, WYAWebView.WYA_UMD_JS);
+		BridgeUtil.webViewLoadLocalJs(view, WYAWebView.WYA_JS_BRIDGE_UMD_JS);
 
-		if (WYAWebView.WYA_UMD_JS != null) {
-			BridgeUtil.webViewLoadLocalJs(view, WYAWebView.WYA_UMD_JS);
-		}
-		if (WYAWebView.WYA_JS_BRIDGE_UMD_JS != null) {
-			BridgeUtil.webViewLoadLocalJs(view, WYAWebView.WYA_JS_BRIDGE_UMD_JS);
-		}
 		systemConstant = new SystemConstant();
 		systemConstant.setStatus(1);
 		systemConstant.setVersion("0.1.0");
-		emit("_ready_", systemConstant, view);
+		eventManger.emit(Events.READY, systemConstant);
 	}
 
 	/**
-	 * 提交数据
+	 * 通过id去获取事件名
 	 *
-	 * @param event 事件名称
-	 * @param data  数据
-	 * @param view  WebView
+	 * @param id 拦截的id
 	 */
-	public void emit(String event, Object data, WebView view) {
-		String jsString = "WYAJSBridge.emit('" + event + "'," + gson.toJson(data) + ")";
-		//调用js中的函数：showInfoFromJava(msg)
-		view.loadUrl("javascript:" + jsString);
+	private void getEvent(String id, WebView view) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			String jsString = "WYAJSBridge.getParam('" + id + "')";
+			view.evaluateJavascript(jsString, new ValueCallback<String>() {
+				@Override
+				public void onReceiveValue(String value) {
+					if (value.contains("batteryLow")) {
+						BaseEmitData<BatteryLow> batteryLow = new BaseEmitData<>();
+						batteryLow.setData(new BatteryLow());
+						batteryLow.getData().setLevel(100);
+						batteryLow.getData().setPlugged(false);
+						eventManger.emit(Events.BATTER_LOW, batteryLow);
+					} else if (value.contains("keyBack")) {
+						BaseEmitData<KeyBack> keyBack = new BaseEmitData<>();
+						keyBack.setData(new KeyBack());
+						keyBack.getData().setKeyCode(0);
+						keyBack.getData().setLongPress(false);
+						eventManger.emit(Events.KEY_BACK, keyBack);
+					}
+				}
+			});
+		} else {
+
+		}
 	}
 
 	protected boolean onCustomShouldOverrideUrlLoading(String url) {
 		return false;
 	}
+
 }
