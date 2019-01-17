@@ -1,5 +1,6 @@
 import { EventStore } from 'wya-ps';
 import { useDispatchEvent, throwError } from './utils/utils';
+
 class WYAJSBridge {
 	// 版本号
 	version = '1.0.0';

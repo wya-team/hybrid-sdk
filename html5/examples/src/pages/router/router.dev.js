@@ -1,7 +1,7 @@
 /**
  * dev 开发时使用
  */
-import 'babel-polyfill';
+import '@babel/polyfill';
 import Vue from 'vue';
 import Router from 'vue-router';
 import SetTitle from '@common/set-title/set-title';
