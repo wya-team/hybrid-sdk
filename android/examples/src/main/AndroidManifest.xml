@@ -9,6 +9,10 @@
     <!-- 访问网络状态, 检测网络的可用性. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- TODO ZCQ -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+
     <application
         android:name=".base.BaseApp"
         android:allowBackup="true"
@@ -28,6 +32,8 @@
 
         <!-- 监听网络切换 receiver -->
         <receiver android:name="com.wya.example.control.NetworkReceiver" />
+        <receiver android:name="com.wya.example.control.BatteryLevelReceiver" />
+        <receiver android:name="com.wya.example.control.ScreenReceiver" />
 
     </application>
 

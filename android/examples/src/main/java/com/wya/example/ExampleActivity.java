@@ -1,5 +1,6 @@
 package com.wya.example;
 
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
@@ -27,5 +28,12 @@ public class ExampleActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress_bar);
         webView.loadUrl(HTML_PATH);
         webView.emit(Events.KEY_BACK);
+        
+        BatteryManager batteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            int battery = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+        }
+        
     }
+    
 }
