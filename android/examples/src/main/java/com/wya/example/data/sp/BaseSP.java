@@ -10,6 +10,9 @@ import com.wya.example.util.JsonUtil;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author :
+ */
 public class BaseSP {
     
     private SharedPreferences mSharedPreferences;

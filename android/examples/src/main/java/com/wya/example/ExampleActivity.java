@@ -15,10 +15,10 @@ import com.wya.hybrid.WYAWebView;
  */
 public class ExampleActivity extends AppCompatActivity {
     private static final String HTML_PATH = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist";
-
+    
     private WYAWebView webView;
     private ProgressBar progressBar;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

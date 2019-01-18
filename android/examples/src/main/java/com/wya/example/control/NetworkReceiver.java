@@ -12,6 +12,9 @@ import com.wya.example.util.log.DebugLogger;
 
 import org.greenrobot.eventbus.EventBus;
 
+/**
+ * @author :
+ */
 public class NetworkReceiver extends BroadcastReceiver {
     
     private static final String TAG = "NetworkState";
