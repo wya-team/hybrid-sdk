@@ -31,9 +31,27 @@
         </activity>
 
         <!-- 监听网络切换 receiver -->
-        <receiver android:name="com.wya.example.control.NetworkReceiver" />
-        <receiver android:name="com.wya.example.control.BatteryLevelReceiver" />
-        <receiver android:name="com.wya.example.control.ScreenReceiver" />
+        <receiver android:name="com.wya.example.control.NetworkReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.wya.example.control.BatteryLevelReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_BATTERY_LOW" />
+                <action android:name="android.intent.action.ACTION_BATTERY_OKAY" />
+                <action android:name="android.intent.action.ACTION_BATTERY_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.wya.example.control.ScreenReceiver">
+            <intent-filter>
+                <action android:name="ACTION_SCREEN_ON" />
+                <action android:name="ACTION_SCREEN_OFF" />
+                <action android:name="ACTION_USER_PRESENT" />
+            </intent-filter>
+        </receiver>
 
     </application>
 
