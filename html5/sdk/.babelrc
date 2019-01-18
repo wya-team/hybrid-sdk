@@ -1,28 +1,13 @@
 {
-	"env": {
-		"rollup": {
-			"presets": [
-				[
-					"env", 
-					{
-						"modules": false
-					}
-				],
-				"stage-0"
-			],
-			"plugins": [
-				"external-helpers",
-				"transform-decorators-legacy"
-			]
-		},
-		"default": {
-			"presets": [
-				"env",
-				"stage-0"
-			],
-			"plugins": [
-				"transform-decorators-legacy"
-			]
-		}
-	}
+	"presets": [
+		"@babel/preset-env"
+	],
+	"plugins": [
+		"@babel/plugin-proposal-export-namespace-from",
+		"@babel/plugin-proposal-export-default-from",
+		"@babel/plugin-proposal-function-bind",
+		"@babel/plugin-syntax-dynamic-import",
+		"@babel/plugin-proposal-class-properties",
+		["@babel/plugin-proposal-decorators", { "legacy": true }]
+	]
 }

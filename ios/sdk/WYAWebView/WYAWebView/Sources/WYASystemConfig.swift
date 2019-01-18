@@ -134,7 +134,7 @@ public class SystemConfig: NSObject {
 
     public let deviceId = UIDevice.current.identifierForVendor?.uuidString //设备udid
 
-    public var deviceToken: String? // deviceToken
+    public var deviceToken = UserDefaults.standard.object(forKey: "DEVICE_TOKEN") ?? "" // deviceToken
 
     public let deviceModel = UIDevice.current.phoneModel //设备具体型号
 
@@ -204,7 +204,6 @@ public class SystemConfig: NSObject {
 
         return jailbroken
     }() //是否越狱
-
     let localizedModel = UIDevice.current.localizedModel //设备区域化型号如A1533
 
     func getSystemConfigDic() -> [String : Any] {
@@ -215,7 +214,7 @@ public class SystemConfig: NSObject {
         params.updateValue(self.systemType, forKey: "systemType")
         params.updateValue(self.systemVersion, forKey: "systemVersion")
         params.updateValue(self.deviceId ?? "", forKey: "deviceId")
-        params.updateValue(self.deviceToken ?? "", forKey: "deviceToken")
+        params.updateValue(self.deviceToken, forKey: "deviceToken")
         params.updateValue(self.deviceModel, forKey: "deviceModel")
         params.updateValue(self.deviceName, forKey: "deviceName")
         params.updateValue(self.uiMode, forKey: "uiMode")

@@ -176,7 +176,7 @@ class Core {
 			case 'click':
 				if (this.enabled && !e._constructed) {
 					if (!preventDefaultException(e.target, this.options.preventDefaultException)) {
-						e.preventDefault();
+						// e.preventDefault();
 					}
 					e.stopPropagation();
 				}
@@ -344,7 +344,7 @@ class Core {
 
 		if (this.options.preventDefault && !preventDefaultException(e.target, this.options.preventDefaultException)) {
 			// 去除默认事件
-			e.preventDefault();
+			// e.preventDefault();
 		}
 		// init
 		this.moved = false;
@@ -390,7 +390,7 @@ class Core {
 		if (this.options.preventDefault && !preventDefaultException(e.target, this.options.preventDefaultException)) {
 		// if (this.options.preventDefault) {
 			// 去除默认事件， 可阻止滚动
-			e.preventDefault();
+			// e.preventDefault();
 		}
 		// 单个手指
 		let point = e.touches ? e.touches[0] : e;
@@ -429,7 +429,7 @@ class Core {
 
 		if (this.directionLocked === 'h') { // 横轴滚动
 			if (this.options.eventPassthrough === 'vertical') {
-				e.preventDefault();
+				// e.preventDefault();
 			} else if (this.options.eventPassthrough === 'horizontal') {
 				this.initiated = false;
 				return;
@@ -437,7 +437,7 @@ class Core {
 			deltaY = 0;
 		} else if (this.directionLocked === 'v') { // 立轴滚动
 			if (this.options.eventPassthrough === 'horizontal') {
-				e.preventDefault();
+				// e.preventDefault();
 			} else if (this.options.eventPassthrough === 'vertical') {
 				this.initiated = false;
 				return;
@@ -534,7 +534,7 @@ class Core {
 		this.initiated = false;
 
 		if (this.options.preventDefault && !preventDefaultException(e.target, this.options.preventDefaultException)) {
-			e.preventDefault();
+			// e.preventDefault();
 		}
 
 		this.trigger('touchEnd', {
