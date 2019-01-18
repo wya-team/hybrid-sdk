@@ -1,14 +1,12 @@
 package com.wya.hybrid.bean;
 
+
 /**
- * @date: 2019/1/17 15:53
- * @author: Chunjiang Mao
- * @classname: BatteryLow
- * @describe:
+ * @author :
  */
-public class BatteryLow {
+public class BatteryStatus {
     
-    public static final String EVENT_BATTER_LOW = "batteryLow";
+    public static final String EVENT_BATTERY_STATUS = "batteryStatus";
     
     private int level;
     

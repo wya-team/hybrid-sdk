@@ -23,15 +23,14 @@ public class NetSP extends BaseSP {
     /**
      * 网络是否连接
      */
-    private static final String KEY_NET_IS_CONNECTED = "NET_IS_CONNECTED";
+    private static final String KEY_IS_ONLINE = "IS_ONLINE";
     
-    public boolean isNetConnected() {
-        return getBoolean(KEY_NET_IS_CONNECTED, true);
-        // TODO: 2019/1/17 ZCQ TEST
+    public boolean isOnline() {
+        return getBoolean(KEY_IS_ONLINE, true);
     }
     
-    public void setNetConnected(boolean isConnected) {
-        putBoolean(KEY_NET_IS_CONNECTED, isConnected);
+    public void setIsOnline(boolean isOnline) {
+        putBoolean(KEY_IS_ONLINE, isOnline);
     }
     
 }

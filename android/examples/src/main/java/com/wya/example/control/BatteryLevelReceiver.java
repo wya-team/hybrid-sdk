@@ -5,25 +5,41 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
 
+import com.wya.example.data.sp.BatterySP;
 import com.wya.example.util.log.DebugLogger;
 
 /**
  * @author :
  */
 public class BatteryLevelReceiver extends BroadcastReceiver {
+	
+	private static final String KEY_LEVEL = "level";
+	private static final String KEY_SCALE = "scale";
+	private static final String KEY_STATUS = "status";
+	private static final String KEY_HEALTH = "health";
+	
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		
 		StringBuilder sb = new StringBuilder();
-		int rawLevel = intent.getIntExtra("level", -1);
-		int scale = intent.getIntExtra("scale", -1);
-		int status = intent.getIntExtra("status", -1);
-		int health = intent.getIntExtra("health", -1);
+		int rawLevel = intent.getIntExtra(KEY_LEVEL, -1);
+		int scale = intent.getIntExtra(KEY_SCALE, -1);
+		int status = intent.getIntExtra(KEY_STATUS, -1);
+		int health = intent.getIntExtra(KEY_HEALTH, -1);
 		int level = -1;
 		if (rawLevel >= 0 && scale > 0) {
 			level = (rawLevel * 100) / scale;
 		}
+		
+		boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING;
+		//			|| status == BatteryManager.BATTERY_STATUS_FULL;
+		
+		BatterySP.get().setIsPlugged(isCharging);
+		BatterySP.get().setLevel(level);
+		
 		sb.append("The phone ");
-		DebugLogger.logBattery("onReceive");
+		DebugLogger.logBattery("onReceive level = %s", level);
+		DebugLogger.logBattery("onReceive isPlugged = %s", !isCharging);
 		
 		if (BatteryManager.BATTERY_HEALTH_OVERHEAT == health) {
 			sb.append("s battery feels very hot!");
