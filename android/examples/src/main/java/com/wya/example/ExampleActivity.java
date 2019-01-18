@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
 
-import com.wya.hybrid.Events;
+import com.wya.hybrid.JsCallBack;
 import com.wya.hybrid.WYAWebView;
 
 /**
@@ -26,6 +26,12 @@ public class ExampleActivity extends AppCompatActivity {
 		webView = findViewById(R.id.webView);
 		progressBar = findViewById(R.id.progress_bar);
 		webView.loadUrl(HTML_PATH);
-		webView.emit(Events.KEY_BACK);
+//		webView.emit(Events.KEY_BACK);
+		webView.register("debugger", new JsCallBack() {
+			@Override
+			public void response(String data, int id) {
+
+			}
+		});
 	}
 }
