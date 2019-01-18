@@ -1,4 +1,4 @@
-package com.wya.example;
+package com.wya.hybridexample;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

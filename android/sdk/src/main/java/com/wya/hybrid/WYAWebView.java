@@ -67,6 +67,11 @@ public class WYAWebView extends WebView {
 		initBean.setDeviceId(PhoneUtil.getInstance().getPhoneImei(mContext));
 		initBean.setDeviceModel(PhoneUtil.getInstance().getPhoneModel());
 		initBean.setDeviceName(TextUtils.isEmpty(android.os.Build.DEVICE)?"":android.os.Build.DEVICE);
+		initBean.setUiMode(PhoneUtil.getInstance().isTablet(mContext) ? "pad" : "phone");
+		initBean.setOperatorName("移动");
+		initBean.setConnectionType("4g");
+		initBean.setScreenWidth(PhoneUtil.getInstance().getPhoneWidth(mContext));
+		initBean.setScreenHeight(PhoneUtil.getInstance().getPhoneHeight(mContext));
 		baseEmitData.setData(initBean);
 	}
 
