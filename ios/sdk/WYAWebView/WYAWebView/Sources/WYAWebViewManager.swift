@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import MediaPlayer
 import Alamofire
 
 protocol WebViewDelegate : AnyObject{
@@ -17,6 +17,7 @@ class WYAWebViewManager: NSObject {
     weak var nativeDelegate: WebViewDelegate?
     
     var config = SystemConfig()
+    var currentVolume: Float?
     
     let netManager = NetworkReachabilityManager(host: "www.apple.com")
     
@@ -277,6 +278,8 @@ extension WYAWebViewManager {
             
             self.listenAction("takeScreenshot", params)
         }
+        
+       
     }
 }
 
@@ -287,4 +290,42 @@ extension WYAWebViewManager {
         // 回传信息
         self.nativeDelegate?.getNativeActionResult("", "sss")
     }
+}
+
+// MARK: 按键事件
+extension WYAWebViewManager{
+    /**
+     返回事件
+     */
+    func backBtnPressed(){
+        self.nativeDelegate?.getNativeActionResult("keyBack", "")
+    }
+    func handleVolum() {
+        do{
+            try AVAudioSession.sharedInstance().setActive(true)
+        }catch let error as NSError{
+            print("\(error)")
+        }
+        self.currentVolume = AVAudioSession.sharedInstance().outputVolume
+        NotificationCenter.default.addObserver(self, selector:#selector(changeVolumSlider(notifi:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        
+    }
+    
+   @objc func changeVolumSlider(notifi:NSNotification) {
+        if let volum:Float = notifi.userInfo?["AVSystemController_AudioVolumeNotificationParameter"] as! Float?{
+            if (volum > self.currentVolume!){
+            self.nativeDelegate?.getNativeActionResult("volumeUp", "")
+                print("增大")
+            }
+            else{
+            self.nativeDelegate?.getNativeActionResult("voolumeDown", "")
+                print("减小")
+            }
+             self.currentVolume = volum
+        }
+    }
+
+
+    
 }

@@ -185,9 +185,15 @@ public class SystemConfig: NSObject {
 
     public var statusBarAppearance = true //沉浸式
 
-//    public lazy var debug : String = {
-//        if
-//    }()
+    public lazy var debug : Bool = {
+        var debug = true
+        #if DEBUG
+        debug = true
+        #else
+        debug = false
+        #endif
+        return debug
+    }()
     
     public var channel = "App Store" //APP来源
 
@@ -238,7 +244,7 @@ public class SystemConfig: NSObject {
         //        params.updateValue(self.webManager.config.wgtRootDir, forKey: "wgtRootDir")
         //        params.updateValue(self.webManager.config.fsDir, forKey: "fsDir")
         //        params.updateValue(self.webManager.config.cacheDir, forKey: "cacheDir")
-        //        params.updateValue(self.webManager.config.debug, forKey: "debug")
+        params.updateValue(self.debug, forKey: "debug")
         params.updateValue(self.channel, forKey: "channel")
         params.updateValue(self.jailbreak, forKey: "jailbreak")
         var outParams = [String: Any]()

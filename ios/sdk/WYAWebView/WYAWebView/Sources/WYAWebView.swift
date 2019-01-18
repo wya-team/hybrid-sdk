@@ -46,7 +46,7 @@ public class WYAWebView: UIView {
         loadJSFolder()
         let config = WKWebViewConfiguration()
         config.userContentController = userContentControll
-        
+        self.webManager.handleVolum()
         self.webView = WKWebView(frame: .zero, configuration: config)
         self.webView!.uiDelegate = self as WKUIDelegate
         self.webView!.navigationDelegate = self as WKNavigationDelegate
@@ -319,8 +319,13 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     ///   - navigationResponse: 响应数据
     ///   - decisionHandler: 回调
     public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Swift.Void) {
+        
+        self.webManager.backBtnPressed()
         decisionHandler(WKNavigationResponsePolicy.allow)
+        
     }
+    
+    
     
     /// 链接开始加载时调用（ios8）
     ///
@@ -402,6 +407,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         print("终止")
     }
+    
 }
 
 // MARK: 负责处理scrollView的代理
