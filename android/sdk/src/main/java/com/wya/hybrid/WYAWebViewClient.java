@@ -7,8 +7,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.google.gson.Gson;
-import com.wya.hybrid.bean.BaseEmitData;
-import com.wya.hybrid.bean.InitBean;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -73,11 +71,7 @@ public class WYAWebViewClient extends WebViewClient {
 			BridgeUtil.webViewLoadLocalJs(webView, BridgeUtil.WYAJSBRIDGE);
 			BridgeUtil.webViewLoadLocalJs(webView, BridgeUtil.WYAMETHOD);
 
-			BaseEmitData<InitBean> bean = new BaseEmitData<>();
-			bean.setStatus(1);
-			bean.setMsg("success");
-			bean.setData(new InitBean());
-			BridgeUtil.loadJsUrl(view, "'_ready_'", new Gson().toJson(bean));
+			BridgeUtil.loadJsUrl(view, "'_ready_'", new Gson().toJson(webView.getBaseEmitData()));
 		}
 
 	}
