@@ -7,17 +7,17 @@ import android.webkit.WebView;
 
 import com.google.gson.Gson;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @date: 2019/1/17 10:05
  * @author: Chunjiang Mao
  * @classname: WYAWebView
  * @describe:
  */
-public class WYAWebView extends WebView implements EventManger {
-	public static final String WYA_UMD_JS = "wya.umd.js";
-	public static final String WYA_JS_BRIDGE_UMD_JS = "WYAJSBridge.umd.js";
-
-	private Gson gson = new Gson();
+public class WYAWebView extends WebView {
+	private Map<String, JsCallBack> taskMap = new HashMap<>();
 
 	public WYAWebView(Context context) {
 		super(context);
@@ -46,30 +46,41 @@ public class WYAWebView extends WebView implements EventManger {
 		this.setWebChromeClient(wyaWebChromeClient());
 	}
 
-	protected WYAWebChromeClient wyaWebChromeClient(){
+	private  WYAWebChromeClient wyaWebChromeClient(){
 		return new WYAWebChromeClient(this);
 	}
 
-	protected WYAWebViewClient wyaWebViewClient() {
-		return new WYAWebViewClient(this, this);
+	private  WYAWebViewClient wyaWebViewClient() {
+		return new WYAWebViewClient(this);
+	}
+
+	public void send(String name,Object object) {
+		name="'"+name+"'";
+		BridgeUtil.loadJsUrl(this,name,new Gson().toJson(object));
+	}
+
+	public void send(int id, Object object) {
+		BridgeUtil.loadJsUrl(this,String.valueOf(id),new Gson().toJson(object));
 	}
 
 
-	@Override
-	public void emit(String event, Object data) {
-		String jsString = "";
-		if(data == null){
-			jsString = "WYAJSBridge.emit('" + event + "','')";
-		} else {
-			jsString = "WYAJSBridge.emit('" + event + "'," + gson.toJson(data) + ")";
+	public void register(String name, JsCallBack callBack) {
+		taskMap.put(name, callBack);
+	}
+
+	public void unRegister() {
+		taskMap.clear();
+		taskMap = null;
+	}
+
+	public void handlerReturnData(String url) {
+		String[] split = url.split("[?]");
+		String name = split[0];
+		JsCallBack callBack = taskMap.get(name);
+		if (callBack != null) {
+			String id = split[1].replace("id=", BridgeUtil.EMPTY);
+			BridgeUtil.getParam(this,id, callBack);
 		}
-		//调用js中的函数：showInfoFromJava(msg)
-		this.loadUrl("javascript:" + jsString);
-	}
-
-	@Override
-	public void emit(String event) {
-		emit(event, null);
 	}
 
 }
