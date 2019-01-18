@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.webkit.WebView;
 
 import com.google.gson.Gson;
+import com.wya.hybrid.bean.BaseEmitData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,11 +57,15 @@ public class WYAWebView extends WebView {
 	
 	public void send(String name,Object object) {
 		name="'"+name+"'";
-		BridgeUtil.loadJsUrl(this,name,new Gson().toJson(object));
+		BaseEmitData<Object> data = new BaseEmitData<>();
+		data.setData(object);
+		BridgeUtil.loadJsUrl(this,name,new Gson().toJson(data));
 	}
 	
 	public void send(int id, Object object) {
-		BridgeUtil.loadJsUrl(this,String.valueOf(id),new Gson().toJson(object));
+		BaseEmitData<Object> data = new BaseEmitData<>();
+		data.setData(object);
+		BridgeUtil.loadJsUrl(this,String.valueOf(id),new Gson().toJson(data));
 	}
 	
 	
