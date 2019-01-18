@@ -230,6 +230,20 @@ public class SystemConfig: NSObject {
         params.updateValue(self.frameWidth ?? 0, forKey: "frameWidth")
         params.updateValue(self.frameHeight ?? 0, forKey: "frameHeight")
         
+        switch UIDevice.current.orientation {
+        case .portrait:
+            
+            break
+        case .portraitUpsideDown:
+            break
+        case .landscapeLeft:
+            break
+        case .landscapeRight:
+            break
+        default:
+            break
+        }
+        
         var safe = [String : Float]()
         safe.updateValue(self.safeArea.left, forKey: "left")
         safe.updateValue(self.safeArea.right, forKey: "right")
