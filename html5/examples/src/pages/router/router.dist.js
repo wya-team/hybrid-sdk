@@ -1,7 +1,7 @@
 /**
  * dist 未来用于服务端渲染
  */
-import 'babel-polyfill';
+import '@babel/polyfill';
 import Vue from 'vue';
 import Router from 'vue-router';
 import SetTitle from '@common/set-title/set-title';
