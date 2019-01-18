@@ -27,7 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ///   - options: <#options description#>
     /// - Returns: <#return value description#>
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        
         if url.absoluteString.hasPrefix("hybrid") {
+            // FIXME:第三方应用打开时需分解url获取相应的参数
+//            UserDefaults.standard.set(<#T##value: Any?##Any?#>, forKey: "appParam")
             return true
         }
         return false

@@ -181,7 +181,13 @@ public class SystemConfig: NSObject {
 
     public let pageParam: [String: String]? = nil //页面参数, 获取页面间传递的参数值，为 openWin()、openFrame() 等方法
 
-    public var appParam: [String: String]? //当应用被第三方应用打开时，传递过来的参数
+    public var appParam: [String: String] = {
+        let appP = UserDefaults.standard.object(forKey: "appParam")
+        guard (appP != nil) else {return [String: String]()}
+        // FIXME: 第三方调起传递参数需要按照一定的传参规则解析成字典
+        let dic = [String: String]()
+        return dic
+    }() //当应用被第三方应用打开时，传递过来的参数
 
     public var statusBarAppearance = true //沉浸式
 
@@ -234,7 +240,7 @@ public class SystemConfig: NSObject {
         params.updateValue(safe, forKey: "safeArea")
         params.updateValue(self.pageParam ?? [String : String](), forKey: "pageParam")
         //        params.updateValue(self.webManager.config.wgtParam, forKey: "wgtParam")
-        params.updateValue(self.appParam ?? [String : String](), forKey: "appParam")
+        params.updateValue(self.appParam, forKey: "appParam")
         params.updateValue(self.statusBarAppearance, forKey: "statusBarAppearance")
         //        params.updateValue(self.webManager.config.wgtRootDir, forKey: "wgtRootDir")
         //        params.updateValue(self.webManager.config.fsDir, forKey: "fsDir")
@@ -242,10 +248,8 @@ public class SystemConfig: NSObject {
         //        params.updateValue(self.webManager.config.debug, forKey: "debug")
         params.updateValue(self.channel, forKey: "channel")
         params.updateValue(self.jailbreak, forKey: "jailbreak")
-        var outParams = [String: Any]()
-        outParams.updateValue(1, forKey: "status")
-        outParams.updateValue(params, forKey: "data")
-        return outParams
+        
+        return params
     }
     
     /// 获取build版本号

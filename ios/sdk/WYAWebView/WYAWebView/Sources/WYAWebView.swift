@@ -168,23 +168,20 @@ extension WYAWebView {
     ///   - id: 事件ID
     ///   - handler: 回调
     func getParams(_ id: String, handler: @escaping (Any) -> Void) {
-        let jsSrring = "JSBridge.getParam(\(id)"
+        let jsSrring = "WYAJSBridge.getParam(\(id))"
         self.webView?.evaluateJavaScript(jsSrring) { params, error in
             print(params ?? "没有参数")
             print(error ?? "没有错误")
             
+            guard (params != nil) else { return }
+            
             var dictory: Any
             
-            if params == nil {
-                //没有参数
-                dictory = [String: Any]()
-            } else {
-                //有参数
-                /** params参数为json字符串需要转化为字典
-                 */
-                dictory = self.webManager.jsonStringToDic(params as! String)
-                print(dictory)
-            }
+            //有参数
+            /** params参数为json字符串需要转化为字典
+             */
+            dictory = self.webManager.jsonStringToDic(params as! String) as Any
+            print(dictory)
             
             handler(dictory)
         }
@@ -363,7 +360,19 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         print("加载完成")
         
-        let outParams = self.webManager.config.getSystemConfigDic()
+        
+        
+        var dataParams = self.webManager.config.getSystemConfigDic()
+        
+        if (self.frame.size.width == UIScreen.main.bounds.size.width) || (self.frame.size.height == UIScreen.main.bounds.size.height) {
+            dataParams.updateValue(true, forKey: "fullScreen")
+        } else {
+            dataParams.updateValue(false, forKey: "fullScreen")
+        }
+        
+        var outParams = [String: Any]()
+        outParams.updateValue(1, forKey: "status")
+        outParams.updateValue(dataParams, forKey: "data")
         
         let jsParams = self.webManager.dicTosJsonString(outParams)
         print(jsParams)
@@ -421,18 +430,20 @@ extension WYAWebView: UIScrollViewDelegate {
 }
 
 // MARK: 负责和webviewManager的代理
-
 extension WYAWebView: WebViewDelegate {
     /// 获取原生方法处理结果
     ///
     /// - Parameter obj: 参数
     func getNativeActionResult(_ type: String, _ obj: String) {
         let jsString = "WYAJSBridge.emit(\(type), \(obj))"
+        print()
+        DispatchQueue.main.async { // Correct
+            self.webView?.evaluateJavaScript(jsString, completionHandler: { result, error in
+                print(result ?? "没有结果")
+                print(error ?? "没有错误")
+            })
+        }
         
-        self.webView?.evaluateJavaScript(jsString, completionHandler: { result, error in
-            print(result ?? "没有结果")
-            print(error ?? "没有错误")
-        })
     }
     
 }
@@ -464,6 +475,7 @@ extension WYAWebView {
 }
 
 extension WYAWebView {
+    
     // FIXME: 待修复问题
     /// 获取js版本号与本地做对比，更新js
     func loadJSFolder() {
