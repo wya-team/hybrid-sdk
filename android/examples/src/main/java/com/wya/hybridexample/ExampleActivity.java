@@ -1,28 +1,20 @@
 package com.wya.hybridexample;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.wya.hybridexample.data.sp.NetSP;
-import com.wya.hybridexample.data.sp.VisibleStateSP;
-import com.wya.hybridexample.util.log.DebugLogger;
-import com.wya.hybrid.JsCallBack;
 import com.wya.hybrid.WYAWebView;
-import com.wya.hybrid.bean.AppIdle;
-import com.wya.hybrid.bean.BaseEmitData;
-import com.wya.hybrid.bean.BatteryLow;
-import com.wya.hybrid.bean.BatteryStatus;
-import com.wya.hybrid.bean.NetState;
-import com.wya.hybrid.bean.Shake;
-import com.wya.hybrid.bean.TakeScreenshot;
-import com.wya.hybrid.bean.VisibleState;
+import com.wya.hybridexample.base.ActivityManager;
+import com.wya.hybridexample.data.event.ForegroundEvent;
+import com.wya.hybridexample.data.sp.ForegroundStateSP;
+import com.wya.hybridexample.permission.PermissionCallback;
+import com.wya.hybridexample.permission.PermissionCheck;
+import com.wya.hybridexample.util.log.DebugLogger;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * @date: 2019/1/16 16:18
@@ -30,126 +22,118 @@ import com.wya.hybrid.bean.VisibleState;
  * @classname: ExampleActivity
  * @describe:
  */
-public class ExampleActivity extends AppCompatActivity implements Screensaver.OnTimeOutListener {
+public class ExampleActivity extends AppCompatActivity implements PermissionCallback {
     private static final String HTML_PATH = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/";
     
-    private WYAWebView webView;
+    private WYAWebView mWebView;
     private ProgressBar progressBar;
+    private EventManager mEventManager;
     
-    private com.wya.hybridexample.Screensaver mScreensaver;
-    private com.wya.hybridexample.EventManager mEventManager;
+    /**
+     * permission
+     */
+    protected PermissionCheck permissionHelper;
+    
+    private String[] REQUEST_PERMISSIONS = new String[]{
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_PHONE_STATE,
+            android.Manifest.permission.DISABLE_KEYGUARD
+    };
+    
+    private boolean mIsFromBackground = false;
+    
+    private void checkPermission() {
+        permissionHelper.request(REQUEST_PERMISSIONS);
+    }
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example);
-        mEventManager = EventManager.get();
-        webView = findViewById(R.id.webView);
+        
+        permissionHelper = PermissionCheck.getInstance(this);
+        checkPermission();
+        
+        // webView
+        mWebView = findViewById(R.id.webView);
         progressBar = findViewById(R.id.progress_bar);
-        webView.loadUrl(HTML_PATH);
-        webView.register("debugger", new JsCallBack() {
-            @Override
-            public void response(String data, int id) {
-                DebugLogger.logWebView("data = %s , id = %s", data, id);
-                Toast.makeText(ExampleActivity.this, data, Toast.LENGTH_SHORT).show();
-                BaseEmitData<Object> emitData = new BaseEmitData<>();
-                
-                if (null == emitData) {
-                    emitData = new BaseEmitData<>();
-                }
-                emitData.setMsg("响应成功");
-                int status = 0;
-                
-                if (null != data) {
-                    emitData.setData(data);
-                    status = 1;
-                }
-                emitData.setStatus(status);
-                if (data.contains(BatteryLow.EVENT_BATTER_LOW)) {
-                    emitData = mEventManager.getBatteryLow();
-                } else if (data.contains(BatteryStatus.EVENT_BATTERY_STATUS)) {
-                    emitData = mEventManager.getBatteryStatus();
-                } else if (data.contains(NetState.EVENT_OFFLINE)) {
-                    if (!NetSP.get().isOnline()) {
-                        emitData = mEventManager.getOffline();
-                    }
-                } else if (data.contains(NetState.EVENT_ONLINE)) {
-                    if (NetSP.get().isOnline()) {
-                        emitData = mEventManager.getOffline();
-                    }
-                } else if (data.contains(VisibleState.EVENT_PAUSE)) {
-                    if (VisibleStateSP.get().isPause()) {
-                        emitData = mEventManager.getOffline();
-                    }
-                } else if (data.contains(VisibleState.EVENT_RESUME)) {
-                    if (VisibleStateSP.get().isResume()) {
-                        emitData = mEventManager.getOffline();
-                    }
-                } else if (data.contains(Shake.EVENT_SHAKE)) {
-                
-                } else if (data.contains(AppIdle.EVENT_APP_IDLE)) {
-                
-                } else if (data.contains(TakeScreenshot.EVENT_TAKE_SCREENSHOT)) {
-                    
-                }
-                
-                if (null != emitData) {
-                    emitData.setStatus(1);
-                }
-                webView.send(id, emitData);
-                
-            }
-        });
+        mWebView.loadUrl(HTML_PATH);
         
-        // 定时5秒
-        mScreensaver = new Screensaver(5000);
-        // 监听
-        mScreensaver.setOnTimeOutListener(this);
-        // 开始计时
-        mScreensaver.start();
+        // event manager
+        mEventManager = new EventManager(this, mWebView);
         
-        SensorManagerHelper sensorManagerHelper = new SensorManagerHelper(this);
-        sensorManagerHelper.setOnShakeListener(new SensorManagerHelper.OnShakeListener() {
-            @Override
-            public void onShake() {
-                Log.e("ZCQ", "onShake ");
-                playVibreate(ExampleActivity.this);
-            }
-        });
     }
     
-    private static void playVibreate(Context context) {
-        try {
-            Vibrator vibrator = (Vibrator) context.getSystemService(VIBRATOR_SERVICE);
-            if (null != vibrator) {
-                vibrator.vibrate(200);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        permissionHelper.onActivityForResult(requestCode);
+    }
+    
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+    
+    @Override
+    public void onPermissionGranted(PermissionCheck permissionCheck, String[] strings) {
+        // TODO: 2019/1/19 ZCQ TEST
+    }
+    
+    @Override
+    public void onPermissionDeclined(PermissionCheck permissionCheck, final String[] permissionName) {
+        // TODO: 2019/1/19 ZCQ TEST
+    }
+    
+    @Override
+    public void onPermissionNeedExplanation(PermissionCheck permissionCheck, final String permissionName) {
+        // TODO: 2019/1/19 ZCQ TEST
+    }
+    
+    @Override
+    public void onPermissionReallyDeclined(PermissionCheck permissionCheck, final String[] permissionName) {
+        // TODO: 2019/1/19 ZCQ TEST
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ActivityManager.getInstance().isForeground() && mIsFromBackground) {
+            DebugLogger.logEvent("onResume ... ");
+            mIsFromBackground = false;
+            ForegroundStateSP.get().setIsResume(true);
+            ForegroundStateSP.get().setIsPause(false);
+            
+            ForegroundEvent event = new ForegroundEvent();
+            event.setPause(false);
+            event.setResume(true);
+            EventBus.getDefault().post(event);
         }
     }
     
     @Override
-    public void onTimeOut(Screensaver screensaver) {
-    
-    }
-    
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        mScreensaver.resetTime();
-        return super.dispatchTouchEvent(ev);
-    }
-    
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent event) {
-        mScreensaver.resetTime();
-        return super.dispatchKeyEvent(event);
+    public void onStop() {
+        super.onStop();
+        if (!ActivityManager.getInstance().isForeground()) {
+            DebugLogger.logEvent("onStop ... ");
+            
+            mIsFromBackground = true;
+            ForegroundStateSP.get().setIsPause(true);
+            ForegroundStateSP.get().setIsResume(false);
+            
+            ForegroundEvent event = new ForegroundEvent();
+            event.setPause(true);
+            event.setResume(false);
+            EventBus.getDefault().post(event);
+        }
     }
     
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mScreensaver.stop();
+        // event manager
+        if (null != mEventManager) {
+            mEventManager.release();
+        }
     }
     
 }

@@ -3,19 +3,19 @@ package com.wya.hybridexample.data.sp;
 /**
  * @author :
  */
-public class VisibleStateSP extends BaseSP {
+public class ForegroundStateSP extends BaseSP {
     
     private static final String KEY_NET = "SP_NET";
     
-    private static VisibleStateSP INSTANCE;
+    private static ForegroundStateSP INSTANCE;
     
-    private VisibleStateSP() {
+    private ForegroundStateSP() {
         super(KEY_NET);
     }
     
-    public static VisibleStateSP get() {
+    public static ForegroundStateSP get() {
         if (null == INSTANCE) {
-            INSTANCE = new VisibleStateSP();
+            INSTANCE = new ForegroundStateSP();
         }
         return INSTANCE;
     }

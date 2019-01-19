@@ -1,17 +1,27 @@
 package com.wya.hybrid.bean;
 
 /**
- * @date: 2019/1/17 15:53
- * @author: Chunjiang Mao
- * @classname: BatteryLow
- * @describe:
+ * @author :
  */
-public class BatteryLow {
+public class Battery {
     
-    public static final String EVENT_BATTER_LOW = "batteryLow";
+    /**
+     * 低电量
+     */
+    public static final String EVENT_BATTERY_LOW = "batteryLow";
     
+    /**
+     * 电池状态
+     */
+    public static final String EVENT_BATTERY_STATUS = "batteryStatus";
+    /**
+     * 电池电量（0 - 100）
+     */
     private int level;
     
+    /**
+     * 是否连接电源
+     */
     private boolean isPlugged;
     
     public int getLevel() {
@@ -32,10 +42,9 @@ public class BatteryLow {
     
     @Override
     public String toString() {
-        return "BatteryLow{" +
+        return "Battery{" +
                 "level=" + level +
                 ", isPlugged=" + isPlugged +
                 '}';
     }
-    
 }

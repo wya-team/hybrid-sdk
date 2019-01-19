@@ -2,10 +2,9 @@ package com.wya.hybridexample.base;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.wya.hybridexample.control.BatteryLevelReceiver;
+import com.wya.hybridexample.control.BatteryReceiver;
 import com.wya.hybridexample.control.NetworkReceiver;
 import com.wya.hybridexample.control.ScreenReceiver;
 import com.wya.hybridexample.util.SystemUtil;
@@ -31,9 +30,16 @@ public class BaseApp extends Application {
         // log
         WYALog.init();
         
+        // activity manager
+        ActivityManager.init(this);
+        
         // network
         registerNetworkReceiver();
+        
+        // battery
         registerBatteryReceiver();
+        
+        // screen
         registerSreenReceiver();
     }
     
@@ -47,23 +53,18 @@ public class BaseApp extends Application {
     }
     
     private void registerBatteryReceiver() {
-        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        BatteryLevelReceiver receiver = new BatteryLevelReceiver();
+        IntentFilter filter = new IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED);
+        BatteryReceiver receiver = new BatteryReceiver();
         registerReceiver(receiver, filter);
     }
     
     public void registerSreenReceiver() {
-        /**
-         * 注册屏幕设备开屏/锁屏的状态监听
-         */
-        IntentFilter filter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        filter.addAction(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        filter.addAction(Intent.ACTION_USER_PRESENT);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(android.content.Intent.ACTION_SCREEN_ON);
+        filter.addAction(android.content.Intent.ACTION_SCREEN_OFF);
+        filter.addAction(android.content.Intent.ACTION_USER_PRESENT);
         ScreenReceiver receiver = new ScreenReceiver();
         registerReceiver(receiver, filter);
-        
-        //initScreenState(); //可选
     }
     
     public static BaseApp getApp() {

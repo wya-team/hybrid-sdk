@@ -6,7 +6,7 @@ package com.wya.hybridexample.util.log;
 public class DebugLogger {
     
     private static final String TAG_NET = "NET";
-    private static final String TAG_WEBVIEW = "WEBVIEW";
+    private static final String TAG_EVENT = "EVENT";
     private static final String TAG_BATTERY = "BATTERY";
     private static final String TAG_SCREEN = "SCEEN";
     
@@ -18,9 +18,9 @@ public class DebugLogger {
         }
     }
     
-    public static void logWebView(String message, Object... args) {
+    public static void logEvent(String message, Object... args) {
         try {
-            WYALog.t(TAG_WEBVIEW).e(message, args);
+            WYALog.t(TAG_EVENT).e(message, args);
         } catch (Exception e) {
             e.printStackTrace();
         }

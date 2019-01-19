@@ -1,16 +1,26 @@
-package com.wya.hybrid.bean;
-
+package com.wya.hybridexample.data.event;
 
 /**
  * @author :
  */
-public class BatteryStatus {
+public class BatteryEvent {
     
-    public static final String EVENT_BATTERY_STATUS = "batteryStatus";
+    /**
+     * 是否低电量
+     */
+    private boolean isBatteryLow;
     
     private int level;
     
     private boolean isPlugged;
+    
+    public boolean isBatteryLow() {
+        return isBatteryLow;
+    }
+    
+    public void setBatteryLow(boolean batteryLow) {
+        isBatteryLow = batteryLow;
+    }
     
     public int getLevel() {
         return level;
@@ -26,14 +36,6 @@ public class BatteryStatus {
     
     public void setIsPlugged(boolean plugged) {
         isPlugged = plugged;
-    }
-    
-    @Override
-    public String toString() {
-        return "BatteryLow{" +
-                "level=" + level +
-                ", isPlugged=" + isPlugged +
-                '}';
     }
     
 }

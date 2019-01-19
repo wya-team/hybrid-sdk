@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.wya.hybridexample.data.event.NetEvent;
 import com.wya.hybridexample.data.sp.NetSP;
 import com.wya.hybridexample.util.log.DebugLogger;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author :
@@ -50,6 +53,10 @@ public class NetworkReceiver extends BroadcastReceiver {
                 //                    }
                 //                }
                 NetSP.get().setIsOnline(isOnline);
+                
+                NetEvent event = new NetEvent();
+                event.setOnline(isOnline);
+                EventBus.getDefault().post(event);
             }
         }
     }

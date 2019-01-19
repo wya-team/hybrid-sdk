@@ -64,7 +64,8 @@ public class WYAWebView extends WebView {
         initBean.setAppVersion(AppUtil.getVersionName(mContext));
         initBean.setSystemType("android");
         initBean.setSystemVersion(PhoneUtil.getInstance().getSDKVersion());
-//        initBean.setDeviceId(PhoneUtil.getInstance().getPhoneImei(mContext));
+        // TODO: 2019/1/19 ZCQ TEST
+        //        initBean.setDeviceId(PhoneUtil.getInstance().getPhoneImei(mContext));
         initBean.setDeviceModel(PhoneUtil.getInstance().getPhoneModel());
         initBean.setDeviceName(TextUtils.isEmpty(android.os.Build.DEVICE) ? "" : android.os.Build.DEVICE);
         initBean.setUiMode(PhoneUtil.getInstance().isTablet(mContext) ? "pad" : "phone");

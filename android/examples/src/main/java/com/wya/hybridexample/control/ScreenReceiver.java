@@ -4,33 +4,53 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.wya.hybridexample.data.event.AppIdleEvent;
+import com.wya.hybridexample.data.sp.ScreenSP;
+import com.wya.hybridexample.util.RxTimerUtil;
 import com.wya.hybridexample.util.log.DebugLogger;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author :
  */
 public class ScreenReceiver extends BroadcastReceiver {
-	
-	@Override
-	public void onReceive(Context context, Intent intent) {
-		DebugLogger.logScreen(" onReceive ");
-		
-		String action = intent.getAction();
-		if (Intent.ACTION_SCREEN_ON.equals(action)) {
-			/**
-			 * 屏幕亮
-			 */
-			DebugLogger.logScreen(" ACTION_SCREEN_ON ");
-		} else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
-			/**
-			 * 屏幕锁定
-			 */
-			DebugLogger.logScreen(" ACTION_SCREEN_OFF ");
-		} else if (Intent.ACTION_USER_PRESENT.equals(action)) {
-			/**
-			 * 屏幕解锁了且可以使用
-			 */
-			DebugLogger.logScreen(" ACTION_USER_PRESENT ");
-		}
-	}
+    
+    private static final int KEY_STATE_SCREEN_ON = 0;
+    private static final int KEY_STATE_SCREEN_OFF = 1;
+    private static final int KEY_STATE_USER_PERSENT = 2;
+    
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        DebugLogger.logScreen(" onReceive ");
+        String action = intent.getAction();
+        int state = -1;
+        AppIdleEvent event = null;
+        if (Intent.ACTION_SCREEN_ON.equals(action)) {
+            // 屏幕亮
+            DebugLogger.logScreen(" ACTION_SCREEN_ON ");
+            state = KEY_STATE_SCREEN_ON;
+            event = new AppIdleEvent();
+            event.stateScreenOn = true;
+        } else if (Intent.ACTION_SCREEN_OFF.equals(action)) {
+            //  屏幕锁定
+            DebugLogger.logScreen(" ACTION_SCREEN_OFF ");
+            state = KEY_STATE_SCREEN_OFF;
+            event = new AppIdleEvent();
+            event.stateScreenOff = true;
+        } else if (Intent.ACTION_USER_PRESENT.equals(action)) {
+            // 屏幕解锁了且可以使用
+            DebugLogger.logScreen(" ACTION_USER_PRESENT ");
+            state = KEY_STATE_USER_PERSENT;
+            event = new AppIdleEvent();
+            event.stateUserPresent = true;
+        }
+        ScreenSP.get().setScreenState(state);
+        if (event != null) {
+            AppIdleEvent finalEvent = event;
+            RxTimerUtil.timer(3000L, aLong -> {
+                EventBus.getDefault().post(finalEvent);
+            });
+        }
+    }
 }

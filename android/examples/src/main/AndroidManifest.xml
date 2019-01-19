@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.wya.hybridexample">
 
+    <!-- TODO ZCQ -->
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -40,18 +44,19 @@
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.wya.hybridexample.control.BatteryLevelReceiver">
+        <receiver android:name="com.wya.hybridexample.control.BatteryReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_BATTERY_LOW" />
-                <action android:name="android.intent.action.ACTION_BATTERY_OKAY" />
-                <action android:name="android.intent.action.ACTION_BATTERY_CHANGED" />
+                <action android:name="android.content.Intent.ACTION_BATTERY_LOW" />
+                <action android:name="android.content.Intent.ACTION_BATTERY_OKAY" />
+                <action android:name="android.content.Intent.ACTION_BATTERY_CHANGED" />
             </intent-filter>
         </receiver>
+
         <receiver android:name="com.wya.hybridexample.control.ScreenReceiver">
             <intent-filter>
-                <action android:name="ACTION_SCREEN_ON" />
-                <action android:name="ACTION_SCREEN_OFF" />
-                <action android:name="ACTION_USER_PRESENT" />
+                <action android:name="android.content.Intent.ACTION_SCREEN_ON" />
+                <action android:name="android.content.Intent.ACTION_SCREEN_OFF" />
+                <action android:name="android.content.Intent.ACTION_USER_PRESENT" />
             </intent-filter>
         </receiver>
 

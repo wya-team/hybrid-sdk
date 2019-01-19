@@ -12,15 +12,6 @@ public class BaseEmitData<T> {
      */
     private int status = 1;
     
-    @Override
-    public String toString() {
-        return "BaseEmitData{" +
-                "status=" + status +
-                ", msg='" + msg + '\'' +
-                ", data=" + data +
-                '}';
-    }
-    
     /**
      * 默认响应成功
      */
@@ -50,6 +41,15 @@ public class BaseEmitData<T> {
     
     public void setData(T data) {
         this.data = data;
+    }
+    
+    @Override
+    public String toString() {
+        return "BaseEmitData{" +
+                "status=" + status +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
     }
     
 }
