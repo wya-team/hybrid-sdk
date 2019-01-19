@@ -87,7 +87,7 @@ extension UIDevice {
     }
 }
 
-public struct frame {
+public struct safeFrame {
     var left: Float
     var right: Float
     var top: Float
@@ -177,7 +177,7 @@ public class SystemConfig: NSObject {
 
     public let frameHeight: Float? = nil //frame 高度，环境为window时，与winHeight 相同
 
-    public let safeArea = frame(left: 0, right: 0, top: 44, bottom: 34)
+    public var safeArea = safeFrame(left: 0, right: 0, top: 0, bottom: 0)
 
     public let pageParam: [String: String]? = nil //页面参数, 获取页面间传递的参数值，为 openWin()、openFrame() 等方法
 
@@ -235,20 +235,6 @@ public class SystemConfig: NSObject {
         params.updateValue(self.frameName ?? "", forKey: "frameName")
         params.updateValue(self.frameWidth ?? 0, forKey: "frameWidth")
         params.updateValue(self.frameHeight ?? 0, forKey: "frameHeight")
-        
-        switch UIDevice.current.orientation {
-        case .portrait:
-            
-            break
-        case .portraitUpsideDown:
-            break
-        case .landscapeLeft:
-            break
-        case .landscapeRight:
-            break
-        default:
-            break
-        }
         
         var safe = [String : Float]()
         safe.updateValue(self.safeArea.left, forKey: "left")

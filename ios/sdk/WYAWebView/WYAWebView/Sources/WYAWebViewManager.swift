@@ -122,29 +122,30 @@ extension WYAWebViewManager {
             var subParams = [String: Any]()
 
             if device.batteryLevel <= 0.2 {
-                subParams.updateValue(device.batteryLevel, forKey: "level")
+                subParams.updateValue(device.batteryLevel * 100, forKey: "level")
+                
+                switch device.batteryState {
+                case .unknown:
+                    subParams.updateValue(false, forKey: "isPlugged")
+                    break
+                    
+                case .unplugged:
+                    subParams.updateValue(false, forKey: "isPlugged")
+                    break
+                    
+                case .charging:
+                    subParams.updateValue(true, forKey: "isPlugged")
+                    break
+                    
+                case .full:
+                    subParams.updateValue(false, forKey: "isPlugged")
+                    break
+                }
+                params.updateValue(subParams, forKey: "data")
+                
+                self.listenAction("batteryStatus", params)
             }
 
-            switch device.batteryState {
-            case .unknown:
-                subParams.updateValue(false, forKey: "isPlugged")
-                break
-
-            case .unplugged:
-                subParams.updateValue(false, forKey: "isPlugged")
-                break
-
-            case .charging:
-                subParams.updateValue(true, forKey: "isPlugged")
-                break
-
-            case .full:
-                subParams.updateValue(false, forKey: "isPlugged")
-                break
-            }
-            params.updateValue(subParams, forKey: "data")
-
-            self.listenAction("batteryStatus", params)
         }
 
         note.addObserver(forName: NSNotification.Name.UIDeviceBatteryStateDidChange, object: nil, queue: OperationQueue.main) { not in
@@ -157,7 +158,7 @@ extension WYAWebViewManager {
             params.updateValue("调用成功", forKey: "msg")
 
             var subParams = [String: Any]()
-            subParams.updateValue(device.batteryLevel, forKey: "level")
+            subParams.updateValue(device.batteryLevel * 100, forKey: "level")
             switch device.batteryState {
             case .unknown:
                 subParams.updateValue(false, forKey: "isPlugged")
@@ -222,40 +223,45 @@ extension WYAWebViewManager {
         note.addObserver(forName: NSNotification.Name.UIKeyboardWillShow, object: nil, queue: OperationQueue.main) { _ in
             // 键盘弹出
             print("键盘将要弹出")
-            var params = [String: Any]()
-            params.updateValue("1", forKey: "status")
-            params.updateValue("调用成功", forKey: "msg")
-
-            let inParams = [String: Any]()
-            params.updateValue(inParams, forKey: "data")
-
-            self.listenAction("", params)
+//            var params = [String: Any]()
+//            params.updateValue("1", forKey: "status")
+//            params.updateValue("调用成功", forKey: "msg")
+//
+//            let inParams = [String: Any]()
+//            params.updateValue(inParams, forKey: "data")
+//
+//            self.listenAction("", params)
         }
 
-        note.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: OperationQueue.main) { _ in
+        note.addObserver(forName: NSNotification.Name.UIKeyboardDidShow, object: nil, queue: OperationQueue.main) { not in
             // 键盘弹出
             print("键盘已经弹出")
+           
+            let rect = not.userInfo?[UIKeyboardFrameEndUserInfoKey] as! CGRect
+            let height = rect.size.height
+            
             var params = [String: Any]()
             params.updateValue("1", forKey: "status")
             params.updateValue("调用成功", forKey: "msg")
 
-            let inParams = [String: Any]()
+            var inParams = [String: Any]()
+            inParams.updateValue(height, forKey: "height")
             params.updateValue(inParams, forKey: "data")
-
+            
             self.listenAction("keyboardShow", params)
         }
 
         note.addObserver(forName: NSNotification.Name.UIKeyboardWillHide, object: nil, queue: OperationQueue.main) { _ in
             // 键盘将要消失
             print("键盘将要消失")
-            var params = [String: Any]()
-            params.updateValue("1", forKey: "status")
-            params.updateValue("调用成功", forKey: "msg")
-
-            let inParams = [String: Any]()
-            params.updateValue(inParams, forKey: "data")
-
-            self.listenAction("", params)
+//            var params = [String: Any]()
+//            params.updateValue("1", forKey: "status")
+//            params.updateValue("调用成功", forKey: "msg")
+//
+//            let inParams = [String: Any]()
+//            params.updateValue(inParams, forKey: "data")
+//
+//            self.listenAction("", params)
         }
 
         note.addObserver(forName: NSNotification.Name.UIKeyboardDidHide, object: nil, queue: OperationQueue.main) { _ in

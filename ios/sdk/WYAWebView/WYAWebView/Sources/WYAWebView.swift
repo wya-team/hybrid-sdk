@@ -30,7 +30,10 @@ public class WYAWebView: UIView {
     let userContentControll = WKUserContentController()
     /// 记录加载在哪个控制器的
     public var vc: UIViewController?
-
+    
+    var contentHeight : Double?
+    
+    
     /// 进度条
     var progressView: UIProgressView = {
         let progress = UIProgressView()
@@ -55,10 +58,10 @@ public class WYAWebView: UIView {
         self.webView!.scrollView.showsVerticalScrollIndicator = false
         self.webView!.scrollView.showsHorizontalScrollIndicator = false
         self.addSubview(self.webView!)
-        
+
         self.addSubview(self.progressView)
-        
-        //在调用相机显示的时候设置：isOpaque  scrollView.backgroundColor
+
+        // 在调用相机显示的时候设置：isOpaque  scrollView.backgroundColor
         webView = WKWebView(frame: .zero, configuration: config)
         webView!.uiDelegate = self as WKUIDelegate
         webView!.navigationDelegate = self as WKNavigationDelegate
@@ -92,11 +95,11 @@ public class WYAWebView: UIView {
     public override func layoutSubviews() {
         super.layoutSubviews()
 
-        webView?.snp.makeConstraints({ make in
+        self.webView?.snp.makeConstraints({ make in
             make.edges.equalTo(UIEdgeInsetsMake(0, 0, 0, 0))
         })
 
-        progressView.snp.makeConstraints { make in
+        self.progressView.snp.makeConstraints { make in
             make.left.right.top.equalTo(self)
             make.height.equalTo(1)
         }
@@ -150,15 +153,15 @@ extension WYAWebView {
         } catch {
             print(error)
         }
-        webView!.loadHTMLString(path, baseURL: Bundle.main.bundleURL)
+        self.webView!.loadHTMLString(path, baseURL: Bundle.main.bundleURL)
     }
 
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "estimatedProgress" {
-            progressView.alpha = 1
+            self.progressView.alpha = 1
             let animated = (webView?.estimatedProgress)! > Double(progressView.progress)
             progressView.setProgress(Float((webView?.estimatedProgress)!), animated: animated)
-            if webView!.estimatedProgress >= 1.0 {
+            if self.webView!.estimatedProgress >= 1.0 {
                 UIView.animate(withDuration: 0.3, delay: 0.3, options: .curveEaseOut, animations: {
                     self.progressView.alpha = 0.0
                 }) { _ in
@@ -297,7 +300,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             let dic = webManager.cutString(urlString: url!)
 
             actionID = (dic["id"] as! String)
-            guard actionID != nil else { return }
+            guard self.actionID != nil else { return }
 
             let arrContain = dic.allKeys.contains { (string) -> Bool in
                 if (string as! String) == "method" {
@@ -308,7 +311,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             }
 
             if arrContain {
-                getParams(actionID!) { params in
+                self.getParams(self.actionID!) { params in
                     // 获取到参数执行调用原生
                     self.webManager.nativeAction(dic["method"] as! String, params: params as! [String: String])
                 }
@@ -326,17 +329,9 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     ///   - navigationResponse: 响应数据
     ///   - decisionHandler: 回调
     public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Swift.Void) {
-        
 //        self.webManager.backBtnPressed()
         decisionHandler(WKNavigationResponsePolicy.allow)
-        
     }
-
-    
-    
-    
-
-
 
     /// 链接开始加载时调用（ios8）
     ///
@@ -344,7 +339,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     ///   - webView: webView
     ///   - navigation: <#navigation description#>
     public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        progressView.isHidden = false
+        self.progressView.isHidden = false
     }
 
     /// 收到服务器重定向时调用（ios8）
@@ -379,6 +374,15 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         print("加载完成")
 
+        webView.evaluateJavaScript("document.body.scrollHeight") { (result, error) in
+            
+            if let tempHeight: Double = result as? Double {
+                self.contentHeight = tempHeight
+            }
+            
+        }
+        
+        
         var dataParams = webManager.config.getSystemConfigDic()
 
         if (frame.size.width == UIScreen.main.bounds.size.width) || (frame.size.height == UIScreen.main.bounds.size.height) {
@@ -386,8 +390,18 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
         } else {
             dataParams.updateValue(false, forKey: "fullScreen")
         }
-        
-        
+        var safe = [String: Float]()
+        // FIXME: 安全区域需要根据情况计算
+        if #available(iOS 11, *) {
+            print(self.safeAreaLayoutGuide.layoutFrame)
+            print(self.safeAreaInsets)
+            safe.updateValue(Float(self.safeAreaInsets.top), forKey: "top")
+            safe.updateValue(Float(self.safeAreaInsets.bottom), forKey: "bottom")
+            safe.updateValue(Float(self.safeAreaInsets.left), forKey: "left")
+            safe.updateValue(Float(self.safeAreaInsets.right), forKey: "right")
+            dataParams.updateValue(safe, forKey: "safeArea")
+        }
+
         var outParams = [String: Any]()
         outParams.updateValue(1, forKey: "status")
         outParams.updateValue(dataParams, forKey: "data")
@@ -429,7 +443,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         print("终止")
     }
-    
 }
 
 // MARK: 负责处理scrollView的代理
@@ -437,7 +450,10 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 extension WYAWebView: UIScrollViewDelegate {
     // MARK: UIScrollViewDelegate
 
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {}
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y)
+        
+    }
 
     /// 回到头部
     ///
@@ -459,8 +475,8 @@ extension WYAWebView: WebViewDelegate {
 
         DispatchQueue.main.async {
             self.webView?.evaluateJavaScript(jsString, completionHandler: { result, error in
-                print(result ?? "没有结果")
-                print(error ?? "没有错误")
+//                print(result ?? "没有结果")
+//                print(error ?? "没有错误")
             })
         }
     }
@@ -558,12 +574,4 @@ extension WYAWebView {
             }
         }
     }
-}
-
-// MARK: 摇晃状态
-
-public enum ShakeState {
-    case shakeStart
-    case shakeEnd
-    case shakeCancel
 }
