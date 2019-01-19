@@ -54,3 +54,7 @@ obj/
 *~
 
  ../.idea/workspace.xml
+ ../.idea/libraries/0.xml
+ ../.idea/libraries/debug.xml
+ ../.idea/libraries/debug1.xml
+
