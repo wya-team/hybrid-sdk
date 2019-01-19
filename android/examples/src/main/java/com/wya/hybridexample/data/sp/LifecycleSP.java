@@ -1,36 +1,30 @@
-package com.wya.example.data.sp;
+package com.wya.hybridexample.data.sp;
 
 /**
  * @author :
  */
-public class VisibleStateSP extends BaseSP {
+public class LifecycleSP extends BaseSP {
     
-    private static final String KEY_NET = "SP_NET";
+    private static final String KEY_LIFECYCLE = "SP_LIFECYCLE";
     
-    private static VisibleStateSP INSTANCE;
+    private static LifecycleSP INSTANCE;
     
-    private VisibleStateSP() {
-        super(KEY_NET);
+    private LifecycleSP() {
+        super(KEY_LIFECYCLE);
     }
     
-    public static VisibleStateSP get() {
+    public static LifecycleSP get() {
         if (null == INSTANCE) {
-            INSTANCE = new VisibleStateSP();
+            INSTANCE = new LifecycleSP();
         }
         return INSTANCE;
     }
     
-    /**
-     * 应用进入后台
-     */
     private static final String KEY_IS_PAUSE = "IS_PAUSE";
-    /**
-     * 应用从后台回到前台
-     */
     private static final String KEY_IS_RESUME = "IS_RESUME";
     
     public boolean isPause() {
-        return getBoolean(KEY_IS_PAUSE, true);
+        return getBoolean(KEY_IS_PAUSE, false);
     }
     
     public void setIsPause(boolean isPause) {
@@ -38,11 +32,10 @@ public class VisibleStateSP extends BaseSP {
     }
     
     public boolean isResume() {
-        return getBoolean(KEY_IS_RESUME, true);
+        return getBoolean(KEY_IS_RESUME, false);
     }
     
     public void setIsResume(boolean isResume) {
         putBoolean(KEY_IS_RESUME, isResume);
     }
-    
 }

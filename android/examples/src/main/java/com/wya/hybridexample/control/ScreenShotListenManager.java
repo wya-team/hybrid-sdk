@@ -1,4 +1,4 @@
-package com.wya.example.control;
+package com.wya.hybridexample.control;
 
 import android.content.Context;
 import android.database.ContentObserver;
@@ -14,7 +14,7 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.wya.example.base.BaseApp;
+import com.wya.hybridexample.base.BaseApp;
 
 import java.lang.reflect.Method;
 

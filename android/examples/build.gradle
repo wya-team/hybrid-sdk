@@ -4,7 +4,7 @@ def depends = rootProject.ext.depends
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.wya.example"
+        applicationId "com.wya.hybridexample"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1

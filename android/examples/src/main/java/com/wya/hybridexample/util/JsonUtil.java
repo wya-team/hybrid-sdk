@@ -1,4 +1,4 @@
-package com.wya.example.util;
+package com.wya.hybridexample.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

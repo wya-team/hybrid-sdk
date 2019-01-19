@@ -1,4 +1,4 @@
-package com.wya.example;
+package com.wya.hybridexample;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,9 +10,9 @@ import android.view.MotionEvent;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.wya.example.data.sp.NetSP;
-import com.wya.example.data.sp.VisibleStateSP;
-import com.wya.example.util.log.DebugLogger;
+import com.wya.hybridexample.data.sp.NetSP;
+import com.wya.hybridexample.data.sp.VisibleStateSP;
+import com.wya.hybridexample.util.log.DebugLogger;
 import com.wya.hybrid.JsCallBack;
 import com.wya.hybrid.WYAWebView;
 import com.wya.hybrid.bean.AppIdle;
@@ -36,8 +36,8 @@ public class ExampleActivity extends AppCompatActivity implements Screensaver.On
     private WYAWebView webView;
     private ProgressBar progressBar;
     
-    private Screensaver mScreensaver;
-    private EventManager mEventManager;
+    private com.wya.hybridexample.Screensaver mScreensaver;
+    private com.wya.hybridexample.EventManager mEventManager;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {

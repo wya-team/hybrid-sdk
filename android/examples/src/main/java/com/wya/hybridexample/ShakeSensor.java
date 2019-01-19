@@ -1,5 +1,5 @@
 
-package com.wya.example;
+package com.wya.hybridexample;
 
 /**
  * @Title: ShakeListener.java

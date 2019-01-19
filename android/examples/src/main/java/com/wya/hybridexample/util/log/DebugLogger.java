@@ -1,4 +1,4 @@
-package com.wya.example.util.log;
+package com.wya.hybridexample.util.log;
 
 /**
  * @author :

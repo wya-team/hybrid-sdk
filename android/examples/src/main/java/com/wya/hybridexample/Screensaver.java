@@ -1,4 +1,4 @@
-package com.wya.example;
+package com.wya.hybridexample;
 
 import android.os.Handler;
 import android.os.Message;

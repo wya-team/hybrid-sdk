@@ -1,11 +1,11 @@
-package com.wya.example.data.sp;
+package com.wya.hybridexample.data.sp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import com.wya.example.base.BaseApp;
-import com.wya.example.util.JsonUtil;
+import com.wya.hybridexample.base.BaseApp;
+import com.wya.hybridexample.util.JsonUtil;
 
 import java.util.Map;
 import java.util.Set;

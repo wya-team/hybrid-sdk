@@ -1,10 +1,10 @@
-package com.wya.example.control;
+package com.wya.hybridexample.control;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.wya.example.util.log.DebugLogger;
+import com.wya.hybridexample.util.log.DebugLogger;
 
 /**
  * @author :

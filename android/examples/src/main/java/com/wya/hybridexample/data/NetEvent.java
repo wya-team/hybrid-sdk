@@ -1,4 +1,4 @@
-package com.wya.example.data;
+package com.wya.hybridexample.data;
 
 /**
  * @author :

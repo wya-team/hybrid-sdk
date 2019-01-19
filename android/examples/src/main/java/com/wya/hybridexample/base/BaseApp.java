@@ -1,16 +1,19 @@
-package com.wya.example.base;
+package com.wya.hybridexample.base;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.wya.example.control.BatteryLevelReceiver;
-import com.wya.example.control.NetworkReceiver;
-import com.wya.example.control.ScreenReceiver;
-import com.wya.example.util.SystemUtil;
-import com.wya.example.util.log.WYALog;
+import com.wya.hybridexample.control.BatteryLevelReceiver;
+import com.wya.hybridexample.control.NetworkReceiver;
+import com.wya.hybridexample.control.ScreenReceiver;
+import com.wya.hybridexample.util.SystemUtil;
+import com.wya.hybridexample.util.log.WYALog;
 
+/**
+ * @author :
+ */
 public class BaseApp extends Application {
     
     private static BaseApp APPLICATION;

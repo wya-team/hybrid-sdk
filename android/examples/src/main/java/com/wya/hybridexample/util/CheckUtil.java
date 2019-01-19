@@ -1,4 +1,4 @@
-package com.wya.example.util;
+package com.wya.hybridexample.util;
 
 import android.app.Activity;
 import android.content.Context;

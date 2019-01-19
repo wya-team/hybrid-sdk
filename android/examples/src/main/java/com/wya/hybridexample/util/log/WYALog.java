@@ -1,4 +1,4 @@
-package com.wya.example.util.log;
+package com.wya.hybridexample.util.log;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;

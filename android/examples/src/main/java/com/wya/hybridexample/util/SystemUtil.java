@@ -1,4 +1,4 @@
-package com.wya.example.util;
+package com.wya.hybridexample.util;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -11,7 +11,7 @@ import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-import com.wya.example.base.BaseApp;
+import com.wya.hybridexample.base.BaseApp;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

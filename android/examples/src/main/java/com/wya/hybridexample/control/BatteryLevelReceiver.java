@@ -1,12 +1,12 @@
-package com.wya.example.control;
+package com.wya.hybridexample.control;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
 
-import com.wya.example.data.sp.BatterySP;
-import com.wya.example.util.log.DebugLogger;
+import com.wya.hybridexample.data.sp.BatterySP;
+import com.wya.hybridexample.util.log.DebugLogger;
 
 /**
  * @author :

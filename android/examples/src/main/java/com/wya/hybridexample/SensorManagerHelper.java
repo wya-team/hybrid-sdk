@@ -1,4 +1,4 @@
-package com.wya.example;
+package com.wya.hybridexample;
 
 import android.content.Context;
 import android.hardware.Sensor;
