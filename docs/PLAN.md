@@ -87,7 +87,7 @@
 
 事件 | 说明  | 开发 | Android | iOS
 ---|---|---|---|---
-[batteryow][batteryow] | 低电量 | 1 | 0 | 0
+[batteryLow][batteryLow] | 低电量 | 1 | 0 | 0
 [batteryStatus][batteryStatus] | 电池状态，如电量变化或正在充电 | 1 | 0 | 0
 [offline][offline] | 监听设备断开网络 | 1 | 0 | 0
 [online][online] | 监听设备连接到网络 | 1 | 0 | 0
@@ -113,7 +113,7 @@
 [keyboardHide][keyboardHide] |  系统键盘隐藏的回调 | 1 | 0 | 0
 [safeAreaChange][safeAreaChange] |  安全区域发生变化的回调(iOS11) | 0 | 0 | 0
 
-[batteryow]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/batteryow.md
+[batteryLow]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/batteryLow.md
 [batteryStatus]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/batteryStatus.md
 [offline]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/offline.md
 [online]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/online.md
