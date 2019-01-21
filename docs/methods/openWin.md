@@ -1,11 +1,21 @@
 #### 1. 说明
 
-~
+打开window
+若window已存在，则会把该window显示到最前面，同时若url有变化或者reload参数为true时，页面会重新加载。
+
 
 #### 2. Client传递参数给Native
 
 ```javascript
 {
+	name: '',
+	url: '',
+	data: '',
+	headers: '',
+	useWKWebView: false,
+	singleInstance: false,
+	historyGestureEnabled: false,
+	pageParam: '',
 	// ....
 }
 ```
