@@ -8,9 +8,6 @@ import android.view.KeyEvent;
 import android.widget.ProgressBar;
 
 import com.wya.hybrid.WYAWebView;
-import com.wya.hybrid.bean.KeyBack;
-import com.wya.hybrid.bean.VolumeDown;
-import com.wya.hybrid.bean.VolumeUp;
 import com.wya.hybridexample.base.ActivityManager;
 import com.wya.hybridexample.data.event.ForegroundEvent;
 import com.wya.hybridexample.data.sp.ForegroundStateSP;
@@ -144,13 +141,13 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 			case KeyEvent.KEYCODE_BACK:
-				setKeyBack(keyCode);
+				mEventManager.keyBack(keyCode);
 				return false;
 			case KeyEvent.KEYCODE_VOLUME_UP:
-				setVolumeUp(keyCode);
+				mEventManager.volumeUp(keyCode);
 				return false;
 			case KeyEvent.KEYCODE_VOLUME_DOWN:
-				setVolumeDown(keyCode);
+				mEventManager.volumeDown(keyCode);
 				return false;
 			case KeyEvent.KEYCODE_MENU:
 
@@ -161,28 +158,4 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		return super.onKeyDown(keyCode, event);
 	}
 
-	private void setVolumeDown(int keyCode) {
-		VolumeDown volumeDown = new VolumeDown();
-		volumeDown.setKeyCode(keyCode);
-		volumeDown.setLongPress(false);
-		mWebView.send(VolumeDown.EVENT_VOLUME_DOWN, volumeDown);
-	}
-
-	private void setVolumeUp(int keyCode) {
-		VolumeUp volumeUp = new VolumeUp();
-		volumeUp.setKeyCode(keyCode);
-		volumeUp.setLongPress(false);
-		mWebView.send(VolumeUp.EVENT_VOLUME_UP, volumeUp);
-	}
-
-	/**
-	 * 返回按钮
-	 * @param keyCode
-	 */
-	private void setKeyBack(int keyCode) {
-		KeyBack keyBack = new KeyBack();
-		keyBack.setKeyCode(keyCode);
-		keyBack.setLongPress(false);
-		mWebView.send(KeyBack.EVENT_KEY_BACK, keyBack);
-	}
 }
