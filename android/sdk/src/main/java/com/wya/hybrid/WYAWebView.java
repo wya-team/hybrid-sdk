@@ -58,11 +58,11 @@ public class WYAWebView extends WebView {
 		this.setVerticalScrollBarEnabled(false);
 		this.setHorizontalScrollBarEnabled(false);
 		this.getSettings().setJavaScriptEnabled(true);
+		this.getSettings().setDomStorageEnabled(true);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 			WebView.setWebContentsDebuggingEnabled(true);
 		}
 		this.setWebViewClient(wyaWebViewClient());
-		this.setWebChromeClient(wyaWebChromeClient());
 		initData();
 		setKeyBoardListener();
 	}
@@ -85,10 +85,6 @@ public class WYAWebView extends WebView {
 		initBean.setScreenWidth(PhoneUtil.getInstance().getPhoneWidth(mContext));
 		initBean.setScreenHeight(PhoneUtil.getInstance().getPhoneHeight(mContext));
 		baseEmitData.setData(initBean);
-	}
-
-	private WYAWebChromeClient wyaWebChromeClient() {
-		return new WYAWebChromeClient(this);
 	}
 
 	private WYAWebViewClient wyaWebViewClient() {

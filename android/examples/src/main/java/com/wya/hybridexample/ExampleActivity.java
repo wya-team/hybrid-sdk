@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
+import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.wya.hybrid.WYAWebView;
@@ -25,6 +28,7 @@ import org.greenrobot.eventbus.EventBus;
  */
 public class ExampleActivity extends AppCompatActivity implements PermissionCallback {
 	private static final String HTML_PATH = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/";
+	private static final int PROGRESS_MAX = 100;
 
 	private WYAWebView mWebView;
 	private ProgressBar progressBar;
@@ -57,12 +61,32 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 
 		// webView
 		mWebView = findViewById(R.id.webView);
-		progressBar = findViewById(R.id.progress_bar);
+
 		mWebView.loadUrl(HTML_PATH);
 
 		// event manager
 		mEventManager = new EventManager(this, mWebView);
 
+		setProgress();
+
+	}
+
+	/**
+	 * 设置网页加载进度条
+	 */
+	private void setProgress() {
+		progressBar = findViewById(R.id.progress_bar);
+		mWebView.setWebChromeClient(new WebChromeClient() {
+			@Override
+			public void onProgressChanged(WebView view, int newProgress) {
+				if (newProgress != PROGRESS_MAX) {
+					progressBar.setProgress(newProgress);
+					progressBar.setVisibility(View.VISIBLE);
+				} else {
+					progressBar.setVisibility(View.GONE);
+				}
+			}
+		});
 	}
 
 	@Override
