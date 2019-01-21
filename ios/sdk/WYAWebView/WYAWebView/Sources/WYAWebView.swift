@@ -10,7 +10,7 @@ import MJRefresh
 import SnapKit
 import UIKit
 import WebKit
-
+import GCDWebServer
 /// 初始版本号
 fileprivate let jsBuildVersion = 0.1
 
@@ -32,7 +32,6 @@ public class WYAWebView: UIView {
     public var vc: UIViewController?
     
     var contentHeight : Double?
-    
     
     /// 进度条
     var progressView: UIProgressView = {
@@ -561,7 +560,7 @@ extension WYAWebView {
                 let bund = Bundle(for: classForCoder)
 
                 let jsString = bund.path(forResource: jsName, ofType: "js")
-
+                print(jsString)
                 var jsPath = String()
                 do {
                     jsPath = try String(contentsOfFile: jsString!)
@@ -574,4 +573,49 @@ extension WYAWebView {
             }
         }
     }
+    
+    public func openLocationHttpServer() {
+        let bund = Bundle(for: classForCoder)
+        let websitePath = bund.path(forResource: "dist", ofType: nil)
+
+        let webServer = GCDWebServer()
+
+        //先设置个默认的handler处理静态文件（比如css、js、图片等）
+        webServer.addGETHandler(forBasePath: "/", directoryPath: websitePath!,
+                                indexFilename: nil, cacheAge: 3600,
+                                allowRangeRequests: true)
+
+        //再覆盖个新的handler处理动态页面（html页面）
+        webServer.addHandler(forMethod: "GET", pathRegex: "^/.*\\.html$",
+                             request: GCDWebServerRequest.self,
+                             processBlock: { (request) -> GCDWebServerResponse? in
+
+                                let jsString = bund.path(forResource: "dist/index", ofType: "html")
+
+                                var jsPath = String()
+                                do {
+                                    jsPath = try String(contentsOfFile: jsString!)
+                                } catch {
+                                    print(error)
+                                }
+
+                                return GCDWebServerDataResponse(html: jsPath)
+        })
+
+        //HTTP请求重定向（/从定向到/index.html）
+//        webServer.addHandler(forMethod: "GET", path: "/",
+//                             request: GCDWebServerRequest.self,
+//                             processBlock: { (request) -> GCDWebServerResponse? in
+//                                let url = URL(string: "index.html", relativeTo: request.url)
+//
+//                                return GCDWebServerResponse.init(redirect: url!, permanent: false)
+//        })
+
+        webServer.start(withPort: 8080, bonjourName: "GCD Web Server")
+        print("服务启动成功，使用你的浏览器访问：\(webServer.serverURL)")
+        // 打开网页
+        self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
+
+    }
+    
 }

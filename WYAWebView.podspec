@@ -30,8 +30,17 @@ Pod::Spec.new do |s|
   s.static_framework = true
   s.source_files = 'ios/sdk/WYAWebView/WYAWebView/**/*.{h,m,swift}'
   
-  s.resources = 'pre-build/*.js'
-  
+  # s.subspec 'dist' do |ss|
+  #   ss.source_files = 'html5/examples/dist/**/*'
+  # end
+
+
+  # s.subspec 'build' do |ss|
+  #  ss.source_files = 'pre-build/*.js'
+  # end
+
+  s.resources = 'pre-build/*.js', 'html5/examples/dist'
+
   s.resource_bundles = {
     'WYAWebView' => ['WYAWebView/Assets/WYAWebView.bundle/*']
   }
@@ -41,5 +50,5 @@ Pod::Spec.new do |s|
   s.dependency 'Alamofire', '~> 4.7'
   s.dependency 'MJRefresh'
   s.dependency 'SnapKit'
-  # s.dependency 'ReachabilitySwift'
+  s.dependency 'GCDWebServer'
 end

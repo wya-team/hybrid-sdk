@@ -173,6 +173,7 @@
 				TargetAttributes = {
 					21FADB502143CD0B00C37689 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1010;
 					};
 					21FADB642143CD0C00C37689 = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -249,6 +250,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo-resources.sh",
 				"${PODS_ROOT}/../../../pre-build/wya.umd.js",
 				"${PODS_ROOT}/../../../pre-build/WYAJSBridge.umd.js",
+				"${PODS_ROOT}/../../../html5/examples/dist",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WYAWebView/WYAWebView.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -257,6 +259,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/wya.umd.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WYAJSBridge.umd.js",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dist",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WYAWebView.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -272,12 +275,14 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/GCDWebServer/GCDWebServer.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GCDWebServer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
@@ -455,6 +460,7 @@
 			baseConfigurationReference = 0486B0485816FE862A3DA4D0 /* Pods-WYAWebViewDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J5265ZP7QT;
 				INFOPLIST_FILE = WYAWebViewDemo/Info.plist;
@@ -466,6 +472,8 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = www.weiyian.com.WYAWebViewDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -476,6 +484,7 @@
 			baseConfigurationReference = 202F696169BF10D084190628 /* Pods-WYAWebViewDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J5265ZP7QT;
 				INFOPLIST_FILE = WYAWebViewDemo/Info.plist;
@@ -487,6 +496,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D";
 				PRODUCT_BUNDLE_IDENTIFIER = www.weiyian.com.WYAWebViewDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

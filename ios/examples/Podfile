@@ -2,5 +2,5 @@ use_frameworks!
 
 target 'WYAWebViewDemo' do
   pod 'WYAWebView', :path => '../../'
-
+  
 end
