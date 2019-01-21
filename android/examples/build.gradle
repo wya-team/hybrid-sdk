@@ -33,10 +33,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation project(':sdk')
 
-    implementation 'wyauikit.uikit:debug:0.1.0'
-    implementation 'wyahardware.hardware:debug:0.1.0'
-    implementation 'wyahelper.helper:debug:0.1.0'
-    implementation 'wyautils.utils:debug:0.1.0'
+    implementation 'com.wya.uikit:uikit:0.1.0'
+    implementation 'com.wya.hardware:hardware:0.1.0'
+    implementation 'com.wya.helper:helper:0.1.0'
+    implementation 'com.wya.utils:utils:0.1.0'
 
     implementation depends.logger
     implementation depends.eventbus
