@@ -29,8 +29,8 @@ dependencies {
 	implementation 'com.android.support:appcompat-v7:28.0.0'
 	implementation 'com.google.code.gson:gson:2.8.5'
 
-	implementation 'wyauikit.uikit:release:0.1.0'
-	implementation 'wyahardware.hardware:release:0.1.0'
-	implementation 'wyahelper.helper:release:0.1.0'
-	implementation 'wyautils.utils:release:0.1.0'
+	implementation 'com.wya.uikit:uikit:0.1.0'
+	implementation 'com.wya.hardware:hardware:0.1.0'
+	implementation 'com.wya.helper:helper:0.1.0'
+	implementation 'com.wya.utils:utils:0.1.0'
 }

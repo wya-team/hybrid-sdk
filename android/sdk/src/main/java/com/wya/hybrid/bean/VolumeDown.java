@@ -3,14 +3,14 @@ package com.wya.hybrid.bean;
 /**
  * @date: 2019/1/17 15:59
  * @author: Chunjiang Mao
- * @classname: KeyBack
- * @describe: 返回
+ * @classname: VolumeUp
+ * @describe: 音量减按钮
  */
-public class KeyBack {
+public class VolumeDown {
 	/**
-	 * 返回按钮
+	 * 音量减按钮
 	 */
-	public static final String EVENT_KEY_BACK = "keyBack";
+	public static final String EVENT_VOLUME_DOWN = "volumeDown";
 	private int keyCode;
 	private boolean longPress;
 
