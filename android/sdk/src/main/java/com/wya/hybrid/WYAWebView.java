@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.wya.hybrid.bean.BaseEmitData;
 import com.wya.hybrid.bean.InitBean;
 import com.wya.utils.utils.AppUtil;
+import com.wya.utils.utils.NetworkUtil;
 import com.wya.utils.utils.PhoneUtil;
 
 import java.util.HashMap;
@@ -69,8 +70,8 @@ public class WYAWebView extends WebView {
         initBean.setDeviceModel(PhoneUtil.getInstance().getPhoneModel());
         initBean.setDeviceName(TextUtils.isEmpty(android.os.Build.DEVICE) ? "" : android.os.Build.DEVICE);
         initBean.setUiMode(PhoneUtil.getInstance().isTablet(mContext) ? "pad" : "phone");
-        initBean.setOperatorName("移动");
-        initBean.setConnectionType("4g");
+		initBean.setOperatorName(PhoneUtil.getOperator(mContext));
+		initBean.setConnectionType(NetworkUtil.getNetworkState(mContext));
         initBean.setScreenWidth(PhoneUtil.getInstance().getPhoneWidth(mContext));
         initBean.setScreenHeight(PhoneUtil.getInstance().getPhoneHeight(mContext));
         baseEmitData.setData(initBean);
