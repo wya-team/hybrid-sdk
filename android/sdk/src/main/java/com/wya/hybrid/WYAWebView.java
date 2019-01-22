@@ -1,11 +1,8 @@
 package com.wya.hybrid;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
@@ -16,7 +13,6 @@ import com.wya.hybrid.bean.BaseEmitData;
 import com.wya.hybrid.bean.InitBean;
 import com.wya.hybrid.bean.Keyboard;
 import com.wya.utils.utils.AppUtil;
-import com.wya.utils.utils.NetworkUtil;
 import com.wya.utils.utils.PhoneUtil;
 import com.wya.utils.utils.ScreenUtil;
 
@@ -61,11 +57,26 @@ public class WYAWebView extends WebView {
 	private void init() {
 		this.setVerticalScrollBarEnabled(false);
 		this.setHorizontalScrollBarEnabled(false);
-		this.getSettings().setJavaScriptEnabled(true);
-		this.getSettings().setDomStorageEnabled(true);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			WebView.setWebContentsDebuggingEnabled(true);
-		}
+		WebSettings webSetting = this.getSettings();
+		webSetting.setJavaScriptEnabled(true);
+		webSetting.setJavaScriptCanOpenWindowsAutomatically(true);
+		webSetting.setAllowFileAccess(true);
+		webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+		webSetting.setSupportZoom(true);
+		webSetting.setBuiltInZoomControls(true);
+		webSetting.setUseWideViewPort(true);
+		webSetting.setSupportMultipleWindows(true);
+		// webSetting.setLoadWithOverviewMode(true);
+		webSetting.setAppCacheEnabled(true);
+		// webSetting.setDatabaseEnabled(true);
+		webSetting.setDomStorageEnabled(true);
+		webSetting.setGeolocationEnabled(true);
+		webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
+		// webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
+		webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
+		// webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
+		webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
 		this.setWebViewClient(wyaWebViewClient());
 		initData();
 		setKeyBoardListener();

@@ -1,8 +1,9 @@
 package com.wya.hybrid;
 
 import android.content.Context;
-import android.webkit.ValueCallback;
-import android.webkit.WebView;
+
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebView;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -9,10 +9,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 import android.widget.ProgressBar;
 
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebView;
+import com.wya.hybrid.JsCallBack;
 import com.wya.hybrid.WYAWebView;
 import com.wya.hybridexample.base.ActivityManager;
 import com.wya.hybridexample.control.BatteryReceiver;
@@ -24,6 +25,7 @@ import com.wya.hybridexample.permission.PermissionCallback;
 import com.wya.hybridexample.permission.PermissionCheck;
 import com.wya.hybridexample.util.CheckUtil;
 import com.wya.hybridexample.util.log.DebugLogger;
+import com.wya.utils.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -167,7 +169,6 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		mWebView.unRegister();
 		// event manager
 		if (null != mEventManager) {
 			mEventManager.release();
@@ -183,16 +184,15 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		switch (keyCode) {
 			case KeyEvent.KEYCODE_BACK:
 				mEventManager.keyBack(keyCode);
-				return false;
+				return super.onKeyDown(keyCode, event);
 			case KeyEvent.KEYCODE_VOLUME_UP:
 				mEventManager.volumeUp(keyCode);
-				return false;
+				return super.onKeyDown(keyCode, event);
 			case KeyEvent.KEYCODE_VOLUME_DOWN:
 				mEventManager.volumeDown(keyCode);
-				return false;
+				return super.onKeyDown(keyCode, event);
 			case KeyEvent.KEYCODE_MENU:
-
-				return false;
+				return super.onKeyDown(keyCode, event);
 			default:
 				break;
 		}
