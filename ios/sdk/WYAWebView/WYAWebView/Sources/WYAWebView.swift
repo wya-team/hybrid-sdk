@@ -6,11 +6,13 @@
 //  Copyright © 2018年 WeiYiAn. All rights reserved.
 //
 
+import CVCocoaHTTPServeriOS
+import GCDWebServer
 import MJRefresh
 import SnapKit
 import UIKit
 import WebKit
-import GCDWebServer
+
 /// 初始版本号
 fileprivate let jsBuildVersion = 0.1
 
@@ -23,17 +25,17 @@ public class WYAWebView: UIView {
         return true
     }
 
-    let webManager = WYAWebViewManager()
-    var actionID: String?
-
-    var webView: WKWebView?
-    let userContentControll = WKUserContentController()
     /// 记录加载在哪个控制器的
     public var vc: UIViewController?
-    
-    var contentHeight : Double?
-    
-    /// 进度条
+
+    let server = HTTPServer()
+
+    let webManager = WYAWebViewManager()
+    var actionID: String?
+    var webView: WKWebView?
+    let userContentControll = WKUserContentController()
+    var contentHeight: Double?
+
     var progressView: UIProgressView = {
         let progress = UIProgressView()
         progress.trackTintColor = UIColor(red: 240.0 / 255, green: 240.0 / 255, blue: 240.0 / 255, alpha: 1.0)
@@ -43,24 +45,11 @@ public class WYAWebView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-
+        self.webManager.nativeDelegate = self as WebViewDelegate
+        self.webManager.registerSystemNotice()
         loadJSFolder()
         let config = WKWebViewConfiguration()
         config.userContentController = userContentControll
-        self.webView = WKWebView(frame: .zero, configuration: config)
-        self.webView!.uiDelegate = self as WKUIDelegate
-        self.webView!.navigationDelegate = self as WKNavigationDelegate
-        self.webView!.scrollView.delegate = self as UIScrollViewDelegate
-        self.webView!.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
-        self.webView!.allowsBackForwardNavigationGestures = true
-        self.webView!.sizeToFit()
-        self.webView!.scrollView.showsVerticalScrollIndicator = false
-        self.webView!.scrollView.showsHorizontalScrollIndicator = false
-        self.addSubview(self.webView!)
-
-        self.addSubview(self.progressView)
-
-        // 在调用相机显示的时候设置：isOpaque  scrollView.backgroundColor
         webView = WKWebView(frame: .zero, configuration: config)
         webView!.uiDelegate = self as WKUIDelegate
         webView!.navigationDelegate = self as WKNavigationDelegate
@@ -73,22 +62,7 @@ public class WYAWebView: UIView {
         addSubview(webView!)
 
         addSubview(progressView)
-
-        // 在调用相机显示的时候设置：isOpaque  scrollView.backgroundColor
-        //        self.webView?.isOpaque = false
-        //        self.webView?.scrollView.backgroundColor = UIColor.white.withAlphaComponent(0.0)
-        //        self.getNativeActionResult(obj: "_viewappear_")
-        webManager.nativeDelegate = self as WebViewDelegate
-        webManager.registerSystemNotice()
-
-        //        let imageP = ImagePicker()
-        //        let captureVideoPreviewLayer = imageP.previewLayer
-        //        let layer = self.layer
-        //        layer.masksToBounds = true
-        //        captureVideoPreviewLayer.frame = self.frame
-        ////        layer.addSublayer(captureVideoPreviewLayer)
-        //        layer.insertSublayer(captureVideoPreviewLayer, below: self.webView?.layer)
-        //        imageP.startRecordFunction()
+        self.addSubview(self.progressView)
     }
 
     public override func layoutSubviews() {
@@ -104,37 +78,17 @@ public class WYAWebView: UIView {
         }
     }
 
-    /*
-     func addRefreshView() -> Void {
-     if (self.vc?.navigationController != nil) {
-     self.progressView.frame = CGRect(x: 0, y: 64, width: self.frame.size.width, height: 1)
-     }else{
-     self.progressView.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: 1)
-     }
-
-     self.addSubview(self.progressView)
-
-     self.webView!.scrollView.mj_header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(headerRefresh))
-     }
-
-     @objc func headerRefresh() {
-     print("刷新")
-     self.webView?.reload()
-     //        self.webView?.scrollView.mj_header.endRefreshing()
-     }
-     */
-
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
-// MARK: 负责处理文件之间的相互调用
+// MARK: 暴露给外部调用的方法
 
 extension WYAWebView {
     /// 加载网址链接
     ///
-    /// - Parameter url: url
+    /// - Parameter url: urlString
     public func loadUrl(url: String) {
         let ul = URL(string: url)
         let request = URLRequest(url: ul!)
@@ -155,6 +109,76 @@ extension WYAWebView {
         self.webView!.loadHTMLString(path, baseURL: Bundle.main.bundleURL)
     }
 
+    /// CVCocoaHTTPServeriOS
+    public func localHost() {
+        let bund = Bundle(for: classForCoder)
+        let websitePath = bund.path(forResource: "dist", ofType: nil)
+
+        server.setType("_http.tcp")
+        server.setDocumentRoot(websitePath)
+        do {
+            try self.server.start()
+        } catch {
+            print(error)
+        }
+        print(self.server.listeningPort())
+
+        let port = String(format: "%d", server.listeningPort())
+        let urlString = "http://localhost:" + port
+
+        self.loadUrl(url: urlString)
+    }
+
+    /// GCDWebServer
+    public func openLocationHttpServer() {
+        let bund = Bundle(for: classForCoder)
+        let websitePath = bund.path(forResource: "dist", ofType: nil)
+
+        let webServer = GCDWebServer()
+
+        // 先设置个默认的handler处理静态文件（比如css、js、图片等）
+        webServer.addGETHandler(forBasePath: "/", directoryPath: websitePath!,
+                                indexFilename: nil, cacheAge: 3600,
+                                allowRangeRequests: true)
+
+        // 再覆盖个新的handler处理动态页面（html页面）
+        webServer.addHandler(forMethod: "GET", pathRegex: "^/.*\\.html$",
+                             request: GCDWebServerRequest.self,
+                             processBlock: { (_) -> GCDWebServerResponse? in
+
+                                 let jsString = bund.path(forResource: "dist/index", ofType: "html")
+
+                                 var jsPath = String()
+                                 do {
+                                     jsPath = try String(contentsOfFile: jsString!)
+                                 } catch {
+                                     print(error)
+                                 }
+
+                                 return GCDWebServerDataResponse(html: jsPath)
+        })
+
+        // HTTP请求重定向（/从定向到/index.html）
+        webServer.addHandler(forMethod: "GET", path: "/",
+                             request: GCDWebServerRequest.self,
+                             processBlock: { (request) -> GCDWebServerResponse? in
+                                 let url = URL(string: "index.html", relativeTo: request.url)
+
+                                 return GCDWebServerResponse(redirect: url!, permanent: false)
+        })
+
+        let options: Dictionary<String, Any> = ["Port": 8080, "AutomaticallySuspendInBackground": false]
+        try! webServer.start(options: options)
+        print("服务启动成功，使用你的浏览器访问：\(webServer.serverURL)")
+
+        // 打开网页
+        self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
+    }
+}
+
+// MARK: - KVO
+
+extension WYAWebView {
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "estimatedProgress" {
             self.progressView.alpha = 1
@@ -173,119 +197,30 @@ extension WYAWebView {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
-
-    /// 获取参数
-    ///
-    /// - Parameters:
-    ///   - id: 事件ID
-    ///   - handler: 回调
-    func getParams(_ id: String, handler: @escaping (Any) -> Void) {
-        let jsSrring = "WYAJSBridge.getParam(\(id))"
-        webView?.evaluateJavaScript(jsSrring) { params, error in
-            print(params ?? "没有参数")
-            print(error ?? "没有错误")
-
-            guard params != nil else { return }
-
-            var dictory: Any
-
-            // 有参数
-            /** params参数为json字符串需要转化为字典
-             */
-            dictory = self.webManager.jsonStringToDic(params as! String) as Any
-            print(dictory)
-
-            handler(dictory)
-        }
-    }
 }
 
 // MARK: 负责处理webview的代理方法
 
 extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
-    // MARK: WKScriptMessageHandler
-
     /// WKScriptMessageHandler 回调方法(采用原生注入方法会回调)，addScriptMessageHandler 是注册JS的MessageHandler，但是WKWebView在多次调用loadRequest，会出现JS无法调用iOS端。我们需要在loadRequest和reloadWebView的时候需要重新注入。（在注入之前需要移除再注入，避免造成内存泄漏），如果message.body中没有参数，JS代码中需要传null防止iOS端不会接收到JS的交互，window.webkit.messageHandlers.<事件名>.postMessage(需要传递的数据)
-    ///
-    /// - Parameters:
-    ///   - userContentController: userContentController
-    ///   - message: APP端收到的信息
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {}
 
-    // MARK: WKUIDelegate
-
-    /*
-     /// ios8
-     ///
-     /// - Parameters:
-     ///   - webView: <#webView description#>
-     ///   - configuration: <#configuration description#>
-     ///   - navigationAction: <#navigationAction description#>
-     ///   - windowFeatures: <#windowFeatures description#>
-     /// - Returns: <#return value description#>
-     public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-
-     }
-     */
-
-    /// 窗口关闭时调用 ios9
-    ///
-    /// - Parameter webView: webView
+    /// 窗口关闭时调用
     public func webViewDidClose(_ webView: WKWebView) {}
 
     /// 在JS端调用alert函数时，会触发此代理方法。JS端调用alert时所传的数据可以通过message拿到。在原生得到结果后，需要回调JS，是通过completionHandler回调（ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: webView
-    ///   - message: alert函数返回信息
-    ///   - frame: 窗口配置
-    ///   - completionHandler: 回调
     public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Swift.Void) {
         print("alert" + message)
         completionHandler()
     }
 
-    /// JS端调用confirm函数时，会触发此方法，通过message可以拿到JS端所传的数据，在iOS端显示原生alert得到YES/NO后，通过completionHandler回调给JS端 （ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: webView
-    ///   - message: comfirm函数传递的信息
-    ///   - frame: 窗口配置
-    ///   - completionHandler: 回调
+    /// JS端调用confirm函数时，会触发此方法，通过message可以拿到JS端所传的数据，在iOS端显示原生alert得到YES/NO后，通过completionHandler回调给JS端
     public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Swift.Void) {}
 
-    /// JS端调用prompt函数时，会触发此方法,要求输入一段文本,在原生输入得到文本内容后，通过completionHandler回调给JS （ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: webView
-    ///   - prompt: prompt函数传递的信息
-    ///   - defaultText: <#defaultText description#>
-    ///   - frame: 窗口配置
-    ///   - completionHandler: 回调
+    /// JS端调用prompt函数时，会触发此方法,要求输入一段文本,在原生输入得到文本内容后，通过completionHandler回调给JS
     public func webView(_ webView: WKWebView, runJavaScriptTextInputPanelWithPrompt prompt: String, defaultText: String?, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (String?) -> Swift.Void) {}
 
-    /*
-     public func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-     //ios10
-     }
-
-     public func webView(_ webView: WKWebView, previewingViewControllerForElement elementInfo: WKPreviewElementInfo, defaultActions previewActions: [WKPreviewActionItem]) -> UIViewController? {
-     //ios10
-     }
-
-     public func webView(_ webView: WKWebView, commitPreviewingViewController previewingViewController: UIViewController) {
-     //ios10
-     }
-     */
-
-    // MARK: WKNavigationDelegate
-
     /// 判断链接是否允许跳转（ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: webView
-    ///   - navigationAction: 跳转事件
-    ///   - decisionHandler: 回调
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Swift.Void) {
         let url = navigationAction.request.url?.absoluteString.removingPercentEncoding
 
@@ -321,67 +256,36 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
         decisionHandler(.allow)
     }
 
-    /// 拿到响应后决定是否允许跳转（ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: webView
-    ///   - navigationResponse: 响应数据
-    ///   - decisionHandler: 回调
+    /// 拿到响应后决定是否允许跳转
     public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Swift.Void) {
 //        self.webManager.backBtnPressed()
         decisionHandler(WKNavigationResponsePolicy.allow)
     }
 
-    /// 链接开始加载时调用（ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: webView
-    ///   - navigation: <#navigation description#>
+    /// 链接开始加载时调用
     public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         self.progressView.isHidden = false
     }
 
     /// 收到服务器重定向时调用（ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: webView
-    ///   - navigation: <#navigation description#>
     public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {}
 
     /// 加载错误时调用 （ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: <#webView description#>
-    ///   - navigation: <#navigation description#>
-    ///   - error: <#error description#>
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         print("加载失败" + error.localizedDescription)
     }
 
-    /// 当内容开始到达主帧时被调用（即将完成）（ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: <#webView description#>
-    ///   - navigation: <#navigation description#>
-    public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {}
-
-    /// 加载完成 （ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: <#webView description#>
-    ///   - navigation: <#navigation description#>
+    /// 加载完成
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         print("加载完成")
 
-        webView.evaluateJavaScript("document.body.scrollHeight") { (result, error) in
-            
+        webView.evaluateJavaScript("document.body.scrollHeight") { result, _ in
+
             if let tempHeight: Double = result as? Double {
                 self.contentHeight = tempHeight
             }
-            
         }
-        
-        
+
         var dataParams = webManager.config.getSystemConfigDic()
 
         if (frame.size.width == UIScreen.main.bounds.size.width) || (frame.size.height == UIScreen.main.bounds.size.height) {
@@ -416,48 +320,21 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     }
 
     /// 在提交的主帧中发生错误时调用（ios8）
-    ///
-    /// - Parameters:
-    ///   - webView: webView
-    ///   - navigation: <#navigation description#>
-    ///   - error: 失败原因
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("主帧错误" + error.localizedDescription)
     }
 
     /// 当webView需要响应身份验证时调用(如需验证服务器证书)(ios8)
-    ///
-    /// - Parameters:
-    ///   - webView: webView
-    ///   - challenge: <#challenge description#>
-    ///   - completionHandler: 回调
-    //    public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
-    //
-    //        completionHandler(.cancelAuthenticationChallenge, nil)
-    //    }
-
-    /// 当webView的web内容进程被终止时调用。(iOS 9.0之后)
-    ///
-    /// - Parameter webView: webView
-    public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
-        print("终止")
+    public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
+        completionHandler(.performDefaultHandling, nil)
     }
 }
 
 // MARK: 负责处理scrollView的代理
 
 extension WYAWebView: UIScrollViewDelegate {
-    // MARK: UIScrollViewDelegate
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {}
 
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
-        
-    }
-
-    /// 回到头部
-    ///
-    /// - Parameter scrollView: scrollView
-    /// - Returns: 是否允许触发该事件
     public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
         return true
     }
@@ -468,14 +345,16 @@ extension WYAWebView: UIScrollViewDelegate {
 extension WYAWebView: WebViewDelegate {
     /// 获取原生方法处理结果
     ///
-    /// - Parameter obj: 参数
+    /// - Parameters:
+    ///   - type: 事件类型
+    ///   - obj: 参数
     func getNativeActionResult(_ type: String, _ obj: String) {
         let jsString = "WYAJSBridge.emit(\("'" + type + "'"), \(obj))"
 
         DispatchQueue.main.async {
             self.webView?.evaluateJavaScript(jsString, completionHandler: { result, error in
-//                print(result ?? "没有结果")
-//                print(error ?? "没有错误")
+                print(result ?? "没有结果")
+                print(error ?? "没有错误")
             })
         }
     }
@@ -510,6 +389,31 @@ extension WYAWebView {
 // MARK: - 加载注入本地js文件
 
 extension WYAWebView {
+    /// 获取参数
+    ///
+    /// - Parameters:
+    ///   - id: 事件ID
+    ///   - handler: 回调
+    func getParams(_ id: String, handler: @escaping (Any) -> Void) {
+        let jsSrring = "WYAJSBridge.getParam(\(id))"
+        webView?.evaluateJavaScript(jsSrring) { params, error in
+            print(params ?? "没有参数")
+            print(error ?? "没有错误")
+
+            guard params != nil else { return }
+
+            var dictory: Any
+
+            // 有参数
+            /** params参数为json字符串需要转化为字典
+             */
+            dictory = self.webManager.jsonStringToDic(params as! String) as Any
+            print(dictory)
+
+            handler(dictory)
+        }
+    }
+
     // FIXME: 待修复问题
     /// 获取js版本号与本地做对比，更新js
     func loadJSFolder() {
@@ -560,7 +464,7 @@ extension WYAWebView {
                 let bund = Bundle(for: classForCoder)
 
                 let jsString = bund.path(forResource: jsName, ofType: "js")
-                print(jsString)
+
                 var jsPath = String()
                 do {
                     jsPath = try String(contentsOfFile: jsString!)
@@ -573,49 +477,4 @@ extension WYAWebView {
             }
         }
     }
-    
-    public func openLocationHttpServer() {
-        let bund = Bundle(for: classForCoder)
-        let websitePath = bund.path(forResource: "dist", ofType: nil)
-
-        let webServer = GCDWebServer()
-
-        //先设置个默认的handler处理静态文件（比如css、js、图片等）
-        webServer.addGETHandler(forBasePath: "/", directoryPath: websitePath!,
-                                indexFilename: nil, cacheAge: 3600,
-                                allowRangeRequests: true)
-
-        //再覆盖个新的handler处理动态页面（html页面）
-        webServer.addHandler(forMethod: "GET", pathRegex: "^/.*\\.html$",
-                             request: GCDWebServerRequest.self,
-                             processBlock: { (request) -> GCDWebServerResponse? in
-
-                                let jsString = bund.path(forResource: "dist/index", ofType: "html")
-
-                                var jsPath = String()
-                                do {
-                                    jsPath = try String(contentsOfFile: jsString!)
-                                } catch {
-                                    print(error)
-                                }
-
-                                return GCDWebServerDataResponse(html: jsPath)
-        })
-
-        //HTTP请求重定向（/从定向到/index.html）
-//        webServer.addHandler(forMethod: "GET", path: "/",
-//                             request: GCDWebServerRequest.self,
-//                             processBlock: { (request) -> GCDWebServerResponse? in
-//                                let url = URL(string: "index.html", relativeTo: request.url)
-//
-//                                return GCDWebServerResponse.init(redirect: url!, permanent: false)
-//        })
-
-        webServer.start(withPort: 8080, bonjourName: "GCD Web Server")
-        print("服务启动成功，使用你的浏览器访问：\(webServer.serverURL)")
-        // 打开网页
-        self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
-
-    }
-    
 }

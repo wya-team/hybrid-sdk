@@ -250,7 +250,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo-resources.sh",
 				"${PODS_ROOT}/../../../pre-build/wya.umd.js",
 				"${PODS_ROOT}/../../../pre-build/WYAJSBridge.umd.js",
-				"${PODS_ROOT}/../../../html5/examples/dist",
+				"${PODS_ROOT}/../../dist",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WYAWebView/WYAWebView.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -275,6 +275,9 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/CVCocoaHTTPServeriOS/CVCocoaHTTPServeriOS.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
+				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/GCDWebServer/GCDWebServer.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
@@ -282,6 +285,9 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CVCocoaHTTPServeriOS.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GCDWebServer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",

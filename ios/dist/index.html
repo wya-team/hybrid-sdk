@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <script src="//as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js"></script>
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_867549_w9hglzh2jv.css">
+    <script>
+        if ('addEventListener' in document) {
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        }
+    </script>
+</head>
+
+<body>
+    <div id="pages"></div>
+    <script>
+        document.write('<script src="/js/webpack-assets.js?v=' + Math.random() + '"><\/script>');
+    </script>
+    <script>
+        if (/test.com|\/\/www.test-test.com/.test(window.location.origin)) {
+            // 微信中浏览器会生产好html, 如?admin_id=1, 相关资源会被缓存,  ?admin_id=1&多带个参数可解决
+            document.write('<script src="/eruda.min.js"><\/script>');
+            document.write('<script>eruda.init();<\/script>');
+        };
+
+        function loadCss(url) {
+            var link = document.createElement("link");
+            link.type = "text/css";
+            link.rel = "stylesheet";
+            link.href = url;
+            document.getElementsByTagName("head")[0].appendChild(link);
+        }
+        window.onerror = function(msg, url, num) {
+            if (msg === "Uncaught SyntaxError: Unexpected token <" && num === 1) {
+                location.reload();
+            }
+        }
+        // loadCss(window.WEBPACK_ASSETS['common'].css);
+        loadCss(window.WEBPACK_ASSETS['main'].css);
+        document.write('<script src="' + window.WEBPACK_ASSETS['common'].js + '"><\/script>');
+        document.write('<script src="' + window.WEBPACK_ASSETS['main'].js + '"><\/script>');
+    </script>
+</body>
+
+</html>

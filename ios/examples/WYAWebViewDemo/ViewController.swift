@@ -8,7 +8,6 @@
 
 import UIKit
 import WYAWebView
-import GCDWebServer
 
  fileprivate let DEMO_URL = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/"
 //fileprivate let DEMO_URL = "http://192.168.23.115:8088/consts"
@@ -39,6 +38,7 @@ class ViewController: UIViewController {
 //        h5.loadLocalHtml(htmlName: "index")
         self.view.addSubview(h5)
 
+        h5.localHost()
         
     }
     
