@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
-import com.wya.hybrid.JsCallBack;
 import com.wya.hybrid.WYAWebView;
 import com.wya.hybridexample.base.ActivityManager;
 import com.wya.hybridexample.control.BatteryReceiver;
@@ -25,7 +24,6 @@ import com.wya.hybridexample.permission.PermissionCallback;
 import com.wya.hybridexample.permission.PermissionCheck;
 import com.wya.hybridexample.util.CheckUtil;
 import com.wya.hybridexample.util.log.DebugLogger;
-import com.wya.utils.utils.LogUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
