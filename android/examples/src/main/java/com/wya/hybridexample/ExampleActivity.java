@@ -1,6 +1,9 @@
 package com.wya.hybridexample;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +15,14 @@ import android.widget.ProgressBar;
 
 import com.wya.hybrid.WYAWebView;
 import com.wya.hybridexample.base.ActivityManager;
+import com.wya.hybridexample.control.BatteryReceiver;
+import com.wya.hybridexample.control.NetworkReceiver;
+import com.wya.hybridexample.control.ScreenReceiver;
 import com.wya.hybridexample.data.event.ForegroundEvent;
 import com.wya.hybridexample.data.sp.ForegroundStateSP;
 import com.wya.hybridexample.permission.PermissionCallback;
 import com.wya.hybridexample.permission.PermissionCheck;
+import com.wya.hybridexample.util.CheckUtil;
 import com.wya.hybridexample.util.log.DebugLogger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,13 +46,16 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 	 */
 	protected PermissionCheck permissionHelper;
 
-	private String[] REQUEST_PERMISSIONS = new String[]{
+	private static String[] REQUEST_PERMISSIONS = new String[]{
 		android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
 		android.Manifest.permission.READ_PHONE_STATE,
 		android.Manifest.permission.DISABLE_KEYGUARD
 	};
 
 	private boolean mIsFromBackground = false;
+	private NetworkReceiver mNetworReceiver;
+	private BatteryReceiver mBatteryReceiver;
+	private ScreenReceiver mScreenReceiver;
 
 	private void checkPermission() {
 		permissionHelper.request(REQUEST_PERMISSIONS);
@@ -56,12 +66,14 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_example);
 
+		registerNetworkReceiver();
+		registerBatteryReceiver();
+		registerSreenReceiver();
 		permissionHelper = PermissionCheck.getInstance(this);
 		checkPermission();
 
 		// webView
 		mWebView = findViewById(R.id.webView);
-
 		mWebView.loadUrl(HTML_PATH);
 
 		// event manager
@@ -160,6 +172,10 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		if (null != mEventManager) {
 			mEventManager.release();
 		}
+
+		unRegisterReceiver(this, mNetworReceiver);
+		unRegisterReceiver(this, mBatteryReceiver);
+		unRegisterReceiver(this, mScreenReceiver);
 	}
 
 	@Override
@@ -183,4 +199,40 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		return super.onKeyDown(keyCode, event);
 	}
 
+	private void registerNetworkReceiver() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+		filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+		filter.addAction("android.net.wifi.STATE_CHANGE");
+		if (null == mNetworReceiver) {
+			mNetworReceiver = new NetworkReceiver();
+		}
+		registerReceiver(mNetworReceiver, filter);
+	}
+
+	private void registerBatteryReceiver() {
+		IntentFilter filter = new IntentFilter(android.content.Intent.ACTION_BATTERY_CHANGED);
+		if (null == mBatteryReceiver) {
+			mBatteryReceiver = new BatteryReceiver();
+		}
+		registerReceiver(mBatteryReceiver, filter);
+	}
+
+	public void registerSreenReceiver() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(android.content.Intent.ACTION_SCREEN_ON);
+		filter.addAction(android.content.Intent.ACTION_SCREEN_OFF);
+		filter.addAction(android.content.Intent.ACTION_USER_PRESENT);
+		if (null == mScreenReceiver) {
+			mScreenReceiver = new ScreenReceiver();
+		}
+		registerReceiver(mScreenReceiver, filter);
+	}
+
+	private void unRegisterReceiver(Context context, BroadcastReceiver receiver) {
+		if (!CheckUtil.isValidate(context) || null == receiver) {
+			return;
+		}
+		context.unregisterReceiver(receiver);
+	}
 }

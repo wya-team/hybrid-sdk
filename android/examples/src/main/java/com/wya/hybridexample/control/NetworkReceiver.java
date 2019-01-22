@@ -43,15 +43,6 @@ public class NetworkReceiver extends BroadcastReceiver {
                     isOnline = false;
                 }
                 
-                // TODO: 2019/1/17 ZCQ TEST
-                //                if (!NetSP.get().isOnline()) {
-                //                    NetSP.get().setIsOnline(isOnline);
-                //                    if (NetSP.get().isOnline()) {
-                //                        DebugLogger.logNet("NetworkReceiver ... onReceive ..=== post NetEvent === BaseInfo.isOnline() = %s", NetSP.get().isOnline());
-                //                        NetEvent event = new NetEvent();
-                //                        EventBus.getDefault().post(event);
-                //                    }
-                //                }
                 NetSP.get().setIsOnline(isOnline);
                 
                 NetEvent event = new NetEvent();
