@@ -25,6 +25,7 @@ class WYAWebViewManager: NSObject {
     }()
 
     weak var nativeDelegate: WebViewDelegate?
+    
     var config = SystemConfig()
 
     var currentVolume: Float?

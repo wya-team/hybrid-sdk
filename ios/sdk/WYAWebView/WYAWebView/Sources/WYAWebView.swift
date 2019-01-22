@@ -46,22 +46,7 @@ public class WYAWebView: UIView {
         super.init(frame: frame)
         self.webManager.nativeDelegate = self as WebViewDelegate
         self.webManager.registerSystemNotice()
-        loadJSFolder()
-        let config = WKWebViewConfiguration()
-        config.userContentController = userContentControll
-        webView = WKWebView(frame: .zero, configuration: config)
-        webView!.uiDelegate = self as WKUIDelegate
-        webView!.navigationDelegate = self as WKNavigationDelegate
-        webView!.scrollView.delegate = self as UIScrollViewDelegate
-        webView!.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
-        webView!.allowsBackForwardNavigationGestures = true
-        webView!.sizeToFit()
-        webView!.scrollView.showsVerticalScrollIndicator = false
-        webView!.scrollView.showsHorizontalScrollIndicator = false
-        addSubview(webView!)
-
-        addSubview(progressView)
-        self.addSubview(self.progressView)
+        self.createWkWebView()
     }
 
     public override func layoutSubviews() {
@@ -81,6 +66,26 @@ public class WYAWebView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+// MARK: 初始化webView
+extension WYAWebView{
+    func createWkWebView(){
+        self.loadJSFolder()
+        let config = WKWebViewConfiguration()
+        config.userContentController = userContentControll
+        webView = WKWebView(frame: .zero, configuration: config)
+        webView!.uiDelegate = self as WKUIDelegate
+        webView!.navigationDelegate = self as WKNavigationDelegate
+        webView!.scrollView.delegate = self as UIScrollViewDelegate
+        webView!.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
+        webView!.allowsBackForwardNavigationGestures = true
+        webView!.sizeToFit()
+        webView!.scrollView.showsVerticalScrollIndicator = false
+        webView!.scrollView.showsHorizontalScrollIndicator = false
+        self.addSubview(webView!)
+        self.addSubview(self.progressView)
+    }
+}
+
 
 // MARK: 暴露给外部调用的方法
 
@@ -88,7 +93,7 @@ extension WYAWebView {
     /// 加载网址链接
     ///
     /// - Parameter url: urlString
-    public func loadUrl(url: String) {
+   public func loadUrl(url: String) {
         let ul = URL(string: url)
         let request = URLRequest(url: ul!)
         webView!.load(request)
@@ -97,7 +102,7 @@ extension WYAWebView {
     /// 加载本地HTML
     ///
     /// - Parameter htmlName: html名字
-    public func loadLocalHtml(htmlName: String) {
+   public func loadLocalHtml(htmlName: String) {
         let string = Bundle.main.path(forResource: htmlName, ofType: "html")
         var path = String()
         do {
@@ -109,7 +114,7 @@ extension WYAWebView {
     }
 
     /// CVCocoaHTTPServeriOS
-    public func localHost() {
+   public func localHost() {
         let bund = Bundle(for: classForCoder)
         let websitePath = bund.path(forResource: "dist", ofType: nil)
 
