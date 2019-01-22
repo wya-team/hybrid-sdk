@@ -2,13 +2,13 @@ package com.wya.hybrid;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
-import android.webkit.WebView;
 
 import com.google.gson.Gson;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
 import com.wya.hybrid.bean.BaseEmitData;
 import com.wya.hybrid.bean.InitBean;
 import com.wya.hybrid.bean.Keyboard;
@@ -57,11 +57,26 @@ public class WYAWebView extends WebView {
 	private void init() {
 		this.setVerticalScrollBarEnabled(false);
 		this.setHorizontalScrollBarEnabled(false);
-		this.getSettings().setJavaScriptEnabled(true);
-		this.getSettings().setDomStorageEnabled(true);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			WebView.setWebContentsDebuggingEnabled(true);
-		}
+		WebSettings webSetting = this.getSettings();
+		webSetting.setJavaScriptEnabled(true);
+		webSetting.setJavaScriptCanOpenWindowsAutomatically(true);
+		webSetting.setAllowFileAccess(true);
+		webSetting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+		webSetting.setSupportZoom(true);
+		webSetting.setBuiltInZoomControls(true);
+		webSetting.setUseWideViewPort(true);
+		webSetting.setSupportMultipleWindows(true);
+		// webSetting.setLoadWithOverviewMode(true);
+		webSetting.setAppCacheEnabled(true);
+		// webSetting.setDatabaseEnabled(true);
+		webSetting.setDomStorageEnabled(true);
+		webSetting.setGeolocationEnabled(true);
+		webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
+		// webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
+		webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
+		// webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
+		webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
 		this.setWebViewClient(wyaWebViewClient());
 		initData();
 		setKeyBoardListener();
