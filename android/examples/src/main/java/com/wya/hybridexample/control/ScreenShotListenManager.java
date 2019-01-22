@@ -11,52 +11,19 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+
+import com.wya.hybridexample.util.log.DebugLogger;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 截屏监听管理器 <br/><br/>
- *
- * <p>
- * 截屏判断依据: 监听媒体数据库的数据改变, 在有数据改变时获取最后
- * 插入数据库的一条图片数据, 如果符合以下规则, 则认为截屏了: <br/>
- * <p>
- * 1. 时间判断, 图片的生成时间在开始监听之后, 并与当前时间相隔10秒内; <br/>
- * 2. 尺寸判断, 图片的尺寸没有超过屏幕的尺寸; <br/>
- * 3. 路径判断, 图片路径符合包含特定的关键词。<br/>
- *
- * <p>
- * Demo:
- * <pre> {@code
- *
- *      // Requires Permission: android.permission.READ_EXTERNAL_STORAGE
- *
- *      ScreenShotListenManager manager = ScreenShotListenManager.newInstance(context);
- *
- *      manager.setListener(
- *          new OnScreenShotListener() {
- *              public void onShot(String imagePath) {
- *                  // do something
- *              }
- *          }
- *      );
- *
- *      manager.startListen();
- *      ...
- *      manager.stopListen();
- *
- * }</pre>
- *
- * @author xietansheng
+ * @author :
  */
 public class ScreenShotListenManager {
-    
-    private static final String TAG = "ScreenShotListenManager";
     
     /**
      * 读取媒体数据库时需要读取的列
@@ -84,17 +51,13 @@ public class ScreenShotListenManager {
             "screencap", "screen_cap", "screen-cap", "screen cap"
     };
     
-    private static Point sScreenRealSize;
-    
     /**
      * 已回调过的路径
      */
     private final List<String> sHasCallbackPaths = new ArrayList<String>();
-    
+    private static Point sScreenRealSize;
     private Context mContext;
-    
     private OnScreenShotListener mListener;
-    
     private long mStartListenTime;
     
     /**
@@ -122,9 +85,9 @@ public class ScreenShotListenManager {
         if (sScreenRealSize == null) {
             sScreenRealSize = getRealScreenSize();
             if (sScreenRealSize != null) {
-                Log.d(TAG, "Screen Real Size: " + sScreenRealSize.x + " * " + sScreenRealSize.y);
+                DebugLogger.logScreen(" [ScreenShot] x%s * y %s", sScreenRealSize.x, sScreenRealSize.y);
             } else {
-                Log.w(TAG, "Get screen real size failed.");
+                DebugLogger.logScreen(" [ScreenShot] Get screen real size failed.");
             }
         }
     }
@@ -139,7 +102,6 @@ public class ScreenShotListenManager {
      */
     public void startListen() {
         assertInMainThread();
-        
         sHasCallbackPaths.clear();
         
         // 记录开始监听的时间戳
@@ -207,11 +169,11 @@ public class ScreenShotListenManager {
             );
             
             if (cursor == null) {
-                Log.e(TAG, "Deviant logic.");
+                DebugLogger.logScreen("Deviant logic.");
                 return;
             }
             if (!cursor.moveToFirst()) {
-                Log.d(TAG, "Cursor no data.");
+                DebugLogger.logScreen("Cursor no data.");
                 return;
             }
             
@@ -265,15 +227,14 @@ public class ScreenShotListenManager {
      */
     private void handleMediaRowData(String data, long dateTaken, int width, int height) {
         if (checkScreenShot(data, dateTaken, width, height)) {
-            Log.d(TAG, "ScreenShot: path = " + data + "; size = " + width + " * " + height
+            DebugLogger.logScreen("ScreenShot: path = " + data + "; size = " + width + " * " + height
                     + "; date = " + dateTaken);
             if (mListener != null && !checkCallback(data)) {
                 mListener.onShot(data);
             }
         } else {
             // 如果在观察区间媒体数据库有数据改变，又不符合截屏规则，则输出到 log 待分析
-            Log.w(TAG, "Media content changed, but not screenshot: path = " + data
-                    + "; size = " + width + " * " + height + "; date = " + dateTaken);
+            DebugLogger.logScreen("Media content changed, but not screenshot: path = " + data + "; size = " + width + " * " + height + "; date = " + dateTaken);
         }
     }
     
@@ -294,12 +255,8 @@ public class ScreenShotListenManager {
          */
         if (sScreenRealSize != null) {
             // 如果图片尺寸超出屏幕, 则认为当前没有截屏
-            if (
-                    !(
-                            (width <= sScreenRealSize.x && height <= sScreenRealSize.y)
-                                    ||
-                                    (height <= sScreenRealSize.x && width <= sScreenRealSize.y)
-                    )) {
+            boolean sizeFit = ((width <= sScreenRealSize.x && height <= sScreenRealSize.y) || (height <= sScreenRealSize.x && width <= sScreenRealSize.y));
+            if (!sizeFit) {
                 return false;
             }
         }
@@ -376,10 +333,18 @@ public class ScreenShotListenManager {
         mListener = listener;
     }
     
-    public static interface OnScreenShotListener {
-        public void onShot(String imagePath);
+    public interface OnScreenShotListener {
+        /**
+         * 截屏
+         *
+         * @param imagePath :
+         */
+        void onShot(String imagePath);
     }
     
+    /**
+     * assertInMainThread
+     */
     private static void assertInMainThread() {
         if (Looper.myLooper() != Looper.getMainLooper()) {
             StackTraceElement[] elements = Thread.currentThread().getStackTrace();
