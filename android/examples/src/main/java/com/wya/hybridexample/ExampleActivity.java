@@ -155,6 +155,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		mWebView.unRegister();
 		// event manager
 		if (null != mEventManager) {
 			mEventManager.release();

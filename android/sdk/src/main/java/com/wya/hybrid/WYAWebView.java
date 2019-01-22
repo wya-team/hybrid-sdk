@@ -1,8 +1,11 @@
 package com.wya.hybrid;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
@@ -13,6 +16,7 @@ import com.wya.hybrid.bean.BaseEmitData;
 import com.wya.hybrid.bean.InitBean;
 import com.wya.hybrid.bean.Keyboard;
 import com.wya.utils.utils.AppUtil;
+import com.wya.utils.utils.NetworkUtil;
 import com.wya.utils.utils.PhoneUtil;
 import com.wya.utils.utils.ScreenUtil;
 
@@ -75,15 +79,17 @@ public class WYAWebView extends WebView {
 		initBean.setAppVersion(AppUtil.getVersionName(mContext));
 		initBean.setSystemType("android");
 		initBean.setSystemVersion(PhoneUtil.getInstance().getSDKVersion());
-		// TODO: 2019/1/19 ZCQ TEST
-		//        initBean.setDeviceId(PhoneUtil.getInstance().getPhoneImei(mContext));
-		initBean.setDeviceModel(PhoneUtil.getInstance().getPhoneModel());
+		initBean.setDeviceId(PhoneUtil.getInstance().getPhoneImei(mContext));
+		if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+			initBean.setDeviceModel(PhoneUtil.getInstance().getPhoneModel());
+		}
 		initBean.setDeviceName(TextUtils.isEmpty(android.os.Build.DEVICE) ? "" : android.os.Build.DEVICE);
 		initBean.setUiMode(PhoneUtil.getInstance().isTablet(mContext) ? "pad" : "phone");
-		initBean.setOperatorName("移动");
-		initBean.setConnectionType("4g");
+		initBean.setOperatorName(PhoneUtil.getOperator(mContext));
+		initBean.setConnectionType(NetworkUtil.getNetworkState(mContext));
 		initBean.setScreenWidth(PhoneUtil.getInstance().getPhoneWidth(mContext));
 		initBean.setScreenHeight(PhoneUtil.getInstance().getPhoneHeight(mContext));
+		initBean.setDebug(true);
 		baseEmitData.setData(initBean);
 	}
 
