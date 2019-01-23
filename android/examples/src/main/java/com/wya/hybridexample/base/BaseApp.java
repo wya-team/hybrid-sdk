@@ -2,13 +2,10 @@ package com.wya.hybridexample.base;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.IntentFilter;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.tencent.smtt.sdk.QbSdk;
-import com.wya.hybridexample.control.BatteryReceiver;
-import com.wya.hybridexample.control.NetworkReceiver;
-import com.wya.hybridexample.control.ScreenReceiver;
 import com.wya.hybridexample.util.SystemUtil;
 import com.wya.hybridexample.util.log.WYALog;
 
@@ -65,6 +62,7 @@ public class BaseApp extends Application {
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
+		MultiDex.install(this);
     }
 
 }

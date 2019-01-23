@@ -1,18 +1,22 @@
 package com.wya.hybrid;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
-import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
-import android.webkit.WebView;
 
 import com.google.gson.Gson;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
 import com.wya.hybrid.bean.BaseEmitData;
 import com.wya.hybrid.bean.InitBean;
 import com.wya.hybrid.bean.Keyboard;
 import com.wya.utils.utils.AppUtil;
+import com.wya.utils.utils.NetworkUtil;
 import com.wya.utils.utils.PhoneUtil;
 import com.wya.utils.utils.ScreenUtil;
 
@@ -101,6 +105,7 @@ public class WYAWebView extends WebView {
 		initBean.setScreenWidth(PhoneUtil.getInstance().getPhoneWidth(mContext));
 		initBean.setScreenHeight(PhoneUtil.getInstance().getPhoneHeight(mContext));
 		initBean.setDebug(true);
+		initBean.setJailbreak(BridgeUtil.checkSuFile());
 		baseEmitData.setData(initBean);
 	}
 
