@@ -128,7 +128,7 @@ extension WYAWebView {
         print(self.server.listeningPort())
 
         let port = String(format: "%d", server.listeningPort())
-        let urlString = "http://localhost:" + port
+        let urlString = "http://localhost:" + port + "/index.html"
 
         self.loadUrl(url: urlString)
     }
