@@ -50,5 +50,5 @@ Pod::Spec.new do |s|
   s.dependency 'Alamofire', '~> 4.7'
   s.dependency 'MJRefresh'
   s.dependency 'SnapKit'
-  s.dependency 'CVCocoaHTTPServeriOS'
+  s.dependency 'GCDWebServer'
 end

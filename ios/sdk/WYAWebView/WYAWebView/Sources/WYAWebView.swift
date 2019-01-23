@@ -6,7 +6,7 @@
 //  Copyright © 2018年 WeiYiAn. All rights reserved.
 //
 
-import CVCocoaHTTPServeriOS
+import GCDWebServer
 import MJRefresh
 import SnapKit
 import UIKit
@@ -26,8 +26,6 @@ public class WYAWebView: UIView {
 
     /// 记录加载在哪个控制器的
     public var vc: UIViewController?
-
-    let server = HTTPServer()
 
     let webManager = WYAWebViewManager()
     var actionID: String?
@@ -66,9 +64,11 @@ public class WYAWebView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
 // MARK: 初始化webView
-extension WYAWebView{
-    func createWkWebView(){
+
+extension WYAWebView {
+    func createWkWebView() {
         self.loadJSFolder()
         let config = WKWebViewConfiguration()
         config.userContentController = userContentControll
@@ -86,14 +86,13 @@ extension WYAWebView{
     }
 }
 
-
 // MARK: 暴露给外部调用的方法
 
 extension WYAWebView {
     /// 加载网址链接
     ///
     /// - Parameter url: urlString
-   public func loadUrl(url: String) {
+    public func loadUrl(url: String) {
         let ul = URL(string: url)
         let request = URLRequest(url: ul!)
         webView!.load(request)
@@ -102,7 +101,7 @@ extension WYAWebView {
     /// 加载本地HTML
     ///
     /// - Parameter htmlName: html名字
-   public func loadLocalHtml(htmlName: String) {
+    public func loadLocalHtml(htmlName: String) {
         let string = Bundle.main.path(forResource: htmlName, ofType: "html")
         var path = String()
         do {
@@ -113,24 +112,55 @@ extension WYAWebView {
         self.webView!.loadHTMLString(path, baseURL: Bundle.main.bundleURL)
     }
 
-    /// CVCocoaHTTPServeriOS
-   public func localHost() {
+    /// GCDWebServer
+    public func openLocationHttpServer() {
         let bund = Bundle(for: classForCoder)
         let websitePath = bund.path(forResource: "dist", ofType: nil)
 
-        server.setType("_http.tcp")
-        server.setDocumentRoot(websitePath)
+        let webServer = GCDWebServer()
+
+        // 先设置个默认的handler处理静态文件（比如css、js、图片等）
+        webServer.addGETHandler(forBasePath: "/", directoryPath: websitePath!,
+                                indexFilename: nil, cacheAge: 3600,
+                                allowRangeRequests: true)
+
+        // 再覆盖个新的handler处理动态页面（html页面）
+        webServer.addHandler(forMethod: "GET", pathRegex: "^/.*\\.html$",
+                             request: GCDWebServerDataRequest.self,
+                             processBlock: { (_) -> GCDWebServerResponse? in
+
+                                 let jsString = bund.path(forResource: "dist/index", ofType: "html")
+
+                                 var jsPath = String()
+                                 do {
+                                     jsPath = try String(contentsOfFile: jsString!)
+                                 } catch {
+                                     print(error)
+                                 }
+
+                                 return GCDWebServerDataResponse(html: jsPath)
+        })
+
+        // HTTP请求重定向（/从定向到/index.html）
+        webServer.addHandler(forMethod: "GET", path: "/",
+                             request: GCDWebServerRequest.self,
+                             processBlock: { (request) -> GCDWebServerResponse? in
+                                 let url = URL(string: "index.html", relativeTo: request.url)
+
+                                 return GCDWebServerResponse(redirect: url!, permanent: false)
+        })
+
+        let options: Dictionary<String, Any> = ["Port": 8080, "AutomaticallySuspendInBackground": false,
+                                                "BindToLocalhost": true]
         do {
-            try self.server.start()
+            try webServer.start(options: options)
         } catch {
             print(error)
         }
-        print(self.server.listeningPort())
+        print("服务启动成功，使用你的浏览器访问：\(String(describing: webServer.serverURL))")
 
-        let port = String(format: "%d", server.listeningPort())
-        let urlString = "http://localhost:" + port
-
-        self.loadUrl(url: urlString)
+        // 打开网页
+        self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
     }
 }
 
