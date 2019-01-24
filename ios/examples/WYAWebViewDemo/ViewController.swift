@@ -32,14 +32,14 @@ class ViewController: UIViewController {
         h5.frame = CGRect(x: 0, y: UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.size.width, height: self.view.frame.size.height-44)
 
 //        // 打开网页
-//        h5.loadUrl(url: DEMO_URL)
+        h5.loadUrl(url: DEMO_URL)
 
         // 打开本地文件
 //        h5.loadLocalHtml(htmlName: "index")
         self.view.addSubview(h5)
 
 //        h5.localHost()
-        h5.openLocationHttpServer()
+//        h5.openLocationHttpServer()
     }
     
     

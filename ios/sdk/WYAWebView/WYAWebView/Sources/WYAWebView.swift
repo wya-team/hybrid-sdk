@@ -158,7 +158,7 @@ extension WYAWebView {
             print(error)
         }
         print("服务启动成功，使用你的浏览器访问：\(String(describing: webServer.serverURL))")
-
+        print(webServer.bonjourServerURL)
         // 打开网页
         self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
     }
