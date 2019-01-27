@@ -1,10 +1,12 @@
 package com.wya.hybrid;
 
 import android.content.Context;
-import android.webkit.ValueCallback;
-import android.webkit.WebView;
+
+import com.tencent.smtt.sdk.ValueCallback;
+import com.tencent.smtt.sdk.WebView;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -82,5 +84,37 @@ public class BridgeUtil {
 				callBack.response(value,Integer.parseInt(id));
 			}
 		});
+	}
+
+	/**
+	 * 判断手机是否root
+	 *
+	 * @return
+	 */
+	public static boolean checkSuFile() {
+		Process process = null;
+		try {
+			//   /system/xbin/which 或者  /system/bin/which
+			process = Runtime.getRuntime().exec(new String[]{"which", "su"});
+			BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			return in.readLine() != null;
+		} catch (Throwable t) {
+			return false;
+		} finally {
+			if (process != null) {
+				process.destroy();
+			}
+		}
+	}
+
+	private static File checkRootFile() {
+		File file = null;
+		String[] paths = {"/sbin/su", "/system/bin/su", "/system/xbin/su", "/data/local/xbin/su", "/data/local/bin/su", "/system/sd/xbin/su",
+			"/system/bin/failsafe/su", "/data/local/su"};
+		for (String path : paths) {
+			file = new File(path);
+			if (file.exists()) return file;
+		}
+		return file;
 	}
 }

@@ -2,9 +2,11 @@ package com.wya.hybrid;
 
 import android.os.Build;
 import android.util.Log;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
+
 
 import com.google.gson.Gson;
 
@@ -19,11 +21,11 @@ import java.net.URLDecoder;
  */
 public class WYAWebViewClient extends WebViewClient {
     private WYAWebView webView;
-    
+
     public WYAWebViewClient(WYAWebView webView) {
         this.webView = webView;
     }
-    
+
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         try {

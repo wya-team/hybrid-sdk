@@ -38,7 +38,7 @@ public class InitBean {
 	private String cacheDir;
 	private boolean debug;
 	private String channel;
-	private String jailbreak;
+	private boolean jailbreak;
 
 	public static class SafeAreaBean {
 		private int left;
@@ -291,11 +291,11 @@ public class InitBean {
 		this.channel = channel;
 	}
 
-	public String getJailbreak() {
+	public boolean getJailbreak() {
 		return jailbreak;
 	}
 
-	public void setJailbreak(String jailbreak) {
+	public void setJailbreak(boolean jailbreak) {
 		this.jailbreak = jailbreak;
 	}
 

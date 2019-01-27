@@ -40,41 +40,41 @@ import java.util.Map;
  * @author :
  */
 public class EventManager {
-    
+
     private WYAWebView mWebView;
     private BaseEmitData<Object> mEmitData = new BaseEmitData<>();
     private Map<String, Integer> mEventMap;
     private boolean mIsDebugger = true;
-    
+
     public EventManager(Context context, WYAWebView webView) {
         if (!CheckUtil.isValidate(context)) {
             return;
         }
         this.mWebView = webView;
         this.mEventMap = new HashMap<>();
-        
+
         // event bus
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-        
+
         handleEvent(context);
-        
+
         // shake
         SensorManagerHelper sensorManagerHelper = new SensorManagerHelper(context);
         sensorManagerHelper.setOnShakeListener(() -> onShake(context));
-        
+
         // take screenshot
         ScreenShotListenManager manager = ScreenShotListenManager.newInstance(context);
         manager.setListener(this::onScreenshot);
         manager.startListen();
     }
-    
+
     private void handleEvent(Context context) {
         mWebView.register("debugger", (data, id) -> {
             DebugLogger.logEvent("data = %s , id = %s", data, id);
             Toast.makeText(context, data, Toast.LENGTH_SHORT).show();
-            
+
             if (data.contains(Battery.EVENT_BATTERY_LOW)) {
                 onBatteryLow(id);
             } else if (data.contains(Battery.EVENT_BATTERY_STATUS)) {
@@ -94,13 +94,15 @@ public class EventManager {
             } else if (data.contains(TakeScreenshot.EVENT_TAKE_SCREENSHOT)) {
                 onScreenshot(id);
             } else if (data.contains(KeyBack.EVENT_KEY_BACK)) {
-                mEventMap.put(KeyBack.EVENT_KEY_BACK, id);
-            } else if (data.contains(KeyBack.EVENT_KEY_BACK)) {
-                mEventMap.put(KeyBack.EVENT_KEY_BACK, id);
-            }
+				mEventMap.put(KeyBack.EVENT_KEY_BACK, id);
+			} else if (data.contains(VolumeDown.EVENT_VOLUME_DOWN)) {
+				mEventMap.put(VolumeDown.EVENT_VOLUME_DOWN, id);
+			} else if (data.contains(VolumeUp.EVENT_VOLUME_UP)) {
+				mEventMap.put(VolumeUp.EVENT_VOLUME_UP, id);
+			}
         });
     }
-    
+
     private static void playVibreate(Context context) {
         try {
             Vibrator vibrator = (Vibrator) context.getSystemService(android.content.Context.VIBRATOR_SERVICE);
@@ -111,7 +113,7 @@ public class EventManager {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * 低电量
      *
@@ -125,23 +127,23 @@ public class EventManager {
         setEmitData(1, "响应成功", battery);
         send(Battery.EVENT_BATTERY_LOW, getEmitData());
     }
-    
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onBatteryEvent(BatteryEvent event) {
         if (null == event) {
             return;
         }
-        
+
         Battery battery = new Battery();
         battery.setIsPlugged(event.isPlugged());
         battery.setLevel(event.getLevel());
-        
+
         if (event.isBatteryLow()) {
             setEmitData(1, "响应成功", battery);
             send(Battery.EVENT_BATTERY_LOW, getEmitData());
         }
     }
-    
+
     /**
      * 电池状态
      *
@@ -155,7 +157,7 @@ public class EventManager {
         setEmitData(1, "响应成功", battery);
         send(Battery.EVENT_BATTERY_STATUS, getEmitData());
     }
-    
+
     /**
      * 断开网络
      *
@@ -164,7 +166,7 @@ public class EventManager {
     private void onOffline(int id) {
         mEventMap.put(NetState.EVENT_OFFLINE, id);
     }
-    
+
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onNetEvent(NetEvent event) {
         if (event == null) {
@@ -173,7 +175,7 @@ public class EventManager {
         setEmitData(1, "响应成功", new NetState());
         send(event.isOnline() ? NetState.EVENT_ONLINE : NetState.EVENT_OFFLINE, getEmitData());
     }
-    
+
     /**
      * 连接网络
      *
@@ -182,7 +184,7 @@ public class EventManager {
     private void onOnline(int id) {
         mEventMap.put(NetState.EVENT_ONLINE, id);
     }
-    
+
     /**
      * 应用进入后台
      *
@@ -191,7 +193,7 @@ public class EventManager {
     private void onPause(int id) {
         mEventMap.put(Foreground.EVENT_PAUSE, id);
     }
-    
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onForegroundEvent(ForegroundEvent event) {
         if (event == null) {
@@ -200,7 +202,7 @@ public class EventManager {
         setEmitData(1, "响应成功", new Foreground());
         send(event.isPause() ? Foreground.EVENT_PAUSE : Foreground.EVENT_RESUME, getEmitData());
     }
-    
+
     /**
      * 应用从后台回到前台
      *
@@ -209,7 +211,7 @@ public class EventManager {
     private void onResume(int id) {
         mEventMap.put(Foreground.EVENT_RESUME, id);
     }
-    
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShakeEvent(ShakeEvent event) {
         if (event == null) {
@@ -218,7 +220,7 @@ public class EventManager {
         setEmitData(1, "响应成功", new Shake());
         send(Shake.EVENT_SHAKE, getEmitData());
     }
-    
+
     /**
      * 摇动事件
      *
@@ -227,13 +229,13 @@ public class EventManager {
     private void onShake(int id) {
         mEventMap.put(Shake.EVENT_SHAKE, id);
     }
-    
+
     private void onShake(Context context) {
         playVibreate(context);
         setEmitData(1, "响应成功", new Shake());
         send(Shake.EVENT_SHAKE, getEmitData());
     }
-    
+
     /**
      * 多长时间不操作屏幕
      *
@@ -242,7 +244,7 @@ public class EventManager {
     private void onAppIdle(int id) {
         mEventMap.put(AppIdle.EVENT_APP_IDLE, id);
     }
-    
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAppIdleEvent(AppIdleEvent event) {
         if (event == null) {
@@ -256,18 +258,18 @@ public class EventManager {
             awake(BaseApp.getApp());
         }
     }
-    
+
     private void awake(Context context) {
         KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unlock");
         kl.disableKeyguard();
-        
+
         PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         @SuppressLint("InvalidWakeLockTag") PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.FULL_WAKE_LOCK, "bright");
         wl.acquire();
         wl.release();
     }
-    
+
     /**
      * 用户屏幕截图
      *
@@ -276,7 +278,7 @@ public class EventManager {
     private void onScreenshot(int id) {
         mEventMap.put(TakeScreenshot.EVENT_TAKE_SCREENSHOT, id);
     }
-    
+
     private void onScreenshot(String imagePath) {
         DebugLogger.logEvent("onShot ... imagePath = %s", imagePath);
         TakeScreenshot screenshot = new TakeScreenshot();
@@ -284,7 +286,7 @@ public class EventManager {
         setEmitData(1, "响应成功", screenshot);
         send(TakeScreenshot.EVENT_TAKE_SCREENSHOT, getEmitData());
     }
-    
+
     private <T> void setEmitData(int status, String msg, T data) {
         if (null == mEmitData) {
             mEmitData = new BaseEmitData<>();
@@ -296,12 +298,12 @@ public class EventManager {
         }
         mEmitData.setStatus(status);
     }
-    
+
     private void send(String event, BaseEmitData emitData) {
         if (null == mWebView) {
             return;
         }
-        
+
         if (mIsDebugger) {
             if (null != mEventMap && CheckUtil.isNotEmpty(event) && mEventMap.containsKey(event)) {
                 int id = mEventMap.get(event);
@@ -313,11 +315,11 @@ public class EventManager {
             DebugLogger.logEvent("EventManager .[debugger false] event = %s, emitData = %s", event, emitData);
         }
     }
-    
+
     private BaseEmitData getEmitData() {
         return mEmitData;
     }
-    
+
     public void release() {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
@@ -327,7 +329,7 @@ public class EventManager {
             mWebView = null;
         }
     }
-    
+
     /**
      * 音量加按钮
      *
@@ -340,7 +342,7 @@ public class EventManager {
         setEmitData(1, "响应成功", volumeDown);
         mWebView.send(VolumeDown.EVENT_VOLUME_DOWN, getEmitData());
     }
-    
+
     /**
      * 音量减按钮
      *
@@ -353,7 +355,7 @@ public class EventManager {
         setEmitData(1, "响应成功", volumeUp);
         mWebView.send(VolumeUp.EVENT_VOLUME_UP, getEmitData());
     }
-    
+
     /**
      * 返回按钮
      *
