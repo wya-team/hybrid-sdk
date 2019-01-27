@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -14,6 +15,8 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.wya.hybrid.WYAWebView;
+import com.wya.hybrid.localserver.LocalServer;
+import com.wya.hybrid.localserver.LocalService;
 import com.wya.hybridexample.base.ActivityManager;
 import com.wya.hybridexample.control.BatteryReceiver;
 import com.wya.hybridexample.control.NetworkReceiver;
@@ -33,8 +36,8 @@ import org.greenrobot.eventbus.EventBus;
  * @classname: ExampleActivity
  * @describe:
  */
-public class ExampleActivity extends AppCompatActivity implements PermissionCallback {
-    private static final String HTML_PATH = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/";
+public class ExampleActivity extends AppCompatActivity implements PermissionCallback, LocalServer.LocalServerListener {
+    private static String HTML_PATH = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/";
     private static final int PROGRESS_MAX = 100;
     
     private WYAWebView mWebView;
@@ -74,13 +77,16 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
         
         // webView
         mWebView = findViewById(R.id.webView);
-        mWebView.loadUrl(HTML_PATH);
+        //        mWebView.loadUrl(HTML_PATH);
         
         // event manager
         mEventManager = new EventManager(this, mWebView);
         
         setProgress();
         
+        Intent intent = new Intent(this, LocalService.class);
+        LocalServer.setListener(this);
+        startService(intent);
     }
     
     /**
@@ -233,5 +239,16 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             return;
         }
         context.unregisterReceiver(receiver);
+    }
+    
+    @Override
+    public void onLocalServerStarted(int port) {
+        if (-1 != port) {
+            HTML_PATH = "http://localhost:" + port;
+        }
+        Log.e("ZCQ", "[ExampleActivity] [onLocalServerStarted] HTML_PATH = " + HTML_PATH);
+        if (null != mWebView) {
+            mWebView.loadUrl(HTML_PATH);
+        }
     }
 }

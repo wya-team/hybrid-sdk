@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <script src="//as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js"></script>
+    <script>
+        if ('addEventListener' in document) {
+            document.addEventListener('DOMContentLoaded', function() {
+                FastClick.attach(document.body);
+            }, false);
+        }
+    </script>
+</head>
+
+<body>
+    <div id="pages"></div>
+    <script>
+        <!--document.write('<script src="/hybrid-sdk/html5/examples/dist/js/webpack-assets.js?v=' + Math.random() + '"><\/script>');-->
+        document.write('<script src="/js/webpack-assets.js?v=' + Math.random() + '"><\/script>');
+    </script>
+    <script>
+    
+        <!--document.write('<script src="/hybrid-sdk/html5/examples/dist/eruda.min.js"><\/script>');-->
+        document.write('<script src="/eruda.min.js"><\/script>');
+        document.write('<script>eruda.init();<\/script>');
+
+        function loadCss(url) {
+            var link = document.createElement("link");
+            link.type = "text/css";
+            link.rel = "stylesheet";
+            link.href = url;
+            document.getElementsByTagName("head")[0].appendChild(link);
+        }
+        window.onerror = function(msg, url, num) {
+            if (msg === "Uncaught SyntaxError: Unexpected token <" && num === 1) {
+                location.reload();
+            }
+        }
+        // loadCss(window.WEBPACK_ASSETS['common'].css);
+        loadCss(window.WEBPACK_ASSETS['main'].css);
+        document.write('<script src="' + window.WEBPACK_ASSETS['common'].js + '"><\/script>');
+        document.write('<script src="' + window.WEBPACK_ASSETS['main'].js + '"><\/script>');
+    </script>
+</body>
+
+</html>
