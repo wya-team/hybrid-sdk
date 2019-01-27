@@ -8,10 +8,10 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 
 import com.google.gson.Gson;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
 import com.wya.hybrid.bean.BaseEmitData;
 import com.wya.hybrid.bean.InitBean;
 import com.wya.hybrid.bean.Keyboard;

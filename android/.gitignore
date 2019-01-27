@@ -53,8 +53,10 @@ obj/
 *.swp
 *~
 
- ../.idea/workspace.xml
- ../.idea/libraries/0.xml
- ../.idea/libraries/debug.xml
- ../.idea/libraries/debug1.xml
+ .idea/workspace.xml
+ .idea/libraries/0.xml
+ .idea/libraries/debug.xml
+ .idea/libraries/debug1.xml
+ .idea/libraries/classes.xml
+ .idea/libraries/nanohttpd_2_3_2.xml
 
