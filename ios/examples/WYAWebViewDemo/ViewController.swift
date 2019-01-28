@@ -18,12 +18,12 @@ class ViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        h5.becomeFirstResponder()
+
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        h5.resignFirstResponder()
+        
     }
 
     override func viewDidLoad() {
@@ -32,7 +32,7 @@ class ViewController: UIViewController {
         h5.frame = CGRect(x: 0, y: UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.size.width, height: self.view.frame.size.height-44)
 
 //        // 打开网页
-        h5.loadUrl(url: DEMO_URL)
+//        h5.loadUrl(url: DEMO_URL)
 
         // 打开本地文件
 //        h5.loadLocalHtml(htmlName: "index")

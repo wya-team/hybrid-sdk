@@ -24,9 +24,6 @@ public class WYAWebView: UIView {
         return true
     }
 
-    /// 记录加载在哪个控制器的
-    public var vc: UIViewController?
-
     var webManager : WYAWebViewManager?
     var actionID: String?
     var webView: WKWebView?
@@ -207,10 +204,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     public func webViewDidClose(_ webView: WKWebView) {}
 
     /// 在JS端调用alert函数时，会触发此代理方法。JS端调用alert时所传的数据可以通过message拿到。在原生得到结果后，需要回调JS，是通过completionHandler回调（ios8）
-    public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Swift.Void) {
-        print("alert" + message)
-        completionHandler()
-    }
+    public func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Swift.Void) {}
 
     /// JS端调用confirm函数时，会触发此方法，通过message可以拿到JS端所传的数据，在iOS端显示原生alert得到YES/NO后，通过completionHandler回调给JS端
     public func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Swift.Void) {}
@@ -305,12 +299,12 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
         var outParams = [String: Any]()
         outParams.updateValue(1, forKey: "status")
-        outParams.updateValue(dataParams ?? [String : Any](), forKey: "data")
+        outParams.updateValue(dataParams!, forKey: "data")
 
         let jsParams = webManager?.dicTosJsonString(outParams)
-        print(jsParams as Any)
+        print(jsParams!)
 
-        let jsString = "WYAJSBridge.emit('_ready_', \(String(describing: jsParams)))"
+        let jsString = "WYAJSBridge.emit('_ready_', \(jsParams!))"
         webView.evaluateJavaScript(jsString) { result, error in
             print(result ?? "没有数据")
             print(error ?? "没有错误")
@@ -358,7 +352,7 @@ extension WYAWebView: WebViewDelegate {
     }
 }
 
-// MARK: - 摇晃事件回调
+// MARK: - 摇晃事件回调（摇晃需要self成为第一响应者，才能响应）
 
 extension WYAWebView {
     public override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
