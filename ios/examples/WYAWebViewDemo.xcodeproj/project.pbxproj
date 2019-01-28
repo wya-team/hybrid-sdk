@@ -268,7 +268,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo-resources.sh",
 				"${PODS_ROOT}/../../../pre-build/wya.umd.js",
 				"${PODS_ROOT}/../../../pre-build/WYAJSBridge.umd.js",
-				"${PODS_ROOT}/../../../html5/examples/dist",
+				"${PODS_ROOT}/../../../pre-build/dist",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WYAWebView/WYAWebView.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
