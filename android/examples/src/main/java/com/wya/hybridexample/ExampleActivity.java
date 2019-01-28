@@ -81,6 +81,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 
 		setProgress();
 
+
 	}
 
 	/**

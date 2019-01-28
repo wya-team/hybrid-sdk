@@ -6,7 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 public class SensorManagerHelper implements SensorEventListener {
-	
+
 	// 速度阈值，当摇晃速度达到这值后产生作用
 	private final int SPEED_SHRESHOLD = 5000;
 	// 两次检测的时间间隔
@@ -25,12 +25,12 @@ public class SensorManagerHelper implements SensorEventListener {
 	private float lastZ;
 	// 上次检测时间
 	private long lastUpdateTime;
-	
+
 	public SensorManagerHelper(Context context) {
 		this.context = context;
 		start();
 	}
-	
+
 	/**
 	 * 开始检测
 	 */
@@ -48,32 +48,32 @@ public class SensorManagerHelper implements SensorEventListener {
 				SensorManager.SENSOR_DELAY_GAME);
 		}
 	}
-	
+
 	/**
 	 * 停止检测
 	 */
 	public void stop() {
 		sensorManager.unregisterListener(this);
 	}
-	
+
 	/**
 	 * 摇晃监听接口
 	 */
 	public interface OnShakeListener {
 		void onShake();
 	}
-	
+
 	/**
 	 * 设置重力感应监听器
 	 */
 	public void setOnShakeListener(OnShakeListener listener) {
 		onShakeListener = listener;
 	}
-	
+
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 	}
-	
+
 	/**
 	 * 重力感应器感应获得变化数据
 	 * android.hardware.SensorEventListener#onSensorChanged(android.hardware
@@ -86,7 +86,9 @@ public class SensorManagerHelper implements SensorEventListener {
 		// 两次检测的时间间隔
 		long timeInterval = currentUpdateTime - lastUpdateTime;
 		// 判断是否达到了检测时间间隔
-		if (timeInterval < UPTATE_INTERVAL_TIME) return;
+		if (timeInterval < UPTATE_INTERVAL_TIME) {
+			return;
+		}
 		// 现在的时间变成last时间
 		lastUpdateTime = currentUpdateTime;
 		// 获得x,y,z坐标

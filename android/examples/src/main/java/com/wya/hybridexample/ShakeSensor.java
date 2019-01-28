@@ -23,7 +23,7 @@ import android.util.Log;
  * @date Oct 5, 2013 2:51:37 PM
  */
 public class ShakeSensor implements SensorEventListener {
-    
+
     /**
      * App Context
      */
@@ -44,7 +44,7 @@ public class ShakeSensor implements SensorEventListener {
      * 类的tag
      */
     protected final String TAG = this.getClass().getName();
-    
+
     /**
      * 速度阈值，当摇晃速度达到这值后产生作用
      */
@@ -57,12 +57,12 @@ public class ShakeSensor implements SensorEventListener {
      * 默认的摇一摇传感器阀值
      */
     public static final int DEFAULT_SHAKE_SPEED = 2000;
-    
+
     /**
      * 传感器是否启动
      */
     private boolean isStart = false;
-    
+
     /**
      * 手机上一个位置时重力感应坐标
      */
@@ -73,7 +73,7 @@ public class ShakeSensor implements SensorEventListener {
      * 上次检测时间
      */
     private long mLastUpdateTime;
-    
+
     /**
      * @param context
      * @Title: ShakeListener Constructor
@@ -82,7 +82,7 @@ public class ShakeSensor implements SensorEventListener {
     public ShakeSensor(Context context) {
         this(context, ShakeSensor.DEFAULT_SHAKE_SPEED);
     }
-    
+
     /**
      * @param context        App的context
      * @param speedShreshold 摇一摇的速度阀值，默认为2000
@@ -93,7 +93,7 @@ public class ShakeSensor implements SensorEventListener {
         mContext = context;
         mSpeedShreshold = speedShreshold;
     }
-    
+
     /**
      * @return boolean 注册是否成功的标识
      * @throws
@@ -118,7 +118,7 @@ public class ShakeSensor implements SensorEventListener {
         }
         return isStart;
     }
-    
+
     /**
      * @throws
      * @Title: stop
@@ -131,7 +131,7 @@ public class ShakeSensor implements SensorEventListener {
             mShakeListener = null;
         }
     }
-    
+
     /**
      * (非 Javadoc)
      *
@@ -146,7 +146,7 @@ public class ShakeSensor implements SensorEventListener {
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.d(TAG, "### onAccuracyChanged,  accuracy = " + accuracy);
     }
-    
+
     /**
      * (非 Javadoc)
      *
@@ -155,7 +155,8 @@ public class ShakeSensor implements SensorEventListener {
      * @Description: 重力感应器感应获得变化数据
      * @see SensorEventListener#onSensorChanged(SensorEvent)
      */
-    public void onSensorChanged(SensorEvent event) {
+    @Override
+	public void onSensorChanged(SensorEvent event) {
         // 现在检测时间
         long currentUpdateTime = System.currentTimeMillis();
         // 两次检测的时间间隔
@@ -165,22 +166,22 @@ public class ShakeSensor implements SensorEventListener {
         }
         // 现在的时间变成last时间
         mLastUpdateTime = currentUpdateTime;
-        
+
         // 获得x,y,z坐标
         float x = event.values[0];
         float y = event.values[1];
         float z = event.values[2];
-        
+
         // 获得x,y,z的变化值
         float deltaX = x - mLastX;
         float deltaY = y - mLastY;
         float deltaZ = z - mLastZ;
-        
+
         // 将现在的坐标变成last坐标
         mLastX = x;
         mLastY = y;
         mLastZ = z;
-        
+
         // 获取摇晃速度
         double speed = Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ
                 * deltaZ)
@@ -189,9 +190,9 @@ public class ShakeSensor implements SensorEventListener {
         if (speed >= mSpeedShreshold && mShakeListener != null) {
             mShakeListener.onShakeComplete(event);
         }
-        
+
     } // end of onSensorChanged
-    
+
     /**
      * 获取 mShakeListener
      *
@@ -200,7 +201,7 @@ public class ShakeSensor implements SensorEventListener {
     public OnShakeListener getShakeListener() {
         return mShakeListener;
     }
-    
+
     /**
      * 设置 mShakeListener
      *
@@ -209,7 +210,7 @@ public class ShakeSensor implements SensorEventListener {
     public void setShakeListener(OnShakeListener listener) {
         this.mShakeListener = listener;
     }
-    
+
     /**
      * 获取摇一摇的速度阀值 mSpeedShreshold
      *
@@ -218,7 +219,7 @@ public class ShakeSensor implements SensorEventListener {
     public int getSpeedShreshold() {
         return mSpeedShreshold;
     }
-    
+
     /**
      * 设置摇一摇的速度阀值 mSpeedShreshold
      *
@@ -231,7 +232,7 @@ public class ShakeSensor implements SensorEventListener {
         }
         this.mSpeedShreshold = speedShreshold;
     }
-    
+
     /**
      * @return
      * @throws
@@ -241,7 +242,7 @@ public class ShakeSensor implements SensorEventListener {
     public Sensor getSensor() {
         return mSensor;
     }
-    
+
     /**
      * @author Honghui He
      * @ClassName: OnSensorBaseListener
@@ -250,5 +251,5 @@ public class ShakeSensor implements SensorEventListener {
     public interface OnShakeListener {
         public void onShakeComplete(SensorEvent event);
     }
-    
+
 }
