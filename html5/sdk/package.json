@@ -12,7 +12,7 @@
     "start": "npm run dev",
     "dev": "npm run serve",
     "serve": "rm -rf dist/ && cross-env NODE_ENV=development BABEL_ENV=rollup rollup --config ./config/rollup.config.js -w",
-    "build": "rm -rf dist/ ../../pre-build && cross-env NODE_ENV=production BABEL_ENV=rollup rollup --config ./config/rollup.config.js && cp-cli ./dist ../../pre-build",
+    "build": "rm -rf dist/ ../../pre-build/*.umd.js && cross-env NODE_ENV=production BABEL_ENV=rollup rollup --config ./config/rollup.config.js && cp-cli ./dist ../../pre-build",
     "lint": "esw *.config.* src",
     "lint:fix": "npm run lint -- --fix",
     "lint:watch": "npm run lint -- --fix --watch",
