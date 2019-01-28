@@ -8,10 +8,10 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ViewTreeObserver;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 
 import com.google.gson.Gson;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
 import com.wya.hybrid.bean.BaseEmitData;
 import com.wya.hybrid.bean.InitBean;
 import com.wya.hybrid.bean.Keyboard;
@@ -38,7 +38,7 @@ public class WYAWebView extends WebView {
 	/**
 	 * 软键盘的显示状态
 	 */
-	private boolean ShowKeyboard;
+	private boolean mShowKeyboard;
 
 	public WYAWebView(Context context) {
 		super(context);
@@ -171,18 +171,18 @@ public class WYAWebView extends WebView {
 				int height = screenHeight - (r.bottom - r.top);
 				Keyboard keyboard = new Keyboard();
 				keyboard.setHeight(height);
-				if (ShowKeyboard) {
+				if (mShowKeyboard) {
 					// 如果软键盘是弹出的状态，并且height小于等于状态栏高度，
 					// 说明这时软键盘已经收起
 					if (height - statusBarHeight < minKeyboardHeight) {
-						ShowKeyboard = false;
+						mShowKeyboard = false;
 						send(Keyboard.EVENT_KEYBOARD_HIDE, keyboard);
 					}
 				} else {
 					// 如果软键盘是收起的状态，并且height大于状态栏高度，
 					// 说明这时软键盘已经弹出
 					if (height - statusBarHeight > minKeyboardHeight) {
-						ShowKeyboard = true;
+						mShowKeyboard = true;
 						send(Keyboard.EVENT_KEYBOARD_SHOW, keyboard);
 					}
 				}

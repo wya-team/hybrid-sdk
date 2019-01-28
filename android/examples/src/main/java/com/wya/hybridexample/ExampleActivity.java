@@ -10,10 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebView;
 import android.widget.ProgressBar;
 
+import com.tencent.smtt.sdk.WebChromeClient;
+import com.tencent.smtt.sdk.WebView;
 import com.wya.hybrid.WYAWebView;
 import com.wya.hybrid.localserver.LocalServer;
 import com.wya.hybrid.localserver.LocalService;
@@ -82,7 +82,6 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
         
         // webView
         mWebView = findViewById(R.id.webView);
-        //        mWebView.loadUrl(HTML_PATH);
         
         // event manager
         mEventManager = new EventManager(this, mWebView);
@@ -189,15 +188,15 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 mEventManager.keyBack(keyCode);
-				return super.onKeyDown(keyCode, event);
+                return super.onKeyDown(keyCode, event);
             case KeyEvent.KEYCODE_VOLUME_UP:
                 mEventManager.volumeUp(keyCode);
-				return super.onKeyDown(keyCode, event);
+                return super.onKeyDown(keyCode, event);
             case KeyEvent.KEYCODE_VOLUME_DOWN:
                 mEventManager.volumeDown(keyCode);
-				return super.onKeyDown(keyCode, event);
+                return super.onKeyDown(keyCode, event);
             case KeyEvent.KEYCODE_MENU:
-				return super.onKeyDown(keyCode, event);
+                return super.onKeyDown(keyCode, event);
             default:
                 break;
         }
@@ -251,4 +250,5 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mWebView.loadUrl(HTML_PATH);
         }
     }
+    
 }
