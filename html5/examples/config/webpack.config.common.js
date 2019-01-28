@@ -1,4 +1,5 @@
 console.log(`NODE_ENV : ${process.env.NODE_ENV}`);
+console.log(`ENV_IS_PRE : ${!!process.env.ENV_IS_PRE}`);
 const APP_ROOT = process.cwd();
 const ENV_IS_DEV = process.env.NODE_ENV === 'development';
 
@@ -69,7 +70,7 @@ const webpackConfig = {
 		main: path.resolve(APP_ROOT, 'src/pages/main.js')
 	},
 	output: {
-		path: path.resolve(APP_ROOT, 'dist'),
+		path: path.resolve(APP_ROOT, process.env.ENV_IS_PRE ? '../../pre-build/dist' : 'dist'),
 		filename: 'js/[name].[hash:8].bundle.js', // 每个页面对应的主js的生成配置
 		chunkFilename: 'js/[name].[hash:8].chunk.js', // chunk生成的配置
 		sourceMapFilename: 'js/[name].[hash:8].bundle.map',
@@ -77,7 +78,7 @@ const webpackConfig = {
 		 * html引用路径
 		 * publicPath: ENV_IS_DEV ? './' : 'https://cdn.example.com/'
 		 */
-		publicPath: ENV_IS_DEV ? '/' : '/hybrid-sdk/html5/examples/dist/'
+		publicPath: ENV_IS_DEV || process.env.ENV_IS_PRE ? '/' : '/hybrid-sdk/html5/examples/dist/'
 	},
 	module: {
 		rules: [
