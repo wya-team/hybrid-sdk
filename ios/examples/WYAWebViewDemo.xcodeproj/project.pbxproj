@@ -133,6 +133,7 @@
 				21FADB4F2143CD0B00C37689 /* Resources */,
 				69DFC0FA1F7D95BCE703040D /* [CP] Embed Pods Frameworks */,
 				442650933FFB4BA53F35DC10 /* [CP] Copy Pods Resources */,
+				21AD6F9F21FE9E300027CF85 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -239,6 +240,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		21AD6F9F21FE9E300027CF85 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = "$ {PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat";
+			shellScript = "if which swiftformat >/dev/null; then\nswiftformat .\nelse\necho \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+		};
 		442650933FFB4BA53F35DC10 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -250,7 +268,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo-resources.sh",
 				"${PODS_ROOT}/../../../pre-build/wya.umd.js",
 				"${PODS_ROOT}/../../../pre-build/WYAJSBridge.umd.js",
-				"${PODS_ROOT}/../../dist",
+				"${PODS_ROOT}/../../../html5/examples/dist",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WYAWebView/WYAWebView.bundle",
 			);
 			name = "[CP] Copy Pods Resources";

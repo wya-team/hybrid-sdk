@@ -295,7 +295,7 @@ extension WYAWebViewManager {
 }
 
 extension WYAWebViewManager {
-    func removeNotice() {
+    public func removeNotice() {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceBatteryLevelDidChange, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIDeviceBatteryStateDidChange, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)

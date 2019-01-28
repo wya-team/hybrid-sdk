@@ -27,7 +27,7 @@ public class WYAWebView: UIView {
     /// 记录加载在哪个控制器的
     public var vc: UIViewController?
 
-    let webManager = WYAWebViewManager()
+    var webManager : WYAWebViewManager?
     var actionID: String?
     var webView: WKWebView?
     let userContentControll = WKUserContentController()
@@ -42,19 +42,20 @@ public class WYAWebView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.webManager.nativeDelegate = self as WebViewDelegate
-        self.webManager.registerSystemNotice()
+        webManager = WYAWebViewManager()
+        webManager?.nativeDelegate = self as WebViewDelegate
+        webManager?.registerSystemNotice()
         self.createWkWebView()
     }
 
     public override func layoutSubviews() {
         super.layoutSubviews()
 
-        self.webView?.snp.makeConstraints({ make in
+        webView?.snp.makeConstraints({ make in
             make.edges.equalTo(UIEdgeInsetsMake(0, 0, 0, 0))
         })
 
-        self.progressView.snp.makeConstraints { make in
+        progressView.snp.makeConstraints { make in
             make.left.right.top.equalTo(self)
             make.height.equalTo(1)
         }
@@ -63,10 +64,14 @@ public class WYAWebView: UIView {
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    deinit {
+        webManager?.removeNotice()
+        webManager = nil
+    }
 }
 
 // MARK: 初始化webView
-
 extension WYAWebView {
     func createWkWebView() {
         self.loadJSFolder()
@@ -150,7 +155,8 @@ extension WYAWebView {
                                  return GCDWebServerResponse(redirect: url!, permanent: false)
         })
 
-        let options: Dictionary<String, Any> = ["Port": 8080, "AutomaticallySuspendInBackground": false,
+        let options: Dictionary<String, Any> = ["Port": 8080,
+                                                "AutomaticallySuspendInBackground": false,
                                                 "BindToLocalhost": true]
         do {
             try webServer.start(options: options)
@@ -158,9 +164,13 @@ extension WYAWebView {
             print(error)
         }
         print("服务启动成功，使用你的浏览器访问：\(String(describing: webServer.serverURL))")
-        print(webServer.bonjourServerURL)
+        print(webServer.bonjourServerURL ?? "没有url")
         // 打开网页
         self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
+    }
+
+    @objc public func removeNoticeAndObserver() {
+        webManager?.removeNotice()
     }
 }
 
@@ -219,12 +229,12 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
              * key: id       id
              */
 
-            let dic = webManager.cutString(urlString: url!)
+            let dic = webManager?.cutString(urlString: url!)
 
-            actionID = (dic["id"] as! String)
+            actionID = (dic?["id"] as! String)
             guard self.actionID != nil else { return }
 
-            let arrContain = dic.allKeys.contains { (string) -> Bool in
+            let arrContain = dic?.allKeys.contains { (string) -> Bool in
                 if (string as! String) == "method" {
                     return true
                 } else {
@@ -232,10 +242,10 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                 }
             }
 
-            if arrContain {
+            if arrContain! {
                 self.getParams(self.actionID!) { params in
                     // 获取到参数执行调用原生
-                    self.webManager.nativeAction(dic["method"] as! String, params: params as! [String: String])
+                    self.webManager?.nativeAction(dic?["method"] as! String, params: params as! [String: String])
                 }
             } else {
                 // 不需要参数执行原生
@@ -274,12 +284,12 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             }
         }
 
-        var dataParams = webManager.config.getSystemConfigDic()
+        var dataParams = webManager?.config.getSystemConfigDic()
 
         if (frame.size.width == UIScreen.main.bounds.size.width) || (frame.size.height == UIScreen.main.bounds.size.height) {
-            dataParams.updateValue(true, forKey: "fullScreen")
+            dataParams?.updateValue(true, forKey: "fullScreen")
         } else {
-            dataParams.updateValue(false, forKey: "fullScreen")
+            dataParams?.updateValue(false, forKey: "fullScreen")
         }
         var safe = [String: Float]()
         // FIXME: 安全区域需要根据情况计算
@@ -290,17 +300,17 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             safe.updateValue(Float(self.safeAreaInsets.bottom), forKey: "bottom")
             safe.updateValue(Float(self.safeAreaInsets.left), forKey: "left")
             safe.updateValue(Float(self.safeAreaInsets.right), forKey: "right")
-            dataParams.updateValue(safe, forKey: "safeArea")
+            dataParams?.updateValue(safe, forKey: "safeArea")
         }
 
         var outParams = [String: Any]()
         outParams.updateValue(1, forKey: "status")
-        outParams.updateValue(dataParams, forKey: "data")
+        outParams.updateValue(dataParams ?? [String : Any](), forKey: "data")
 
-        let jsParams = webManager.dicTosJsonString(outParams)
-        print(jsParams)
+        let jsParams = webManager?.dicTosJsonString(outParams)
+        print(jsParams as Any)
 
-        let jsString = "WYAJSBridge.emit('_ready_', \(jsParams))"
+        let jsString = "WYAJSBridge.emit('_ready_', \(String(describing: jsParams)))"
         webView.evaluateJavaScript(jsString) { result, error in
             print(result ?? "没有数据")
             print(error ?? "没有错误")
@@ -360,9 +370,9 @@ extension WYAWebView {
 
         let inParams = [String: Any]()
         params.updateValue(inParams, forKey: "data")
-        let string = webManager.dicTosJsonString(params)
+        let string = webManager?.dicTosJsonString(params)
 
-        getNativeActionResult("shake", string)
+        getNativeActionResult("shake", string!)
     }
 
     public override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
@@ -395,7 +405,7 @@ extension WYAWebView {
             // 有参数
             /** params参数为json字符串需要转化为字典
              */
-            dictory = self.webManager.jsonStringToDic(params as! String) as Any
+            dictory = self.webManager?.jsonStringToDic(params as! String) as Any
             print(dictory)
 
             handler(dictory)

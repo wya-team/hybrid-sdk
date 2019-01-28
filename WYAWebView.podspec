@@ -39,7 +39,7 @@ Pod::Spec.new do |s|
   #  ss.source_files = 'pre-build/*.js'
   # end
 
-  s.resources = 'pre-build/*.js', 'ios/dist'
+  s.resources = 'pre-build/*.js', 'pre-build/dist'
 
   s.resource_bundles = {
     'WYAWebView' => ['WYAWebView/Assets/WYAWebView.bundle/*']
@@ -51,4 +51,5 @@ Pod::Spec.new do |s|
   s.dependency 'MJRefresh'
   s.dependency 'SnapKit'
   s.dependency 'GCDWebServer'
+  s.dependency 'SwiftFormat/CLI'
 end

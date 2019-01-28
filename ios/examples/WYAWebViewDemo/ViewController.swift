@@ -38,8 +38,8 @@ class ViewController: UIViewController {
 //        h5.loadLocalHtml(htmlName: "index")
         self.view.addSubview(h5)
 
-//        h5.localHost()
-//        h5.openLocationHttpServer()
+        h5.openLocationHttpServer()
+        
     }
     
     
