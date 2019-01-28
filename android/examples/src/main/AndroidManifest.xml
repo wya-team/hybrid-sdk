@@ -1,65 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.wya.hybridexample">
+	xmlns:tools="http://schemas.android.com/tools"
+	package="com.wya.hybridexample">
 
-    <!-- TODO ZCQ -->
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+	<application
+		android:allowBackup="true"
+		android:icon="@mipmap/ic_launcher"
+		android:label="@string/app_name"
+		android:roundIcon="@mipmap/ic_launcher_round"
+		android:supportsRtl="true"
+		android:theme="@style/AppTheme"
+		tools:ignore="GoogleAppIndexingWarning">
+		<activity android:name="com.wya.hybridexample.ExampleActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 访问WiFi状态.  -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 访问网络状态, 检测网络的可用性. -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <!-- TODO ZCQ -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <application
-        android:name=".base.BaseApp"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.wya.hybridexample.ExampleActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!-- 监听网络切换 receiver -->
-        <receiver android:name="com.wya.hybridexample.control.NetworkReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-                <action android:name="android.net.wifi.STATE_CHANGE" />
-            </intent-filter>
-        </receiver>
-        <receiver android:name="com.wya.hybridexample.control.BatteryReceiver">
-            <intent-filter>
-                <action android:name="android.content.Intent.ACTION_BATTERY_LOW" />
-                <action android:name="android.content.Intent.ACTION_BATTERY_OKAY" />
-                <action android:name="android.content.Intent.ACTION_BATTERY_CHANGED" />
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="com.wya.hybridexample.control.ScreenReceiver">
-            <intent-filter>
-                <action android:name="android.content.Intent.ACTION_SCREEN_ON" />
-                <action android:name="android.content.Intent.ACTION_SCREEN_OFF" />
-                <action android:name="android.content.Intent.ACTION_USER_PRESENT" />
-            </intent-filter>
-        </receiver>
-
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
 
     </application>
 

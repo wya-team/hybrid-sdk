@@ -84,6 +84,7 @@ public class WYAWebView extends WebView {
 		this.setWebViewClient(wyaWebViewClient());
 		initData();
 		setKeyBoardListener();
+
 	}
 
 	private void initData() {

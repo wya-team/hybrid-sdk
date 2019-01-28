@@ -24,16 +24,25 @@ android {
         }
     }
 
+	compileOptions {
+		sourceCompatibility 1.8
+		targetCompatibility 1.8
+	}
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation 'com.wya.uikit:uikit:0.1.0'
-    implementation 'com.wya.hardware:hardware:0.1.0'
-    implementation 'com.wya.helper:helper:0.1.0'
-    implementation 'com.wya.utils:utils:0.1.0'
-    api files('libs/nanohttpd-2.3.2.jar')
-    api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
+	implementation fileTree(include: ['*.jar'], dir: 'libs')
+	implementation 'com.android.support:appcompat-v7:28.0.0'
+	implementation 'com.google.code.gson:gson:2.8.5'
+	implementation 'com.wya.uikit:uikit:0.1.0'
+	implementation 'com.wya.hardware:hardware:0.1.0'
+	implementation 'com.wya.helper:helper:0.1.0'
+	implementation 'com.wya.utils:utils:0.1.0'
+	api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
+	api files('libs/nanohttpd-2.3.2.jar')
+
+	implementation depends.logger
+	implementation depends.eventbus
+	implementation depends.converter_gson
+	implementation supportDepends.multidex
 }
