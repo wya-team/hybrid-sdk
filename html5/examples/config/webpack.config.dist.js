@@ -17,9 +17,12 @@ const webpackConfig = {
 		 * 需要屏蔽HtmlWebpackPlugin功能，即注释
 		 */
 		new AssetsPlugin({
-			path: path.resolve(APP_ROOT, 'dist/js/'),
+			path: path.resolve(APP_ROOT, process.env.ENV_IS_PRE ? '../../pre-build/dist/js/' : 'dist/js/'),
 			filename: 'webpack-assets.js',
-			processOutput: assets => `window.WEBPACK_ASSETS=${JSON.stringify(assets)}`
+			processOutput: assets => {
+				delete assets[''];
+				return `window.WEBPACK_ASSETS=${JSON.stringify(assets)}`;
+			}
 		}),
 		/**
 		 * 压缩同时转移静态文件
@@ -36,7 +39,8 @@ const webpackConfig = {
 		 * webpack 4 默认支持: 'process.env.NODE_ENV': JSON.stringify('production')
 		 */
 		new webpack.DefinePlugin({
-			__DEV__: 'false'
+			__DEV__: 'false',
+			'process.env.ENV_IS_PRE': JSON.stringify(!!process.env.ENV_IS_PRE)
 		}),
 		new BundleAnalyzerPlugin({
 			analyzerMode: 'static', // static 生成html文件 | server 一直监听 | disabled 生成json文件
