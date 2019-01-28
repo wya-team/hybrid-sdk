@@ -49,4 +49,26 @@ describe('web.js', () => {
 		});
 
 	});
+
+	test('验证event', () => {
+
+		wya.on('batteryLow', (res) => {
+			expect(res.level).toBe(20);
+		});
+
+		wya.once('batteryLow', (res) => {
+			expect(res.tip).toBe(20);
+		});
+
+		// Native 模拟触发
+		WYAJSBridge.emit('batteryLow', {
+			status: 1,
+			msg: 'success',
+			data: {
+				level: 20,
+				tip: 'xxx'
+			}
+		});
+
+	});
 });
