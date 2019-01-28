@@ -9,7 +9,7 @@
     <com.wya.hybrid.WYAWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.wya.hybrid.WYAWebView>
+        android:layout_height="match_parent" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -17,10 +17,5 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:progressDrawable="@drawable/bg_progress" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
 
 </RelativeLayout>
