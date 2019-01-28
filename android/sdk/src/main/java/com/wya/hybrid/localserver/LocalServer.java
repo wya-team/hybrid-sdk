@@ -59,8 +59,6 @@ public class LocalServer extends NanoHTTPD {
         return getResponse(mimeType, fileName);
     }
     
-    private String mErrorFileName;
-    
     private Response getResponse(String mimeType, String fileName) {
         try {
             Log.e("ZCQ", "[getResponse] .  fileName = " + fileName);
@@ -70,10 +68,6 @@ public class LocalServer extends NanoHTTPD {
             e.printStackTrace();
             Log.e("ZCQ", "[getResponse] .  e = " + e.getMessage());
             fileName = KEY_DEFAULT_PAGE;
-            if (fileName.equals(mErrorFileName)) {
-                return null;
-            }
-            mErrorFileName = fileName;
             return getResponse(MIME_HTML, fileName);
         }
     }
