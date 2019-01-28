@@ -51,5 +51,5 @@ Pod::Spec.new do |s|
   s.dependency 'MJRefresh'
   s.dependency 'SnapKit'
   s.dependency 'GCDWebServer'
-  s.dependency 'SwiftFormat/CLI'
+  s.dependency 'WYAKit'
 end

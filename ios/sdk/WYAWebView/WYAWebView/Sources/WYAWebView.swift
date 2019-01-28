@@ -11,6 +11,7 @@ import MJRefresh
 import SnapKit
 import UIKit
 import WebKit
+import WYAKit
 
 /// 初始版本号
 fileprivate let jsBuildVersion = 0.1
@@ -24,6 +25,10 @@ public class WYAWebView: UIView {
         return true
     }
 
+    var pathString : String?
+
+
+    let webServer = GCDWebServer()
     var webManager : WYAWebViewManager?
     var actionID: String?
     var webView: WKWebView?
@@ -94,7 +99,7 @@ extension WYAWebView {
     /// 加载网址链接
     ///
     /// - Parameter url: urlString
-    public func loadUrl(url: String) {
+    @objc public func loadUrl(url: String) {
         let ul = URL(string: url)
         let request = URLRequest(url: ul!)
         webView!.load(request)
@@ -103,7 +108,7 @@ extension WYAWebView {
     /// 加载本地HTML
     ///
     /// - Parameter htmlName: html名字
-    public func loadLocalHtml(htmlName: String) {
+    @objc public func loadLocalHtml(htmlName: String) {
         let string = Bundle.main.path(forResource: htmlName, ofType: "html")
         var path = String()
         do {
@@ -115,11 +120,11 @@ extension WYAWebView {
     }
 
     /// GCDWebServer
-    public func openLocationHttpServer() {
+    @objc public func openLocationHttpServer() {
         let bund = Bundle(for: classForCoder)
         let websitePath = bund.path(forResource: "dist", ofType: nil)
 
-        let webServer = GCDWebServer()
+
 
         // 先设置个默认的handler处理静态文件（比如css、js、图片等）
         webServer.addGETHandler(forBasePath: "/", directoryPath: websitePath!,
@@ -152,6 +157,15 @@ extension WYAWebView {
                                  return GCDWebServerResponse(redirect: url!, permanent: false)
         })
 
+
+        webServer.addHandler(forMethod: "GET", path:  "/consts",
+                             request: GCDWebServerRequest.self,
+                             processBlock: { (request) -> GCDWebServerResponse? in
+                                let url = URL(string: "index.html", relativeTo: request.url)
+
+                                return GCDWebServerResponse(redirect: url!, permanent: false)
+        })
+
         let options: Dictionary<String, Any> = ["Port": 8080,
                                                 "AutomaticallySuspendInBackground": false,
                                                 "BindToLocalhost": true]
@@ -164,6 +178,24 @@ extension WYAWebView {
         print(webServer.bonjourServerURL ?? "没有url")
         // 打开网页
         self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
+//        self.loadUrl(url: "http://localhost:8080/const")
+//        let url = URL(string: (webServer.serverURL?.absoluteString)!)
+//
+//        if UIApplication.shared.canOpenURL(url!) {
+//            UIApplication.shared.openURL(URL(string: (webServer.serverURL?.absoluteString)!)!)
+//        }
+
+    }
+
+    @objc public func openwin(_ vc : UIViewController) {
+
+        if self.cmam_viewController?.navigationController == nil {
+            self.cmam_viewController?.present(vc, animated: true, completion: {
+
+            })
+        } else {
+            self.cmam_viewController?.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
     @objc public func removeNoticeAndObserver() {
@@ -260,7 +292,10 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
     }
 
     /// 收到服务器重定向时调用（ios8）
-    public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {}
+    public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
+
+        print("重定向")
+    }
 
     /// 加载错误时调用 （ios8）
     public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
