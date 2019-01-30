@@ -1,14 +1,12 @@
 package com.wya.hybridexample;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.tencent.smtt.sdk.WebChromeClient;
@@ -48,8 +46,6 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		permissionHelper.request(REQUEST_PERMISSIONS);
 	}
 
-	private Button mButton;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,22 +57,6 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		// webView
 		mWebView = findViewById(R.id.webView);
 		mWebView.loadUrl(HTML_PATH);
-
-		mButton = findViewById(R.id.button);
-		mButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				try {
-					String url = "weiyian-scheme://id?notify_event=notice_info&type=2&type_name=test";
-
-					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-					startActivity(intent);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 
 		// event manager
 		mHybridManager = new HybridManager(this, mWebView);
@@ -207,12 +187,5 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		if (null != mWebView) {
 			mWebView.loadUrl(HTML_PATH);
 		}
-
-		Intent intent = new Intent();
-		intent.setAction("android.intent.action.VIEW");
-		intent.setData(Uri.parse(HTML_PATH));
-		startActivity(intent);
-		// TODO: 2019/1/28 ZCQ TEST
-
 	}
 }
