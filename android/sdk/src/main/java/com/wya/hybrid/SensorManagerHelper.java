@@ -5,32 +5,50 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+/**
+ * @author :
+ */
 public class SensorManagerHelper implements SensorEventListener {
-
-	// 速度阈值，当摇晃速度达到这值后产生作用
-	private final int SPEED_SHRESHOLD = 5000;
-	// 两次检测的时间间隔
-	private final int UPTATE_INTERVAL_TIME = 50;
-	// 传感器管理器
+	
+	/**
+	 * 速度阈值，当摇晃速度达到这值后产生作用
+	 */
+	private final static int SPEED_SHRESHOLD = 5000;
+	/**
+	 * 两次检测的时间间隔
+	 */
+	private final static int UPTATE_INTERVAL_TIME = 50;
+	
+	/**
+	 * 传感器管理器
+	 */
 	private SensorManager sensorManager;
-	// 传感器
+	/**
+	 * 传感器
+	 */
 	private Sensor sensor;
-	// 重力感应监听器
+	/**
+	 * 重力感应监听器
+	 */
 	private OnShakeListener onShakeListener;
-	// 上下文对象context
+	
 	private Context context;
-	// 手机上一个位置时重力感应坐标
+	/**
+	 * 手机上一个位置时重力感应坐标
+	 */
 	private float lastX;
 	private float lastY;
 	private float lastZ;
-	// 上次检测时间
+	/**
+	 * 上次检测时间
+	 */
 	private long lastUpdateTime;
-
+	
 	public SensorManagerHelper(Context context) {
 		this.context = context;
 		start();
 	}
-
+	
 	/**
 	 * 开始检测
 	 */
@@ -48,36 +66,36 @@ public class SensorManagerHelper implements SensorEventListener {
 				SensorManager.SENSOR_DELAY_GAME);
 		}
 	}
-
+	
 	/**
 	 * 停止检测
 	 */
 	public void stop() {
 		sensorManager.unregisterListener(this);
 	}
-
-	/**
-	 * 摇晃监听接口
-	 */
+	
 	public interface OnShakeListener {
+		
+		/**
+		 * shake
+		 */
 		void onShake();
 	}
-
+	
 	/**
 	 * 设置重力感应监听器
 	 */
 	public void setOnShakeListener(OnShakeListener listener) {
 		onShakeListener = listener;
 	}
-
+	
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 	}
-
+	
 	/**
 	 * 重力感应器感应获得变化数据
-	 * android.hardware.SensorEventListener#onSensorChanged(android.hardware
-	 * .SensorEvent)
+	 * android.hardware.SensorEventListener#onSensorChanged(android.hardware.SensorEvent)
 	 */
 	@Override
 	public void onSensorChanged(SensorEvent event) {

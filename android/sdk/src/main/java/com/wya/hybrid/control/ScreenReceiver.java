@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.wya.hybrid.data.event.AppIdleEvent;
-import com.wya.hybrid.data.sp.ScreenSP;
+import com.wya.hybrid.data.sp.ScreenSp;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.RxTimerUtil;
 import com.wya.hybrid.util.log.DebugLogger;
@@ -58,7 +58,7 @@ public class ScreenReceiver extends BroadcastReceiver {
                     break;
             }
         }
-        ScreenSP.get().setScreenState(state);
+        ScreenSp.get().setScreenState(state);
         if (event != null) {
             AppIdleEvent finalEvent = event;
             RxTimerUtil.timer(3000L, aLong -> EventBus.getDefault().post(finalEvent));

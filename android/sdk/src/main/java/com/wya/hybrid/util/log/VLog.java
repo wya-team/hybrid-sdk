@@ -6,7 +6,7 @@ import com.orhanobut.logger.Printer;
 /**
  * @author :
  */
-public class WYALog {
+public class VLog {
 
     public static void init() {
         init(Logger.VERBOSE);

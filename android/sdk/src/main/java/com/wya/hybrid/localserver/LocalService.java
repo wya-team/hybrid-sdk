@@ -11,8 +11,7 @@ import java.io.IOException;
  * @author :
  */
 public class LocalService extends Service {
-    private static final String TAG = "ZCQ";
-    private LocalServer mLocalService;
+    private LocalServer mLocalServer;
     
     @Nullable
     @Override
@@ -22,13 +21,11 @@ public class LocalService extends Service {
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e(TAG, "LocalService . onStartCommand");
-        mLocalService = new LocalServer(getApplication());
+        mLocalServer = new LocalServer(getApplication());
         try {
-            mLocalService.start();
+            mLocalServer.start();
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e(TAG, "LocalService.onStartCommand e = " + e.getMessage());
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -36,9 +33,9 @@ public class LocalService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mLocalService != null) {
-            mLocalService.closeAllConnections();
-            mLocalService.stop();
+        if (mLocalServer != null) {
+            mLocalServer.closeAllConnections();
+            mLocalServer.stop();
         }
     }
     

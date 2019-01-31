@@ -3,19 +3,19 @@ package com.wya.hybrid.data.sp;
 /**
  * @author :
  */
-public class ScreenSP extends BaseSP {
+public class ScreenSp extends BaseSp {
 
     private static final String KEY_SCREEN = "SP_SCREEN";
 
-    private static ScreenSP INSTANCE;
+    private static ScreenSp INSTANCE;
 
-    private ScreenSP() {
+    private ScreenSp() {
         super(KEY_SCREEN);
     }
 
-    public static ScreenSP get() {
+    public static ScreenSp get() {
         if (null == INSTANCE) {
-            INSTANCE = new ScreenSP();
+            INSTANCE = new ScreenSp();
         }
         return INSTANCE;
     }

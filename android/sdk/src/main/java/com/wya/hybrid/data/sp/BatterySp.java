@@ -3,21 +3,21 @@ package com.wya.hybrid.data.sp;
 /**
  * @author :
  */
-public class BatterySP extends BaseSP {
+public class BatterySp extends BaseSp {
 
     private static final String KEY_BATTERY = "SP_BATTERY";
     private static final String KEY_LEVEL = "LEVEL";
     private static final String KEY_IS_PLUGGED = "IS_PLUGGED";
 
-    private static BatterySP INSTANCE;
+    private static BatterySp INSTANCE;
 
-    private BatterySP() {
+    private BatterySp() {
         super(KEY_BATTERY);
     }
 
-    public static BatterySP get() {
+    public static BatterySp get() {
         if (null == INSTANCE) {
-            INSTANCE = new BatterySP();
+            INSTANCE = new BatterySp();
         }
         return INSTANCE;
     }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 import org.nanohttpd.protocols.http.IHTTPSession;
 import org.nanohttpd.protocols.http.NanoHTTPD;
 import org.nanohttpd.protocols.http.response.Response;
@@ -33,21 +35,21 @@ public class LocalServer extends NanoHTTPD {
         mAssetManager = mContext.getAssets();
     }
     
+    
+    
     @Override
     public Response serve(IHTTPSession session) {
-        Log.e("ZCQ", "[LocalServer] . [serve] uri = " + session.getUri());
         final StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> header : session.getHeaders().entrySet()) {
             sb.append(header.getKey()).append(" : ").append(header.getValue()).append("\n");
         }
         String fileName = session.getUri().substring(1);
-        if (fileName.equalsIgnoreCase("")) {
+        if ("".equalsIgnoreCase(fileName)) {
             fileName = KEY_DEFAULT_PAGE;
         } else {
             fileName = KEY_DEFAULT_DIRECTORY + fileName;
         }
         
-        Log.e("ZCQ", "serve . KEY_DEFAULT_DIRECTORY = " + KEY_DEFAULT_DIRECTORY);
         String mimeType = "";
         if (fileName.contains(KEY_SUFFIX_HTML)) {
             mimeType = MIME_HTML;
@@ -66,7 +68,6 @@ public class LocalServer extends NanoHTTPD {
             return Response.newFixedLengthResponse(Status.OK, mimeType, data, (long) data.available());
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("ZCQ", "[getResponse] .  e = " + e.getMessage());
             fileName = KEY_DEFAULT_PAGE;
             return getResponse(MIME_HTML, fileName);
         }
@@ -76,6 +77,7 @@ public class LocalServer extends NanoHTTPD {
     public void onStarted() {
         super.onStarted();
         int localPort = getListeningPort();
+        Logger.t("ZCQ").e("[LocalServer] [onStarted] localPort = %s", localPort);
         if (null != mListener) {
             mListener.onLocalServerStarted(localPort);
         }

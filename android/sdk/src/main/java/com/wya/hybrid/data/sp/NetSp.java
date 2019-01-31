@@ -3,19 +3,19 @@ package com.wya.hybrid.data.sp;
 /**
  * @author :
  */
-public class NetSP extends BaseSP {
+public class NetSp extends BaseSp {
 
     private static final String KEY_NET = "SP_NET";
 
-    private static NetSP INSTANCE;
+    private static NetSp INSTANCE;
 
-    private NetSP() {
+    private NetSp() {
         super(KEY_NET);
     }
 
-    public static NetSP get() {
+    public static NetSp get() {
         if (null == INSTANCE) {
-            INSTANCE = new NetSP();
+            INSTANCE = new NetSp();
         }
         return INSTANCE;
     }

@@ -2,7 +2,6 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	package="com.wya.hybrid">
 
-	<!-- TODO ZCQ -->
 	<uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />

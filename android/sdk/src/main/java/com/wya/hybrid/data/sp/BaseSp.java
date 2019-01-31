@@ -13,11 +13,11 @@ import java.util.Set;
 /**
  * @author :
  */
-public class BaseSP {
+public class BaseSp {
 
     private SharedPreferences mSharedPreferences;
 
-    public BaseSP(String key) {
+    public BaseSp(String key) {
         mSharedPreferences = BaseApp.getApp().getSharedPreferences(key, Context.MODE_PRIVATE);
     }
 

@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.wya.hybrid.data.event.NetEvent;
-import com.wya.hybrid.data.sp.NetSP;
+import com.wya.hybrid.data.sp.NetSp;
 import com.wya.hybrid.util.log.DebugLogger;
 
 import org.greenrobot.eventbus.EventBus;
@@ -43,7 +43,7 @@ public class NetworkReceiver extends BroadcastReceiver {
                     isOnline = false;
                 }
 
-                NetSP.get().setIsOnline(isOnline);
+                NetSp.get().setIsOnline(isOnline);
 
                 NetEvent event = new NetEvent();
                 event.setOnline(isOnline);

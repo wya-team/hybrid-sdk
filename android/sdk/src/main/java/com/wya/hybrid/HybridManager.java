@@ -31,8 +31,8 @@ import com.wya.hybrid.data.event.BatteryEvent;
 import com.wya.hybrid.data.event.ForegroundEvent;
 import com.wya.hybrid.data.event.NetEvent;
 import com.wya.hybrid.data.event.ShakeEvent;
-import com.wya.hybrid.data.sp.BatterySP;
-import com.wya.hybrid.data.sp.ForegroundStateSP;
+import com.wya.hybrid.data.sp.BatterySp;
+import com.wya.hybrid.data.sp.ForegroundStateSp;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.log.DebugLogger;
 
@@ -176,8 +176,8 @@ public class HybridManager{
     private void onBatteryLow(int id) {
         mEventMap.put(Battery.EVENT_BATTERY_LOW, id);
         Battery battery = new Battery();
-        battery.setIsPlugged(BatterySP.get().isPlugged());
-        battery.setLevel(BatterySP.get().getLevel());
+        battery.setIsPlugged(BatterySp.get().isPlugged());
+        battery.setLevel(BatterySp.get().getLevel());
         setEmitData(1, "响应成功", battery);
         send(Battery.EVENT_BATTERY_LOW, getEmitData());
     }
@@ -206,8 +206,8 @@ public class HybridManager{
     private void onBatteryStatus(int id) {
         mEventMap.put(Battery.EVENT_BATTERY_STATUS, id);
         Battery battery = new Battery();
-        battery.setIsPlugged(BatterySP.get().isPlugged());
-        battery.setLevel(BatterySP.get().getLevel());
+        battery.setIsPlugged(BatterySp.get().isPlugged());
+        battery.setLevel(BatterySp.get().getLevel());
         setEmitData(1, "响应成功", battery);
         send(Battery.EVENT_BATTERY_STATUS, getEmitData());
     }
@@ -426,8 +426,8 @@ public class HybridManager{
 		if (ActivityManager.getInstance().isForeground() && mIsFromBackground) {
 			DebugLogger.logEvent("onResume ... ");
 			mIsFromBackground = false;
-			ForegroundStateSP.get().setIsResume(true);
-			ForegroundStateSP.get().setIsPause(false);
+			ForegroundStateSp.get().setIsResume(true);
+			ForegroundStateSp.get().setIsPause(false);
 
 			ForegroundEvent event = new ForegroundEvent();
 			event.setPause(false);
@@ -441,8 +441,8 @@ public class HybridManager{
 			DebugLogger.logEvent("onStop ... ");
 
 			mIsFromBackground = true;
-			ForegroundStateSP.get().setIsPause(true);
-			ForegroundStateSP.get().setIsResume(false);
+			ForegroundStateSp.get().setIsPause(true);
+			ForegroundStateSp.get().setIsResume(false);
 
 			ForegroundEvent event = new ForegroundEvent();
 			event.setPause(true);

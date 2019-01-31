@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.tencent.smtt.sdk.QbSdk;
 import com.wya.hybrid.util.SystemUtil;
-import com.wya.hybrid.util.log.WYALog;
+import com.wya.hybrid.util.log.VLog;
 
 /**
  * @author :
@@ -27,7 +27,7 @@ public class BaseApp extends Application {
 
     private void init() {
         // log
-        WYALog.init();
+        VLog.init();
 
         // activity manager
         ActivityManager.init(this);

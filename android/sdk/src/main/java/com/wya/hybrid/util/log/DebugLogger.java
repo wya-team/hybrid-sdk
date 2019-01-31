@@ -12,7 +12,7 @@ public class DebugLogger {
 
     public static void logNet(String message, Object... args) {
         try {
-            WYALog.t(TAG_NET).e(message, args);
+            VLog.t(TAG_NET).e(message, args);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -20,7 +20,7 @@ public class DebugLogger {
 
     public static void logEvent(String message, Object... args) {
         try {
-            WYALog.t(TAG_EVENT).e(message, args);
+            VLog.t(TAG_EVENT).e(message, args);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -28,7 +28,7 @@ public class DebugLogger {
 
     public static void logBattery(String message, Object... args) {
         try {
-            WYALog.t(TAG_BATTERY).e(message, args);
+            VLog.t(TAG_BATTERY).e(message, args);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,7 +36,7 @@ public class DebugLogger {
 
     public static void logScreen(String message, Object... args) {
         try {
-            WYALog.t(TAG_SCREEN).e(message, args);
+            VLog.t(TAG_SCREEN).e(message, args);
         } catch (Exception e) {
             e.printStackTrace();
         }
