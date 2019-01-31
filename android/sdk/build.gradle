@@ -11,7 +11,7 @@ android {
 
 		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 		ndk {
-			abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+			abiFilters 'armeabi', 'armeabi-v7a', 'x86', 'mips'
 		}
 	}
 
@@ -23,8 +23,8 @@ android {
 	}
 
 	compileOptions {
-		sourceCompatibility 1.8
-		targetCompatibility 1.8
+		sourceCompatibility '1.8'
+		targetCompatibility '1.8'
 	}
 }
 
