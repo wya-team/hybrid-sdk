@@ -3,12 +3,10 @@ package com.wya.hybrid;
 import android.os.Build;
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
-
-
-import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -43,7 +41,6 @@ public class WYAWebViewClient extends WebViewClient {
         
     }
     
-    // 增加shouldOverrideUrlLoading在api》=24时
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         

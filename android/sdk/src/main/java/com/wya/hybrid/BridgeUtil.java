@@ -6,7 +6,6 @@ import com.tencent.smtt.sdk.ValueCallback;
 import com.tencent.smtt.sdk.WebView;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -18,7 +17,8 @@ import java.io.InputStreamReader;
  * @describe:
  */
 public class BridgeUtil {
-    
+
+	public static final String ANNOTION = "^\\s*\\/\\/.*";
     public static final String WYAJSBRIDGE = "WYAJSBridge.umd.js";
     public static final String WYAMETHOD = "wya.umd.js";
     public static final String SCHEME = "command://";
@@ -52,7 +52,7 @@ public class BridgeUtil {
             do {
                 line = bufferedReader.readLine();
                 // 去除注释
-                if (line != null && !line.matches("^\\s*\\/\\/.*")) {
+				if (line != null && !line.matches(ANNOTION)) {
                     sb.append(line);
                 }
             } while (line != null);
@@ -107,14 +107,4 @@ public class BridgeUtil {
         }
     }
     
-    private static File checkRootFile() {
-        File file = null;
-        String[] paths = {"/sbin/su", "/system/bin/su", "/system/xbin/su", "/data/local/xbin/su", "/data/local/bin/su", "/system/sd/xbin/su",
-                "/system/bin/failsafe/su", "/data/local/su"};
-        for (String path : paths) {
-            file = new File(path);
-            if (file.exists()) return file;
-        }
-        return file;
-    }
 }

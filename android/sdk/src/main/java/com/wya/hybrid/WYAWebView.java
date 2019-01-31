@@ -70,15 +70,11 @@ public class WYAWebView extends WebView {
 		webSetting.setBuiltInZoomControls(true);
 		webSetting.setUseWideViewPort(true);
 		webSetting.setSupportMultipleWindows(true);
-		// webSetting.setLoadWithOverviewMode(true);
 		webSetting.setAppCacheEnabled(true);
-		// webSetting.setDatabaseEnabled(true);
 		webSetting.setDomStorageEnabled(true);
 		webSetting.setGeolocationEnabled(true);
 		webSetting.setAppCacheMaxSize(Long.MAX_VALUE);
-		// webSetting.setPageCacheCapacity(IX5WebSettings.DEFAULT_CACHE_CAPACITY);
 		webSetting.setPluginState(WebSettings.PluginState.ON_DEMAND);
-		// webSetting.setRenderPriority(WebSettings.RenderPriority.HIGH);
 		webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 		this.setWebViewClient(wyaWebViewClient());
