@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.os.PowerManager;
@@ -38,6 +39,7 @@ import com.wya.hybrid.data.sp.BatterySp;
 import com.wya.hybrid.data.sp.ForegroundStateSp;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.log.DebugLogger;
+import com.wya.utils.utils.LogUtil;
 import com.wya.utils.utils.ScreenUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -52,12 +54,12 @@ import static com.wya.uikit.toolbar.StatusBarUtil.getStatusBarHeight;
 /**
  * @author :
  */
-public class HybridManager {
+public class HybridManager implements JsCallBack {
 
 	private WYAWebView mWebView;
 	private BaseEmitData<Object> mEmitData = new BaseEmitData<>();
 	private Map<String, Integer> mEventMap;
-	private boolean mIsDebugger = true;
+	private boolean mIsDebugger = false;
 	private Activity mContext;
 
 	private boolean mIsFromBackground = false;
@@ -83,8 +85,6 @@ public class HybridManager {
 			EventBus.getDefault().register(this);
 		}
 
-		handleEvent(context);
-
 		// shake
 		SensorManagerHelper sensorManagerHelper = new SensorManagerHelper(context);
 		sensorManagerHelper.setOnShakeListener(() -> onShake(context));
@@ -98,43 +98,6 @@ public class HybridManager {
 		registerBatteryReceiver();
 		registerScreenReceiver();
 
-	}
-
-	private void handleEvent(Context context) {
-		mWebView.register("debugger", (data, id) -> {
-			DebugLogger.logEvent("data = %s , id = %s", data, id);
-			Toast.makeText(context, data, Toast.LENGTH_SHORT).show();
-
-			if (data.contains(Battery.EVENT_BATTERY_LOW)) {
-				onBatteryLow(id);
-			} else if (data.contains(Battery.EVENT_BATTERY_STATUS)) {
-				onBatteryStatus(id);
-			} else if (data.contains(NetState.EVENT_OFFLINE)) {
-				onOffline(id);
-			} else if (data.contains(NetState.EVENT_ONLINE)) {
-				onOnline(id);
-			} else if (data.contains(Foreground.EVENT_PAUSE)) {
-				onPause(id);
-			} else if (data.contains(Foreground.EVENT_RESUME)) {
-				onResume(id);
-			} else if (data.contains(Shake.EVENT_SHAKE)) {
-				onShake(id);
-			} else if (data.contains(AppIdle.EVENT_APP_IDLE)) {
-				onAppIdle(id);
-			} else if (data.contains(TakeScreenshot.EVENT_TAKE_SCREENSHOT)) {
-				onScreenshot(id);
-			} else if (data.contains(KeyBack.EVENT_KEY_BACK)) {
-				mEventMap.put(KeyBack.EVENT_KEY_BACK, id);
-			} else if (data.contains(VolumeDown.EVENT_VOLUME_DOWN)) {
-				mEventMap.put(VolumeDown.EVENT_VOLUME_DOWN, id);
-			} else if (data.contains(VolumeUp.EVENT_VOLUME_UP)) {
-				mEventMap.put(VolumeUp.EVENT_VOLUME_UP, id);
-			} else if (data.contains(Keyboard.EVENT_KEYBOARD_SHOW)) {
-				onKeyBoardListener(Keyboard.EVENT_KEYBOARD_SHOW, id);
-			} else if (data.contains(Keyboard.EVENT_KEYBOARD_HIDE)) {
-				onKeyBoardListener(Keyboard.EVENT_KEYBOARD_HIDE, id);
-			}
-		});
 	}
 
 	private static void playVibreate(Context context) {
@@ -375,8 +338,14 @@ public class HybridManager {
 				DebugLogger.logEvent("WYAEventManager .[debugger true] id = %s, emitData = %s", id, emitData);
 			}
 		} else {
-			mWebView.send(event, emitData);
-			DebugLogger.logEvent("WYAEventManager .[debugger false] event = %s, emitData = %s", event, emitData);
+			if (null != mEventMap && CheckUtil.isNotEmpty(event) && mEventMap.containsKey(event)) {
+				int id = mEventMap.get(event);
+				mWebView.send(id, emitData);
+				DebugLogger.logEvent("WYAEventManager .[debugger true] id = %s, emitData = %s", id, emitData);
+			} else {
+				mWebView.send(event, emitData);
+				DebugLogger.logEvent("WYAEventManager .[debugger false] event = %s, emitData = %s", event, emitData);
+			}
 		}
 	}
 
@@ -527,4 +496,53 @@ public class HybridManager {
 		});
 	}
 
+	@Override
+	public void response(String data, int id, String name) {
+		LogUtil.e(data + "default--------" + id + "--------" + name);
+		mIsDebugger = false;
+		if (name.equals("debugger")) {
+			mIsDebugger = true;
+			DebugLogger.logEvent("data = %s , id = %s", data, id);
+			Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
+
+			if (data.contains(Battery.EVENT_BATTERY_LOW)) {
+				HybridManager.this.onBatteryLow(id);
+			} else if (data.contains(Battery.EVENT_BATTERY_STATUS)) {
+				HybridManager.this.onBatteryStatus(id);
+			} else if (data.contains(NetState.EVENT_OFFLINE)) {
+				HybridManager.this.onOffline(id);
+			} else if (data.contains(NetState.EVENT_ONLINE)) {
+				HybridManager.this.onOnline(id);
+			} else if (data.contains(Foreground.EVENT_PAUSE)) {
+				HybridManager.this.onPause(id);
+			} else if (data.contains(Foreground.EVENT_RESUME)) {
+				HybridManager.this.onResume(id);
+			} else if (data.contains(Shake.EVENT_SHAKE)) {
+				onShake(id);
+			} else if (data.contains(AppIdle.EVENT_APP_IDLE)) {
+				HybridManager.this.onAppIdle(id);
+			} else if (data.contains(TakeScreenshot.EVENT_TAKE_SCREENSHOT)) {
+				onScreenshot(id);
+			} else if (data.contains(KeyBack.EVENT_KEY_BACK)) {
+				mEventMap.put(KeyBack.EVENT_KEY_BACK, id);
+			} else if (data.contains(VolumeDown.EVENT_VOLUME_DOWN)) {
+				mEventMap.put(VolumeDown.EVENT_VOLUME_DOWN, id);
+			} else if (data.contains(VolumeUp.EVENT_VOLUME_UP)) {
+				mEventMap.put(VolumeUp.EVENT_VOLUME_UP, id);
+			} else if (data.contains(Keyboard.EVENT_KEYBOARD_SHOW)) {
+				HybridManager.this.onKeyBoardListener(Keyboard.EVENT_KEYBOARD_SHOW, id);
+			} else if (data.contains(Keyboard.EVENT_KEYBOARD_HIDE)) {
+				HybridManager.this.onKeyBoardListener(Keyboard.EVENT_KEYBOARD_HIDE, id);
+			}
+		} else if (name.equals("openWin")) {
+			mEventMap.put(name, id);
+			Intent intent = new Intent(mContext, mContext.getClass());
+			mContext.startActivity(intent);
+			send(name, getEmitData());
+		} else if (name.equals("closeWin")) {
+			mEventMap.put(name, id);
+			setEmitData(1, "响应成功", null);
+			send(name, getEmitData());
+		}
+	}
 }

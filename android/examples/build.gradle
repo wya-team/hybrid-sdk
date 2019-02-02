@@ -39,6 +39,6 @@ dependencies {
     implementation 'com.wya.hardware:hardware:0.1.0'
     implementation 'com.wya.helper:helper:0.1.0'
     implementation 'com.wya.utils:utils:0.1.0'
-	implementation depends.eventbus
+    implementation depends.eventbus
 
 }

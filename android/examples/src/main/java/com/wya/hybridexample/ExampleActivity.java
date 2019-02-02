@@ -11,11 +11,13 @@ import android.widget.ProgressBar;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.wya.hybrid.HybridManager;
+import com.wya.hybrid.JsCallBack;
 import com.wya.hybrid.WYAWebView;
 import com.wya.hybrid.localserver.LocalServer;
 import com.wya.hybrid.localserver.LocalService;
 import com.wya.hybrid.permission.PermissionCallback;
 import com.wya.hybrid.permission.PermissionCheck;
+import com.wya.utils.utils.LogUtil;
 
 /**
  * @date: 2019/1/16 16:18
@@ -31,7 +33,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
     private ProgressBar progressBar;
     private HybridManager mHybridManager;
 
-    /**
+	/**
      * permission
      */
     protected PermissionCheck permissionHelper;
@@ -98,9 +100,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		// webView
 		mWebView = findViewById(R.id.webView);
 		mWebView.initData();
-		// hybrid manager
-		mHybridManager = new HybridManager(this, mWebView);
-		mHybridManager.onActivityCreate();
+		mHybridManager = mWebView.getHybridManager();
 		setProgress();
 	}
 

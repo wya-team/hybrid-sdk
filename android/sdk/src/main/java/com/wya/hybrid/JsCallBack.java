@@ -10,6 +10,7 @@ public interface JsCallBack {
 	 * 拦截回调
 	 * @param data 返回数据
 	 * @param id id
+	 * @param name
 	 */
-    void response(String data, int id);
+    void response(String data, int id, String name);
 }

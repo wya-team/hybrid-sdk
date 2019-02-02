@@ -79,11 +79,11 @@ public class BridgeUtil {
 		webView.loadUrl("javascript:WYAJSBridge.emit(" + key + "," + value + ")");
 	}
 
-	public static void getParam(WebView webView, final String id, final JsCallBack callBack) {
+	public static void getParam(WebView webView, final String id, String name, final JsCallBack callBack) {
 		webView.evaluateJavascript("javascript:" + "WYAJSBridge.getParam(" + id + ")", new ValueCallback<String>() {
 			@Override
 			public void onReceiveValue(String value) {
-				callBack.response(value, Integer.parseInt(id));
+				callBack.response(value, Integer.parseInt(id), name);
 			}
 		});
 	}
