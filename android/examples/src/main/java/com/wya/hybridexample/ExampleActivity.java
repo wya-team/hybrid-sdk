@@ -26,16 +26,16 @@ import com.wya.hybrid.permission.PermissionCheck;
 public class ExampleActivity extends AppCompatActivity implements PermissionCallback, LocalServer.LocalServerListener {
     private static String HTML_PATH = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/";
     private static final int PROGRESS_MAX = 100;
-    
+
     private WYAWebView mWebView;
     private ProgressBar progressBar;
     private HybridManager mHybridManager;
-    
+
     /**
      * permission
      */
     protected PermissionCheck permissionHelper;
-    
+
     private static String[] REQUEST_PERMISSIONS = new String[]{
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
             android.Manifest.permission.READ_PHONE_STATE,
@@ -71,17 +71,17 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             }
         });
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         permissionHelper.onActivityForResult(requestCode);
     }
-    
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-    
+
     @Override
     public void onPermissionGranted(PermissionCheck permissionCheck, String[] strings) {
 		startLocalServer();
@@ -108,15 +108,15 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
     public void onPermissionDeclined(PermissionCheck permissionCheck, final String[] permissionName) {
 		finish();
 	}
-    
+
     @Override
     public void onPermissionNeedExplanation(PermissionCheck permissionCheck, final String permissionName) {
 	}
-    
+
     @Override
     public void onPermissionReallyDeclined(PermissionCheck permissionCheck, final String[] permissionName) {
 	}
-    
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -124,7 +124,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mHybridManager.onActivityResume();
         }
     }
-    
+
     @Override
     public void onStop() {
         super.onStop();
@@ -132,7 +132,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mHybridManager.onActivityStop();
         }
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -140,7 +140,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mHybridManager.onActivityPause();
         }
     }
-    
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -148,7 +148,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mHybridManager.onActivityStart();
         }
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -157,7 +157,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mHybridManager.onActivityDestroy();
         }
     }
-    
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
@@ -177,7 +177,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
         }
         return super.onKeyDown(keyCode, event);
     }
-    
+
     @Override
     public void onLocalServerStarted(int port) {
         if (-1 != port) {
