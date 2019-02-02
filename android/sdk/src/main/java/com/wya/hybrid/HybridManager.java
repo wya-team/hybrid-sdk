@@ -88,7 +88,7 @@ public class HybridManager{
 
 		registerNetworkReceiver();
 		registerBatteryReceiver();
-		registerSreenReceiver();
+		registerScreenReceiver();
 
     }
 
@@ -156,7 +156,7 @@ public class HybridManager{
 		mContext.registerReceiver(mBatteryReceiver, filter);
 	}
 
-	public void registerSreenReceiver() {
+	public void registerScreenReceiver() {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(android.content.Intent.ACTION_SCREEN_ON);
 		filter.addAction(android.content.Intent.ACTION_SCREEN_OFF);
@@ -166,7 +166,6 @@ public class HybridManager{
 		}
 		mContext.registerReceiver(mScreenReceiver, filter);
 	}
-
 
     /**
      * 低电量

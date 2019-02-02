@@ -78,12 +78,10 @@ public class WYAWebView extends WebView {
 		webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 		this.setWebViewClient(wyaWebViewClient());
-		initData();
 		setKeyBoardListener();
-
 	}
 
-	private void initData() {
+	public void initData() {
 		baseEmitData = new BaseEmitData<>();
 		InitBean initBean = new InitBean();
 		initBean.setAppId(AppUtil.getPackageName(mContext));

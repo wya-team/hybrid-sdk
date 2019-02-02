@@ -37,8 +37,8 @@ public class PermissionCheck {
 			throw new IllegalArgumentException("Activity must implement (PermissionCallback)");
 		}
 	}
-	
-	public PermissionCheck(@NonNull Activity context, @NonNull PermissionCallback permissionCallback) {
+
+	private PermissionCheck(@NonNull Activity context, @NonNull PermissionCallback permissionCallback) {
 		this.context = context;
 		this.permissionCallback = permissionCallback;
 	}
@@ -190,7 +190,7 @@ public class PermissionCheck {
 	/**
 	 * used only for {@link android.Manifest.permission#SYSTEM_ALERT_WINDOW}
 	 */
-	public void requestSystemAlertPermission() {
+	private void requestSystemAlertPermission() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			try {
 				if (!isSystemAlertGranted()) {
@@ -220,7 +220,7 @@ public class PermissionCheck {
 	/**
 	 * to be called when explanation is presented to the user
 	 */
-	public void requestAfterExplanation(@NonNull String[] permissions) {
+	private void requestAfterExplanation(@NonNull String[] permissions) {
 		ArrayList<String> permissionsToRequest = new ArrayList<>();
 		for (String permissionName : permissions) {
 			if (isPermissionDeclined(permissionName)) {
@@ -241,7 +241,7 @@ public class PermissionCheck {
 	/**
 	 * return true if permission is declined, false otherwise.
 	 */
-	public boolean isPermissionDeclined(@NonNull String permissionsName) {
+	private boolean isPermissionDeclined(@NonNull String permissionsName) {
 		return ActivityCompat.checkSelfPermission(context, permissionsName) != PackageManager.PERMISSION_GRANTED;
 	}
 	
@@ -255,7 +255,7 @@ public class PermissionCheck {
 	/**
 	 * @return true if explanation needed.
 	 */
-	public boolean isExplanationNeeded(@NonNull String permissionName) {
+	private boolean isExplanationNeeded(@NonNull String permissionName) {
 		return ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName);
 	}
 	
@@ -286,7 +286,7 @@ public class PermissionCheck {
 	/**
 	 * @return true if permission exists in the manifest, false otherwise.
 	 */
-	public boolean permissionExists(@NonNull String permissionName) {
+	private boolean permissionExists(@NonNull String permissionName) {
 		try {
 			PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_PERMISSIONS);
 			if (packageInfo.requestedPermissions != null) {
@@ -305,7 +305,7 @@ public class PermissionCheck {
 	/**
 	 * @return true if {@link Manifest.permission#SYSTEM_ALERT_WINDOW} is granted
 	 */
-	public boolean isSystemAlertGranted() {
+	private boolean isSystemAlertGranted() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			return Settings.canDrawOverlays(context);
 		}
@@ -341,7 +341,7 @@ public class PermissionCheck {
 	/**
 	 * @return list of permissions that the user declined or not yet granted.
 	 */
-	public static String[] declinedPermissions(@NonNull Context context, @NonNull String[] permissions) {
+	private static String[] declinedPermissions(@NonNull Context context, @NonNull String[] permissions) {
 		List<String> permissionsNeeded = new ArrayList<>();
 		for (String permission : permissions) {
 			if (isPermissionDeclined(context, permission) && permissionExists(context, permission)) {
@@ -350,8 +350,8 @@ public class PermissionCheck {
 		}
 		return permissionsNeeded.toArray(new String[permissionsNeeded.size()]);
 	}
-	
-	public static List<String> declinedPermissionsAsList(@NonNull Context context, @NonNull String[] permissions) {
+
+	private static List<String> declinedPermissionsAsList(@NonNull Context context, @NonNull String[] permissions) {
 		List<String> permissionsNeeded = new ArrayList<>();
 		for (String permission : permissions) {
 			if (isPermissionDeclined(context, permission) && permissionExists(context, permission)) {
@@ -375,14 +375,14 @@ public class PermissionCheck {
 	 * <p/>
 	 * can be used outside of activity.
 	 */
-	public static boolean isPermissionDeclined(@NonNull Context context, @NonNull String permission) {
+	private static boolean isPermissionDeclined(@NonNull Context context, @NonNull String permission) {
 		return ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED;
 	}
 	
 	/**
 	 * @return true if explanation needed.
 	 */
-	public static boolean isExplanationNeeded(@NonNull Activity context, @NonNull String permissionName) {
+	private static boolean isExplanationNeeded(@NonNull Activity context, @NonNull String permissionName) {
 		return ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName);
 	}
 	
@@ -398,7 +398,7 @@ public class PermissionCheck {
 	/**
 	 * open android settings screen for your app.
 	 */
-	public static void openSettingsScreen(@NonNull Context context) {
+	private static void openSettingsScreen(@NonNull Context context) {
 		Intent intent = new Intent();
 		intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
 		Uri uri = Uri.parse("package:" + context.getPackageName());
@@ -409,7 +409,7 @@ public class PermissionCheck {
 	/**
 	 * @return true if permission exists in the manifest, false otherwise.
 	 */
-	public static boolean permissionExists(@NonNull Context context, @NonNull String permissionName) {
+	private static boolean permissionExists(@NonNull Context context, @NonNull String permissionName) {
 		try {
 			PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), PackageManager.GET_PERMISSIONS);
 			if (packageInfo.requestedPermissions != null) {

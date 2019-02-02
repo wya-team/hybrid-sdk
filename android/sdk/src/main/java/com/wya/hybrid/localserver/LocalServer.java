@@ -34,9 +34,7 @@ public class LocalServer extends NanoHTTPD {
         mContext = context;
         mAssetManager = mContext.getAssets();
     }
-    
-    
-    
+
     @Override
     public Response serve(IHTTPSession session) {
         final StringBuilder sb = new StringBuilder();

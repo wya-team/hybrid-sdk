@@ -13,8 +13,8 @@ public class RxTimerUtil {
 	
 	private static Disposable mDisposable;
 	
-	public static void timer(long millinseconds, final IRxCallable next) {
-		Observable.timer(millinseconds, TimeUnit.MILLISECONDS)
+	public static void timer(long millionSeconds, final IRxCallable next) {
+		Observable.timer(millionSeconds, TimeUnit.MILLISECONDS)
 			.observeOn(AndroidSchedulers.mainThread())
 			.subscribe(
 				new Observer<Long>() {

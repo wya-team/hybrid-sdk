@@ -8,7 +8,7 @@ public class DebugLogger {
     private static final String TAG_NET = "NET";
     private static final String TAG_EVENT = "EVENT";
     private static final String TAG_BATTERY = "BATTERY";
-    private static final String TAG_SCREEN = "SCEEN";
+    private static final String TAG_SCREEN = "SCREEN";
 
     public static void logNet(String message, Object... args) {
         try {

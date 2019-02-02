@@ -41,36 +41,19 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             android.Manifest.permission.READ_PHONE_STATE,
             android.Manifest.permission.DISABLE_KEYGUARD
     };
-    
-    private void checkPermission() {
-        permissionHelper.request(REQUEST_PERMISSIONS);
-    }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example);
-        
-        // local server
-        Intent intent = new Intent(this, LocalService.class);
-        startService(intent);
-        LocalServer.setListener(this);
-        
-        permissionHelper = PermissionCheck.getInstance(this);
         checkPermission();
-        
-        // webView
-        mWebView = findViewById(R.id.webView);
-        
-        // event manager
-        mHybridManager = new HybridManager(this, mWebView);
-        if (null != mHybridManager) {
-            mHybridManager.onActivityCreate();
-        }
-        
-        setProgress();
     }
-    
+
+	private void checkPermission() {
+		permissionHelper = PermissionCheck.getInstance(this);
+		permissionHelper.request(REQUEST_PERMISSIONS);
+	}
+
     /**
      * 设置网页加载进度条
      */
@@ -101,23 +84,38 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
     
     @Override
     public void onPermissionGranted(PermissionCheck permissionCheck, String[] strings) {
-        // TODO: 2019/1/19 ZCQ TEST
+		startLocalServer();
+		initHybrid();
     }
-    
+
+	private void startLocalServer(){
+		Intent intent = new Intent(this, LocalService.class);
+		startService(intent);
+		LocalServer.setListener(this);
+	}
+
+	private void initHybrid(){
+		// webView
+		mWebView = findViewById(R.id.webView);
+		mWebView.initData();
+		// hybrid manager
+		mHybridManager = new HybridManager(this, mWebView);
+		mHybridManager.onActivityCreate();
+		setProgress();
+	}
+
     @Override
     public void onPermissionDeclined(PermissionCheck permissionCheck, final String[] permissionName) {
-        // TODO: 2019/1/19 ZCQ TEST
-    }
+		finish();
+	}
     
     @Override
     public void onPermissionNeedExplanation(PermissionCheck permissionCheck, final String permissionName) {
-        // TODO: 2019/1/19 ZCQ TEST
-    }
+	}
     
     @Override
     public void onPermissionReallyDeclined(PermissionCheck permissionCheck, final String[] permissionName) {
-        // TODO: 2019/1/19 ZCQ TEST
-    }
+	}
     
     @Override
     protected void onResume() {
@@ -154,12 +152,10 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // event manager
         if (null != mHybridManager) {
             mHybridManager.release();
             mHybridManager.onActivityDestroy();
         }
-        
     }
     
     @Override
