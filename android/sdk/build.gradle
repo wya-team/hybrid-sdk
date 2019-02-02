@@ -2,6 +2,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 
+def depends = rootProject.ext.depends
+
 android {
 	compileSdkVersion 28
 
@@ -41,12 +43,10 @@ dependencies {
 	api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
 	api files('libs/nanohttpd-2.3.2.jar')
 
+	implementation supportDepends.multidex
+
 	implementation depends.logger
 	implementation depends.eventbus
 	implementation depends.converter_gson
-	implementation supportDepends.multidex
-	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-}
-repositories {
-	mavenCentral()
+	implementation depends.kotlin_stdlib_jdk7
 }

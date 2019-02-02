@@ -1,6 +1,7 @@
 package com.wya.hybrid;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
@@ -28,27 +29,30 @@ import java.util.Map;
 public class WYAWebView extends WebView {
 	private Map<String, JsCallBack> taskMap = new HashMap<>();
 	private BaseEmitData<InitBean> baseEmitData;
-	private Context mContext;
+	private Activity mContext;
+
+	private HybridManager mHybridManager;
 
 	public WYAWebView(Context context) {
 		super(context);
-		mContext = context;
+		mContext = (Activity) context;
 		init();
 	}
 
 	public WYAWebView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		mContext = context;
+		mContext = (Activity) context;
 		init();
 	}
 
 	public WYAWebView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		mContext = context;
+		mContext = (Activity) context;
 		init();
 	}
 
 	private void init() {
+		mHybridManager = new HybridManager(mContext, this);
 		this.setVerticalScrollBarEnabled(false);
 		this.setHorizontalScrollBarEnabled(false);
 		WebSettings webSetting = this.getSettings();
@@ -68,6 +72,7 @@ public class WYAWebView extends WebView {
 		webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 		this.setWebViewClient(wyaWebViewClient());
+		initData();
 	}
 
 	public void initData() {
@@ -78,13 +83,13 @@ public class WYAWebView extends WebView {
 		initBean.setAppVersion(AppUtil.getVersionName(mContext));
 		initBean.setSystemType("android");
 		initBean.setSystemVersion(PhoneUtil.getInstance().getSDKVersion());
-		initBean.setDeviceId(PhoneUtil.getInstance().getPhoneImei(mContext));
 		if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+			initBean.setDeviceId(PhoneUtil.getInstance().getPhoneImei(mContext));
 			initBean.setDeviceModel(PhoneUtil.getInstance().getPhoneModel());
+			initBean.setOperatorName(PhoneUtil.getOperator(mContext));
 		}
 		initBean.setDeviceName(TextUtils.isEmpty(android.os.Build.DEVICE) ? "" : android.os.Build.DEVICE);
 		initBean.setUiMode(PhoneUtil.getInstance().isTablet(mContext) ? "pad" : "phone");
-		initBean.setOperatorName(PhoneUtil.getOperator(mContext));
 		initBean.setConnectionType(NetworkUtil.getNetworkState(mContext));
 		initBean.setScreenWidth(PhoneUtil.getInstance().getPhoneWidth(mContext));
 		initBean.setScreenHeight(PhoneUtil.getInstance().getPhoneHeight(mContext));
@@ -123,9 +128,11 @@ public class WYAWebView extends WebView {
 		String[] split = url.split("[?]");
 		String name = split[0];
 		JsCallBack callBack = taskMap.get(name);
+		String id = split[1].replace("id=", BridgeUtil.EMPTY);
 		if (callBack != null) {
-			String id = split[1].replace("id=", BridgeUtil.EMPTY);
-			BridgeUtil.getParam(this, id, callBack);
+			BridgeUtil.getParam(this, id, name, callBack);
+		} else {
+			BridgeUtil.getParam(this, id, name, mHybridManager);
 		}
 	}
 
@@ -135,6 +142,10 @@ public class WYAWebView extends WebView {
 
 	public void setBaseEmitData(BaseEmitData<InitBean> baseEmitData) {
 		this.baseEmitData = baseEmitData;
+	}
+
+	public HybridManager getHybridManager() {
+		return mHybridManager;
 	}
 
 }

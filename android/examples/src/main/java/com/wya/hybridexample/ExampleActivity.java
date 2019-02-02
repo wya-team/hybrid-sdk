@@ -31,7 +31,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
     private ProgressBar progressBar;
     private HybridManager mHybridManager;
 
-    /**
+	/**
      * permission
      */
     protected PermissionCheck permissionHelper;
@@ -47,6 +47,8 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example);
         checkPermission();
+		startLocalServer();
+		initHybrid();
     }
 
 	private void checkPermission() {
@@ -54,7 +56,21 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		permissionHelper.request(REQUEST_PERMISSIONS);
 	}
 
-    /**
+	private void startLocalServer(){
+		Intent intent = new Intent(this, LocalService.class);
+		startService(intent);
+		LocalServer.Companion.setListener(this);
+	}
+
+	private void initHybrid(){
+		// webView
+		mWebView = findViewById(R.id.webView);
+		mWebView.initData();
+		mHybridManager = mWebView.getHybridManager();
+		setProgress();
+	}
+
+	/**
      * 设置网页加载进度条
      */
     private void setProgress() {
@@ -84,29 +100,10 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 
     @Override
     public void onPermissionGranted(PermissionCheck permissionCheck, String[] strings) {
-		startLocalServer();
-		initHybrid();
     }
-
-	private void startLocalServer(){
-		Intent intent = new Intent(this, LocalService.class);
-		startService(intent);
-		LocalServer.Companion.setListener(this);
-	}
-
-	private void initHybrid(){
-		// webView
-		mWebView = findViewById(R.id.webView);
-		mWebView.initData();
-		// hybrid manager
-		mHybridManager = new HybridManager(this, mWebView);
-		mHybridManager.onActivityCreate();
-		setProgress();
-	}
 
     @Override
     public void onPermissionDeclined(PermissionCheck permissionCheck, final String[] permissionName) {
-		finish();
 	}
 
     @Override
