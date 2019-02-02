@@ -68,7 +68,6 @@ public class WYAWebView extends WebView {
 		webSetting.setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 		this.setWebViewClient(wyaWebViewClient());
-		initData();
 	}
 
 	public void initData() {

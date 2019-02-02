@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 def depends = rootProject.ext.depends
 def supportDepends = rootProject.ext.supportDepends
 
@@ -40,5 +42,9 @@ dependencies {
     implementation 'com.wya.helper:helper:0.1.0'
     implementation 'com.wya.utils:utils:0.1.0'
 	implementation depends.eventbus
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+}
+repositories {
+	mavenCentral()
 }

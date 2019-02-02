@@ -91,7 +91,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 	private void startLocalServer(){
 		Intent intent = new Intent(this, LocalService.class);
 		startService(intent);
-		LocalServer.setListener(this);
+		LocalServer.Companion.setListener(this);
 	}
 
 	private void initHybrid(){
