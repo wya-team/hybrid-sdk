@@ -12,8 +12,8 @@ import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.wya.hybrid.HybridManager;
 import com.wya.hybrid.WYAWebView;
+import com.wya.hybrid.base.BaseApp;
 import com.wya.hybrid.localserver.LocalServer;
-import com.wya.hybrid.localserver.LocalService;
 import com.wya.hybrid.permission.PermissionCallback;
 import com.wya.hybrid.permission.PermissionCheck;
 
@@ -26,51 +26,53 @@ import com.wya.hybrid.permission.PermissionCheck;
 public class ExampleActivity extends AppCompatActivity implements PermissionCallback, LocalServer.LocalServerListener {
     private static String HTML_PATH = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/";
     private static final int PROGRESS_MAX = 100;
-
+    
     private WYAWebView mWebView;
     private ProgressBar progressBar;
     private HybridManager mHybridManager;
-
-	/**
+    
+    /**
      * permission
      */
     protected PermissionCheck permissionHelper;
-
+    
     private static String[] REQUEST_PERMISSIONS = new String[]{
             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
             android.Manifest.permission.READ_PHONE_STATE,
             android.Manifest.permission.DISABLE_KEYGUARD
     };
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example);
         checkPermission();
-		startLocalServer();
-		initHybrid();
+        initHybrid();
     }
-
-	private void checkPermission() {
-		permissionHelper = PermissionCheck.getInstance(this);
-		permissionHelper.request(REQUEST_PERMISSIONS);
-	}
-
-	private void startLocalServer(){
-		Intent intent = new Intent(this, LocalService.class);
-		startService(intent);
-		LocalServer.Companion.setListener(this);
-	}
-
-	private void initHybrid(){
-		// webView
-		mWebView = findViewById(R.id.webView);
-		mWebView.initData();
-		mHybridManager = mWebView.getHybridManager();
-		setProgress();
-	}
-
-	/**
+    
+    private void checkPermission() {
+        permissionHelper = PermissionCheck.getInstance(this);
+        permissionHelper.request(REQUEST_PERMISSIONS);
+    }
+    
+    private void initHybrid() {
+        // webView
+        mWebView = findViewById(R.id.webView);
+        mWebView.initData();
+        mHybridManager = mWebView.getHybridManager();
+        LocalServer.Companion.setListener(this);
+        
+        int port = BaseApp.getApp().getLocalServerPort();
+        if (-1 != port) {
+            HTML_PATH = "http://localhost:" + port;
+            if (null != mWebView) {
+                mWebView.loadUrl(HTML_PATH);
+            }
+        }
+        setProgress();
+    }
+    
+    /**
      * 设置网页加载进度条
      */
     private void setProgress() {
@@ -87,33 +89,33 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             }
         });
     }
-
+    
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         permissionHelper.onActivityForResult(requestCode);
     }
-
+    
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         permissionHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
+    
     @Override
     public void onPermissionGranted(PermissionCheck permissionCheck, String[] strings) {
     }
-
+    
     @Override
     public void onPermissionDeclined(PermissionCheck permissionCheck, final String[] permissionName) {
-	}
-
+    }
+    
     @Override
     public void onPermissionNeedExplanation(PermissionCheck permissionCheck, final String permissionName) {
-	}
-
+    }
+    
     @Override
     public void onPermissionReallyDeclined(PermissionCheck permissionCheck, final String[] permissionName) {
-	}
-
+    }
+    
     @Override
     protected void onResume() {
         super.onResume();
@@ -121,7 +123,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mHybridManager.onActivityResume();
         }
     }
-
+    
     @Override
     public void onStop() {
         super.onStop();
@@ -129,7 +131,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mHybridManager.onActivityStop();
         }
     }
-
+    
     @Override
     protected void onPause() {
         super.onPause();
@@ -137,7 +139,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mHybridManager.onActivityPause();
         }
     }
-
+    
     @Override
     protected void onStart() {
         super.onStart();
@@ -145,7 +147,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mHybridManager.onActivityStart();
         }
     }
-
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -154,7 +156,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
             mHybridManager.onActivityDestroy();
         }
     }
-
+    
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
@@ -174,9 +176,13 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
         }
         return super.onKeyDown(keyCode, event);
     }
-
+    
     @Override
     public void onLocalServerStarted(int port) {
+        if (-1 != BaseApp.getApp().getLocalServerPort()) {
+            return;
+        }
+        BaseApp.getApp().setLocalServerPort(port);
         if (-1 != port) {
             HTML_PATH = "http://localhost:" + port;
         }

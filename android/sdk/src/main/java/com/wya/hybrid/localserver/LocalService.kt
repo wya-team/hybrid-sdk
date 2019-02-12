@@ -10,16 +10,12 @@ import java.io.IOException
  */
 class LocalService : Service() {
 
-	private lateinit  var mLocalServer: LocalServer
+    private var mLocalServer: LocalServer? = null
 
-	override fun onBind(intent: Intent): IBinder? {
-        return null
-    }
-
-	override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         mLocalServer = LocalServer(application)
         try {
-            mLocalServer.start()
+            mLocalServer?.start()
         } catch (e: IOException) {
             e.printStackTrace()
         }
@@ -28,8 +24,12 @@ class LocalService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-            mLocalServer.closeAllConnections()
-            mLocalServer.stop()
+        mLocalServer?.closeAllConnections()
+        mLocalServer?.stop()
+    }
+
+    override fun onBind(intent: Intent): IBinder? {
+        return null
     }
 
 }

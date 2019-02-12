@@ -14,51 +14,47 @@ import org.nanohttpd.protocols.http.response.Status
 /**
  * @author :
  */
-class LocalServer (context: Context) : NanoHTTPD() {
+class LocalServer(context: Context) : NanoHTTPD() {
 
     private val mAssetManager: AssetManager = context.assets
 
-	override fun handle(session: IHTTPSession?): Response {
+    override fun handle(session: IHTTPSession?): Response {
         val sb = StringBuilder()
         for ((key, value) in session!!.headers) {
             sb.append(key).append(" : ").append(value).append("\n")
         }
         var fileName = session.uri.substring(1)
-		fileName = if ("".equals(fileName, ignoreCase = true)) {
-			KEY_DEFAULT_PAGE
-		} else {
-			KEY_DEFAULT_DIRECTORY + fileName
-		}
+        fileName = if ("".equals(fileName, ignoreCase = true)) {
+            KEY_DEFAULT_PAGE
+        } else {
+            KEY_DEFAULT_DIRECTORY + fileName
+        }
 
         var mimeType = ""
-		when {
-			fileName.contains(KEY_SUFFIX_HTML) -> mimeType = NanoHTTPD.MIME_HTML
-			fileName.contains(KEY_SUFFIX_CSS) -> mimeType = "text/css"
-			fileName.contains(KEY_SUFFIX_JS) -> mimeType = "application/javascript"
-		}
+        when {
+            fileName.contains(KEY_SUFFIX_HTML) -> mimeType = NanoHTTPD.MIME_HTML
+            fileName.contains(KEY_SUFFIX_CSS) -> mimeType = "text/css"
+            fileName.contains(KEY_SUFFIX_JS) -> mimeType = "application/javascript"
+        }
         return getResponse(mimeType, fileName)
     }
 
     private fun getResponse(mimeType: String, fileName: String): Response {
-        var fileName = fileName
-		return try {
-			Log.e("ZCQ", "[getResponse] .  fileName = $fileName")
-			val data = mAssetManager.open(fileName)
-			Response.newFixedLengthResponse(Status.OK, mimeType, data, data.available().toLong())
-		} catch (e: Exception) {
-			e.printStackTrace()
-			fileName = KEY_DEFAULT_PAGE
-			getResponse(NanoHTTPD.MIME_HTML, fileName)
-		}
+        return try {
+            Log.e("ZCQ", "[getResponse] .  fileName = $fileName")
+            val data = mAssetManager.open(fileName)
+            Response.newFixedLengthResponse(Status.OK, mimeType, data, data.available().toLong())
+        } catch (e: Exception) {
+            e.printStackTrace()
+            getResponse(NanoHTTPD.MIME_HTML, KEY_DEFAULT_PAGE)
+        }
     }
 
     override fun onStarted() {
         super.onStarted()
         val localPort = listeningPort
         Logger.t("ZCQ").e("[LocalServer] [onStarted] localPort = %s", localPort)
-        if (null != mListener) {
-            mListener!!.onLocalServerStarted(localPort)
-        }
+        mListener?.onLocalServerStarted(localPort)
     }
 
     companion object {
@@ -77,14 +73,14 @@ class LocalServer (context: Context) : NanoHTTPD() {
         }
     }
 
-	interface LocalServerListener {
-		/**
-		 * localServer started
-		 *
-		 * @param port :
-		 */
-		fun onLocalServerStarted(port: Int)
-	}
+    interface LocalServerListener {
+        /**
+         * localServer started
+         *
+         * @param port :
+         */
+        fun onLocalServerStarted(port: Int)
+    }
 
 }
 
