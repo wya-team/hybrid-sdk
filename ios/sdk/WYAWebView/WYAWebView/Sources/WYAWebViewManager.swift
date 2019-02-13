@@ -182,6 +182,8 @@ extension WYAWebViewManager {
                     let centerVC = WYAViewController()
                     centerVC.enableSlidPane = true
                     centerVC.navT = "中心"
+                    centerVC.needWebView = true
+                    centerVC.needNavBar = false
                     rootVC.navigationController?.pushViewController(centerVC, animated: true)
                 } else {
                     rootVC.navigationController?.pushViewController(vc as! UIViewController, animated: true)
@@ -220,7 +222,9 @@ extension WYAWebViewManager {
         }
     }
 
-    @objc func closeWinWithParams(outParams: [String: Any]) {}
+    @objc func closeWinWithParams(outParams: [String: Any]) {
+        print("返回")
+    }
     @objc func closeToWinWithParams(outParams: [String: Any]) {}
     @objc func setWinAttrWithParams(outParams: [String: Any]) {}
     @objc func openFrameWithParams(outParams: [String: Any]) {}
@@ -279,10 +283,7 @@ extension WYAWebViewManager {
     @objc func clearCacheWithParams(outParams: [String: Any]) {}
     @objc func getCacheSizeWithParams(outParams: [String: Any]) {}
 
-    @objc func getTotalSpaceWithParams(outParams: [String: Any]) {
-
-
-    }
+    @objc func getTotalSpaceWithParams(outParams: [String: Any]) {}
 
     @objc func getFreeDiskSpaceWithParams(outParams: [String: Any]) {
         let space = NSString.wya_phoneFreeMemory()
@@ -578,5 +579,3 @@ extension WYAWebViewManager {
 extension Notification.Name {
     static let closeWin = NSNotification.Name("closeWin")
 }
-
-
