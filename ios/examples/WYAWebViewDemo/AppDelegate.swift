@@ -21,6 +21,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection10.bundle")?.load()
         #endif
 
+        let nav = UINavigationController(rootViewController: MainViewController())
+        window?.rootViewController = nav
+
         return true
     }
     

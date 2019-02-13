@@ -187,15 +187,12 @@ extension WYAWebView {
 
     }
 
-    @objc public func openwin(_ vc : UIViewController) {
-
-        if self.cmam_viewController?.navigationController == nil {
-            self.cmam_viewController?.present(vc, animated: true, completion: {
-
-            })
-        } else {
-            self.cmam_viewController?.navigationController?.pushViewController(vc, animated: true)
-        }
+    @objc public func openwin(_ vc : UIViewController, _ type : jumpType) {
+        var params = [String : Any]()
+        params.updateValue(self.cmam_parentController(), forKey: "rootVC")
+        params.updateValue(vc, forKey: "vc")
+        params.updateValue(type, forKey: "jumpType")
+        self.webManager?.nativeAction("openWin", params: params)
     }
 
     @objc public func removeNoticeAndObserver() {
@@ -270,8 +267,10 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
             if arrContain! {
                 self.getParams(self.actionID!) { params in
+                    var param = params as! [String: Any]
+                    param.updateValue(self.cmam_parentController(), forKey: "rootVC")
                     // 获取到参数执行调用原生
-                    self.webManager?.nativeAction(dic?["method"] as! String, params: params as! [String: String])
+                    self.webManager?.nativeAction(dic?["method"] as! String, params: param)
                 }
             } else {
                 // 不需要参数执行原生

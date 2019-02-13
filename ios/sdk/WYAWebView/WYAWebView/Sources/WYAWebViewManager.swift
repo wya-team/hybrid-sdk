@@ -9,6 +9,11 @@ import Alamofire
 import MediaPlayer
 import UIKit
 
+@objc public enum jumpType: Int {
+    case push = 0
+    case present = 1
+}
+
 protocol WebViewDelegate: AnyObject {
     func getNativeActionResult(_ type: String, _ obj: String) -> Void
 }
@@ -21,6 +26,102 @@ class WYAWebViewManager: NSObject {
         params.updateValue(#selector(batteryLowWithParams(outParams:)), forKey: "batteryLow")
 
         params.updateValue(#selector(openWinWithParams(outParams:)), forKey: "openWin")
+        params.updateValue(#selector(closeWinWithParams(outParams:)), forKey: "closeWin")
+        params.updateValue(#selector(closeToWinWithParams(outParams:)), forKey: "closeToWin")
+        params.updateValue(#selector(setWinAttrWithParams(outParams:)), forKey: "setWinAttr")
+        params.updateValue(#selector(openFrameWithParams(outParams:)), forKey: "openFrame")
+        params.updateValue(#selector(closeFrameWithParams(outParams:)), forKey: "closeFrame")
+        params.updateValue(#selector(setFrameAttrWithParams(outParams:)), forKey: "setFrameAttrWithParams")
+        params.updateValue(#selector(bringFrameToFrontWithParams(outParams:)), forKey: "bringFrameToFrontWithParams")
+        params.updateValue(#selector(sendFrameToBackWithParams(outParams:)), forKey: "sendFrameToBackWithParams")
+        params.updateValue(#selector(setFrameClientWithParams(outParams:)), forKey: "setFrameClientWithParams")
+        params.updateValue(#selector(animationWithParams(outParams:)), forKey: "animation")
+        params.updateValue(#selector(openFrameGroupWithParams(outParams:)), forKey: "openFrameGroup")
+        params.updateValue(#selector(closeFrameGroupWithParams(outParams:)), forKey: "closeFrameGroup")
+        params.updateValue(#selector(setFrameGroupAttrWithParams(outParams:)), forKey: "setFrameGroupAttr")
+        params.updateValue(#selector(setFrameGroupIndexWithParams(outParams:)), forKey: "setFrameGroupIndex")
+        params.updateValue(#selector(openPopoverWinWithParams(outParams:)), forKey: "openPopoverWin")
+        params.updateValue(#selector(closePopoverWinWithParams(outParams:)), forKey: "closePopoverWin")
+        params.updateValue(#selector(openSlidLayoutWithParams(outParams:)), forKey: "openSlid")
+        params.updateValue(#selector(openSlidPaneWithParams(outParams:)), forKey: "openSlidPane")
+        params.updateValue(#selector(closeSlidPaneWithParams(outParams:)), forKey: "closeSlidPane")
+        params.updateValue(#selector(lockSlidPaneWithParams(outParams:)), forKey: "lockSlidPane")
+        params.updateValue(#selector(unlockSlidPaneWithParams(outParams:)), forKey: "unlockSlidPane")
+        params.updateValue(#selector(openDrawerLayoutWithParams(outParams:)), forKey: "openDrawerLayout")
+        params.updateValue(#selector(openDrawerPaneWithParams(outParams:)), forKey: "openDrawerPane")
+        params.updateValue(#selector(closeDrawerPaneWithParams(outParams:)), forKey: "closeDrawerPane")
+        params.updateValue(#selector(loadDataWithParams(outParams:)), forKey: "loadData")
+        params.updateValue(#selector(execScriptWithParams(outParams:)), forKey: "execScript")
+        params.updateValue(#selector(setBlurEffectWithParams(outParams:)), forKey: "setBlurEffect")
+        params.updateValue(#selector(historyBackWithParams(outParams:)), forKey: "historyBack")
+        params.updateValue(#selector(historyForwardWithParams(outParams:)), forKey: "historyForward")
+        params.updateValue(#selector(pageUpWithParams(outParams:)), forKey: "pageUp")
+        params.updateValue(#selector(pageDownWithParams(outParams:)), forKey: "pageDown")
+        params.updateValue(#selector(removeLaunchViewWithParams(outParams:)), forKey: "removeLaunchView")
+        params.updateValue(#selector(showLaunchViewWithParams(outParams:)), forKey: "showLaunchView")
+        params.updateValue(#selector(parseTapmodeWithParams(outParams:)), forKey: "parseTapmode")
+        params.updateValue(#selector(installAppWithParams(outParams:)), forKey: "installApp")
+        params.updateValue(#selector(openAppWithParams(outParams:)), forKey: "openApp")
+        params.updateValue(#selector(appInstalledWithParams(outParams:)), forKey: "appInstalled")
+        params.updateValue(#selector(rebootAppWithParams(outParams:)), forKey: "reboot")
+        params.updateValue(#selector(openWidgetWithParams(outParams:)), forKey: "openWidget")
+        params.updateValue(#selector(closeWidgetWithParams(outParams:)), forKey: "closeWidget")
+        params.updateValue(#selector(ajaxWithParams(outParams:)), forKey: "ajax")
+        params.updateValue(#selector(cancelAjaxWithParams(outParams:)), forKey: "cancelAjax")
+        params.updateValue(#selector(downloadWithParams(outParams:)), forKey: "download")
+        params.updateValue(#selector(cancelDownloadWithParams(outParams:)), forKey: "cancelDownload")
+        params.updateValue(#selector(imageCacheWithParams(outParams:)), forKey: "imageCache")
+        params.updateValue(#selector(readFileWithParams(outParams:)), forKey: "readFile")
+        params.updateValue(#selector(writeFileWithParams(outParams:)), forKey: "writeFile")
+        params.updateValue(#selector(setPrefsWithParams(outParams:)), forKey: "setPrefs")
+        params.updateValue(#selector(getPrefsWithParams(outParams:)), forKey: "getPrefs")
+        params.updateValue(#selector(removePrefsWithParams(outParams:)), forKey: "removePrefs")
+        params.updateValue(#selector(clearCacheWithParams(outParams:)), forKey: "clearCache")
+        params.updateValue(#selector(getCacheSizeWithParams(outParams:)), forKey: "getCacheSize")
+        params.updateValue(#selector(getTotalSpaceWithParams(outParams:)), forKey: "getTotalSpace")
+        params.updateValue(#selector(getFreeDiskSpaceWithParams(outParams:)), forKey: "getFreeDiskSpace")
+        params.updateValue(#selector(loadSecureValueWithParams(outParams:)), forKey: "loadSecureValue")
+        params.updateValue(#selector(addEventListenerWithParams(outParams:)), forKey: "addEventListener")
+        params.updateValue(#selector(removeEventListenerWithParams(outParams:)), forKey: "removeEventListener")
+        params.updateValue(#selector(sendEventWithParams(outParams:)), forKey: "sendEvent")
+        params.updateValue(#selector(accessNativeWithParams(outParams:)), forKey: "accessNative")
+        params.updateValue(#selector(notificationWithParams(outParams:)), forKey: "notification")
+        params.updateValue(#selector(cancelNotificationWithParams(outParams:)), forKey: "cancelNotification")
+        params.updateValue(#selector(startLocationWithParams(outParams:)), forKey: "startLocation")
+        params.updateValue(#selector(stopLocationWithParams(outParams:)), forKey: "stopLocation")
+        params.updateValue(#selector(getLocationWithParams(outParams:)), forKey: "getLocation")
+        params.updateValue(#selector(startSensorWithParams(outParams:)), forKey: "startSensor")
+        params.updateValue(#selector(stopSensorWithParams(outParams:)), forKey: "stopSensor")
+        params.updateValue(#selector(smsWithParams(outParams:)), forKey: "sms")
+        params.updateValue(#selector(mailWithParams(outParams:)), forKey: "mail")
+        params.updateValue(#selector(callWithParams(outParams:)), forKey: "call")
+        params.updateValue(#selector(openContactsWithParams(outParams:)), forKey: "openContacts")
+        params.updateValue(#selector(setStatusBarStyleWithParams(outParams:)), forKey: "setStatusBarStyle")
+        params.updateValue(#selector(setScreenOrientationWithParams(outParams:)), forKey: "setScreenOrientation")
+        params.updateValue(#selector(setKeepScreenOnWithParams(outParams:)), forKey: "setKeepScreenOn")
+        params.updateValue(#selector(toLauncherWithParams(outParams:)), forKey: "toLauncher")
+        params.updateValue(#selector(setScreenSecureWithParams(outParams:)), forKey: "setScreenSecure")
+        params.updateValue(#selector(setAppIconBadgeWithParams(outParams:)), forKey: "setAppIconBadge")
+        params.updateValue(#selector(getPhoneNumberWithParams(outParams:)), forKey: "getPhoneNumber")
+        params.updateValue(#selector(alertWithParams(outParams:)), forKey: "alert")
+        params.updateValue(#selector(confirmWithParams(outParams:)), forKey: "confirm")
+        params.updateValue(#selector(actionSheetWithParams(outParams:)), forKey: "actionSheet")
+        params.updateValue(#selector(showProgressWithParams(outParams:)), forKey: "showProgress")
+        params.updateValue(#selector(hideProgressWithParams(outParams:)), forKey: "hideProgress")
+        params.updateValue(#selector(toastWithParams(outParams:)), forKey: "toast")
+        params.updateValue(#selector(openPickerWithParams(outParams:)), forKey: "openPicker")
+        params.updateValue(#selector(setRefreshHeaderInfoWithParams(outParams:)), forKey: "setRefreshHeaderInfo")
+        params.updateValue(#selector(setCustomRefreshHeaderInfoWithParams(outParams:)), forKey: "setCustomRefreshHeaderInfo")
+        params.updateValue(#selector(refreshHeaderLoadingWithParams(outParams:)), forKey: "refreshHeaderLoading")
+        params.updateValue(#selector(refreshHeaderLoadDoneWithParams(outParams:)), forKey: "refreshHeaderLoadDone")
+        params.updateValue(#selector(showFloatBoxWithParams(outParams:)), forKey: "showFloatBox")
+        params.updateValue(#selector(getPictureWithParams(outParams:)), forKey: "getPicture")
+        params.updateValue(#selector(saveMediaToAlbumWithParams(outParams:)), forKey: "saveMediaToAlbum")
+        params.updateValue(#selector(startRecordWithParams(outParams:)), forKey: "startRecord")
+        params.updateValue(#selector(stopRecordWithParams(outParams:)), forKey: "stopRecord")
+        params.updateValue(#selector(startPlayWithParams(outParams:)), forKey: "startPlay")
+        params.updateValue(#selector(stopPlayWithParams(outParams:)), forKey: "stopPlay")
+        params.updateValue(#selector(openVideoWithParams(outParams:)), forKey: "openVideo")
         return params
     }()
 
@@ -42,15 +143,14 @@ class WYAWebViewManager: NSObject {
     }
 }
 
-// MARK: - js调用原生方法
+// MARK: - js调用原生方法,方法需要在actionParams里注册
 
 extension WYAWebViewManager {
-    func nativeAction(_ method: String, params: [String: String]) {
-        guard params.keys.count > 0 else { return }
-
-        if self.actionParams.keys.contains(params["event"]!) {
-            let sel = actionParams[params["event"]!]
-
+    func nativeAction(_ method: String, params: [String: Any]) {
+        if self.actionParams.keys.contains(method) {
+            let sel = actionParams[method]
+//            let data = try! JSONSerialization.data(withJSONObject: params, options: [])
+//            let person = try? JSONDecoder().decode(OpenWinModel.self, from: data)
             print(sel!)
             performSelector(inBackground: sel!, with: params)
         }
@@ -59,7 +159,7 @@ extension WYAWebViewManager {
     /// 测试事件通知流程
     ///
     /// - Parameter outParams: 参数
-    @objc func batteryLowWithParams(outParams: [String: String]) {
+    @objc func batteryLowWithParams(outParams: [String: Any]) {
         print("aaa")
         print(outParams)
         var params = [String: Any]()
@@ -67,6 +167,169 @@ extension WYAWebViewManager {
         params.updateValue("调用成功", forKey: "msg")
         listenAction("batteryLow", params)
     }
+
+    /// openWin
+    ///
+    /// - Parameter params: 接收到的参数
+    @objc func openWinWithParams(outParams: [String: Any]) {
+        let rootVC = outParams["rootVC"] as! UIViewController
+        let vc = outParams["vc"]
+        let type = outParams["jumpType"]
+
+        func push() {
+            DispatchQueue.main.async {
+                if vc == nil {
+                    let centerVC = WYAViewController()
+                    centerVC.enableSlidPane = true
+                    centerVC.navT = "中心"
+                    rootVC.navigationController?.pushViewController(centerVC, animated: true)
+                } else {
+                    rootVC.navigationController?.pushViewController(vc as! UIViewController, animated: true)
+                }
+            }
+        }
+
+        func present() {
+            DispatchQueue.main.async {
+                if vc == nil {
+                    rootVC.present(WYAViewController(), animated: true, completion: {})
+                } else {
+                    rootVC.present(vc as! UIViewController, animated: true, completion: {})
+                }
+            }
+        }
+
+        guard type != nil else {
+            guard rootVC.navigationController != nil else { return }
+            push()
+            return
+        }
+
+        switch type as! jumpType {
+            case .push:
+                guard rootVC.navigationController != nil else { return }
+                push()
+                break
+            case .present:
+                present()
+                break
+            default:
+                guard rootVC.navigationController != nil else { return }
+                push()
+                break
+        }
+    }
+
+    @objc func closeWinWithParams(outParams: [String: Any]) {}
+    @objc func closeToWinWithParams(outParams: [String: Any]) {}
+    @objc func setWinAttrWithParams(outParams: [String: Any]) {}
+    @objc func openFrameWithParams(outParams: [String: Any]) {}
+    @objc func closeFrameWithParams(outParams: [String: Any]) {}
+    @objc func setFrameAttrWithParams(outParams: [String: Any]) {}
+    @objc func bringFrameToFrontWithParams(outParams: [String: Any]) {}
+    @objc func sendFrameToBackWithParams(outParams: [String: Any]) {}
+    @objc func setFrameClientWithParams(outParams: [String: Any]) {}
+    @objc func animationWithParams(outParams: [String: Any]) {}
+    @objc func openFrameGroupWithParams(outParams: [String: Any]) {}
+    @objc func closeFrameGroupWithParams(outParams: [String: Any]) {}
+    @objc func setFrameGroupAttrWithParams(outParams: [String: Any]) {}
+    @objc func setFrameGroupIndexWithParams(outParams: [String: Any]) {}
+    @objc func openPopoverWinWithParams(outParams: [String: Any]) {}
+    @objc func closePopoverWinWithParams(outParams: [String: Any]) {}
+    @objc func openSlidLayoutWithParams(outParams: [String: Any]) {}
+    @objc func openSlidPaneWithParams(outParams: [String: Any]) {}
+    @objc func closeSlidPaneWithParams(outParams: [String: Any]) {}
+    @objc func lockSlidPaneWithParams(outParams: [String: Any]) {}
+    @objc func unlockSlidPaneWithParams(outParams: [String: Any]) {}
+    @objc func openDrawerLayoutWithParams(outParams: [String: Any]) {}
+    @objc func openDrawerPaneWithParams(outParams: [String: Any]) {}
+    @objc func closeDrawerPaneWithParams(outParams: [String: Any]) {}
+    @objc func loadDataWithParams(outParams: [String: Any]) {}
+    @objc func execScriptWithParams(outParams: [String: Any]) {}
+    @objc func setBlurEffectWithParams(outParams: [String: Any]) {}
+    @objc func historyBackWithParams(outParams: [String: Any]) {}
+    @objc func historyForwardWithParams(outParams: [String: Any]) {}
+    @objc func pageUpWithParams(outParams: [String: Any]) {}
+    @objc func pageDownWithParams(outParams: [String: Any]) {}
+    @objc func removeLaunchViewWithParams(outParams: [String: Any]) {}
+    @objc func showLaunchViewWithParams(outParams: [String: Any]) {}
+    @objc func parseTapmodeWithParams(outParams: [String: Any]) {}
+    @objc func installAppWithParams(outParams: [String: Any]) {}
+    @objc func openAppWithParams(outParams: [String: Any]) {}
+
+    @objc func appInstalledWithParams(outParams: [String: Any]) {
+//        if UIApplication.shared.canOpenURL(<#T##url: URL##URL#>) {
+//            <#code#>
+//        }
+    }
+
+    @objc func rebootAppWithParams(outParams: [String: Any]) {}
+    @objc func openWidgetWithParams(outParams: [String: Any]) {}
+    @objc func closeWidgetWithParams(outParams: [String: Any]) {}
+    @objc func ajaxWithParams(outParams: [String: Any]) {}
+    @objc func cancelAjaxWithParams(outParams: [String: Any]) {}
+    @objc func downloadWithParams(outParams: [String: Any]) {}
+    @objc func cancelDownloadWithParams(outParams: [String: Any]) {}
+    @objc func imageCacheWithParams(outParams: [String: Any]) {}
+    @objc func readFileWithParams(outParams: [String: Any]) {}
+    @objc func writeFileWithParams(outParams: [String: Any]) {}
+    @objc func setPrefsWithParams(outParams: [String: Any]) {}
+    @objc func getPrefsWithParams(outParams: [String: Any]) {}
+    @objc func removePrefsWithParams(outParams: [String: Any]) {}
+    @objc func clearCacheWithParams(outParams: [String: Any]) {}
+    @objc func getCacheSizeWithParams(outParams: [String: Any]) {}
+
+    @objc func getTotalSpaceWithParams(outParams: [String: Any]) {
+
+
+    }
+
+    @objc func getFreeDiskSpaceWithParams(outParams: [String: Any]) {
+        let space = NSString.wya_phoneFreeMemory()
+    }
+
+    @objc func loadSecureValueWithParams(outParams: [String: Any]) {}
+    @objc func addEventListenerWithParams(outParams: [String: Any]) {}
+    @objc func removeEventListenerWithParams(outParams: [String: Any]) {}
+    @objc func sendEventWithParams(outParams: [String: Any]) {}
+    @objc func accessNativeWithParams(outParams: [String: Any]) {}
+    @objc func notificationWithParams(outParams: [String: Any]) {}
+    @objc func cancelNotificationWithParams(outParams: [String: Any]) {}
+    @objc func startLocationWithParams(outParams: [String: Any]) {}
+    @objc func stopLocationWithParams(outParams: [String: Any]) {}
+    @objc func getLocationWithParams(outParams: [String: Any]) {}
+    @objc func startSensorWithParams(outParams: [String: Any]) {}
+    @objc func stopSensorWithParams(outParams: [String: Any]) {}
+    @objc func smsWithParams(outParams: [String: Any]) {}
+    @objc func mailWithParams(outParams: [String: Any]) {}
+    @objc func callWithParams(outParams: [String: Any]) {}
+    @objc func openContactsWithParams(outParams: [String: Any]) {}
+    @objc func setStatusBarStyleWithParams(outParams: [String: Any]) {}
+    @objc func setScreenOrientationWithParams(outParams: [String: Any]) {}
+    @objc func setKeepScreenOnWithParams(outParams: [String: Any]) {}
+    @objc func toLauncherWithParams(outParams: [String: Any]) {}
+    @objc func setScreenSecureWithParams(outParams: [String: Any]) {}
+    @objc func setAppIconBadgeWithParams(outParams: [String: Any]) {}
+    @objc func getPhoneNumberWithParams(outParams: [String: Any]) {}
+    @objc func alertWithParams(outParams: [String: Any]) {}
+    @objc func confirmWithParams(outParams: [String: Any]) {}
+    @objc func actionSheetWithParams(outParams: [String: Any]) {}
+    @objc func showProgressWithParams(outParams: [String: Any]) {}
+    @objc func hideProgressWithParams(outParams: [String: Any]) {}
+    @objc func toastWithParams(outParams: [String: Any]) {}
+    @objc func openPickerWithParams(outParams: [String: Any]) {}
+    @objc func setRefreshHeaderInfoWithParams(outParams: [String: Any]) {}
+    @objc func setCustomRefreshHeaderInfoWithParams(outParams: [String: Any]) {}
+    @objc func refreshHeaderLoadingWithParams(outParams: [String: Any]) {}
+    @objc func refreshHeaderLoadDoneWithParams(outParams: [String: Any]) {}
+    @objc func showFloatBoxWithParams(outParams: [String: Any]) {}
+    @objc func getPictureWithParams(outParams: [String: Any]) {}
+    @objc func saveMediaToAlbumWithParams(outParams: [String: Any]) {}
+    @objc func startRecordWithParams(outParams: [String: Any]) {}
+    @objc func stopRecordWithParams(outParams: [String: Any]) {}
+    @objc func startPlayWithParams(outParams: [String: Any]) {}
+    @objc func stopPlayWithParams(outParams: [String: Any]) {}
+    @objc func openVideoWithParams(outParams: [String: Any]) {}
 }
 
 // MARK: - 事件
@@ -185,6 +448,14 @@ extension WYAWebViewManager {
 
             self.listenAction("takeScreenshot", inParams)
         }
+
+        note.addObserver(forName: NSNotification.Name.closeWin, object: nil, queue: OperationQueue.main) { _ in
+            // 关闭窗口
+            print("closewin")
+            let inParams = [String: Any]()
+
+            self.listenAction("closeWin", inParams)
+        }
     }
 }
 
@@ -195,15 +466,6 @@ extension WYAWebViewManager {
         // 回传信息
         self.nativeDelegate?.getNativeActionResult("", "sss")
     }
-}
-
-// MARK: - 提供给js的方法，方法需要在actionParams里注册
-
-extension WYAWebViewManager {
-    /// openWin
-    ///
-    /// - Parameter params: 接收到的参数
-    @objc func openWinWithParams(outParams: [String: String]) {}
 }
 
 // MARK: - json字符串与字典之间的互转
@@ -308,7 +570,13 @@ extension WYAWebViewManager {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
-
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.closeWin, object: nil)
         UIApplication.shared.endReceivingRemoteControlEvents()
     }
 }
+
+extension Notification.Name {
+    static let closeWin = NSNotification.Name("closeWin")
+}
+
+

@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
   s.resources = 'pre-build/*.js', 'pre-build/dist'
 
   s.resource_bundles = {
-    'WYAWebView' => ['WYAWebView/Assets/WYAWebView.bundle/*']
+    'WYAWebView' => ['ios/sdk/WYAWebView/WYAWebView/Resources/WYAWebView.xcassets']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
