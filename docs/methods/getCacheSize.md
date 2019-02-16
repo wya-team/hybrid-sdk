@@ -13,8 +13,7 @@
 
 属性 | 说明 | 类型 | 默认值 | 如
 ---|---|---|---|---
-sync | 执行结果的返回方式。为false时通过callback返回，为true时直接返回 | str | - | -
-
+path | 缓存路径 | str | app的缓存路径 | -
 
 #### 3. Native传递参数给Client
 
@@ -23,7 +22,8 @@ sync | 执行结果的返回方式。为false时通过callback返回，为true�
 	status: 1,
 	msg: '调用成功',
 	data: {
-		size: // 缓存大小，单位为Byte，数字类型。（-1：无存储设备、-2：正在准备USB存储设备、-3：无法访问存储设备）
+		size: '1024',// 缓存大小，单位为Byte。
+		label: '1KB' 
 	}
 }
 ```

@@ -13,7 +13,7 @@
 
 属性 | 说明 | 类型 | 默认值 | 如
 ---|---|---|---|---
-timeThreshold | 清除多少天前的缓存 | number | 0 | -
+path | 缓存路径 | str | app的缓存路径 | -
 
 
 #### 3. Native传递参数给Client

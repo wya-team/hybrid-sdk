@@ -12,8 +12,8 @@
 
 属性 | 说明 | 类型 | 默认值 | 如
 ---|---|---|---|---
-~~name~~ | ~~window名字~~ | ~~str~~ | - | -
-animation | 动画参数 | str | - | ``
+name | window名字，相同跳转到最早创建的 | str | - | -
+animation | 动画参数 | str | card,modal,none | ``
 
 
 #### 3. Native传递参数给Client

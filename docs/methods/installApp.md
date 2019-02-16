@@ -6,13 +6,13 @@
 
 ```javascript
 {
-	// ....
+	url: ''
 }
 ```
 
 属性 | 说明 | 类型 | 默认值 | 如
 ---|---|---|---|---
-appUri | 目标应用的资源文件标识。Android上为apk包的本地路径，如file://xxx.apk；iOS上为应用安装包对应的plist文件地址 | str | - | -
+url | 下载地址 | str | - | -
 
 #### 3. Native传递参数给Client
 

@@ -27,7 +27,7 @@
 属性 | 说明 | 类型 | 默认值 | 如
 ---|---|---|---|---
 sync | 执行结果的返回方式。为false时通过callback返回，为true时直接返回。 | bool | false | -
-appBundle | Android 平台为应用包名，iOS 平台为应用定义的 URL Scheme。iOS 中的 URL Scheme 与包名不一样，一个应用只有一个包名，但是可以配置多个 URL Scheme | str | - | -
+scheme | scheme 或 包名 | str | - | -
 
 #### 4. Client端示例代码
 

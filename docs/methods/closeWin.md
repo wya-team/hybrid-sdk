@@ -6,14 +6,15 @@
 
 ```javascript
 {
-	// ....
+	name: '',
+	animation: 'card'
 }
 ```
 
 属性 | 说明 | 类型 | 默认值 | 如
 ---|---|---|---|---
-~~name~~ | ~~window 名字，不传时关闭当前 window，为 root 时无效~~ | ~~str~~ | - | -
-animation | 动画参数 | str | - | ``
+name | window名字,不传时关闭当前window | str | - | -
+animation | 动画参数 | str | card,modal,none | ``
 
 
 #### 3. Native传递参数给Client
