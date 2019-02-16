@@ -10,6 +10,14 @@
 }
 ```
 
+属性 | 说明 | 类型 | 默认值 | 如
+---|---|---|---|---
+appParam | 传给目标应用的参数 | obj | - | -
+iosUrl | 目标应用的url（iOS平台使用），iOS下必传 | str | - | -
+androidPkg | 目标应用的包名或 action（Android平台使用），Android下必传 | str | - | -
+mimeType | 指定目标应用的响应数据类型，如："text/html"（Android平台使用） | str | - | -
+uri | 指定目标应用响应的uri（Android平台使用） | str | - | -
+
 #### 3. Native传递参数给Client
 
 ```javascript

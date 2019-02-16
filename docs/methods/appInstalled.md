@@ -1,6 +1,9 @@
 #### 1. 说明
 
-~
+判断设备上面是否已安装指定应用
+
+注意：iOS9中系统对检测应用是否安装的方法做了限制，若想得到期望的结果，需要在config.xml里面[配置可被检测的URL Scheme](//docs.apicloud.com/Dev-Guide/app-config-manual#14-4)。
+
 
 #### 2. Client传递参数给Native
 
@@ -21,6 +24,10 @@
 	}
 }
 ```
+属性 | 说明 | 类型 | 默认值 | 如
+---|---|---|---|---
+sync | 执行结果的返回方式。为false时通过callback返回，为true时直接返回。 | bool | false | -
+appBundle | Android 平台为应用包名，iOS 平台为应用定义的 URL Scheme。iOS 中的 URL Scheme 与包名不一样，一个应用只有一个包名，但是可以配置多个 URL Scheme | str | - | -
 
 #### 4. Client端示例代码
 
