@@ -12,7 +12,7 @@
 
 属性 | 说明 | 类型 | 默认值 | 如
 ---|---|---|---|---
-preventDefault | 是否阻止默认行为，若传true，可以在回调方法里面处理悬浮框点击操作。 | bool | false | -
+~~preventDefault~~ | ~~是否阻止默认行为，若传true，可以在回调方法里面处理悬浮框点击操作。~~ | bool | false | -
 iconPath | 展示在悬浮框中的图片地址。 | str | 应用图标 | 'widget://image/icon.png'
 duration | 自动消隐时长。在该时长内不发生触摸悬浮框行为，悬浮框自动消隐至半透状态 | number | 5000 | -
 
@@ -25,7 +25,7 @@ duration | 自动消隐时长。在该时长内不发生触摸悬浮框行为，
 	status: 1,
 	msg: '调用成功',
 	data: {
-		type: 'click' // 事件类型，取值范围：click
+		
 	}
 }
 ```

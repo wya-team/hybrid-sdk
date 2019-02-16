@@ -5,13 +5,13 @@
 //  Created by 李世航 on 2018/8/17.
 //
 
-#import "checkSystemStatus.h"
+#import "WYACheckSystemStatus.h"
 
 #import <sys/stat.h>
 #import <dlfcn.h>
 
 
-@implementation checkSystemStatus
+@implementation WYACheckSystemStatus
 
 int checkInject() {
     int ret;

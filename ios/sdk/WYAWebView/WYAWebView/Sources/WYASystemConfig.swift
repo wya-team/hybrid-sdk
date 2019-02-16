@@ -206,7 +206,7 @@ public class SystemConfig: NSObject {
     public lazy var jailbreak: Bool = {
         var jailbroken = false
 
-        jailbroken = checkSystemStatus.isJailBreak()
+        jailbroken = WYACheckSystemStatus.isJailBreak()
 
         return jailbroken
     }() //是否越狱

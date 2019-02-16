@@ -16,11 +16,19 @@
 属性 | 说明 | 类型 | 默认值 | 如
 ---|---|---|---|---
 vibrate | 伴随节奏的震动: 等待-震动-等待-震动 | arr | [100, 500, 100, 500] | -
-sound | 提示音 | str | default | 'widget://res/horse.mp3'
+sound | 提示音 | str | default,none | '/res/xxx.mp3'
 light | 设备提示灯是否闪烁 | bool | false | -
-notify | 弹出通知到状态栏 | object | { title, content, extra, updateCurrent } | -
-alarm | 设置闹铃 | object | { hour, minutes, daysOfWeek, openApp } | -
+notify | 弹出通知到状态栏 | object | { title, content, extra, cover } | -
+alarm | 设置闹铃 | object | { hour, minutes, daysOfWeek } | -
 
+```
+{
+    title: '' // 标题，Android中默认值为应用名称，支持Android和iOS 8.2以上系统
+    content: '' // 内容，默认值为'有新消息'
+    extra: '' // 附加信息，页面可以监听noticeclicked事件得到点击的通知的附加信息
+    cover: false // 是否覆盖更新已有的通知，取值范围true|false。只Android有效
+}
+```
 
 #### 3. Native传递参数给Client
 

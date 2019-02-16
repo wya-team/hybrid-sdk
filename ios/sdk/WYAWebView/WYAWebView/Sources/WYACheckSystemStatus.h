@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface checkSystemStatus : NSObject
+@interface WYACheckSystemStatus : NSObject
 
 + (BOOL)isJailBreak;
 

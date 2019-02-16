@@ -10,6 +10,11 @@ import WYAKit
 
 class WYAViewController: UIViewController {
 
+    static let shared = WYAViewController()
+
+    var model : OpenWinModel?
+
+
     var url : String?
     var enableSlidPane : Bool?
     var navT : String?
@@ -22,7 +27,7 @@ class WYAViewController: UIViewController {
         let nav = WYANavBar()
         nav.delegate = self as WYANavBarDelegate
         nav.navTitleColor   = .black
-        nav.navTitle = navT!
+        nav.navTitle = model?.params?.name ?? "没有标题"
         nav.backgroundColor = .white
         let bundle = Bundle(for: classForCoder)
         let image = UIImage(named: "返回", in: bundle, compatibleWith: nil)
@@ -32,8 +37,14 @@ class WYAViewController: UIViewController {
 
     var webView : WYAWebView {
         let web = WYAWebView()
-        web.frame = CGRect(x: 0.0, y: needNavBar! ? navBar.cmam_height:0, width: self.view.cmam_width, height:needNavBar! ? self.view.cmam_height-navBar.cmam_height : self.view.cmam_height)
+        web.frame = CGRect(x: 0.0, y: (model?.pageParams?.hideTopBar!)! ? navBar.cmam_height:0, width: self.view.cmam_width, height:(model?.pageParams?.hideTopBar!)! ? self.view.cmam_height-navBar.cmam_height : self.view.cmam_height)
         web.loadUrl(url: "http://www.baidu.com")
+        web.webView?.scrollView.bounces = model?.pageParams?.bounces ?? true
+        web.webView?.scrollView.scrollsToTop = model?.pageParams?.scrollToTop ?? true
+        web.webView?.scrollView.isScrollEnabled = model?.pageParams?.scrollEnabled ?? true
+        web.webView?.scrollView.showsVerticalScrollIndicator = model?.pageParams?.vScrollBarEnabled ?? true
+        web.webView?.scrollView.showsHorizontalScrollIndicator = model?.pageParams?.hScrollBarEnabled ?? true
+        web.webView?.scrollView.bouncesZoom = model?.pageParams?.scaleEnabled ?? true
         return web
     }
 
@@ -51,7 +62,7 @@ class WYAViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
         if enableSlidPane! {
-            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = model?.pageParams?.slidBackEnabled ?? true
         } else {
             self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         }
@@ -73,9 +84,9 @@ class WYAViewController: UIViewController {
 
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
 
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = UIColor.wya_hex(model?.pageParams?.bgColor) ?? .white
 
-        if needNavBar! {
+        if (model?.pageParams?.hideTopBar!)! {
             self.view.addSubview(navBar)
         }
 
