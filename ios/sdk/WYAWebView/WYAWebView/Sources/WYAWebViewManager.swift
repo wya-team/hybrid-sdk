@@ -27,8 +27,6 @@ class WYAWebViewManager: NSObject {
     let actionParams: [String: Selector] = {
         var params = [String: Selector]()
         // 模拟js触发原生方法（动态配置需要方法前加@objc）
-        params.updateValue(#selector(batteryLowWithParams(outParams:)), forKey: "batteryLow")
-
         params.updateValue(#selector(openWinWithParams(outParams:)), forKey: "openWin")
         params.updateValue(#selector(closeWinWithParams(outParams:)), forKey: "closeWin")
         params.updateValue(#selector(closeToWinWithParams(outParams:)), forKey: "closeToWin")
@@ -162,16 +160,17 @@ extension WYAWebViewManager {
         }
     }
 
-    /// 测试事件通知流程
-    ///
-    /// - Parameter outParams: 参数
-    @objc func batteryLowWithParams(outParams: [String: Any]) {
-        print("aaa")
-        print(outParams)
-        var params = [String: Any]()
-        params.updateValue("1", forKey: "status")
-        params.updateValue("调用成功", forKey: "msg")
-        listenAction("batteryLow", params)
+    func getModel<T>(_ params: [String : Any]) -> T where T : Codable{
+        let jsonDecoder = JSONDecoder()
+        let jsonData = try? JSONSerialization.data(withJSONObject: params, options: [])
+        var briefModel : T?
+
+        do {
+            briefModel = try jsonDecoder.decode(T.self, from: jsonData!)
+        } catch {
+            print(error)
+        }
+        return briefModel!
     }
 
     /// openWin
@@ -183,34 +182,14 @@ extension WYAWebViewManager {
         let vc = developParams["vc"]
         let type = developParams["jumpType"]
 
-        func getModel(_ params: [String : Any]) -> Any {
-            let jsonDecoder = JSONDecoder()
-            let jsonData = try? JSONSerialization.data(withJSONObject: params, options: [])
-
-            var model: OpenWinModel?
-            do {
-                model = try jsonDecoder.decode(OpenWinModel.self, from: jsonData!)
-            } catch {
-                print(error)
-            }
-            return model as Any
-        }
-
-        let model = getModel(outParams["params"] as! [String : Any]) as! OpenWinModel
+        let model = getModel(outParams["params"] as! [String : Any]) as OpenWinModel
 
         print(model as Any)
 
-
-        func none(_ vc: UIViewController) {
-            rootVC.navigationController?.transition(from: rootVC, to: vc, duration: 2, options: .transitionCrossDissolve, animations: {
-                print("动画开始")
-            }, completion: nil)
-        }
-
-        func push(_ vc: UIViewController) {
+        func push(_ vc: UIViewController, _ animation: Bool) {
             DispatchQueue.main.async {
                 vc.hidesBottomBarWhenPushed = model.pageParams?.hideBottomBar ?? true
-                rootVC.navigationController?.pushViewController(vc, animated: true)
+                rootVC.navigationController?.pushViewController(vc, animated: animation)
             }
         }
 
@@ -220,102 +199,18 @@ extension WYAWebViewManager {
             }
         }
 
-        func fade(_ vc: UIViewController) {
+        guard rootVC.navigationController != nil else { return }
 
+        let centerVC = WYAViewController()
+        centerVC.model = model
+
+        switch model.pageParams?.animation {
+        case "card": push(centerVC, true); break
+        case "modal": present(centerVC); break
+        case "none":push(centerVC, false);  break
+        default:
+            break
         }
-
-        func flip(_ vc: UIViewController) {
-
-        }
-
-        func reveal(_ vc: UIViewController) {
-
-        }
-
-        func ripple(_ vc: UIViewController) {
-
-        }
-
-        func curl(_ vc: UIViewController) {
-
-        }
-
-        func un_curl(_ vc: UIViewController) {
-
-        }
-
-        func suck(_ vc: UIViewController) {
-
-        }
-
-        func cube(_ vc: UIViewController) {
-
-        }
-
-        guard type != nil else {
-            guard rootVC.navigationController != nil else { return }
-            if ((model.pageParams?.animation?.type) != nil) {
-                if model.pageParams?.animation?.type == "none" {
-
-                } else if model.pageParams?.animation?.type == "push" {
-
-                } else if model.pageParams?.animation?.type == "movein" {
-
-                } else if model.pageParams?.animation?.type == "fade" {
-
-                } else if model.pageParams?.animation?.type == "flip" {
-
-                } else if model.pageParams?.animation?.type == "reveal" {
-
-                } else if model.pageParams?.animation?.type == "ripple" {
-
-                } else if model.pageParams?.animation?.type == "curl" {
-
-                } else if model.pageParams?.animation?.type == "un_curl" {
-
-                } else if model.pageParams?.animation?.type == "suck" {
-
-                } else if model.pageParams?.animation?.type == "cube" {
-
-                }
-            }else {
-                var centerVC : WYAViewController?
-
-
-                if model.params?.singleInstance == nil {
-                    centerVC = WYAViewController()
-                }else {
-                    if (model.params?.singleInstance!)! {
-                        centerVC = WYAViewController.shared
-                    }else {
-                        centerVC = WYAViewController()
-                    }
-                }
-
-                centerVC!.enableSlidPane = false
-                centerVC!.navT = "中心"
-                centerVC!.needWebView = true
-                centerVC!.needNavBar = false
-                centerVC!.model = model
-                push(centerVC!)
-            }
-
-            return
-        }
-
-//        switch type as! jumpType {
-//            case .push:
-//                guard rootVC.navigationController != nil else { return }
-//                push()
-//                break
-//            case .present:
-//                present()
-//                break
-//            default:
-//                guard rootVC.navigationController != nil else { return }
-//                push()
-//                break
-//        }
     }
 
     func closeVC(_ params : [String : Any]) {
@@ -330,7 +225,7 @@ extension WYAWebViewManager {
         for vc in viewControllers! {
             if vc is WYAViewController {
                 let viewController = vc as! WYAViewController
-                if viewController.model?.params?.name == vcName {
+                if viewController.model?.name == vcName {
                     rootVC.navigationController?.popToViewController(viewController, animated: true)
                 }else {
                     rootVC.navigationController?.popViewController(animated: true)
