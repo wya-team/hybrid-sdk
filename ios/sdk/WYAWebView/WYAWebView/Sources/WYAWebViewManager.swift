@@ -8,6 +8,7 @@
 import Alamofire
 import MediaPlayer
 import UIKit
+import WYAKit
 
 @objc public enum jumpType: Int {
     case push = 0
@@ -275,13 +276,62 @@ extension WYAWebViewManager {
     @objc func removeLaunchViewWithParams(outParams: [String: Any]) {}
     @objc func showLaunchViewWithParams(outParams: [String: Any]) {}
     @objc func parseTapmodeWithParams(outParams: [String: Any]) {}
-    @objc func installAppWithParams(outParams: [String: Any]) {}
-    @objc func openAppWithParams(outParams: [String: Any]) {}
 
+    /// 安装应用,如果是苹果的AppStore应用地址，将会跳转到AppStore应用详情页
+    ///
+    /// - Parameter outParams: 需要下载的appUri
+    @objc func installAppWithParams(outParams: [String: Any]) {
+        print(outParams)
+        let tempString = "https://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"
+        var urlString = ""
+        if tempString.hasPrefix("http") {
+           urlString = tempString.replacingOccurrences(of: "http", with: "itms-apps")
+        }
+        if tempString.hasPrefix("https") {
+            urlString = tempString.replacingOccurrences(of: "https", with: "itms-apps")
+        }
+        if urlString.hasPrefix("itms-apps"){
+            let url = URL(string: urlString)
+            DispatchQueue.main.async {
+                if UIApplication.shared.openURL(url!){
+                    // success
+                } else{
+                    // fail
+                }
+            }
+        }
+    }
+
+
+    /// 打开手机上其它应用，可以传递参数
+    ///
+    /// - Parameter outParams: 需要传递的参数
+    @objc func openAppWithParams(outParams: [String: Any]) {
+        print(outParams)
+        let str = "sinaweibo://hello"
+        let url = URL.init(string: str)
+        DispatchQueue.main.async {
+            if UIApplication.shared.canOpenURL(url!) {
+                UIApplication.shared.openURL(url!)
+            } else {
+                print("不可以打开")
+            }
+        }
+
+    }
+
+
+    /// 判断设备上是否已安装指定应用
+    ///
+    /// - Parameter outParams: 需要传递的参数
     @objc func appInstalledWithParams(outParams: [String: Any]) {
-//        if UIApplication.shared.canOpenURL(<#T##url: URL##URL#>) {
-//            <#code#>
-//        }
+         DispatchQueue.main.async {
+            if UIApplication.shared.canOpenURL(URL(string: "")!) {
+                // success
+            } else {
+                // fail
+            }
+        }
     }
 
     @objc func rebootAppWithParams(outParams: [String: Any]) {}
@@ -297,13 +347,44 @@ extension WYAWebViewManager {
     @objc func setPrefsWithParams(outParams: [String: Any]) {}
     @objc func getPrefsWithParams(outParams: [String: Any]) {}
     @objc func removePrefsWithParams(outParams: [String: Any]) {}
-    @objc func clearCacheWithParams(outParams: [String: Any]) {}
-    @objc func getCacheSizeWithParams(outParams: [String: Any]) {}
 
-    @objc func getTotalSpaceWithParams(outParams: [String: Any]) {}
 
+    /// 清理缓存
+    ///
+    /// - Parameter outParams: 需要的清理的路径信息
+    @objc func clearCacheWithParams(outParams: [String: Any]) {
+        WYAClearCache.wya_clearCachesClearStatusBlock { (AnyObject) in
+            print("清理缓存成功")
+        }
+    }
+
+    /// 获取缓存占用空间大小
+    ///
+    /// - Parameter outParams: 缓存的路径默认为Cache
+    @objc func getCacheSizeWithParams(outParams: [String: Any]) {
+        WYAClearCache.wya_defaultCachesFolderSizeBlock { (AnyObject) in
+            print("系统缓存空间\(AnyObject)")
+        }
+    }
+
+    /// 获取总空间大小
+    ///
+    /// - Parameter outParams: 无参数
+    @objc func getTotalSpaceWithParams(outParams: [String: Any]) {
+       let divceTotalSpace = WYAClearCache.wya_getDivceTotalSize()
+        print("系统总空间\(divceTotalSpace)")
+
+    }
+
+    /// 获取剩余存储空间大小
+    ///
+    /// - Parameter outParams: 无参数
     @objc func getFreeDiskSpaceWithParams(outParams: [String: Any]) {
         let space = NSString.wya_phoneFreeMemory()
+        WYAClearCache.wya_getDivceAvailableSizeBlock { (AnyObject) in
+            print("系统可用空间\(AnyObject)")
+        }
+        print(space)
     }
 
     @objc func loadSecureValueWithParams(outParams: [String: Any]) {}
@@ -549,6 +630,7 @@ extension WYAWebViewManager {
         self.nativeDelegate?.getNativeActionResult("keyBack", "")
     }
 
+    /// 音量变化监听
     func handleVolum() {
         do {
             try AVAudioSession.sharedInstance().setActive(true)
