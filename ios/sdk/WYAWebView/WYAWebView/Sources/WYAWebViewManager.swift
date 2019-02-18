@@ -15,6 +15,10 @@ import WYAKit
     case present = 1
 }
 
+enum type {
+    case aaa(String)
+}
+
 protocol WebViewDelegate: AnyObject {
     func getNativeActionResult(_ type: String, _ obj: String) -> Void
 }
@@ -128,6 +132,8 @@ class WYAWebViewManager: NSObject {
 
     weak var nativeDelegate: WebViewDelegate?
 
+    static let shared = WYAWebViewManager()
+
     var config = SystemConfig()
 
     var currentVolume: Float?
@@ -173,60 +179,176 @@ extension WYAWebViewManager {
     ///
     /// - Parameter params: 接收到的参数
     @objc func openWinWithParams(outParams: [String: Any]) {
-        let rootVC = outParams["rootVC"] as! UIViewController
-        let vc = outParams["vc"]
-        let type = outParams["jumpType"]
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developParams["rootVC"] as! UIViewController
+        let vc = developParams["vc"]
+        let type = developParams["jumpType"]
 
-        func push() {
+        func getModel(_ params: [String : Any]) -> Any {
+            let jsonDecoder = JSONDecoder()
+            let jsonData = try? JSONSerialization.data(withJSONObject: params, options: [])
+
+            var model: OpenWinModel?
+            do {
+                model = try jsonDecoder.decode(OpenWinModel.self, from: jsonData!)
+            } catch {
+                print(error)
+            }
+            return model as Any
+        }
+
+        let model = getModel(outParams["params"] as! [String : Any]) as! OpenWinModel
+
+        print(model as Any)
+
+
+        func none(_ vc: UIViewController) {
+            rootVC.navigationController?.transition(from: rootVC, to: vc, duration: 2, options: .transitionCrossDissolve, animations: {
+                print("动画开始")
+            }, completion: nil)
+        }
+
+        func push(_ vc: UIViewController) {
             DispatchQueue.main.async {
-                if vc == nil {
-                    let centerVC = WYAViewController()
-                    centerVC.enableSlidPane = true
-                    centerVC.navT = "中心"
-                    centerVC.needWebView = true
-                    centerVC.needNavBar = false
-                    rootVC.navigationController?.pushViewController(centerVC, animated: true)
-                } else {
-                    rootVC.navigationController?.pushViewController(vc as! UIViewController, animated: true)
-                }
+                vc.hidesBottomBarWhenPushed = model.pageParams?.hideBottomBar ?? true
+                rootVC.navigationController?.pushViewController(vc, animated: true)
             }
         }
 
-        func present() {
+        func present(_ vc: UIViewController) {
             DispatchQueue.main.async {
-                if vc == nil {
-                    rootVC.present(WYAViewController(), animated: true, completion: {})
-                } else {
-                    rootVC.present(vc as! UIViewController, animated: true, completion: {})
-                }
+                rootVC.present(vc, animated: true, completion: {})
             }
+        }
+
+        func fade(_ vc: UIViewController) {
+
+        }
+
+        func flip(_ vc: UIViewController) {
+
+        }
+
+        func reveal(_ vc: UIViewController) {
+
+        }
+
+        func ripple(_ vc: UIViewController) {
+
+        }
+
+        func curl(_ vc: UIViewController) {
+
+        }
+
+        func un_curl(_ vc: UIViewController) {
+
+        }
+
+        func suck(_ vc: UIViewController) {
+
+        }
+
+        func cube(_ vc: UIViewController) {
+
         }
 
         guard type != nil else {
             guard rootVC.navigationController != nil else { return }
-            push()
+            if ((model.pageParams?.animation?.type) != nil) {
+                if model.pageParams?.animation?.type == "none" {
+
+                } else if model.pageParams?.animation?.type == "push" {
+
+                } else if model.pageParams?.animation?.type == "movein" {
+
+                } else if model.pageParams?.animation?.type == "fade" {
+
+                } else if model.pageParams?.animation?.type == "flip" {
+
+                } else if model.pageParams?.animation?.type == "reveal" {
+
+                } else if model.pageParams?.animation?.type == "ripple" {
+
+                } else if model.pageParams?.animation?.type == "curl" {
+
+                } else if model.pageParams?.animation?.type == "un_curl" {
+
+                } else if model.pageParams?.animation?.type == "suck" {
+
+                } else if model.pageParams?.animation?.type == "cube" {
+
+                }
+            }else {
+                var centerVC : WYAViewController?
+
+
+                if model.params?.singleInstance == nil {
+                    centerVC = WYAViewController()
+                }else {
+                    if (model.params?.singleInstance!)! {
+                        centerVC = WYAViewController.shared
+                    }else {
+                        centerVC = WYAViewController()
+                    }
+                }
+
+                centerVC!.enableSlidPane = false
+                centerVC!.navT = "中心"
+                centerVC!.needWebView = true
+                centerVC!.needNavBar = false
+                centerVC!.model = model
+                push(centerVC!)
+            }
+
             return
         }
 
-        switch type as! jumpType {
-            case .push:
-                guard rootVC.navigationController != nil else { return }
-                push()
-                break
-            case .present:
-                present()
-                break
-            default:
-                guard rootVC.navigationController != nil else { return }
-                push()
-                break
+//        switch type as! jumpType {
+//            case .push:
+//                guard rootVC.navigationController != nil else { return }
+//                push()
+//                break
+//            case .present:
+//                present()
+//                break
+//            default:
+//                guard rootVC.navigationController != nil else { return }
+//                push()
+//                break
+//        }
+    }
+
+    func closeVC(_ params : [String : Any]) {
+        let developParams = params["DevelopParams"] as! [String : Any]
+        let rootVC = developParams["rootVC"] as! UIViewController
+
+        let param = params["params"] as! [String : Any]
+        let vcName = param["name"] as! String
+
+
+        let viewControllers = rootVC.navigationController?.viewControllers
+        for vc in viewControllers! {
+            if vc is WYAViewController {
+                let viewController = vc as! WYAViewController
+                if viewController.model?.params?.name == vcName {
+                    rootVC.navigationController?.popToViewController(viewController, animated: true)
+                }else {
+                    rootVC.navigationController?.popViewController(animated: true)
+                }
+
+            }
         }
     }
 
     @objc func closeWinWithParams(outParams: [String: Any]) {
         print("返回")
+        closeVC(outParams)
     }
-    @objc func closeToWinWithParams(outParams: [String: Any]) {}
+
+    @objc func closeToWinWithParams(outParams: [String: Any]) {
+        closeVC(outParams)
+    }
     @objc func setWinAttrWithParams(outParams: [String: Any]) {}
     @objc func openFrameWithParams(outParams: [String: Any]) {}
     @objc func closeFrameWithParams(outParams: [String: Any]) {}

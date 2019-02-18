@@ -139,6 +139,7 @@
 [keyboardHide]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/keyboardHide.md
 [safeAreaChange]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/safeAreaChange.md
 
+
 ### 按键事件 (key) (on)
 
 事件 | 说明  | 开发 | Android | iOS
@@ -158,9 +159,9 @@
 
 方法 | 说明 | 开发 | Android | iOS
 ---|---|---|---|---
-[openWin][openWin] | 打开window  | 0 | 0 | 0 
-[closeWin][closeWin] | 关闭 window  | 0 | 0 | 0  
-[closeToWin][closeToWin] | 关闭到指定 window  | 0 | 0 | 0  
+[openWin][openWin] | 打开window  | 1 | 0 | 0 
+[closeWin][closeWin] | 关闭 window  | 1 | 0 | 0  
+[closeToWin][closeToWin] | 关闭到指定 window  | 1 | 0 | 0  
 [setWinAttr][setWinAttr] | 设置 window 属性  | 0 | 0 | 0  
 [openFrame][openFrame] | 打开 frame  | 0 | 0 | 0  
 [closeFrame][closeFrame] | 关闭frame  | 0 | 0 | 0  
@@ -193,51 +194,50 @@
 [removeLaunchView][removeLaunchView] | 移除启动图  | 0 | 0 | 0  
 [showLaunchView][showLaunchView] | 重新显示闪屏广告，若没有闪屏广告则不显示  | 0 | 0 | 0  
 [parseTapmode][parseTapmode] | 解析元素 tapmode 属性，优化点击事件处理  | 0 | 0 | 0  
-[installApp][installApp] | 安装应用，如果是苹果的AppStore应用地址，将会跳转到AppStore应用详情页  | 0 | 0 | 0  
+[installApp][installApp] | 安装应用，如果是苹果的AppStore应用地址，将会跳转到AppStore应用详情页  | 1 | 0 | 0  
 [uninstallApp][uninstallApp] | 卸载应用，只支持Android  | 0 | 0 | 0  
-[openApp][openApp] | 打开手机上其它应用，可以传递参数  | 0 | 0 | 0  
-[appInstalled][appInstalled] | 判断设备上面是否已安装指定应用  | 0 | 0 | 0  
+[openApp][openApp] | 打开手机上其它应用，可以传递参数  | 1 | 0 | 0  
+[appInstalled][appInstalled] | 判断设备上面是否已安装指定应用  | 1 | 0 | 0  
 [rebootApp][rebootApp] | 重启应用，云修复完成后可以调用此方法来重启应用使云修复生效  | 0 | 0 | 0  
 [openWidget][openWidget] | 打开 Widget，若此 widget 已经被打开，则会把其调整到最前面显示  | 0 | 0 | 0  
 [closeWidget][closeWidget] | 关闭指定widget，也可以关闭应用  | 0 | 0 | 0  
 [ajax][ajax] | 跨域异步请求  | 0 | 0 | 0  
 [cancelAjax][cancelAjax] | -  | 0 | 0 | 0  
-[download][download] | 下载文件  | 0 | 0 | 0  
-[cancelDownload][cancelDownload] | 取消文件下载  | 0 | 0 | 0  
+[download][download] | 下载文件  | 1 | 0 | 0  
+[cancelDownload][cancelDownload] | 取消文件下载  | 1 | 0 | 0  
 [imageCache][imageCache] | 图片缓存  | 0 | 0 | 0
 [readFile][readFile] | 读取文本文件内容，只支持utf-8编码文本类型文件  | 0 | 0 | 0
 [writeFile][writeFile] | 写入内容到文本文件  | 0 | 0 | 0
 [setPrefs][setPrefs] | 设置偏好数据  | 0 | 0 | 0
 [getPrefs][getPrefs] | 获取偏好设置值  | 0 | 0 | 0
 [removePrefs][removePrefs] | 删除偏好设置值  | 0 | 0 | 0
-[clearCache][clearCache] | 清除缓存，包括下载的文件、拍照临时文件、网页缓存文件等，清除时可能需要消耗一定时间。  | 0 | 0 | 0
-[getCacheSize][getCacheSize] | 获取缓存占用空间大小，缓存包括下载的缓存文件、拍照临时文件以及网页缓存文件等，计算可能需要花费一些时间  | 0 | 0 | 0
-[getTotalSpace][getTotalSpace] | 获取总存储空间大小  | 0 | 0 | 0
-[getFreeDiskSpace][getFreeDiskSpace] | 获取剩余存储空间大小  | 0 | 0 | 0
+[clearCache][clearCache] | 清除缓存，包括下载的文件、拍照临时文件、网页缓存文件等，清除时可能需要消耗一定时间。  | 1 | 0 | 0
+[getCacheSize][getCacheSize] | 获取缓存占用空间大小，缓存包括下载的缓存文件、拍照临时文件以及网页缓存文件等，计算可能需要花费一些时间  | 1 | 0 | 0
+[getTotalSpace][getTotalSpace] | 获取总存储空间大小  | 1 | 0 | 0
+[getFreeDiskSpace][getFreeDiskSpace] | 获取剩余存储空间大小  | 1 | 0 | 0
 [loadSecureValue][loadSecureValue] | 从加密的key.xml文件中读取指定数据，key.xml文件放置于网页包里面的res目录  | 0 | 0 | 0
 [addEventListener][addEventListener] | 监听事件，支持系统事件和自定义事件  | 0 | 0 | 0
 [removeEventListener][removeEventListener] | 移除事件监听  | 0 | 0 | 0
 [sendEvent][sendEvent] | 将任意一个自定义事件广播出去，该事件可在任意页面通过 addEventListener 监听收到  | 0 | 0 | 0
 [accessNative][accessNative] | 使用 SuperWebView 时，js 向原生发送消息。此方法只在使用 SuperWebView 时有效  | 0 | 0 | 0
-[notification][notification] | 向用户发出震动、声音提示、灯光闪烁、手机状态栏通知等提示行为，支持闹钟功能。如果是状态栏通知，当用户点击该通知，页面可以通过监听 noticeclick 事件获取该通知相关内容  | 0 | 0 | 0
-[cancelNotification][cancelNotification] | 取消本应用弹出到状态栏的某个或所有通知，也可以清除设定的闹铃  | 0 | 0 | 0
+[notification][notification] | 向用户发出震动、声音提示、灯光闪烁、手机状态栏通知等提示行为，支持闹钟功能。如果是状态栏通知，当用户点击该通知，页面可以通过监听 noticeclick 事件获取该通知相关内容  | 1 | 0 | 0
+[cancelNotification][cancelNotification] | 取消本应用弹出到状态栏的某个或所有通知，也可以清除设定的闹铃  | 1 | 0 | 0
 [startLocation][startLocation] | 调用系统自带定位功能，开始定位  | 0 | 0 | 0
 [stopLocation][stopLocation] | 停止定位  | 0 | 0 | 0
 [getLocation][getLocation] | 之前已通过 startLocation() 方法进行定位，则直接返回上次定位的数据，否则使用默认设置进行定位  | 0 | 0 | 0
 [startSensor][startSensor] | 开启传感器  | 0 | 0 | 0
 [stopSensor][stopSensor] | 停止传感器  | 0 | 0 | 0
-[sms][sms] | 调用系统短信界面发送短信，或者后台直接发送短信  | 0 | 0 | 0
+[sms][sms] | 调用系统短信界面发送短信，或者后台直接发送短信  | 1 | 0 | 0
 [mail][mail] | 发送邮件  | 0 | 0 | 0
 [call][call] | 拨打电话或进行faceTime  | 0 | 0 | 0
-[openContacts][openContacts] | 在应用内打开系统通讯录界面选择联系人  | 0 | 0 | 0
-[setStatusBarStyle][setStatusBarStyle] | 设置状态栏样式为白色（适用于深色背景）或黑色（适用于浅色背景）  | 0 | 0 | 0
-[setScreenOrientation][setScreenOrientation] | 设置屏幕旋转方向  | 0 | 0 | 0
-[setKeepScreenOn][setKeepScreenOn] | 设置是否禁止屏幕休眠  | 0 | 0 | 0
-[toLauncher][toLauncher] | 回到系统桌面(Android)  | 0 | 0 | 0
-[setScreenSecure][setScreenSecure] | -  | 0 | 0 | 0
+[openContacts][openContacts] | 在应用内打开系统通讯录界面选择联系人  | 1 | 0 | 0
+[setStatusBarStyle][setStatusBarStyle] | 设置状态栏样式为白色（适用于深色背景）或黑色（适用于浅色背景）  | 1 | 0 | 0
+[setScreenOrientation][setScreenOrientation] | 设置屏幕旋转方向  | 1 | 0 | 0
+[setKeepScreenOn][setKeepScreenOn] | 设置是否禁止屏幕休眠  | 1 | 0 | 0
+[toLauncher][toLauncher] | 回到系统桌面 | 1 | 0 | 0
+[setScreenSecure][setScreenSecure] | 禁止截图  | 0 | 0 | 0
 [setAppIconBadge][setAppIconBadge] | 如小米和三星的某些型号，不支持的设备，表现结果为调用该接口无任何效果  | 0 | 0 | 0
-[getPhoneNumber][getPhoneNumber] |   | 0 | 0 | 0
-[setAppIconBadge][setAppIconBadge] | 获取本机电话号码，只支持 Android 部分手机  | 0 | 0 | 0
+[getPhoneNumber][getPhoneNumber] | 获取本机电话号码 | 0 | 0 | 0
 [alert][alert] | 弹出带一个按钮的对话框，更多按钮的对话框请使用confirm方法  | 0 | 0 | 0
 [confirm][confirm] | 弹出带两个或三个按钮的confirm对话框  | 0 | 0 | 0
 [actionSheet][actionSheet] | 底部弹出框  | 0 | 0 | 0
@@ -249,14 +249,14 @@
 [setCustomRefreshHeaderInfo][setCustomRefreshHeaderInfo] | 显示自定义下拉刷新组件  | 0 | 0 | 0
 [refreshHeaderLoading][refreshHeaderLoading] | 设置下拉刷新组件为刷新中状态  | 0 | 0 | 0
 [refreshHeaderLoadDone][refreshHeaderLoadDone] | 通知下拉刷新数据加载完毕，组件会恢复到默认状态  | 0 | 0 | 0
-[showFloatBox][showFloatBox] | 展示一个悬浮框，浮动在屏幕上。  | 0 | 0 | 0
-[getPicture][getPicture] | 通过调用系统默认相机或者图库应用，获取图片以及视频媒体文件。  | 0 | 0 | 0
-[saveMediaToAlbum][saveMediaToAlbum] | 保存图片和视频到系统相册  | 0 | 0 | 0
-[startRecord][startRecord] | 录制amr格式音频  | 0 | 0 | 0
-[stopRecord][stopRecord] | 停止录音  | 0 | 0 | 0
-[startPlay][startPlay] | 播放本地音频，支持amr格式  | 0 | 0 | 0
-[stopPlay][stopPlay] | 停止播放音频  | 0 | 0 | 0
-[openVideo][openVideo] | 打开系统视频播放器  | 0 | 0 | 0
+[showFloatBox][showFloatBox] | 展示一个悬浮框，浮动在屏幕上。  | 1 | 0 | 0
+[getPicture][getPicture] | 通过调用系统默认相机或者图库应用，获取图片以及视频媒体文件。  | 1 | 0 | 0
+[saveMediaToAlbum][saveMediaToAlbum] | 保存图片和视频到系统相册  | 1 | 0 | 0
+[startRecord][startRecord] | 录制amr格式音频  | 1 | 0 | 0
+[stopRecord][stopRecord] | 停止录音  | 1 | 0 | 0
+[startPlay][startPlay] | 播放本地音频，支持amr格式  | 1 | 0 | 0
+[stopPlay][stopPlay] | 停止播放音频  | 1 | 0 | 0
+[openVideo][openVideo] | 打开系统视频播放器  | 1 | 0 | 0
 [require][require] | 引用模块(wya.require("bMap"))  | 0 | 0 | 0
 
 [openWin]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/openWin.md
@@ -359,6 +359,9 @@
 [stopPlay]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/stopPlay.md
 [openVideo]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/openVideo.md
 [require]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/require.md
+
+
+
 
 
 

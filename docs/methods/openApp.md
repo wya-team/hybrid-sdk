@@ -10,6 +10,11 @@
 }
 ```
 
+属性 | 说明 | 类型 | 默认值 | 如
+---|---|---|---|---
+param | 传给目标应用的参数 | obj | - | -
+scheme | scheme 或 包名 | str | - | -
+
 #### 3. Native传递参数给Client
 
 ```javascript

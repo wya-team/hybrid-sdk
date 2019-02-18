@@ -1,6 +1,6 @@
 #### 1. 说明
 
-~
+关闭到指定 window，最上面显示的 window 到指定 name 的 window 间的所有 window 都会被关闭。
 
 #### 2. Client传递参数给Native
 
@@ -9,6 +9,12 @@
 	// ....
 }
 ```
+
+属性 | 说明 | 类型 | 默认值 | 如
+---|---|---|---|---
+name | window名字，相同跳转到最早创建的 | str | - | -
+animation | 动画参数 | str | card,modal,none | ``
+
 
 #### 3. Native传递参数给Client
 

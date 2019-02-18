@@ -178,21 +178,18 @@ extension WYAWebView {
         print(webServer.bonjourServerURL ?? "没有url")
         // 打开网页
         self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
-//        self.loadUrl(url: "http://localhost:8080/const")
-//        let url = URL(string: (webServer.serverURL?.absoluteString)!)
-//
-//        if UIApplication.shared.canOpenURL(url!) {
-//            UIApplication.shared.openURL(URL(string: (webServer.serverURL?.absoluteString)!)!)
-//        }
 
     }
 
     @objc public func openwin(_ vc : UIViewController, _ type : jumpType) {
+        var allParams = [String : Any]()
+
         var params = [String : Any]()
         params.updateValue(self.cmam_parentController(), forKey: "rootVC")
         params.updateValue(vc, forKey: "vc")
         params.updateValue(type, forKey: "jumpType")
-        self.webManager?.nativeAction("openWin", params: params)
+        allParams.updateValue(params, forKey: "DevelopParams")
+        self.webManager?.nativeAction("openWin", params: allParams)
     }
 
     @objc public func removeNoticeAndObserver() {
@@ -267,10 +264,14 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
             if arrContain! {
                 self.getParams(self.actionID!) { params in
-                    var param = params as! [String: Any]
+                    var allParams = [String : Dictionary<String, Any>]()
+
+                    var param = [String: Any]()
                     param.updateValue(self.cmam_parentController(), forKey: "rootVC")
+                    allParams.updateValue(params as! [String : Any], forKey: "params")
+                    allParams.updateValue(param, forKey: "DevelopParams")
                     // 获取到参数执行调用原生
-                    self.webManager?.nativeAction(dic?["method"] as! String, params: param)
+                    self.webManager?.nativeAction(dic?["method"] as! String, params: allParams)
                 }
             } else {
                 // 不需要参数执行原生

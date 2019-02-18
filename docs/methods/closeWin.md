@@ -1,14 +1,21 @@
 #### 1. 说明
 
-~
+关闭 window
 
 #### 2. Client传递参数给Native
 
 ```javascript
 {
-	// ....
+	name: '',
+	animation: 'card'
 }
 ```
+
+属性 | 说明 | 类型 | 默认值 | 如
+---|---|---|---|---
+name | window名字,不传时关闭当前window | str | - | -
+animation | 动画参数 | str | card,modal,none | ``
+
 
 #### 3. Native传递参数给Client
 
