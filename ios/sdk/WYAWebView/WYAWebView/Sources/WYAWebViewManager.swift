@@ -504,6 +504,10 @@ extension WYAWebViewManager {
     @objc func getLocationWithParams(outParams: [String: Any]) {}
     @objc func startSensorWithParams(outParams: [String: Any]) {}
     @objc func stopSensorWithParams(outParams: [String: Any]) {}
+
+    /// 调用系统短信界面发送短信，或者后台直接发送短信
+    ///
+    /// - Parameter outParams: 需要的参数
     @objc func smsWithParams(outParams: [String: Any]) {}
     @objc func mailWithParams(outParams: [String: Any]) {}
     @objc func callWithParams(outParams: [String: Any]) {}
