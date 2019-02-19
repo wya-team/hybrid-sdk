@@ -500,49 +500,57 @@ public class HybridManager implements JsCallBack {
 	public void response(String data, int id, String name) {
 		LogUtil.e(data + "default--------" + id + "--------" + name);
 		mIsDebugger = false;
-		if (name.equals("debugger")) {
-			mIsDebugger = true;
-			DebugLogger.logEvent("data = %s , id = %s", data, id);
-			Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
+		switch (name) {
+			case "debugger":
+				mIsDebugger = true;
+				DebugLogger.logEvent("data = %s , id = %s", data, id);
+				Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
 
-			if (data.contains(Battery.EVENT_BATTERY_LOW)) {
-				HybridManager.this.onBatteryLow(id);
-			} else if (data.contains(Battery.EVENT_BATTERY_STATUS)) {
-				HybridManager.this.onBatteryStatus(id);
-			} else if (data.contains(NetState.EVENT_OFFLINE)) {
-				HybridManager.this.onOffline(id);
-			} else if (data.contains(NetState.EVENT_ONLINE)) {
-				HybridManager.this.onOnline(id);
-			} else if (data.contains(Foreground.EVENT_PAUSE)) {
-				HybridManager.this.onPause(id);
-			} else if (data.contains(Foreground.EVENT_RESUME)) {
-				HybridManager.this.onResume(id);
-			} else if (data.contains(Shake.EVENT_SHAKE)) {
-				onShake(id);
-			} else if (data.contains(AppIdle.EVENT_APP_IDLE)) {
-				HybridManager.this.onAppIdle(id);
-			} else if (data.contains(TakeScreenshot.EVENT_TAKE_SCREENSHOT)) {
-				onScreenshot(id);
-			} else if (data.contains(KeyBack.EVENT_KEY_BACK)) {
-				mEventMap.put(KeyBack.EVENT_KEY_BACK, id);
-			} else if (data.contains(VolumeDown.EVENT_VOLUME_DOWN)) {
-				mEventMap.put(VolumeDown.EVENT_VOLUME_DOWN, id);
-			} else if (data.contains(VolumeUp.EVENT_VOLUME_UP)) {
-				mEventMap.put(VolumeUp.EVENT_VOLUME_UP, id);
-			} else if (data.contains(Keyboard.EVENT_KEYBOARD_SHOW)) {
-				HybridManager.this.onKeyBoardListener(Keyboard.EVENT_KEYBOARD_SHOW, id);
-			} else if (data.contains(Keyboard.EVENT_KEYBOARD_HIDE)) {
-				HybridManager.this.onKeyBoardListener(Keyboard.EVENT_KEYBOARD_HIDE, id);
-			}
-		} else if (name.equals("openWin")) {
-			mEventMap.put(name, id);
-			Intent intent = new Intent(mContext, mContext.getClass());
-			mContext.startActivity(intent);
-			send(name, getEmitData());
-		} else if (name.equals("closeWin")) {
-			mEventMap.put(name, id);
-			setEmitData(1, "响应成功", null);
-			send(name, getEmitData());
+				if (data.contains(Battery.EVENT_BATTERY_LOW)) {
+					HybridManager.this.onBatteryLow(id);
+				} else if (data.contains(Battery.EVENT_BATTERY_STATUS)) {
+					HybridManager.this.onBatteryStatus(id);
+				} else if (data.contains(NetState.EVENT_OFFLINE)) {
+					HybridManager.this.onOffline(id);
+				} else if (data.contains(NetState.EVENT_ONLINE)) {
+					HybridManager.this.onOnline(id);
+				} else if (data.contains(Foreground.EVENT_PAUSE)) {
+					HybridManager.this.onPause(id);
+				} else if (data.contains(Foreground.EVENT_RESUME)) {
+					HybridManager.this.onResume(id);
+				} else if (data.contains(Shake.EVENT_SHAKE)) {
+					onShake(id);
+				} else if (data.contains(AppIdle.EVENT_APP_IDLE)) {
+					HybridManager.this.onAppIdle(id);
+				} else if (data.contains(TakeScreenshot.EVENT_TAKE_SCREENSHOT)) {
+					onScreenshot(id);
+				} else if (data.contains(KeyBack.EVENT_KEY_BACK)) {
+					mEventMap.put(KeyBack.EVENT_KEY_BACK, id);
+				} else if (data.contains(VolumeDown.EVENT_VOLUME_DOWN)) {
+					mEventMap.put(VolumeDown.EVENT_VOLUME_DOWN, id);
+				} else if (data.contains(VolumeUp.EVENT_VOLUME_UP)) {
+					mEventMap.put(VolumeUp.EVENT_VOLUME_UP, id);
+				} else if (data.contains(Keyboard.EVENT_KEYBOARD_SHOW)) {
+					HybridManager.this.onKeyBoardListener(Keyboard.EVENT_KEYBOARD_SHOW, id);
+				} else if (data.contains(Keyboard.EVENT_KEYBOARD_HIDE)) {
+					HybridManager.this.onKeyBoardListener(Keyboard.EVENT_KEYBOARD_HIDE, id);
+				}
+				break;
+			case "openWin":
+				mEventMap.put(name, id);
+				Intent intent = new Intent(mContext, mContext.getClass());
+				mContext.startActivity(intent);
+				send(name, getEmitData());
+				break;
+			case "closeWin":
+				mEventMap.put(name, id);
+				setEmitData(1, "响应成功", null);
+				send(name, getEmitData());
+				break;
+			case "openVideo":
+				break;
+			default:
+				break;
 		}
 	}
 }
