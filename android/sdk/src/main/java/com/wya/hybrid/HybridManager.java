@@ -13,6 +13,7 @@ import android.os.Vibrator;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.wya.hybrid.base.ActivityManager;
 import com.wya.hybrid.base.BaseApp;
 import com.wya.hybrid.bean.AppIdle;
@@ -37,6 +38,8 @@ import com.wya.hybrid.data.event.NetEvent;
 import com.wya.hybrid.data.event.ShakeEvent;
 import com.wya.hybrid.data.sp.BatterySp;
 import com.wya.hybrid.data.sp.ForegroundStateSp;
+import com.wya.hybrid.methods.closewin.bean.CloseWinData;
+import com.wya.hybrid.methods.openwin.OpenWinActivity;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.log.DebugLogger;
 import com.wya.utils.utils.LogUtil;
@@ -71,6 +74,11 @@ public class HybridManager implements JsCallBack {
 	 * 软键盘的显示状态
 	 */
 	private boolean mShowKeyboard;
+
+	/**
+	 * 关闭window
+	 */
+	private CloseWinData closeWinData;
 
 	public HybridManager(Activity context, WYAWebView webView) {
 		if (!CheckUtil.isValidate(context)) {
@@ -319,8 +327,8 @@ public class HybridManager implements JsCallBack {
 			mEmitData = new BaseEmitData<>();
 		}
 		mEmitData.setMsg(msg);
+		mEmitData.setData(data);
 		if (null != data) {
-			mEmitData.setData(data);
 			status = 1;
 		}
 		mEmitData.setStatus(status);
@@ -341,7 +349,7 @@ public class HybridManager implements JsCallBack {
 			if (null != mEventMap && CheckUtil.isNotEmpty(event) && mEventMap.containsKey(event)) {
 				int id = mEventMap.get(event);
 				mWebView.send(id, emitData);
-				DebugLogger.logEvent("WYAEventManager .[debugger true] id = %s, emitData = %s", id, emitData);
+				DebugLogger.logEvent("WYAEventManager .[debugger false] id = %s, emitData = %s", id, emitData);
 			} else {
 				mWebView.send(event, emitData);
 				DebugLogger.logEvent("WYAEventManager .[debugger false] event = %s, emitData = %s", event, emitData);
@@ -437,7 +445,7 @@ public class HybridManager implements JsCallBack {
 	}
 
 	private void unRegisterReceiver(Context context, BroadcastReceiver receiver) {
-		if (!CheckUtil.isValidate(context) || null == receiver) {
+		if (context == null || null == receiver) {
 			return;
 		}
 		context.unregisterReceiver(receiver);
@@ -505,7 +513,6 @@ public class HybridManager implements JsCallBack {
 				mIsDebugger = true;
 				DebugLogger.logEvent("data = %s , id = %s", data, id);
 				Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
-
 				if (data.contains(Battery.EVENT_BATTERY_LOW)) {
 					HybridManager.this.onBatteryLow(id);
 				} else if (data.contains(Battery.EVENT_BATTERY_STATUS)) {
@@ -537,20 +544,71 @@ public class HybridManager implements JsCallBack {
 				}
 				break;
 			case "openWin":
-				mEventMap.put(name, id);
-				Intent intent = new Intent(mContext, mContext.getClass());
-				mContext.startActivity(intent);
-				send(name, getEmitData());
+				openWin(name, id, data);
 				break;
 			case "closeWin":
-				mEventMap.put(name, id);
-				setEmitData(1, "响应成功", null);
-				send(name, getEmitData());
+				closeWin(name, id, data);
 				break;
-			case "openVideo":
+			case "closeToWin":
+				closeToWin(name, id, data);
 				break;
 			default:
 				break;
 		}
+	}
+
+	/**
+	 * 关闭到页面到某个界面
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void closeToWin(String name, int id, String data) {
+		mEventMap.put(name, id);
+		closeWinData = new Gson().fromJson(data, CloseWinData.class);
+		closeWinData.setName("name");
+		closeWinData.setAnimation("card");
+		if (closeWinData != null && closeWinData.getName() != null && !closeWinData.getName().equals("")) {
+			ActivityManager.getInstance().closeToWinByName(closeWinData.getName());
+		}
+		setEmitData(1, "响应成功", null);
+		send(name, getEmitData());
+	}
+
+	/**
+	 * 关闭页面
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void closeWin(String name, int id, String data) {
+		mEventMap.put(name, id);
+		closeWinData = new Gson().fromJson(data, CloseWinData.class);
+		closeWinData.setName("name");
+		closeWinData.setAnimation("card");
+		if (closeWinData != null && closeWinData.getName() != null && !closeWinData.getName().equals("")) {
+			ActivityManager.getInstance().finishActivityByName(closeWinData.getName());
+		} else {
+			ActivityManager.getInstance().finishTopActivity();
+		}
+		setEmitData(1, "响应成功", null);
+		send(name, getEmitData());
+	}
+
+	/**
+	 * 打开新页面
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void openWin(String name, int id, String data) {
+		mEventMap.put(name, id);
+		Intent intent = new Intent(mContext, OpenWinActivity.class);
+		intent.putExtra("data", data);
+		mContext.startActivity(intent);
+		send(name, getEmitData());
 	}
 }

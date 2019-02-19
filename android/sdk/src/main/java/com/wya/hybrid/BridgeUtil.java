@@ -83,6 +83,7 @@ public class BridgeUtil {
 		webView.evaluateJavascript("javascript:" + "WYAJSBridge.getParam(" + id + ")", new ValueCallback<String>() {
 			@Override
 			public void onReceiveValue(String value) {
+				value = value.substring(1, value.length() - 1);
 				callBack.response(value, Integer.parseInt(id), name);
 			}
 		});

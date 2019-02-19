@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	package="com.wya.hybrid">
@@ -5,41 +6,41 @@
 	<uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 	<uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
-
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<!-- 访问WiFi状态.  -->
+	<!-- 访问WiFi状态. -->
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<!-- 访问网络状态, 检测网络的可用性. -->
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 	<!-- TODO ZCQ -->
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 	<application
-		android:name="com.wya.hybrid.base.BaseApp"
+		android:name=".base.BaseApp"
 		android:allowBackup="true"
 		android:label="@string/app_name"
 		android:supportsRtl="true"
 		tools:ignore="GoogleAppIndexingWarning">
+
 		<!-- 监听网络切换 receiver -->
-		<receiver android:name="com.wya.hybrid.control.NetworkReceiver">
+		<receiver android:name=".control.NetworkReceiver">
 			<intent-filter>
 				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
 				<action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
 				<action android:name="android.net.wifi.STATE_CHANGE" />
 			</intent-filter>
 		</receiver>
-		<receiver android:name="com.wya.hybrid.control.BatteryReceiver">
+		<receiver android:name=".control.BatteryReceiver">
 			<intent-filter>
 				<action android:name="android.content.Intent.ACTION_BATTERY_LOW" />
 				<action android:name="android.content.Intent.ACTION_BATTERY_OKAY" />
 				<action android:name="android.content.Intent.ACTION_BATTERY_CHANGED" />
 			</intent-filter>
 		</receiver>
-
-		<receiver android:name="com.wya.hybrid.control.ScreenReceiver">
+		<receiver android:name=".control.ScreenReceiver">
 			<intent-filter>
 				<action android:name="android.content.Intent.ACTION_SCREEN_ON" />
 				<action android:name="android.content.Intent.ACTION_SCREEN_OFF" />
@@ -51,5 +52,9 @@
 			android:name=".localserver.LocalService"
 			android:exported="false" />
 
+		<activity
+			android:name=".methods.openwin.OpenWinActivity"
+			android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
 	</application>
+
 </manifest>

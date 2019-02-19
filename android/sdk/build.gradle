@@ -5,48 +5,49 @@ apply plugin: 'kotlin-android'
 def depends = rootProject.ext.depends
 
 android {
-	compileSdkVersion 28
+    compileSdkVersion 28
 
-	defaultConfig {
-		minSdkVersion 19
-		targetSdkVersion 28
-		versionCode 1
-		versionName "1.0"
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
 
-		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-		ndk {
-			abiFilters 'armeabi', 'armeabi-v7a', 'x86', 'mips'
-		}
-	}
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters 'armeabi', 'armeabi-v7a', 'x86', 'mips'
+        }
+    }
 
-	buildTypes {
-		release {
-			minifyEnabled false
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-		}
-	}
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 
-	compileOptions {
-		sourceCompatibility '1.8'
-		targetCompatibility '1.8'
-	}
+    compileOptions {
+        sourceCompatibility '1.8'
+        targetCompatibility '1.8'
+    }
 }
 
 dependencies {
-	implementation fileTree(include: ['*.jar'], dir: 'libs')
-	implementation 'com.android.support:appcompat-v7:28.0.0'
-	implementation 'com.google.code.gson:gson:2.8.5'
-	implementation 'com.wya.uikit:uikit:0.1.0'
-	implementation 'com.wya.hardware:hardware:0.1.0'
-	implementation 'com.wya.helper:helper:0.1.0'
-	implementation 'com.wya.utils:utils:0.1.0'
-	api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
-	api files('libs/nanohttpd-2.3.2.jar')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.wya.uikit:uikit:0.1.0'
+    implementation 'com.wya.hardware:hardware:0.1.0'
+    implementation 'com.wya.helper:helper:0.1.0'
+    implementation 'com.wya.utils:utils:0.1.0'
+    api files('libs/tbs_sdk_thirdapp_v3.6.0.1310_43612_sharewithdownload_withoutGame_obfs_20180706_163319.jar')
+    api files('libs/nanohttpd-2.3.2.jar')
 
-	implementation supportDepends.multidex
+    implementation supportDepends.multidex
 
-	implementation depends.logger
-	implementation depends.eventbus
-	implementation depends.converter_gson
-	implementation depends.kotlin_stdlib_jdk7
+    implementation depends.logger
+    implementation depends.eventbus
+    implementation depends.converter_gson
+    implementation depends.kotlin_stdlib_jdk7
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }
