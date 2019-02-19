@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.arialyy.aria.core.Aria;
 import com.tencent.smtt.sdk.QbSdk;
 import com.wya.hybrid.localserver.LocalServer;
 import com.wya.hybrid.localserver.LocalService;
@@ -41,6 +42,8 @@ public class BaseApp extends Application implements LocalServer.LocalServerListe
 
 		// 初始化x5内核
 		initTbs();
+
+		Aria.init(this);
     }
 
 	private void initTbs() {

@@ -1,4 +1,4 @@
-package com.wya.hybrid.methods.closewin.bean;
+package com.wya.hybrid.methods.closewin;
 
 /**
  * @date: 2019/2/18 16:46

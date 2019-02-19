@@ -8,11 +8,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
+import com.arialyy.aria.core.download.DownloadTask;
 import com.google.gson.Gson;
 import com.wya.hybrid.base.ActivityManager;
 import com.wya.hybrid.base.BaseApp;
@@ -38,21 +41,28 @@ import com.wya.hybrid.data.event.NetEvent;
 import com.wya.hybrid.data.event.ShakeEvent;
 import com.wya.hybrid.data.sp.BatterySp;
 import com.wya.hybrid.data.sp.ForegroundStateSp;
-import com.wya.hybrid.methods.closewin.bean.CloseWinData;
+import com.wya.hybrid.methods.closewin.CloseWinData;
+import com.wya.hybrid.methods.installapp.InstallAppData;
+import com.wya.hybrid.methods.installedapp.InstalledAppData;
+import com.wya.hybrid.methods.openapp.OpenAppData;
 import com.wya.hybrid.methods.openwin.OpenWinActivity;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.log.DebugLogger;
+import com.wya.utils.utils.FileManagerUtil;
 import com.wya.utils.utils.LogUtil;
+import com.wya.utils.utils.PhoneUtil;
 import com.wya.utils.utils.ScreenUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.wya.uikit.toolbar.StatusBarUtil.getStatusBarHeight;
+import static com.wya.utils.utils.FileManagerUtil.TASK_COMPLETE;
 
 /**
  * @author :
@@ -78,7 +88,24 @@ public class HybridManager implements JsCallBack {
 	/**
 	 * 关闭window
 	 */
-	private CloseWinData closeWinData;
+	private CloseWinData mCloseWinData;
+
+	/**
+	 * 软件下载安装
+	 */
+	private InstallAppData mInstallAppData;
+	private FileManagerUtil mFileManagerUtil;
+	private String fileRootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+
+	/**
+	 * 下载app判断
+	 */
+	private InstalledAppData mInstalledAppData;
+
+	/**
+	 * 打开app
+	 */
+	private OpenAppData mOpenAppData;
 
 	public HybridManager(Activity context, WYAWebView webView) {
 		if (!CheckUtil.isValidate(context)) {
@@ -552,9 +579,105 @@ public class HybridManager implements JsCallBack {
 			case "closeToWin":
 				closeToWin(name, id, data);
 				break;
+			case "installApp":
+				installApp(name, id, data);
+				break;
+			case "openApp":
+				openApp(name, id, data);
+				break;
+			case "appInstalled":
+				appInstalled(name, id, data);
+				break;
 			default:
 				break;
 		}
+	}
+
+	/**
+	 * 判断app是否下载
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void appInstalled(String name, int id, String data) {
+		boolean isAppInstalled = false;
+		mEventMap.put(name, id);
+		mInstalledAppData = new Gson().fromJson(data, InstalledAppData.class);
+		mInstalledAppData.setScheme("com.wya.shanda");
+		if (mInstalledAppData != null && mInstalledAppData.getScheme() != null && !mInstalledAppData.getScheme().equals("")) {
+			isAppInstalled = PhoneUtil.getInstance().isApkInstalled(mContext, mInstalledAppData.getScheme());
+		}
+		setEmitData(1, "响应成功", null);
+		send(name, getEmitData());
+	}
+
+	/**
+	 * 打开app
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void openApp(String name, int id, String data) {
+		mEventMap.put(name, id);
+		mOpenAppData = new Gson().fromJson(data, OpenAppData.class);
+		mOpenAppData.setScheme("com.wya.shanda");
+		if (mOpenAppData != null && mOpenAppData.getScheme() != null && !mOpenAppData.getScheme().equals("")) {
+			Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mOpenAppData.getScheme());
+			if (intent != null) {
+				mContext.startActivity(intent);
+				setEmitData(1, "响应成功", null);
+				send(name, getEmitData());
+			} else {
+				setEmitData(0, "未安装应用", null);
+				send(name, getEmitData());
+			}
+		}
+	}
+
+	/**
+	 * 下载app
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void installApp(String name, int id, String data) {
+		mEventMap.put(name, id);
+		mInstallAppData = new Gson().fromJson(data, InstallAppData.class);
+		mInstallAppData.setUrl("https://oss.ruishan666.com/file/xcx/190219/560100273267/apprelease(1).apk");
+		mFileManagerUtil = new FileManagerUtil();
+		if (mInstallAppData != null && mInstallAppData.getUrl() != null && !mInstallAppData.getUrl().equals("")) {
+			String fileName = mInstallAppData.getUrl().split("/")[mInstallAppData.getUrl().split("/").length - 1];
+			mFileManagerUtil.getDownloadReceiver().load(mInstallAppData.getUrl()).setFilePath(fileRootPath + "/" + fileName).start();
+			mFileManagerUtil.setOnDownLoaderListener(new FileManagerUtil.OnDownLoaderListener() {
+				@Override
+				public void onDownloadState(int state, DownloadTask task, Exception e) {
+					if (state == TASK_COMPLETE) {
+						installAPK(fileRootPath + "/" + fileName);
+						setEmitData(1, "响应成功", null);
+						send(name, getEmitData());
+					}
+				}
+			});
+		}
+	}
+
+	/**
+	 * 下载到本地后执行安装
+	 */
+	protected void installAPK(String filePath) {
+		File apkFile = new File(filePath);
+		if (!apkFile.exists()) {
+			return;
+		}
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		// 安装完成后，启动app（源码中少了这句话）
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		Uri uri = Uri.parse("file://" + apkFile.toString());
+		intent.setDataAndType(uri, "application/vnd.android.package-archive");
+		mContext.startActivity(intent);
 	}
 
 	/**
@@ -566,11 +689,11 @@ public class HybridManager implements JsCallBack {
 	 */
 	private void closeToWin(String name, int id, String data) {
 		mEventMap.put(name, id);
-		closeWinData = new Gson().fromJson(data, CloseWinData.class);
-		closeWinData.setName("name");
-		closeWinData.setAnimation("card");
-		if (closeWinData != null && closeWinData.getName() != null && !closeWinData.getName().equals("")) {
-			ActivityManager.getInstance().closeToWinByName(closeWinData.getName());
+		mCloseWinData = new Gson().fromJson(data, CloseWinData.class);
+		mCloseWinData.setName("name");
+		mCloseWinData.setAnimation("card");
+		if (mCloseWinData != null && mCloseWinData.getName() != null && !mCloseWinData.getName().equals("")) {
+			ActivityManager.getInstance().closeToWinByName(mCloseWinData.getName());
 		}
 		setEmitData(1, "响应成功", null);
 		send(name, getEmitData());
@@ -585,11 +708,11 @@ public class HybridManager implements JsCallBack {
 	 */
 	private void closeWin(String name, int id, String data) {
 		mEventMap.put(name, id);
-		closeWinData = new Gson().fromJson(data, CloseWinData.class);
-		closeWinData.setName("name");
-		closeWinData.setAnimation("card");
-		if (closeWinData != null && closeWinData.getName() != null && !closeWinData.getName().equals("")) {
-			ActivityManager.getInstance().finishActivityByName(closeWinData.getName());
+		mCloseWinData = new Gson().fromJson(data, CloseWinData.class);
+		mCloseWinData.setName("name");
+		mCloseWinData.setAnimation("card");
+		if (mCloseWinData != null && mCloseWinData.getName() != null && !mCloseWinData.getName().equals("")) {
+			ActivityManager.getInstance().finishActivityByName(mCloseWinData.getName());
 		} else {
 			ActivityManager.getInstance().finishTopActivity();
 		}
