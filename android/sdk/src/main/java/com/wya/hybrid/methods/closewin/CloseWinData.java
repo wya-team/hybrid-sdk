@@ -7,7 +7,13 @@ package com.wya.hybrid.methods.closewin;
  * @describe:
  */
 public class CloseWinData {
+	/**
+	 * 窗口名字
+	 */
 	private String name;
+	/**
+	 * 关闭窗口动画
+	 */
 	private String animation;
 
 	public String getName() {

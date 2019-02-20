@@ -11,7 +11,9 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.os.StatFs;
 import android.os.Vibrator;
+import android.text.format.Formatter;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
@@ -41,6 +43,7 @@ import com.wya.hybrid.data.event.NetEvent;
 import com.wya.hybrid.data.event.ShakeEvent;
 import com.wya.hybrid.data.sp.BatterySp;
 import com.wya.hybrid.data.sp.ForegroundStateSp;
+import com.wya.hybrid.methods.cache.CacheData;
 import com.wya.hybrid.methods.closewin.CloseWinData;
 import com.wya.hybrid.methods.installapp.InstallAppData;
 import com.wya.hybrid.methods.installedapp.InstalledAppData;
@@ -48,6 +51,7 @@ import com.wya.hybrid.methods.openapp.OpenAppData;
 import com.wya.hybrid.methods.openwin.OpenWinActivity;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.log.DebugLogger;
+import com.wya.utils.utils.DataCleanUtil;
 import com.wya.utils.utils.FileManagerUtil;
 import com.wya.utils.utils.LogUtil;
 import com.wya.utils.utils.PhoneUtil;
@@ -106,6 +110,11 @@ public class HybridManager implements JsCallBack {
 	 * 打开app
 	 */
 	private OpenAppData mOpenAppData;
+
+	/**
+	 * 清理缓存
+	 */
+	private CacheData mCacheData;
 
 	public HybridManager(Activity context, WYAWebView webView) {
 		if (!CheckUtil.isValidate(context)) {
@@ -588,8 +597,205 @@ public class HybridManager implements JsCallBack {
 			case "appInstalled":
 				appInstalled(name, id, data);
 				break;
+			case "clearCache":
+				clearCache(name, id, data);
+				break;
+			case "getCacheSize":
+				getCacheSize(name, id, data);
+				break;
+			case "getTotalSpace":
+				getTotalSpace(name, id, data);
+				break;
+			case "getFreeDiskSpace":
+				getFreeDiskSpace(name, id, data);
+				break;
 			default:
 				break;
+		}
+	}
+
+	private void getFreeDiskSpace(String name, int id, String data) {
+		mEventMap.put(name, id);
+		mEventMap.put(name, id);
+		mCacheData = new Gson().fromJson(data, CacheData.class);
+		mCacheData.setType("storageDir");
+		if (mCacheData != null && mCacheData.getType() != null && !mCacheData.getType().equals("")) {
+			long freeDiskSpace = 0;
+			switch (mCacheData.getType()) {
+				case "dataDir":
+					freeDiskSpace = getAvailableInternalMemorySize(mContext);
+					setEmitData(1, "响应成功", null);
+					send(name, getEmitData());
+					break;
+				case "storageDir":
+					if (isExternalStorageAvailable()) {
+						freeDiskSpace = getAvailableExternalMemorySize(mContext);
+						setEmitData(1, "响应成功", null);
+						send(name, getEmitData());
+					} else {
+						setEmitData(0, "SD卡异常", null);
+						send(name, getEmitData());
+					}
+					break;
+				case "total":
+					freeDiskSpace = getAvailableExternalMemorySize(mContext) + getAvailableInternalMemorySize(mContext);
+					setEmitData(1, "响应成功", null);
+					send(name, getEmitData());
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	/**
+	 * 获取总存储空间大小
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void getTotalSpace(String name, int id, String data) {
+		mEventMap.put(name, id);
+		mEventMap.put(name, id);
+		mCacheData = new Gson().fromJson(data, CacheData.class);
+		mCacheData.setType("storageDir");
+		if (mCacheData != null && mCacheData.getType() != null && !mCacheData.getType().equals("")) {
+			long totalSpace = 0;
+			switch (mCacheData.getType()) {
+				case "dataDir":
+					totalSpace = getInternalMemorySize(mContext);
+					setEmitData(1, "响应成功", null);
+					send(name, getEmitData());
+					break;
+				case "storageDir":
+					if (isExternalStorageAvailable()) {
+						totalSpace = getExternalMemorySize(mContext);
+						setEmitData(1, "响应成功", null);
+						send(name, getEmitData());
+					} else {
+						setEmitData(0, "SD卡异常", null);
+						send(name, getEmitData());
+					}
+					break;
+				case "total":
+					totalSpace = getExternalMemorySize(mContext) + getInternalMemorySize(mContext);
+					setEmitData(1, "响应成功", null);
+					send(name, getEmitData());
+					break;
+				default:
+					break;
+			}
+		}
+	}
+
+	/**
+	 * 判断sd卡是否可用
+	 */
+	private boolean isExternalStorageAvailable() {
+		return Environment.getExternalStorageState().equals(
+			Environment.MEDIA_MOUNTED);
+	}
+
+	/**
+	 * 获取手机内部存储空间
+	 *
+	 * @param context
+	 * @return 以B为单位的容量
+	 */
+	private long getInternalMemorySize(Context context) {
+		File file = Environment.getDataDirectory();
+		StatFs statFs = new StatFs(file.getPath());
+		long blockSizeLong = statFs.getBlockSizeLong();
+		long blockCountLong = statFs.getBlockCountLong();
+		long size = blockCountLong * blockSizeLong;
+		return size;
+	}
+
+	/**
+	 * 获取手机内部可用存储空间
+	 *
+	 * @param context
+	 * @return 以B为单位的容量
+	 */
+	private long getAvailableInternalMemorySize(Context context) {
+		File file = Environment.getDataDirectory();
+		StatFs statFs = new StatFs(file.getPath());
+		long availableBlocksLong = statFs.getAvailableBlocksLong();
+		long blockSizeLong = statFs.getBlockSizeLong();
+		long size = availableBlocksLong * blockSizeLong;
+		return size;
+	}
+
+	/**
+	 * 获取手机外部存储空间
+	 *
+	 * @param context
+	 * @return 以B为单位的容量
+	 */
+	public long getExternalMemorySize(Context context) {
+		File file = Environment.getExternalStorageDirectory();
+		StatFs statFs = new StatFs(file.getPath());
+		long blockSizeLong = statFs.getBlockSizeLong();
+		long blockCountLong = statFs.getBlockCountLong();
+		long size = blockSizeLong * blockCountLong;
+		return size;
+	}
+
+	/**
+	 * 获取手机外部可用存储空间
+	 *
+	 * @param context
+	 * @return 以B单位的容量
+	 */
+	private long getAvailableExternalMemorySize(Context context) {
+		File file = Environment.getExternalStorageDirectory();
+		StatFs statFs = new StatFs(file.getPath());
+		long availableBlocksLong = statFs.getAvailableBlocksLong();
+		long blockSizeLong = statFs.getBlockSizeLong();
+		long size = blockSizeLong * availableBlocksLong;
+		return size;
+	}
+
+	/**
+	 * 获取缓存占用空间大小
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void getCacheSize(String name, int id, String data) {
+		mEventMap.put(name, id);
+		mCacheData = new Gson().fromJson(data, CacheData.class);
+		mCacheData.setPath(fileRootPath + "/yzws");
+		if (mCacheData != null && mCacheData.getPath() != null && !mCacheData.getPath().equals("")) {
+			File file = new File(mCacheData.getPath());
+			if (file.exists()) {
+				long size = DataCleanUtil.getFolderSize(file);
+				setEmitData(1, "响应成功", null);
+				send(name, getEmitData());
+			} else {
+				setEmitData(0, "文件不存在", null);
+				send(name, getEmitData());
+			}
+		}
+	}
+
+	/**
+	 * 清理缓存
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void clearCache(String name, int id, String data) {
+		mEventMap.put(name, id);
+		mCacheData = new Gson().fromJson(data, CacheData.class);
+		mCacheData.setPath(fileRootPath + "/yzws");
+		if (mCacheData != null && mCacheData.getPath() != null && !mCacheData.getPath().equals("")) {
+			DataCleanUtil.cleanCustomCache(mCacheData.getPath());
+			setEmitData(1, "响应成功", null);
+			send(name, getEmitData());
 		}
 	}
 

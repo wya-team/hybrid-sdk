@@ -7,7 +7,13 @@ package com.wya.hybrid.methods.openapp;
  * @describe:
  */
 public class OpenAppData {
+	/**
+	 *
+	 */
 	private String scheme;
+	/**
+	 * 参数
+	 */
 	private Param param;
 
 	public String getScheme() {

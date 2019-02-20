@@ -9,7 +9,13 @@ import android.app.Activity;
  * @describe:
  */
 public class ActivityData {
+	/**
+	 * 窗口名字
+	 */
 	private String name;
+	/**
+	 * 保存的activity对象
+	 */
 	private Activity activity;
 
 	public String getName() {
