@@ -1,4 +1,6 @@
 module.exports = [
+	'push',
+	'pop',
 	'openWin',
 	'closeWin',
 	'closeToWin',
