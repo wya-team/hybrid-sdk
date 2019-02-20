@@ -31,4 +31,24 @@ struct OpenWinModel : Codable {
 
 }
 
+struct NotificationModel : Codable {
+    var vibrate : String?
+    var sound : String?
+    var light : Bool?
+    var notify : NotifyModel?
+    var alarm : AlarmModel?
+
+    struct NotifyModel : Codable {
+        var title : String?
+        var content : String?
+        var extra : String?
+    }
+
+    struct AlarmModel : Codable {
+        var hour : String?
+        var minutes : String?
+        var daysOfWeek : String?
+
+    }
+}
 

@@ -8,6 +8,8 @@
 
 import UIKit
 
+import UserNotifications
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -23,6 +25,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let nav = UINavigationController(rootViewController: MainViewController())
         window?.rootViewController = nav
+
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { (success, error) in
+                if success {
+                    print("success")
+                } else {
+                    print("error")
+                }
+            }
+
+        }else{
+            if (UIApplication.shared.currentUserNotificationSettings?.types)!.rawValue != UIUserNotificationType.alert.rawValue|UIUserNotificationType.sound.rawValue|UIUserNotificationType.badge.rawValue {
+                UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: UIUserNotificationType(rawValue: UIUserNotificationType.alert.rawValue|UIUserNotificationType.sound.rawValue|UIUserNotificationType.badge.rawValue), categories: nil))
+            }
+        }
+
+
 
         return true
     }

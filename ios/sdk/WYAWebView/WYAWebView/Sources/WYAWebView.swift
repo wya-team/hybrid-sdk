@@ -264,11 +264,14 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
             if arrContain! {
                 self.getParams(self.actionID!) { params in
+                    // 假数据
+                    let testDic = self.testParams(dictory: dic?["method"] as! String)
+
                     var allParams = [String : Dictionary<String, Any>]()
 
                     var param = [String: Any]()
                     param.updateValue(self.cmam_parentController(), forKey: "rootVC")
-                    allParams.updateValue(params as! [String : Any], forKey: "params")
+                    allParams.updateValue(testDic, forKey: "params")
                     allParams.updateValue(param, forKey: "DevelopParams")
                     // 获取到参数执行调用原生
                     self.webManager?.nativeAction(dic?["method"] as! String, params: allParams)
@@ -278,6 +281,46 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             }
         }
         decisionHandler(.allow)
+    }
+
+    func testParams(dictory: String) -> [String : Any] {
+
+        if dictory == "openWin" {
+            /// 假数据
+            var params = [String: Any]()
+            params["name"] = "test"
+            params["title"] = "XXX"
+            params["url"] = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/"
+            params["pageParams"] = [
+                "vScrollBarEnabled":true,
+                "hScrollBarEnabled":true,
+                "scaleEnabled":false,
+                "hideTopBar":true,
+                "hideBottomBar":true,
+                "animation":"card"
+            ]
+            return params
+        }else if dictory == "closeWin" {
+            var params = [String: Any]()
+            params["name"] = "test"
+            params["animation"] = "card"
+            return params
+        }else if dictory == "closeToWin" {
+            var params = [String: Any]()
+            params["name"] = "test"
+            params["animation"] = "card"
+            return params
+        }else if dictory == "notification" {
+            var params = [String: Any]()
+            params["vibrate"] = ""
+            params["sound"] = "default"
+            params["light"] = true
+            params["notify"] = ["title":"测试notification","content":"有新消息","extra":""]
+            params["alarm"] = ["hour":"13","minutes":"50","daysOfWeek":"3"]
+            return params
+        }else {
+            return [String : Any]()
+        }
     }
 
     /// 拿到响应后决定是否允许跳转
@@ -436,8 +479,9 @@ extension WYAWebView {
              */
             dictory = self.webManager?.jsonStringToDic(params as! String) as Any
             print(dictory)
-
+            
             handler(dictory)
+
         }
     }
 
