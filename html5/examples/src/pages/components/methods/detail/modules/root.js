@@ -1,3 +1,5 @@
+export push from './push';
+export pop from './pop';
 export openWin from './openWin';
 export closeWin from './closeWin';
 export closeToWin from './closeToWin';
@@ -96,5 +98,3 @@ export stopRecord from './stopRecord';
 export startPlay from './startPlay';
 export stopPlay from './stopPlay';
 export openVideo from './openVideo';
-export push from './push';
-export pop from './pop';
