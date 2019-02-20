@@ -33,7 +33,7 @@ animation | 动画参数 | str | card,modal,none | ``
 ```javascript
 import wya from 'wya-js-sdk';
 
-wya.closeToWin({
+wya.pop({
 	// ...
 }).then(() => {
 	// ...
@@ -42,7 +42,7 @@ wya.closeToWin({
 });
 
 // 或者
-wya.invoke('closeToWin', {
+wya.invoke('pop', {
 	// ...
 }).then(() => {
 	// ...
@@ -54,7 +54,7 @@ wya.invoke('closeToWin', {
 #### 5. 不引入sdk示例代码
 
 ```javascript
-WYAJSBridge.invoke('closeToWin', {
+WYAJSBridge.invoke('pop', {
 	// ...
 }).then(() => {
 	// ...
