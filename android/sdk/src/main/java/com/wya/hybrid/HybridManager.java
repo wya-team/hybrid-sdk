@@ -13,7 +13,6 @@ import android.os.Environment;
 import android.os.PowerManager;
 import android.os.StatFs;
 import android.os.Vibrator;
-import android.text.format.Formatter;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
@@ -49,6 +48,7 @@ import com.wya.hybrid.methods.installapp.InstallAppData;
 import com.wya.hybrid.methods.installedapp.InstalledAppData;
 import com.wya.hybrid.methods.openapp.OpenAppData;
 import com.wya.hybrid.methods.openwin.OpenWinActivity;
+import com.wya.hybrid.methods.openwin.bean.OpenWinData;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.log.DebugLogger;
 import com.wya.utils.utils.DataCleanUtil;
@@ -88,6 +88,13 @@ public class HybridManager implements JsCallBack {
 	 * 软键盘的显示状态
 	 */
 	private boolean mShowKeyboard;
+
+	/**
+	 * 打开window
+	 */
+	private OpenWinData mOpenWinData;
+
+	private String winName = "a";
 
 	/**
 	 * 关闭window
@@ -583,7 +590,7 @@ public class HybridManager implements JsCallBack {
 				openWin(name, id, data);
 				break;
 			case "closeWin":
-				closeWin(name, id, data);
+//				closeWin(name, id, data);
 				break;
 			case "closeToWin":
 				closeToWin(name, id, data);
@@ -896,29 +903,10 @@ public class HybridManager implements JsCallBack {
 	private void closeToWin(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mCloseWinData = new Gson().fromJson(data, CloseWinData.class);
-		mCloseWinData.setName("name");
+		mCloseWinData.setName(winName);
 		mCloseWinData.setAnimation("card");
 		if (mCloseWinData != null && mCloseWinData.getName() != null && !mCloseWinData.getName().equals("")) {
 			ActivityManager.getInstance().closeToWinByName(mCloseWinData.getName());
-		}
-		setEmitData(1, "响应成功", null);
-		send(name, getEmitData());
-	}
-
-	/**
-	 * 关闭页面
-	 *
-	 * @param name
-	 * @param id
-	 * @param data
-	 */
-	private void closeWin(String name, int id, String data) {
-		mEventMap.put(name, id);
-		mCloseWinData = new Gson().fromJson(data, CloseWinData.class);
-		mCloseWinData.setName("name");
-		mCloseWinData.setAnimation("card");
-		if (mCloseWinData != null && mCloseWinData.getName() != null && !mCloseWinData.getName().equals("")) {
-			ActivityManager.getInstance().finishActivityByName(mCloseWinData.getName());
 		} else {
 			ActivityManager.getInstance().finishTopActivity();
 		}
@@ -935,9 +923,22 @@ public class HybridManager implements JsCallBack {
 	 */
 	private void openWin(String name, int id, String data) {
 		mEventMap.put(name, id);
+		mOpenWinData = new Gson().fromJson(data, OpenWinData.class);
+		mOpenWinData.setTitle(winName);
+		mOpenWinData.setName(winName);
+		mOpenWinData.setHideBottomBar(false);
+		mOpenWinData.setHideTopBar(true);
+		mOpenWinData.sethScrollBarEnabled(false);
+		mOpenWinData.setvScrollBarEnabled(false);
+		mOpenWinData.setReplace(false);
+		mOpenWinData.setUrl("https://wya-team.github.io/hybrid-sdk/html5/examples/dist/");
+		mOpenWinData.setScaleEnabled(false);
 		Intent intent = new Intent(mContext, OpenWinActivity.class);
-		intent.putExtra("data", data);
+		intent.putExtra("mOpenWinData", mOpenWinData);
 		mContext.startActivity(intent);
+		if (mOpenWinData.isReplace()) {
+			mContext.finish();
+		}
 		send(name, getEmitData());
 	}
 }

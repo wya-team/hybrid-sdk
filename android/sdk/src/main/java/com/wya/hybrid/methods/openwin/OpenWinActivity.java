@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.wya.hybrid.HybridManager;
@@ -28,7 +28,6 @@ public class OpenWinActivity extends BaseToolBarActivity {
 	private static String url = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/";
 	private static final int PROGRESS_MAX = 100;
 
-	private OpenWinData mOpenWinData;
 	private WYAWebView mWebView;
 	private ProgressBar mProgressBar;
 	private HybridManager mHybridManager;
@@ -37,6 +36,7 @@ public class OpenWinActivity extends BaseToolBarActivity {
 	protected int getLayoutId() {
 		return R.layout.activity_open_win;
 	}
+
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,16 +47,7 @@ public class OpenWinActivity extends BaseToolBarActivity {
 
 	private void initView() {
 		initHybrid();
-		data = getIntent().getStringExtra("data");
-		mOpenWinData = new Gson().fromJson(data, OpenWinData.class);
-		mOpenWinData.setTitle("test");
-		mOpenWinData.setName("name");
-		mOpenWinData.setHideBottomBar(false);
-		mOpenWinData.setHideTopBar(true);
-		mOpenWinData.sethScrollBarEnabled(false);
-		mOpenWinData.setvScrollBarEnabled(false);
-		mOpenWinData.setUrl("https://wya-team.github.io/hybrid-sdk/html5/examples/dist/");
-		mOpenWinData.setScaleEnabled(false);
+		OpenWinData mOpenWinData = (OpenWinData) getIntent().getSerializableExtra("mOpenWinData");
 
 		showToolBar(!mOpenWinData.isHideTopBar());
 		setTitle(mOpenWinData.getTitle());
@@ -65,8 +56,7 @@ public class OpenWinActivity extends BaseToolBarActivity {
 		ActivityManager.getInstance().addOpenWinActivity(mOpenWinData.getName(), this);
 	}
 
-
-	private void initHybrid(){
+	private void initHybrid() {
 		// webView
 		mWebView = (WYAWebView) findViewById(R.id.webView);
 		mWebView.initData();

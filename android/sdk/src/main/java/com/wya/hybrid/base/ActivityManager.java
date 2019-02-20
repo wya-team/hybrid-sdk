@@ -237,20 +237,6 @@ public class ActivityManager {
 	}
 
 	/**
-	 * 关闭window为name的activity
-	 *
-	 * @param name
-	 */
-	public void finishActivityByName(String name) {
-		for (int i = activityDataList.size() - 1; i >= 0; i--) {
-			if (name.equals(activityDataList.get(i).getName())) {
-				finishActivity(activityDataList.get(i).getActivity());
-				activityDataList.remove(i);
-			}
-		}
-	}
-
-	/**
 	 * 关闭window到某个页面
 	 *
 	 * @param name

@@ -1,12 +1,14 @@
 package com.wya.hybrid.methods.openwin.bean;
 
+import java.io.Serializable;
+
 /**
  * @date: 2019/2/18 10:44
  * @author: Chunjiang Mao
  * @classname: OpenWinData
  * @describe: Client传递参数给Native
  */
-public class OpenWinData {
+public class OpenWinData implements Serializable {
 	/**
 	 * window名字
 	 */
@@ -47,6 +49,19 @@ public class OpenWinData {
 	 * 动画参数，不传时使用默认动画
 	 */
 	private String animation;
+
+	/**
+	 * 是否结束当前页面
+	 */
+	private boolean replace = false;
+
+	public boolean isReplace() {
+		return replace;
+	}
+
+	public void setReplace(boolean replace) {
+		this.replace = replace;
+	}
 
 	public String getName() {
 		return name;
