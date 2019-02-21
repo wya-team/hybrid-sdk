@@ -9,10 +9,15 @@ import Alamofire
 import MediaPlayer
 import UIKit
 import WYAKit
+
 import AudioToolbox
 import UserNotifications
 import NTYAmrConverter
 import AVKit
+
+import MessageUI
+import ContactsUI
+
 
 @objc public enum jumpType: Int {
     case push = 0
@@ -27,13 +32,13 @@ protocol WebViewDelegate: AnyObject {
     func getNativeActionResult(_ type: String, _ obj: String) -> Void
 }
 
-class WYAWebViewManager: NSObject {
+class WYAWebViewManager: NSObject , CNContactPickerDelegate{
     // 方法配置表
     let actionParams: [String: Selector] = {
         var params = [String: Selector]()
         // 模拟js触发原生方法（动态配置需要方法前加@objc）
-        params.updateValue(#selector(openWinWithParams(outParams:)), forKey: "openWin")
-        params.updateValue(#selector(closeWinWithParams(outParams:)), forKey: "closeWin")
+        params.updateValue(#selector(openWinWithParams(outParams:)), forKey: "push")
+        params.updateValue(#selector(closeWinWithParams(outParams:)), forKey: "pop")
         params.updateValue(#selector(closeToWinWithParams(outParams:)), forKey: "closeToWin")
         params.updateValue(#selector(setWinAttrWithParams(outParams:)), forKey: "setWinAttr")
         params.updateValue(#selector(openFrameWithParams(outParams:)), forKey: "openFrame")
@@ -158,7 +163,7 @@ class WYAWebViewManager: NSObject {
 
 // MARK: - js调用原生方法,方法需要在actionParams里注册
 
-extension WYAWebViewManager {
+extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailComposeViewControllerDelegate{
     func nativeAction(_ method: String, params: [String: Any]) {
         if self.actionParams.keys.contains(method) {
             let sel = actionParams[method]
@@ -234,33 +239,21 @@ extension WYAWebViewManager {
 
 
         func pop(_ animation : Bool) {
-            var number = 0
-            var index = 0
 
-            let viewControllers = rootVC.navigationController?.viewControllers
-            for vc in viewControllers! {
-                if vc is WYAViewController {
-                    let viewController = vc as! WYAViewController
-                    if viewController.model?.name == (vcName as? String) {
-                        number = number + 1
-                        if number == 1 {
-                            index = (viewControllers?.index(of : viewController))!
+            if vcName != nil{
+                let viewControllers = rootVC.navigationController?.viewControllers
+                for vc in viewControllers! {
+                    if vc is WYAViewController {
+                        let viewController = vc as! WYAViewController
+                        if viewController.model?.name == (vcName as? String) {
+                            rootVC.navigationController?.popToViewController(viewController, animated: animation)
                         }
                     }
                 }
-            }
-            if number > 1 {
-                rootVC.navigationController?.popToRootViewController(animated: animation)
-            }else if number == 1 {
-                if index - 1 < 0 {
-
-                }else {
-                    rootVC.navigationController?.popToViewController(viewControllers![index-1], animated: true)
-                }
-
-            }else {
+            }else{
                 rootVC.navigationController?.popViewController(animated: animation)
             }
+
         }
 
         func dismiss() {
@@ -358,15 +351,14 @@ extension WYAWebViewManager {
         if urlString.hasPrefix("itms-apps"){
             let url = URL(string: urlString)
             DispatchQueue.main.async {
-                if UIApplication.shared.openURL(url!){
-                    // success
-                } else{
-                    // fail
+                guard UIApplication.shared.canOpenURL(url!) else{
+                    UIView.wya_showCenterToast(withMessage: "无效的地址")
+                    return
                 }
+                 UIApplication.shared.openURL(url!)
             }
         }
     }
-
 
     /// 打开手机上其它应用，可以传递参数
     ///
@@ -376,11 +368,11 @@ extension WYAWebViewManager {
         let str = "sinaweibo://hello"
         let url = URL.init(string: str)
         DispatchQueue.main.async {
-            if UIApplication.shared.canOpenURL(url!) {
-                UIApplication.shared.openURL(url!)
-            } else {
-                print("不可以打开")
+            guard UIApplication.shared.canOpenURL(url!) else{
+                UIView.wya_showCenterToast(withMessage: "无法打开APP")
+                return
             }
+            UIApplication.shared.openURL(url!)
         }
 
     }
@@ -390,11 +382,15 @@ extension WYAWebViewManager {
     ///
     /// - Parameter outParams: 需要传递的参数
     @objc func appInstalledWithParams(outParams: [String: Any]) {
-         DispatchQueue.main.async {
-            if UIApplication.shared.canOpenURL(URL(string: "")!) {
-                // success
+        let str = "sinaweibo://hello"
+        let url = URL.init(string: str)
+        DispatchQueue.main.async {
+            if UIApplication.shared.canOpenURL(url!) {
+                print("存在")
+                UIView.wya_showCenterToast(withMessage: "新浪微博APP存在")
             } else {
-                // fail
+                print("不存在")
+                UIView.wya_showCenterToast(withMessage: "新浪微博APP不存在")
             }
         }
     }
@@ -418,8 +414,10 @@ extension WYAWebViewManager {
     ///
     /// - Parameter outParams: 需要的清理的路径信息
     @objc func clearCacheWithParams(outParams: [String: Any]) {
-        WYAClearCache.wya_clearCachesClearStatusBlock { (AnyObject) in
+        WYAClearCache.wya_clearCachesClearStatusBlock { (clearStatus) in
             print("清理缓存成功")
+            UIView.wya_showCenterToast(withMessage: "缓存清理成功")
+
         }
     }
 
@@ -427,8 +425,9 @@ extension WYAWebViewManager {
     ///
     /// - Parameter outParams: 缓存的路径默认为Cache
     @objc func getCacheSizeWithParams(outParams: [String: Any]) {
-        WYAClearCache.wya_defaultCachesFolderSizeBlock { (AnyObject) in
-            print("系统缓存空间\(AnyObject)")
+        WYAClearCache.wya_defaultCachesFolderSizeBlock { (folderSize) in
+            print("系统缓存空间\(folderSize)")
+            UIView.wya_showCenterToast(withMessage: "系统缓存空间\(folderSize)")
         }
     }
 
@@ -438,7 +437,7 @@ extension WYAWebViewManager {
     @objc func getTotalSpaceWithParams(outParams: [String: Any]) {
        let divceTotalSpace = WYAClearCache.wya_getDivceTotalSize()
         print("系统总空间\(divceTotalSpace)")
-
+        UIView.wya_showCenterToast(withMessage:"系统总空间\(divceTotalSpace)")
     }
 
     /// 获取剩余存储空间大小
@@ -446,8 +445,9 @@ extension WYAWebViewManager {
     /// - Parameter outParams: 无参数
     @objc func getFreeDiskSpaceWithParams(outParams: [String: Any]) {
         let space = NSString.wya_phoneFreeMemory()
-        WYAClearCache.wya_getDivceAvailableSizeBlock { (AnyObject) in
-            print("系统可用空间\(AnyObject)")
+        WYAClearCache.wya_getDivceAvailableSizeBlock { (folderSize) in
+            print("系统可用空间\(folderSize)")
+            UIView.wya_showCenterToast(withMessage:"系统可用空间\(folderSize)")
         }
         print(space)
     }
@@ -538,10 +538,151 @@ extension WYAWebViewManager {
     @objc func getLocationWithParams(outParams: [String: Any]) {}
     @objc func startSensorWithParams(outParams: [String: Any]) {}
     @objc func stopSensorWithParams(outParams: [String: Any]) {}
-    @objc func smsWithParams(outParams: [String: Any]) {}
-    @objc func mailWithParams(outParams: [String: Any]) {}
-    @objc func callWithParams(outParams: [String: Any]) {}
-    @objc func openContactsWithParams(outParams: [String: Any]) {}
+
+    // MARK:MFMessageComposeViewControllerDelegate
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
+        switch result {
+        case .sent:
+            print("短信发送成功")
+            UIView.wya_showCenterToast(withMessage:"短信发送成功")
+        case .cancelled:
+            print("短信取消发送")
+             UIView.wya_showCenterToast(withMessage:"短信取消发送")
+        case .failed:
+            print("短信发送失败")
+             UIView.wya_showCenterToast(withMessage:"短信发送失败")
+        }
+    }
+    /// 调用系统短信界面发送短信，或者后台直接发送短信
+    ///
+    /// - Parameter outParams: 需要的参数
+    @objc func smsWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developParams["rootVC"] as! UIViewController
+        guard MFMessageComposeViewController.canSendText()else{
+            print("该设备不能发送短信")
+            UIView.wya_showCenterToast(withMessage:"该设备不能发送短信")
+            return
+        }
+        // 发送短信的Controller
+        let messageController = MFMessageComposeViewController()
+        // 设置短信内容
+        messageController.body = "测试短信内容"
+        // 设置收件人列表
+        messageController.recipients = ["18317585029"]
+        // 设置代理
+        messageController.messageComposeDelegate = self
+        // 打开界面
+        rootVC.present(messageController, animated: true, completion: nil)
+    }
+
+
+    // MARK:MFMailComposeViewControllerDelegate
+
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+        switch result {
+        case .cancelled:
+            print("取消发送")
+            UIView.wya_showCenterToast(withMessage:"取消发送")
+
+        case .saved:
+            print("保存成功")
+            UIView.wya_showCenterToast(withMessage:"保存成功")
+
+        case .sent:
+            print("发送成功")
+            UIView.wya_showCenterToast(withMessage:"发送成功")
+
+        case .failed:
+            print("发送失败")
+            UIView.wya_showCenterToast(withMessage:"发送失败")
+
+        }
+    }
+
+    /// 发送邮件
+    ///
+    /// - Parameter outParams: 邮件收件人以及发送内容
+    @objc func mailWithParams(outParams: [String: Any]) {
+
+        let developeParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developeParams["rootVC"] as! UIViewController
+
+        guard MFMailComposeViewController.canSendMail()else{
+            print("无法发送邮件")
+            UIView.wya_showCenterToast(withMessage: "无法发送邮件")
+            return
+        }
+
+        let emailVC = MFMailComposeViewController()
+        emailVC.mailComposeDelegate = self
+        emailVC.setSubject("hybrid测试邮件")
+        emailVC.setToRecipients(["lsh@weiyian.com"])
+        emailVC.setMessageBody("hybrid邮件发送测试内容", isHTML: false)
+        rootVC.present(emailVC, animated: true, completion: nil)
+    }
+
+
+    /// 打电话
+    ///
+    /// - Parameter outParams: 打电话的参数
+    @objc func callWithParams(outParams: [String: Any]) {
+        DispatchQueue.main.async {
+        UIApplication.shared.openURL(URL(string: "telprompt://"+"10086")!)
+        }
+    }
+
+    /// 在应用内打开系统通讯录界面选择联系人
+    ///
+    /// - Parameter outParams: 通讯录所需的参数
+    @objc func openContactsWithParams(outParams: [String: Any]) {
+        let developeParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developeParams["rootVC"] as! UIViewController
+        //联系人选择控制器
+        guard #available(iOS 9.0, *) else{
+            return
+        }
+        let contactPicker = CNContactPickerViewController()
+        //设置代理
+        contactPicker.delegate = self
+
+        //弹出控制器
+        rootVC.present(contactPicker, animated: true, completion: nil)
+
+//        let manager = WYAContacts()
+//        let string = manager.getConTacts()
+//        print(string)
+//        UIView.wya_showCenterToast(withMessage: "获取联系人成功")
+
+    }
+
+    //多选联系人
+    @available(iOS 9.0, *)
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
+        print("一共选择了\(contacts.count)个联系人。")
+        for contact in contacts {
+            print("--------------")
+            //获取联系人的姓名
+            let lastName = contact.familyName
+            let firstName = contact.givenName
+            print("选中人的姓：\(lastName)")
+            print("选中人的名：\(firstName)")
+
+            //获取联系人电话号码
+            print("选中人电话：")
+            let phones = contact.phoneNumbers
+            for phone in phones {
+                //获得标签名（转为能看得懂的本地标签名，比如work、home）
+                let phoneLabel = CNLabeledValue<NSString>.localizedString(forLabel: phone.label!)
+                //获取号码
+                let phoneValue = phone.value.stringValue
+                print("\(phoneLabel):\(phoneValue)")
+            }
+        }
+    }
+
     @objc func setStatusBarStyleWithParams(outParams: [String: Any]) {}
     @objc func setScreenOrientationWithParams(outParams: [String: Any]) {}
     @objc func setKeepScreenOnWithParams(outParams: [String: Any]) {}

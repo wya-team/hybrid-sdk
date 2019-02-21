@@ -285,7 +285,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
     func testParams(dictory: String) -> [String : Any] {
 
-        if dictory == "openWin" {
+        if dictory == "push" {
             /// 假数据
             var params = [String: Any]()
             params["name"] = "test"
@@ -300,7 +300,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                 "animation":"card"
             ]
             return params
-        }else if dictory == "closeWin" {
+        }else if dictory == "pop" {
             var params = [String: Any]()
             params["name"] = "test"
             params["animation"] = "card"

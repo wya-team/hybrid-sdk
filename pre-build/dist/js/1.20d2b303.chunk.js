@@ -45,7 +45,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/appInstalled.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.appInstalled({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('appInstalled', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('appInstalled', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n判断设备上面是否已安装指定应用\n\n注意：iOS9中系统对检测应用是否安装的方法做了限制，若想得到期望的结果，需要在config.xml里面[配置可被检测的URL Scheme](//docs.apicloud.com/Dev-Guide/app-config-manual#14-4)。\n\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nsync | 执行结果的返回方式。为false时通过callback返回，为true时直接返回。 | bool | false | -\nscheme | scheme 或 包名 | str | - | -\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.appInstalled({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('appInstalled', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('appInstalled', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -73,21 +73,21 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/cancelDownload.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.cancelDownload({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('cancelDownload', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('cancelDownload', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n取消文件下载\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nurl | 下载地址 | str | - | -\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.cancelDownload({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('cancelDownload', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('cancelDownload', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
 /***/ "../../docs/methods/cancelNotification.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.cancelNotification({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('cancelNotification', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('cancelNotification', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n取消本应用弹出到状态栏的某个或所有通知，也可以清除设定的闹铃\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nid | 调用 notification 方法时返回的 id | num,str | 0 | -\n\n> 如果传入-1，则取消本应用弹到状态栏的所有通知，iOS只支持清除所有弹到状态栏的通知；传入-1并不清除闹铃\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.cancelNotification({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('cancelNotification', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('cancelNotification', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
 /***/ "../../docs/methods/clearCache.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.clearCache({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('clearCache', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('clearCache', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n清除缓存，包括cache://目录下的文件、拍照临时文件、网页缓存文件等，清除时可能需要消耗一定时间。\n\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\npath | 缓存路径 | str | app的缓存路径 | -\n\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.clearCache({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('clearCache', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('clearCache', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -129,7 +129,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/closeToWin.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.closeToWin({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('closeToWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('closeToWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n关闭到指定 window，最上面显示的 window 到指定 name 的 window 间的所有 window 都会被关闭。\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nname | window名字，相同跳转到最早创建的，不传时关闭当前window | str | - | -\nanimation | 动画参数 | str | card,modal,none | ``\n\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.closeToWin({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('closeToWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('closeToWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -143,7 +143,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/closeWin.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.closeWin({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('closeWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('closeWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n关闭 window\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\tname: '',\n\tanimation: 'card'\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nname | window名字,不传时关闭当前window | str | - | -\nanimation | 动画参数 | str | card,modal,none | ``\n\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.closeWin({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('closeWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('closeWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -157,7 +157,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/download.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.download({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('download', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('download', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n下载文件\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nurl | 下载地址 | str | - | -\nencode | 是否对url进行编码 | bool | true | -\npath | 存储路径，不传时使用自动创建的路径 | str | - | -\n~~report~~ | ~~下载过程是否上报~~ | ~~bool~~ | ~~false~~ | -\n~~allowResume~~ | ~~是否允许断点续传~~ | ~~bool~~ | ~~false~~ | -\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\tsize: 0, // 文件大小，数字类型\n\t\tpercent: 0, // 下载进度（0-100），数字类型\n\t\tstate: 0, // 下载状态，数字类型。（0：下载中、1：下载完成、2：下载失败）\n\t\tpath: '' // 存储路径（字符串类型）\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.download({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('download', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('download', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -171,14 +171,14 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/getCacheSize.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.getCacheSize({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('getCacheSize', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('getCacheSize', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n获取缓存占用空间大小，缓存包括cache://目录下的文件、拍照临时文件以及网页缓存文件等，计算可能需要花费一些时间\n\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\npath | 缓存路径 | str | app的缓存路径 | -\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\tsize: '1024',// 缓存大小，单位为Byte。\n\t\tlabel: '1KB' \n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.getCacheSize({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('getCacheSize', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('getCacheSize', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
 /***/ "../../docs/methods/getFreeDiskSpace.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.getFreeDiskSpace({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('getFreeDiskSpace', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('getFreeDiskSpace', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n获取剩余存储空间大小\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\tsize: '1024',// 缓存大小，单位为Byte\n\t\tlabel: '1KB'\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.getFreeDiskSpace({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('getFreeDiskSpace', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('getFreeDiskSpace', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -199,7 +199,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/getPicture.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.getPicture({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('getPicture', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('getPicture', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n通过调用系统默认相机或者图库应用，获取图片以及视频媒体文件。\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nsourceType | 图片源类型，从相册、图片库或相机获取图片 | str | camera,album | -\nencodingType | 返回图片类型，jpg或png | str | png,jpg | -\nmediaValue | 媒体类型，图片或视频 | str | pic,viedo | -\ndestinationType | 返回数据类型，指定返回图片地址或图片经过base64编码后的字符串 | str | url,base64 | -\ndirection | 选择前置或后置摄像头，取值范围（front、rear）| bool | false | -\n~~allowEdit~~ | ~~是否可以选择图片后进行编辑~~| ~~bool~~ | ~~false~~ | -\n~~preview~~ | ~~是否选择图片后进行预览~~ | ~~bool~~ | ~~false~~ | -\nquality | 图片质量，只针对jpg格式图片（0-100整数） | number | 50 | -\nvideoQuality | 视频质量，调用相机录制视频时该参数生效 | str | low、medium、high | -\ntargetWidth | 压缩后的图片宽度，图片会按比例适配此宽度 | number | 原图宽度 | -\ntargetHeight | 压缩后的图片高度，图片会按比例适配此高度 | number | 原图高度 | -\nsaveToPhotoAlbum | 拍照或录制视频后是否保存到系统相册目录 | bool | false | -\ngroupName | 保存图片到自定义分组相册目录，相册不存在则会进行创建 | bool | false | -\n\n```\ncamera // 相机\nalbum // 相册\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\tlist: [\n\t\t\t{\n\t\t\t\turl: \"\", // 图片路径\n\t\t\t\tbase64: \"\", // base64数据，destinationType为base64时返回\n\t\t\t\tduration: 0 // 视频时长\n\t\t\t}\n\t\t]\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.getPicture({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('getPicture', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('getPicture', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -213,7 +213,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/getTotalSpace.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.getTotalSpace({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('getTotalSpace', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('getTotalSpace', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n获取总存储空间大小\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\tsize: '1024',// 缓存大小，单位为Byte\n\t\tlabel: '1KB'\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.getTotalSpace({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('getTotalSpace', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('getTotalSpace', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -248,7 +248,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/installApp.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.installApp({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('installApp', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('installApp', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n安装应用，如果是苹果的AppStore应用地址，将会跳转到AppStore应用详情页面\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\turl: ''\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nurl | 下载地址 | str | - | -\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.installApp({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('installApp', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('installApp', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -283,21 +283,21 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/notification.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.notification({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('notification', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('notification', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n向用户发出震动、声音提示、灯光闪烁、手机状态栏通知等提示行为，支持闹钟功能。如果是状态栏通知，当用户点击该通知，页面可以通过监听 noticeclicked 事件获取该通知相关内容。\n\n注：当应用在前台弹出通知提示时，iOS平台的通知将在显示几秒后消失，不会在通知栏保留。\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nvibrate | 伴随节奏的震动: 等待-震动-等待-震动 | arr | [100, 500, 100, 500] | -\nsound | 提示音 | str | default,none | '/res/xxx.mp3'\nlight | 设备提示灯是否闪烁 | bool | false | -\nnotify | 弹出通知到状态栏 | object | { title, content, extra, cover } | -\ntimestamp | 设置时间戳，单位ms | number | - | -\n\n```\n{\n    title: '' // 标题，Android中默认值为应用名称，支持Android和iOS 8.2以上系统\n    content: '' // 内容，默认值为'有新消息'\n    extra: {} // 附加信息key/value，页面可以监听noticeclicked事件得到点击的通知的附加信息\n    cover: false // 是否覆盖更新已有的通知，取值范围true|false。只Android有效\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\tid: 1 // 弹出到状态栏通知的id或者设置的闹铃id，可用于取消通知或者闹铃\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.notification({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('notification', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('notification', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
 /***/ "../../docs/methods/openApp.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.openApp({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('openApp', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('openApp', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nparam | 传给目标应用的参数 | obj | - | -\nscheme | scheme 或 包名 | str | - | -\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.openApp({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('openApp', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('openApp', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
 /***/ "../../docs/methods/openContacts.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.openContacts({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('openContacts', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('openContacts', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n在应用内打开系统通讯录界面选择联系人\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\tlist: [\n\t\t\t{\n\t\t\t\tname: \"\", // 姓名\n\t\t\t\tphone: \"\", // 电话号码\n\t\t\t},\n\t\t\t{\n\t\t\t\tname: \"\", // 姓名\n\t\t\t\tphone: \"\", // 电话号码\n\t\t\t}\n\t\t]\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.openContacts({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('openContacts', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('openContacts', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -360,7 +360,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/openVideo.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.openVideo({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('openVideo', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('openVideo', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n打开系统视频播放器\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nurl | 本地文件路径（支持fs://路径协议）或者网络资源地址 | str | - | 'fs://res/1.mp4'\n\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.openVideo({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('openVideo', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('openVideo', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -374,7 +374,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/openWin.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n打开window\n若window已存在，则会把该window显示到最前面，同时若url有变化或者reload参数为true时，页面会重新加载。\n\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\tname: '',\n\turl: '',\n\tuseWKWebView: false,\n\tsingleInstance: false,\n\thistoryGestureEnabled: false,\n\tpageParam: '',\n\t// ....\n}\n```\n\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nname | window名字 | str | - | -\nurl | 页面地址 | str | - | `./home/main`, `https:**.com/`\nuseWKWebView | 是否使用WKWebView来加载页面 | bool | false | `./home/main`, `https:**.com/`\nsingleInstance | 设置该window是否为单例对象(屏幕移除不想销毁) | bool | false | `-`\nhistoryGestureEnabled | 是否可以通过手势来进行历史记录前进后退 | bool | false | `-`\n\n\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.openWin({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('openWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('openWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n打开window\n若window已存在，则会把该window显示到最前面，同时若url有变化或者reload参数为true时，页面会重新加载。\n\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\turl: '/home/main',\n\tpageParam: {},\n\t// ....\n}\n```\n\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nname | window名字 | str | - | 'root'\ntitle | navigationBar上的标题 | str | - | -\nurl | 页面地址 | str | - | `/home/main`, `https:**.com/`\npageParam | 页面参数 | object | - | -\n~~scrollToTop~~ | ~~当点击状态栏，页面是否滚动到顶部~~ | ~~bool~~ | ~~false~~ | ~~-~~\nvScrollBarEnabled | 是否显示垂直滚动条 | bool | true | -\nhScrollBarEnabled | 是否显示水平滚动条 | bool | true | -\nscaleEnabled | 页面是否可以缩放 | bool | false | -\nhideTopBar | 是否隐藏原生navigationBar控件 | bool | true | ~~-~~\nhideBottomBar | 是否隐藏原生tabBar控件 | bool | true | -\nanimation | 动画参数，不传时使用默认动画 | str | card,modal,none | -\n\n#### 3. Native传递参数给Client \n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.openWin({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('openWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('openWin', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -396,6 +396,20 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ (function(module, exports) {
 
 module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.parseTapmode({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('parseTapmode', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('parseTapmode', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
+/***/ "../../docs/methods/pop.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n关闭到指定 window，最上面显示的 window 到指定 name 的 window 间的所有 window 都会被关闭。\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nname | window名字，相同跳转到最早创建的，不传时关闭当前window | str | - | -\nanimation | 动画参数 | str | card,modal,none | ``\n\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.pop({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('pop', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('pop', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
+/***/ "../../docs/methods/push.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n打开window\n若window已存在，则会把该window显示到最前面，同时若url有变化或者reload参数为true时，页面会重新加载。\n\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\turl: '/home/main',\n\tpageParam: {},\n\t// ....\n}\n```\n\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nname | window名字 | str | - | 'root'\ntitle | navigationBar上的标题 | str | - | -\nurl | 页面地址 | str | - | `/home/main`, `https:**.com/`\npageParam | 页面参数 | object | - | -\n~~scrollToTop~~ | ~~当点击状态栏，页面是否滚动到顶部~~ | ~~bool~~ | ~~false~~ | ~~-~~\nvScrollBarEnabled | 是否显示垂直滚动条 | bool | true | -\nhScrollBarEnabled | 是否显示水平滚动条 | bool | true | -\nscaleEnabled | 页面是否可以缩放 | bool | false | -\nhideTopBar | 是否隐藏原生navigationBar控件 | bool | true | ~~-~~\nhideBottomBar | 是否隐藏原生tabBar控件 | bool | true | -\nanimation | 动画参数，不传时使用默认动画 | str | card,modal,none | -\nreplace | 是否先执行pop操作 | bool | false | -\n\n#### 3. Native传递参数给Client \n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.push({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('push', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('push', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -451,7 +465,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/saveMediaToAlbum.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.saveMediaToAlbum({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('saveMediaToAlbum', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('saveMediaToAlbum', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n保存图片和视频到系统相册\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nurl | 文件路径，目前只支持网络链接地址 | str | - | -\ngroupName | 保存图片到自定义分组相册目录，相册不存在则会进行创建 | bool | false | -\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.saveMediaToAlbum({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('saveMediaToAlbum', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('saveMediaToAlbum', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -521,7 +535,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/setKeepScreenOn.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.setKeepScreenOn({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('setKeepScreenOn', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('setKeepScreenOn', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n设置是否禁止屏幕休眠\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nkeepOn | 是否禁止屏幕休眠 | bool | false | -\n\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.setKeepScreenOn({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('setKeepScreenOn', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('setKeepScreenOn', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -542,7 +556,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/setScreenOrientation.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.setScreenOrientation({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('setScreenOrientation', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('setScreenOrientation', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n设置屏幕旋转方向\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\norientation | 旋转屏幕到指定方向 | str | - | -\n\n```\nportraitUp // 竖屏时，屏幕在home键的上面\nportraitDown // 竖屏时，屏幕在home键的下面，部分手机如iPhone X系列不支持\nlandscapeLeft // 横屏时，屏幕在home键的左边\nlandscapeRight // 横屏时，屏幕在home键的右边\nauto // 屏幕根据重力感应在横竖屏间自动切换\nautoPortrait // 屏幕根据重力感应在竖屏间自动切换\nautoLandscape // 屏幕根据重力感应在横屏间自动切换\n```\n\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.setScreenOrientation({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('setScreenOrientation', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('setScreenOrientation', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -556,7 +570,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/setStatusBarStyle.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.setStatusBarStyle({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('setStatusBarStyle', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('setStatusBarStyle', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n设置状态栏样式为白色（适用于深色背景）或黑色（适用于浅色背景），以及设置状态栏背景颜色\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nstyle | 状态栏样式 | str | light | dark,light\ncolor | 状态栏背景颜色，只 Android 5.0 及以上有效 | str | #000 | -\nanimated | 是否有动画效果，只iOS有效 | bool | true | -\n\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.setStatusBarStyle({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('setStatusBarStyle', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('setStatusBarStyle', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -570,7 +584,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/showFloatBox.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.showFloatBox({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('showFloatBox', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('showFloatBox', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n展示一个悬浮框，浮动在屏幕上\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\n~~preventDefault~~ | ~~是否阻止默认行为，若传true，可以在回调方法里面处理悬浮框点击操作。~~ | bool | false | -\niconPath | 展示在悬浮框中的图片地址。 | str | 应用图标 | 'widget://image/icon.png'\nduration | 自动消隐时长。在该时长内不发生触摸悬浮框行为，悬浮框自动消隐至半透状态 | number | 5000 | -\n\n> 默认的行为：1、在主widget调用该方法无效 2、点击后会弹出退出应用提示\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.showFloatBox({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('showFloatBox', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('showFloatBox', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -591,7 +605,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/sms.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.sms({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('sms', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('sms', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n调用系统短信界面发送短信，或者后台直接发送短信\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nnumbers | 电话号码 | arr | - | ['10086']\ntext | 文本内容 | str | - | -\nsilent | 是否后台发送，只支持Android | bool | false | -\n\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.sms({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('sms', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('sms', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -605,14 +619,14 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/startPlay.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.startPlay({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('startPlay', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('startPlay', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n播放本地音频，支持amr格式\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\npath | 文件路径，支持fs://、widget://等文件路径协议 | str | - | -\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.startPlay({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('startPlay', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('startPlay', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
 /***/ "../../docs/methods/startRecord.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.startRecord({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('startRecord', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('startRecord', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n录制amr格式音频\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\npath | 文件路径，不传时自动创建路径 | str | - | -\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\tpath: ''\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.startRecord({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('startRecord', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('startRecord', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -633,14 +647,14 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/stopPlay.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.stopPlay({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('stopPlay', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('stopPlay', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n停止播放音频\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.stopPlay({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('stopPlay', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('stopPlay', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
 /***/ "../../docs/methods/stopRecord.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.stopRecord({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('stopRecord', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('stopRecord', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n停止录音\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\tpath: '', // 字符串，返回的音频地址\n\t\tduration: 0 // 数字类型，音频的时长\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.stopRecord({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('stopRecord', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('stopRecord', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -654,7 +668,7 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ "../../docs/methods/toLauncher.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.toLauncher({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('toLauncher', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('toLauncher', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n回到系统桌面, 该接口仅Android平台支持\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.toLauncher({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('toLauncher', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('toLauncher', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -699,12 +713,70 @@ var wya_umd_default = /*#__PURE__*/__webpack_require__.n(wya_umd);
 // EXTERNAL MODULE: ./src/pages/components/_common/toasts/toasts.js + 5 modules
 var toasts = __webpack_require__("./src/pages/components/_common/toasts/toasts.js");
 
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/methods/push.md
+var push = __webpack_require__("../../docs/methods/push.md");
+var push_default = /*#__PURE__*/__webpack_require__.n(push);
+
+// CONCATENATED MODULE: ./src/pages/components/methods/detail/modules/push.js
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+
+
+
+
+var push_invoke = function invoke() {
+  wya_umd_default.a.invoke('push', {// ...
+  }).then(function (res) {
+    res = _typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
+    toasts["a" /* default */].info(res, 0);
+  }).catch(function () {
+    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
+  });
+};
+
+/* harmony default export */ var modules_push = ({
+  to: '/methods/push',
+  title: 'push',
+  label: '',
+  invoke: push_invoke,
+  markdown: push_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/methods/pop.md
+var pop = __webpack_require__("../../docs/methods/pop.md");
+var pop_default = /*#__PURE__*/__webpack_require__.n(pop);
+
+// CONCATENATED MODULE: ./src/pages/components/methods/detail/modules/pop.js
+function pop_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { pop_typeof = function _typeof(obj) { return typeof obj; }; } else { pop_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return pop_typeof(obj); }
+
+
+
+
+
+var pop_invoke = function invoke() {
+  wya_umd_default.a.invoke('pop', {// ...
+  }).then(function (res) {
+    res = pop_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
+    toasts["a" /* default */].info(res, 0);
+  }).catch(function () {
+    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
+  });
+};
+
+/* harmony default export */ var modules_pop = ({
+  to: '/methods/pop',
+  title: 'pop',
+  label: '',
+  invoke: pop_invoke,
+  markdown: pop_default.a
+});
 // EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/methods/openWin.md
 var openWin = __webpack_require__("../../docs/methods/openWin.md");
 var openWin_default = /*#__PURE__*/__webpack_require__.n(openWin);
 
 // CONCATENATED MODULE: ./src/pages/components/methods/detail/modules/openWin.js
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function openWin_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { openWin_typeof = function _typeof(obj) { return typeof obj; }; } else { openWin_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return openWin_typeof(obj); }
 
 
 
@@ -713,7 +785,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 var openWin_invoke = function invoke() {
   wya_umd_default.a.invoke('openWin', {// ...
   }).then(function (res) {
-    res = _typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
+    res = openWin_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
     toasts["a" /* default */].info(res, 0);
   }).catch(function () {
     var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -3542,6 +3614,8 @@ var openVideo_invoke = function invoke() {
   markdown: openVideo_default.a
 });
 // CONCATENATED MODULE: ./src/pages/components/methods/detail/modules/root.js
+/* concated harmony reexport push */__webpack_require__.d(__webpack_exports__, "push", function() { return modules_push; });
+/* concated harmony reexport pop */__webpack_require__.d(__webpack_exports__, "pop", function() { return modules_pop; });
 /* concated harmony reexport openWin */__webpack_require__.d(__webpack_exports__, "openWin", function() { return modules_openWin; });
 /* concated harmony reexport closeWin */__webpack_require__.d(__webpack_exports__, "closeWin", function() { return modules_closeWin; });
 /* concated harmony reexport closeToWin */__webpack_require__.d(__webpack_exports__, "closeToWin", function() { return modules_closeToWin; });
@@ -3640,6 +3714,10 @@ var openVideo_invoke = function invoke() {
 /* concated harmony reexport startPlay */__webpack_require__.d(__webpack_exports__, "startPlay", function() { return modules_startPlay; });
 /* concated harmony reexport stopPlay */__webpack_require__.d(__webpack_exports__, "stopPlay", function() { return modules_stopPlay; });
 /* concated harmony reexport openVideo */__webpack_require__.d(__webpack_exports__, "openVideo", function() { return modules_openVideo; });
+
+
+
+
 
 
 
