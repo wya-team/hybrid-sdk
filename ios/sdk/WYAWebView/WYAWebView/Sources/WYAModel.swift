@@ -36,7 +36,7 @@ struct NotificationModel : Codable {
     var sound : String?
     var light : Bool?
     var notify : NotifyModel?
-    var alarm : AlarmModel?
+    var timestamp : Double?
 
     struct NotifyModel : Codable {
         var title : String?
@@ -44,11 +44,6 @@ struct NotificationModel : Codable {
         var extra : String?
     }
 
-    struct AlarmModel : Codable {
-        var hour : String?
-        var minutes : String?
-        var daysOfWeek : String?
 
-    }
 }
 

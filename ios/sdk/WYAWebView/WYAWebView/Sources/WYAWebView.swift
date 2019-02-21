@@ -318,6 +318,25 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             params["notify"] = ["title":"测试notification","content":"有新消息","extra":""]
             params["alarm"] = ["hour":"13","minutes":"50","daysOfWeek":"3"]
             return params
+        }else if dictory == "cancelNotification" {
+            var params = [String: Any]()
+            params["id"] = "-1"
+
+            return params
+        }else if dictory == "startRecord" {
+            var params = [String: Any]()
+            params["path"] = "/Users/lishihang/Desktop/test"
+
+            return params
+        }else if dictory == "startPlay" {
+            var params = [String: Any]()
+            params["path"] = "/Users/lishihang/Desktop/test"
+
+            return params
+        }else if dictory == "openVideo" {
+            var params = [String: Any]()
+            params["url"] = "https://vd1.bdstatic.com/mda-hgvt5nvfzpftdxcs/sc/mda-hgvt5nvfzpftdxcs.mp4"
+            return params
         }else {
             return [String : Any]()
         }

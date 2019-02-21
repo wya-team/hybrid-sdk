@@ -12,6 +12,7 @@ import WYAKit
 import AudioToolbox
 import UserNotifications
 import NTYAmrConverter
+import AVKit
 
 @objc public enum jumpType: Int {
     case push = 0
@@ -462,54 +463,38 @@ extension WYAWebViewManager {
         print(model as Any)
 //        let sound = SystemSoundID(4095)
 //        AudioServicesPlaySystemSound(sound)
-        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
 
         if #available(iOS 10.0, *) {
             let content = UNMutableNotificationContent()
             content.title = model.notify?.title ?? ""
             content.subtitle = ""
             content.body = model.notify?.content ?? "有新消息"
+
             content.sound = UNNotificationSound.default()
-            /// 添加通知中的图片
-//            let imageName = ""
-//            guard let imageURL = Bundle.main.url(forResource: imageName, withExtension: "png") else { return }
-//
-//            let attachment = try! UNNotificationAttachment(identifier: imageName, url: imageURL, options: .none)
-//
-//            content.attachments = [attachment]
 
-            // 3
-            var time = DateComponents()
-            time.weekday = Int((model.alarm?.daysOfWeek)!)
-            time.hour = Int((model.alarm?.hour)!)
-            time.minute = Int((model.alarm?.minutes)!)
-            time.second = 0
-            print(time.date as Any)
-            let trigger = UNCalendarNotificationTrigger(dateMatching: time, repeats: false)
+            let date = Date(timeIntervalSince1970: model.timestamp!)
+            let dateComponents = Calendar.current.dateComponents([.year,.month,.day, .hour,.minute,.second], from: date)
 
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+//            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
             let request = UNNotificationRequest(identifier: "xxx", content: content, trigger: trigger)
 
             // 4
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
 
         }else{
-            var components = DateComponents()
-            components.weekday = Int((model.alarm?.daysOfWeek)!)
-            components.hour = Int((model.alarm?.hour)!)
-            components.minute = Int((model.alarm?.minutes)!)
-            components.second = 0
-
-            let setDate = Calendar.current.date(from: components)
+            let setDate = Date(timeIntervalSince1970: model.timestamp!)
             print(setDate as Any)
 
             let nowDate = Date()
-            if setDate?.compare(nowDate) == .orderedAscending {
+            if setDate.compare(nowDate) == .orderedAscending {
                 return
             }
-            if setDate?.compare(nowDate) == .orderedSame {
+            if setDate.compare(nowDate) == .orderedSame {
 
             }
-            if setDate?.compare(nowDate) == .orderedDescending {
+            if setDate.compare(nowDate) == .orderedDescending {
                 let not = UILocalNotification()
                 not.fireDate = setDate
                 not.timeZone = TimeZone.autoupdatingCurrent
@@ -523,8 +508,6 @@ extension WYAWebViewManager {
                 not.userInfo = ["key" : "xxx"]
                 UIApplication.shared.scheduleLocalNotification(not)
             }
-
-
         }
         listenAction("notification", ["id":"1"])
 
@@ -663,7 +646,25 @@ extension WYAWebViewManager {
         audioPlayer?.stop()
     }
 
-    @objc func openVideoWithParams(outParams: [String: Any]) {}
+    @objc func openVideoWithParams(outParams: [String: Any]) {
+        let param = outParams["params"] as! [String : Any]
+        let url = param["url"] as! String
+
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developParams["rootVC"] as! UIViewController
+        let videoUrl = URL(string: url)
+        let playerViewController = AVPlayerViewController()
+        if videoUrl?.scheme == "http" || videoUrl?.scheme == "https" {
+            playerViewController.player = AVPlayer(url: URL(string: (videoUrl?.absoluteString)!)!)
+        }else{
+            playerViewController.player = AVPlayer(url: URL(fileURLWithPath: (videoUrl?.absoluteString)!))
+        }
+        rootVC.present(playerViewController, animated: true) {
+
+        }
+
+        listenAction("openVideo", ["status":"1","msg":"调用成功","data":""])
+    }
 }
 
 // MARK: - 事件
