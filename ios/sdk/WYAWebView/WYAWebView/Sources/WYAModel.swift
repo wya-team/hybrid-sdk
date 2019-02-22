@@ -31,4 +31,19 @@ struct OpenWinModel : Codable {
 
 }
 
+struct NotificationModel : Codable {
+    var vibrate : String?
+    var sound : String?
+    var light : Bool?
+    var notify : NotifyModel?
+    var timestamp : Double?
+
+    struct NotifyModel : Codable {
+        var title : String?
+        var content : String?
+        var extra : String?
+    }
+
+
+}
 

@@ -42,7 +42,7 @@ Pod::Spec.new do |s|
   s.resources = 'pre-build/*.js', 'pre-build/dist'
 
   s.resource_bundles = {
-    'WYAWebView' => ['ios/sdk/WYAWebView/WYAWebView/Resources/WYAWebView.xcassets']
+    'WYAWebView' => ['ios/sdk/WYAWebView/WYAWebView/Resources/WYAWebView.xcassets','ios/sdk/WYAWebView/WYAWebView/Resources/SoundSource/*']
   }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
@@ -52,4 +52,5 @@ Pod::Spec.new do |s|
   s.dependency 'SnapKit'
   s.dependency 'GCDWebServer'
   s.dependency 'WYAKit'
+  s.dependency 'NTYAmrConverter', '~> 0.1'
 end

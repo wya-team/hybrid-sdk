@@ -31,7 +31,6 @@ class WYAViewController: UIViewController {
     var webView : WYAWebView {
         let web = WYAWebView()
         web.frame = CGRect(x: 0.0, y: (model?.pageParams?.hideTopBar!)! ? navBar.cmam_height:0, width: self.view.cmam_width, height:(model?.pageParams?.hideTopBar!)! ? self.view.cmam_height-navBar.cmam_height : self.view.cmam_height)
-        web.openLocationHttpServer()
         web.loadUrl(url: model?.url ?? "http://localhost:8080/home/main")
         web.webView?.scrollView.showsVerticalScrollIndicator = model?.pageParams?.vScrollBarEnabled ?? true
         web.webView?.scrollView.showsHorizontalScrollIndicator = model?.pageParams?.hScrollBarEnabled ?? true

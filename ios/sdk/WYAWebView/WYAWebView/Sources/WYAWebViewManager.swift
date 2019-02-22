@@ -9,8 +9,15 @@ import Alamofire
 import MediaPlayer
 import UIKit
 import WYAKit
+
+import AudioToolbox
+import UserNotifications
+import NTYAmrConverter
+import AVKit
+
 import MessageUI
 import ContactsUI
+
 
 @objc public enum jumpType: Int {
     case push = 0
@@ -30,8 +37,8 @@ class WYAWebViewManager: NSObject , CNContactPickerDelegate{
     let actionParams: [String: Selector] = {
         var params = [String: Selector]()
         // 模拟js触发原生方法（动态配置需要方法前加@objc）
-        params.updateValue(#selector(openWinWithParams(outParams:)), forKey: "openWin")
-        params.updateValue(#selector(closeWinWithParams(outParams:)), forKey: "closeWin")
+        params.updateValue(#selector(openWinWithParams(outParams:)), forKey: "push")
+        params.updateValue(#selector(closeWinWithParams(outParams:)), forKey: "pop")
         params.updateValue(#selector(closeToWinWithParams(outParams:)), forKey: "closeToWin")
         params.updateValue(#selector(setWinAttrWithParams(outParams:)), forKey: "setWinAttr")
         params.updateValue(#selector(openFrameWithParams(outParams:)), forKey: "openFrame")
@@ -139,6 +146,10 @@ class WYAWebViewManager: NSObject , CNContactPickerDelegate{
     var currentVolume: Float?
 
     let netManager = NetworkReachabilityManager(host: "www.apple.com")
+    var recorder : AVAudioRecorder? = nil
+    var audioPlayer : AVAudioPlayer? = nil
+
+    var recorderPath : String?
 
     func listenAction(_ actionType: String, _ params: [String: Any]) {
         let string = dicTosJsonString(params)
@@ -179,7 +190,8 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// openWin
     ///
     /// - Parameter params: 接收到的参数
-    @objc func openWinWithParams(outParams: [String: Any]) {
+    @objc func openWinWithParams(outParams : [String: Any]) {
+
         let developParams = outParams["DevelopParams"] as! [String : Any]
         let rootVC = developParams["rootVC"] as! UIViewController
         let vc = developParams["vc"]
@@ -216,35 +228,79 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         }
     }
 
-    func closeVC(_ params : [String : Any]) {
-        let developParams = params["DevelopParams"] as! [String : Any]
+    @objc func closeWinWithParams(outParams: [String: Any]) {
+        print("返回")
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         let rootVC = developParams["rootVC"] as! UIViewController
 
-        let param = params["params"] as! [String : Any]
-        let vcName = param["name"] as! String
+        let param = outParams["params"] as! [String : Any]
+        let vcName = param["name"]
+        let animation = param["animation"] as? String
 
 
-        let viewControllers = rootVC.navigationController?.viewControllers
-        for vc in viewControllers! {
-            if vc is WYAViewController {
-                let viewController = vc as! WYAViewController
-                if viewController.model?.name == vcName {
-                    rootVC.navigationController?.popToViewController(viewController, animated: true)
-                }else {
-                    rootVC.navigationController?.popViewController(animated: true)
+        func pop(_ animation : Bool) {
+
+            if vcName != nil{
+                let viewControllers = rootVC.navigationController?.viewControllers
+                for vc in viewControllers! {
+                    if vc is WYAViewController {
+                        let viewController = vc as! WYAViewController
+                        if viewController.model?.name == (vcName as? String) {
+                            rootVC.navigationController?.popToViewController(viewController, animated: animation)
+                        }
+                    }
                 }
-
+            }else{
+                rootVC.navigationController?.popViewController(animated: animation)
             }
+
+        }
+
+        func dismiss() {
+            rootVC.dismiss(animated: true, completion: nil)
+        }
+
+        switch animation {
+        case "card": pop(true); break
+        case "modal": dismiss(); break
+        case "none":pop(false);  break
+        default:
+            break
         }
     }
 
-    @objc func closeWinWithParams(outParams: [String: Any]) {
-        print("返回")
-        closeVC(outParams)
-    }
-
     @objc func closeToWinWithParams(outParams: [String: Any]) {
-        closeVC(outParams)
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developParams["rootVC"] as! UIViewController
+
+        let param = outParams["params"] as! [String : Any]
+        let vcName = param["name"]
+        let animation = param["animation"] as? String
+
+        func pop(_ animation : Bool) {
+
+            let viewControllers = rootVC.navigationController?.viewControllers
+            for vc in viewControllers! {
+                if vc is WYAViewController {
+                    let viewController = vc as! WYAViewController
+                    if viewController.model?.name == (vcName as? String) {
+                        DispatchQueue.main.async {
+                            rootVC.navigationController?.popToViewController(viewController, animated: true)
+                        }
+
+                        return
+                    }
+                }
+            }
+        }
+
+        switch animation {
+        case "card": pop(true); break
+        case "modal": pop(true); break
+        case "none":pop(false);  break
+        default:
+            break
+        }
     }
     @objc func setWinAttrWithParams(outParams: [String: Any]) {}
     @objc func openFrameWithParams(outParams: [String: Any]) {}
@@ -401,8 +457,82 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func removeEventListenerWithParams(outParams: [String: Any]) {}
     @objc func sendEventWithParams(outParams: [String: Any]) {}
     @objc func accessNativeWithParams(outParams: [String: Any]) {}
-    @objc func notificationWithParams(outParams: [String: Any]) {}
-    @objc func cancelNotificationWithParams(outParams: [String: Any]) {}
+
+    @objc func notificationWithParams(outParams: [String: Any]) {
+        let model = getModel(outParams["params"] as! [String : Any]) as NotificationModel
+        print(model as Any)
+//        let sound = SystemSoundID(4095)
+//        AudioServicesPlaySystemSound(sound)
+//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+
+        if #available(iOS 10.0, *) {
+            let content = UNMutableNotificationContent()
+            content.title = model.notify?.title ?? ""
+            content.subtitle = ""
+            content.body = model.notify?.content ?? "有新消息"
+
+            content.sound = UNNotificationSound.default()
+
+            let date = Date(timeIntervalSince1970: model.timestamp!)
+            let dateComponents = Calendar.current.dateComponents([.year,.month,.day, .hour,.minute,.second], from: date)
+
+            let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
+//            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
+            let request = UNNotificationRequest(identifier: "xxx", content: content, trigger: trigger)
+
+            // 4
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+
+        }else{
+            let setDate = Date(timeIntervalSince1970: model.timestamp!)
+            print(setDate as Any)
+
+            let nowDate = Date()
+            if setDate.compare(nowDate) == .orderedAscending {
+                return
+            }
+            if setDate.compare(nowDate) == .orderedSame {
+
+            }
+            if setDate.compare(nowDate) == .orderedDescending {
+                let not = UILocalNotification()
+                not.fireDate = setDate
+                not.timeZone = TimeZone.autoupdatingCurrent
+                if #available(iOS 8.2, *) {
+                    not.alertTitle = model.notify?.title
+                    not.repeatInterval = NSCalendar.Unit(rawValue: 1)
+                } else {
+
+                }
+                not.alertBody = model.notify?.content
+                not.userInfo = ["key" : "xxx"]
+                UIApplication.shared.scheduleLocalNotification(not)
+            }
+        }
+        listenAction("notification", ["id":"1"])
+
+    }
+
+    @objc func cancelNotificationWithParams(outParams: [String: Any]) {
+        let param = outParams["params"] as! [String : Any]
+        let id = param["id"] as! String
+        if id == "-1" {
+            if #available(iOS 10.0, *) {
+                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["xxx"])
+            }else {
+                let arr = UIApplication.shared.scheduledLocalNotifications
+                if (arr?.count)!>0 {
+                    for item in arr! {
+                        if (item.userInfo!["key"] as! String) == "xxx" {
+                            UIApplication.shared.cancelLocalNotification(item)
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
     @objc func startLocationWithParams(outParams: [String: Any]) {}
     @objc func stopLocationWithParams(outParams: [String: Any]) {}
     @objc func getLocationWithParams(outParams: [String: Any]) {}
@@ -597,6 +727,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func refreshHeaderLoadingWithParams(outParams: [String: Any]) {}
     @objc func refreshHeaderLoadDoneWithParams(outParams: [String: Any]) {}
 
+
     /// 展示一个悬浮框，浮动在屏幕上。
     ///
     /// - Parameter outParams: 浮窗图片，自动消失时间
@@ -604,12 +735,112 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         
     }
     @objc func getPictureWithParams(outParams: [String: Any]) {}
+
+    @objc func showFloatBoxWithParams(outParams: [String: Any]) {
+
+
+    }
+
+    @objc func getPictureWithParams(outParams: [String: Any]) {
+
+    }
+
+
     @objc func saveMediaToAlbumWithParams(outParams: [String: Any]) {}
-    @objc func startRecordWithParams(outParams: [String: Any]) {}
-    @objc func stopRecordWithParams(outParams: [String: Any]) {}
-    @objc func startPlayWithParams(outParams: [String: Any]) {}
-    @objc func stopPlayWithParams(outParams: [String: Any]) {}
-    @objc func openVideoWithParams(outParams: [String: Any]) {}
+
+    /// 由于ios生成音频格式为WAV，需要转化为amr
+    ///
+    /// - Parameter outParams: <#outParams description#>
+    @objc func startRecordWithParams(outParams: [String: Any]) {
+        let param = outParams["params"] as! [String : Any]
+
+        recorderPath = param["path"] as? String
+        let url = URL(fileURLWithPath: recorderPath! + ".wav")
+
+        recorder = try! AVAudioRecorder(url: url, settings: NTYAmrCoder.audioRecorderSettings() as! [String : Any])
+        if (recorder?.prepareToRecord())! {
+            try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+            try! AVAudioSession.sharedInstance().setActive(true)
+            if (recorder?.record())! {
+                /// 开始录制
+                listenAction("startRecord", ["status":"1","msg":"调用成功","data":["path":recorderPath]])
+            }
+        }else {
+            print("音频格式出错")
+        }
+    }
+
+    @objc func stopRecordWithParams(outParams: [String: Any]) {
+        if (recorder?.isRecording)! {
+            recorder?.stop()
+            let isSuccess = NTYAmrCoder.encodeWavFile(recorderPath! + ".wav", toAmrFile: recorderPath! + ".amr")
+            if isSuccess {
+                let data = try! Data(contentsOf: URL(fileURLWithPath: recorderPath!+".amr"))
+                var time = 0.0
+
+                if #available(iOS 10.0, *) {
+                    do {
+                        let player = try AVAudioPlayer(data: data)
+                        time = player.duration
+                        let format = player.format
+                        time = time*(8000/format.sampleRate)
+                    } catch {
+                        print(error)
+                    }
+
+                } else {
+                    let avURL = AVURLAsset(url: URL(fileURLWithPath: recorderPath!+".amr"))
+                    let duration = avURL.duration
+                    time = CMTimeGetSeconds(duration)
+
+                }
+
+                listenAction("stopRecord", ["status":"1","msg":"调用成功","data":["path":recorderPath!+".amr","duration":time]])
+            }
+
+        }
+    }
+
+    @objc func startPlayWithParams(outParams: [String: Any]) {
+        let param = outParams["params"] as! [String : Any]
+        let path = param["path"] as! String
+
+        let isSuccess = NTYAmrCoder.decodeAmrFile(path + ".amr", toWavFile: path + ".wav")
+        if isSuccess {
+            let url = URL(fileURLWithPath: path  + ".wav")
+            audioPlayer = try? AVAudioPlayer(contentsOf: url)
+            audioPlayer?.volume = 0.5
+            audioPlayer?.numberOfLoops = 1
+            audioPlayer?.currentTime = 0
+            audioPlayer?.prepareToPlay()
+            audioPlayer?.play()
+        }
+
+    }
+
+    @objc func stopPlayWithParams(outParams: [String: Any]) {
+        audioPlayer?.stop()
+    }
+
+    @objc func openVideoWithParams(outParams: [String: Any]) {
+        let param = outParams["params"] as! [String : Any]
+        let url = param["url"] as! String
+
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developParams["rootVC"] as! UIViewController
+        let videoUrl = URL(string: url)
+        let playerViewController = AVPlayerViewController()
+        if videoUrl?.scheme == "http" || videoUrl?.scheme == "https" {
+            playerViewController.player = AVPlayer(url: URL(string: (videoUrl?.absoluteString)!)!)
+        }else{
+            playerViewController.player = AVPlayer(url: URL(fileURLWithPath: (videoUrl?.absoluteString)!))
+        }
+        rootVC.present(playerViewController, animated: true) {
+
+        }
+
+        listenAction("openVideo", ["status":"1","msg":"调用成功","data":""])
+    }
 }
 
 // MARK: - 事件
