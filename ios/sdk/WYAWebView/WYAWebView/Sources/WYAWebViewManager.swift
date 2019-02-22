@@ -736,16 +736,6 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     }
     @objc func getPictureWithParams(outParams: [String: Any]) {}
 
-    @objc func showFloatBoxWithParams(outParams: [String: Any]) {
-
-
-    }
-
-    @objc func getPictureWithParams(outParams: [String: Any]) {
-
-    }
-
-
     @objc func saveMediaToAlbumWithParams(outParams: [String: Any]) {}
 
     /// 由于ios生成音频格式为WAV，需要转化为amr
