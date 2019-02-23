@@ -265,13 +265,13 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             if arrContain! {
                 self.getParams(self.actionID!) { params in
                     // 假数据
-                    let testDic = self.testParams(dictory: dic?["method"] as! String)
+//                    let testDic = self.testParams(dictory: dic?["method"] as! String)
 
                     var allParams = [String : Dictionary<String, Any>]()
 
                     var param = [String: Any]()
                     param.updateValue(self.cmam_parentController(), forKey: "rootVC")
-                    allParams.updateValue(testDic, forKey: "params")
+                    allParams.updateValue(params as! [String : Any], forKey: "params")
                     allParams.updateValue(param, forKey: "DevelopParams")
                     // 获取到参数执行调用原生
                     self.webManager?.nativeAction(dic?["method"] as! String, params: allParams)

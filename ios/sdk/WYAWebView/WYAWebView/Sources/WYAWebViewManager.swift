@@ -340,7 +340,10 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 需要下载的appUri
     @objc func installAppWithParams(outParams: [String: Any]) {
         print(outParams)
-        let tempString = "https://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"
+        let params = outParams["params"] as! [String:Any]
+        let tempString = params["url"] as! String
+//"https://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"
+
         var urlString = ""
         if tempString.hasPrefix("http") {
            urlString = tempString.replacingOccurrences(of: "http", with: "itms-apps")
@@ -353,9 +356,12 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             DispatchQueue.main.async {
                 guard UIApplication.shared.canOpenURL(url!) else{
                     UIView.wya_showCenterToast(withMessage: "无效的地址")
+                    self.listenAction("installApp", ["status":0,"msg":"无效的地址","data":NSNull()])
                     return
                 }
                  UIApplication.shared.openURL(url!)
+                self.listenAction("installApp", ["status":1,"msg":"调用成功","data":NSNull()])
+
             }
         }
     }
@@ -365,7 +371,9 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 需要传递的参数
     @objc func openAppWithParams(outParams: [String: Any]) {
         print(outParams)
-        let str = "sinaweibo://hello"
+//        let str = "sinaweibo://hello"
+        let params = outParams["params"] as! [String:Any]
+        let str = params["scheme"] as! String
         let url = URL.init(string: str)
         DispatchQueue.main.async {
             guard UIApplication.shared.canOpenURL(url!) else{
@@ -542,35 +550,45 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     // MARK:MFMessageComposeViewControllerDelegate
     func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
         controller.dismiss(animated: true, completion: nil)
+        var msg = ""
         switch result {
         case .sent:
             print("短信发送成功")
+            msg = "发送成功"
             UIView.wya_showCenterToast(withMessage:"短信发送成功")
         case .cancelled:
             print("短信取消发送")
+            msg = "取消发送"
              UIView.wya_showCenterToast(withMessage:"短信取消发送")
         case .failed:
             print("短信发送失败")
+            msg = "发送失败"
              UIView.wya_showCenterToast(withMessage:"短信发送失败")
         }
+        listenAction("sms", ["status":1,"msg":msg,"data":NSNull()])
     }
     /// 调用系统短信界面发送短信，或者后台直接发送短信
     ///
     /// - Parameter outParams: 需要的参数
     @objc func smsWithParams(outParams: [String: Any]) {
-        let developParams = outParams["DevelopParams"] as! [String : Any]
-        let rootVC = developParams["rootVC"] as! UIViewController
         guard MFMessageComposeViewController.canSendText()else{
             print("该设备不能发送短信")
+            listenAction("sms", ["status":0,"msg":"调用失败","data":NSNull()])
             UIView.wya_showCenterToast(withMessage:"该设备不能发送短信")
             return
         }
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developParams["rootVC"] as! UIViewController
+
+        let params = outParams["params"] as! [String:Any]
+        let body = params["text"] as! String
+        let phoneNumbers = params["numbers"] as! Array<String>
         // 发送短信的Controller
         let messageController = MFMessageComposeViewController()
         // 设置短信内容
-        messageController.body = "测试短信内容"
+        messageController.body = body
         // 设置收件人列表
-        messageController.recipients = ["18317585029"]
+        messageController.recipients = phoneNumbers
         // 设置代理
         messageController.messageComposeDelegate = self
         // 打开界面
