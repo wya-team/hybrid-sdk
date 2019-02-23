@@ -26,9 +26,9 @@ struct OpenWinModel : Codable {
         var hideTopBar : Bool?
         var hideBottomBar : Bool?
         var animation : String?
+        var replace : Bool?
 
     }
-
 }
 
 struct NotificationModel : Codable {
@@ -43,7 +43,18 @@ struct NotificationModel : Codable {
         var content : String?
         var extra : String?
     }
-
-
 }
 
+struct GetPictureModel : Codable {
+    var sourceType : String?
+    var encodingType : String?
+    var mediaValue : String?
+    var destinationType : String?
+    var direction : Bool?
+    var quality : Int?
+    var videoQuality : String?
+    var targetWidth : Double?
+    var targetHeight : Double?
+    var saveToPhotoAlbum : Bool?
+    var groupName : String?
+}

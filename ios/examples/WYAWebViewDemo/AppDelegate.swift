@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import WYAWebView
 import UserNotifications
 
 @UIApplicationMain
@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection10.bundle")?.load()
         #endif
 
-        let nav = UINavigationController(rootViewController: MainViewController())
+        let nav = UINavigationController(rootViewController: WYAViewController())
         window?.rootViewController = nav
 
         if #available(iOS 10.0, *) {

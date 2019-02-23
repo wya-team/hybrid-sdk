@@ -8,7 +8,7 @@
 import UIKit
 import WYAKit
 
-class WYAViewController: UIViewController {
+public class WYAViewController: UIViewController {
 
     static let shared = WYAViewController()
 
@@ -30,11 +30,21 @@ class WYAViewController: UIViewController {
 
     var webView : WYAWebView {
         let web = WYAWebView()
-        web.frame = CGRect(x: 0.0, y: (model?.pageParams?.hideTopBar!)! ? navBar.cmam_height:0, width: self.view.cmam_width, height:(model?.pageParams?.hideTopBar!)! ? self.view.cmam_height-navBar.cmam_height : self.view.cmam_height)
-        web.loadUrl(url: model?.url ?? "http://localhost:8080/home/main")
+        var y : CGFloat?
+        var height : CGFloat?
+
+        if model?.pageParams?.hideTopBar ?? true {
+            y = 0
+            height = self.view.cmam_height
+        }else {
+            y = navBar.cmam_height
+            height = self.view.cmam_height-navBar.cmam_height
+        }
+        web.frame = CGRect(x: 0.0, y: y!, width: self.view.cmam_width, height:height!)
         web.webView?.scrollView.showsVerticalScrollIndicator = model?.pageParams?.vScrollBarEnabled ?? true
         web.webView?.scrollView.showsHorizontalScrollIndicator = model?.pageParams?.hScrollBarEnabled ?? true
         web.webView?.scrollView.bouncesZoom = model?.pageParams?.scaleEnabled ?? true
+        web.openLocationHttpServer()
         return web
     }
 
@@ -48,29 +58,29 @@ class WYAViewController: UIViewController {
     }
 
 
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.navigationBar.isHidden = true
 
 
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
+    override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         
     }
 
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
 
         self.view.backgroundColor = .white
 
-        if (model?.pageParams?.hideTopBar!)! {
-            self.view.addSubview(navBar)
-        }
+//        if (model?.pageParams?.hideTopBar!)! {
+//            self.view.addSubview(navBar)
+//        }
 
         self.view.addSubview(webView)
 
@@ -111,4 +121,10 @@ extension WYAViewController: WYANavBarDelegate, UIGestureRecognizerDelegate {
         }
     }
 
+}
+
+extension UIApplication {
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.all
+    }
 }

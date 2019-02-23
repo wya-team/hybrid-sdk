@@ -271,6 +271,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
                     var param = [String: Any]()
                     param.updateValue(self.cmam_parentController(), forKey: "rootVC")
+                    param.updateValue(self, forKey: "webView")
                     allParams.updateValue(testDic, forKey: "params")
                     allParams.updateValue(param, forKey: "DevelopParams")
                     // 获取到参数执行调用原生
@@ -316,12 +317,33 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             params["sound"] = "default"
             params["light"] = true
             params["notify"] = ["title":"测试notification","content":"有新消息","extra":""]
-            params["alarm"] = ["hour":"13","minutes":"50","daysOfWeek":"3"]
+            params["timestamp"] = 1550800520
             return params
         }else if dictory == "cancelNotification" {
             var params = [String: Any]()
             params["id"] = "-1"
 
+            return params
+
+        }else if dictory == "setScreenOrientation" {
+            var params = [String: Any]()
+            params["orientation"] = "landscapeLeft"
+
+            return params
+
+        }else if dictory == "getPicture" {
+            var params = [String: Any]()
+            params["sourceType"] = "album"
+            params["encodingType"] = "png"
+            params["mediaValue"] = "pic"
+            params["destinationType"] = "url"
+            params["direction"] = false
+            params["quality"] = 50
+            params["videoQuality"] = "low"
+            params["targetWidth"] = 500
+            params["targetHeight"] = 500
+            params["saveToPhotoAlbum"] = false
+            params["groupName"] = "haha"
             return params
         }else if dictory == "startRecord" {
             var params = [String: Any]()
