@@ -710,6 +710,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 是否禁止休眠
     @objc func setKeepScreenOnWithParams(outParams: [String: Any]) {
         UIApplication.shared.isIdleTimerDisabled = true
+        UIView.wya_showCenterToast(withMessage: "屏幕常量设置成功")
     }
     @objc func toLauncherWithParams(outParams: [String: Any]) {}
     @objc func setScreenSecureWithParams(outParams: [String: Any]) {}
