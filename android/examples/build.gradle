@@ -37,10 +37,10 @@ dependencies {
 	androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 	implementation project(':sdk')
 
-	implementation 'com.wya.uikit:uikit:0.1.0'
-	implementation 'com.wya.hardware:hardware:0.1.0'
-	implementation 'com.wya.helper:helper:0.1.0'
-	implementation 'com.wya.utils:utils:0.1.0'
+	implementation 'com.wya.uikit:uikit:0.1.2'
+	implementation 'com.wya.hardware:hardware:0.1.2'
+	implementation 'com.wya.helper:helper:0.1.2'
+	implementation 'com.wya.utils:utils:0.1.2'
 	implementation depends.eventbus
 	implementation depends.kotlin_stdlib_jdk7
 }

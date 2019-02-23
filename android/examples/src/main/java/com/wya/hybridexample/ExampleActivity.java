@@ -38,8 +38,11 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 
 	private static String[] REQUEST_PERMISSIONS = new String[]{
 		android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+		android.Manifest.permission.RECORD_AUDIO,
 		android.Manifest.permission.READ_PHONE_STATE,
-		android.Manifest.permission.DISABLE_KEYGUARD
+		android.Manifest.permission.DISABLE_KEYGUARD,
+		android.Manifest.permission.READ_CONTACTS,
+		android.Manifest.permission.CAMERA
 	};
 
 	@Override
@@ -93,6 +96,9 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		permissionHelper.onActivityForResult(requestCode);
+		if (mHybridManager != null) {
+			mHybridManager.onActivityResult(requestCode, resultCode, data);
+		}
 	}
 
 	@Override
