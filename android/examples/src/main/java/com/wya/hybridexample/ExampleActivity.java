@@ -41,6 +41,7 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 		android.Manifest.permission.RECORD_AUDIO,
 		android.Manifest.permission.READ_PHONE_STATE,
 		android.Manifest.permission.DISABLE_KEYGUARD,
+		android.Manifest.permission.WAKE_LOCK,
 		android.Manifest.permission.READ_CONTACTS,
 		android.Manifest.permission.CAMERA
 	};

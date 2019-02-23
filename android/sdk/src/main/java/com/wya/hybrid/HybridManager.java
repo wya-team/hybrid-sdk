@@ -2,7 +2,9 @@ package com.wya.hybrid;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.KeyguardManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,12 +16,15 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.os.StatFs;
 import android.os.Vibrator;
 import android.provider.ContactsContract;
+import android.telephony.SmsManager;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
@@ -58,15 +63,23 @@ import com.wya.hybrid.data.event.ShakeEvent;
 import com.wya.hybrid.data.sp.BatterySp;
 import com.wya.hybrid.data.sp.ForegroundStateSp;
 import com.wya.hybrid.methods.cache.CacheData;
+import com.wya.hybrid.methods.cache.SpaceData;
 import com.wya.hybrid.methods.closewin.CloseWinData;
 import com.wya.hybrid.methods.installapp.InstallAppData;
-import com.wya.hybrid.methods.installedapp.InstalledAppData;
+import com.wya.hybrid.methods.installed.InstalledData;
+import com.wya.hybrid.methods.notification.AlarmReceiver;
+import com.wya.hybrid.methods.notification.bean.NotificationData;
+import com.wya.hybrid.methods.notification.bean.NotificationEmit;
+import com.wya.hybrid.methods.notification.bean.NotificationsUtils;
+import com.wya.hybrid.methods.notification.bean.Notify;
 import com.wya.hybrid.methods.openapp.OpenAppData;
 import com.wya.hybrid.methods.openwin.OpenWinActivity;
 import com.wya.hybrid.methods.openwin.bean.OpenWinData;
+import com.wya.hybrid.methods.sms.Sms;
 import com.wya.hybrid.nativeUI.CameraActivity;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.log.DebugLogger;
+import com.wya.uikit.dialog.WYACustomDialog;
 import com.wya.uikit.imagepicker.ImagePickerCreator;
 import com.wya.uikit.imagepicker.PickerConfig;
 import com.wya.uikit.toolbar.StatusBarUtil;
@@ -88,6 +101,7 @@ import java.util.List;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.ALARM_SERVICE;
 import static com.wya.uikit.toolbar.StatusBarUtil.getStatusBarHeight;
 import static com.wya.utils.utils.FileManagerUtil.TASK_COMPLETE;
 
@@ -111,6 +125,11 @@ public class HybridManager implements JsCallBack {
 	private NetworkReceiver mNetworkReceiver;
 	private BatteryReceiver mBatteryReceiver;
 	private ScreenReceiver mScreenReceiver;
+
+	private CloseWinData closeWinData;
+	private MediaPlayer mMediaPlayer;
+	private MediaRecorder mRecorder;
+	private PictureBean mPictureBean;
 
 	/**
 	 * 软键盘的显示状态
@@ -139,7 +158,7 @@ public class HybridManager implements JsCallBack {
 	/**
 	 * 下载app判断
 	 */
-	private InstalledAppData mInstalledAppData;
+	private InstalledData mInstalledAppData;
 
 	/**
 	 * 打开app
@@ -150,10 +169,18 @@ public class HybridManager implements JsCallBack {
 	 * 清理缓存
 	 */
 	private CacheData mCacheData;
-	private CloseWinData closeWinData;
-	private MediaPlayer mMediaPlayer;
-	private MediaRecorder mRecorder;
-	private PictureBean mPictureBean;
+
+	/**
+	 * 通知对象
+	 */
+	private NotificationData mNotificationData;
+
+	/**
+	 * 短信对象
+	 */
+	private Sms sms;
+
+	private boolean saveToPhotoAlbum;
 
 	public HybridManager(Activity context, WYAWebView webView) {
 		if (!CheckUtil.isValidate(context)) {
@@ -579,8 +606,11 @@ public class HybridManager implements JsCallBack {
 		});
 	}
 
-	private boolean saveToPhotoAlbum;
-
+	/**
+	 * @param data 返回数据
+	 * @param id   id
+	 * @param name
+	 */
 	@Override
 	public void response(String data, int id, String name) {
 		LogUtil.e(data + "default--------" + id + "--------" + name);
@@ -620,14 +650,12 @@ public class HybridManager implements JsCallBack {
 					HybridManager.this.onKeyBoardListener(Keyboard.EVENT_KEYBOARD_HIDE, id);
 				}
 				break;
-			case "openWin":
-				openWin(name, id, data);
+			case "push":
+				push(name, id, data);
 				break;
-			case "closeWin":
-//				closeWin(name, id, data);
+			case "pop":
+				pop(name, id, data);
 				break;
-			case "closeToWin":
-				closeToWin(name, id, data);
 			case "openVideo":
 				openVideo(data, id, name);
 				break;
@@ -671,7 +699,6 @@ public class HybridManager implements JsCallBack {
 ////				mContext.startActivityForResult(i, 1);
 
 				openContacts(data, id, name);
-
 				break;
 			case "installApp":
 				installApp(name, id, data);
@@ -693,6 +720,18 @@ public class HybridManager implements JsCallBack {
 				break;
 			case "getFreeDiskSpace":
 				getFreeDiskSpace(name, id, data);
+				break;
+			case "notification":
+				notification(name, id, data);
+				break;
+			case "cancelNotification":
+				cancelNotification(name, id, data);
+				break;
+			case "sms":
+				sms(name, id, data);
+				break;
+			case "mail":
+				mail(name, id, data);
 				break;
 			default:
 				break;
@@ -984,23 +1023,198 @@ public class HybridManager implements JsCallBack {
 		send(name, getEmitData());
 	}
 
-	private void getFreeDiskSpace(String name, int id, String data) {
+	/**
+	 * 发送邮件
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void mail(String name, int id, String data) {
 		mEventMap.put(name, id);
+		Intent intent = new Intent(Intent.ACTION_SENDTO);
+		intent.setData(Uri.parse("mailto:"));
+		intent.putExtra(Intent.EXTRA_SUBJECT, "");
+		intent.putExtra(Intent.EXTRA_TEXT, "");
+		mContext.startActivity(intent);
+		setEmitData(1, "响应成功", null);
+		send(name, getEmitData());
+	}
+
+	/**
+	 * 发送短信
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void sms(String name, int id, String data) {
+		mEventMap.put(name, id);
+		sms = new Gson().fromJson(data, Sms.class);
+		List<String> numbers = new ArrayList<>();
+		numbers.add("10086");
+		numbers.add("15858394228");
+		sms.setNumbers(numbers);
+		sms.setText("test");
+		sms.setSilent(false);
+		if (sms != null && sms.isSilent()) {
+			// 后台直接发送
+			for (int i = 0; i < sms.getNumbers().size(); i++) {
+				// 获取短信管理器
+				SmsManager smsManager = SmsManager.getDefault();
+				// 拆分短信内容（手机短信长度限制）
+				List<String> divideContents = smsManager.divideMessage(sms.getText());
+				for (String text : divideContents) {
+					smsManager.sendTextMessage(sms.getNumbers().get(i), null, text, null, null);
+				}
+			}
+		} else if (sms != null) {
+			// 调用系统的短信发送页面
+			sendSms(sms);
+			setEmitData(1, "响应成功", null);
+			send(name, getEmitData());
+		}
+	}
+
+	/**
+	 * 调起系统发短信功能,多机型通用，兼容VIVO
+	 *
+	 * @param sms
+	 */
+	public void sendSms(Sms sms) {
+		String phoneNumber = "";
+		for (String response : sms.getNumbers()) {
+			phoneNumber = phoneNumber + response + ";";
+		}
+		Intent smsIntent = new Intent(Intent.ACTION_VIEW);
+		smsIntent.setData(Uri.parse("smsto:"));
+		smsIntent.setType("vnd.android-dir/mms-sms");
+		smsIntent.putExtra("address", phoneNumber);
+		smsIntent.putExtra("sms_body", sms.getText());
+		mContext.startActivity(smsIntent);
+	}
+
+	/**
+	 * 取消通知
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void cancelNotification(String name, int id, String data) {
+		mEventMap.put(name, id);
+		Intent intent = new Intent(mContext, AlarmReceiver.class);
+		PendingIntent pi = PendingIntent.getBroadcast(mContext, id, intent, 0);
+		AlarmManager am = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
+		am.cancel(pi);
+		setEmitData(1, "响应成功", null);
+		send(name, getEmitData());
+	}
+
+	/**
+	 * 设置通知
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void notification(String name, int id, String data) {
+		mEventMap.put(name, id);
+		mNotificationData = new Gson().fromJson(data, NotificationData.class);
+		mNotificationData.setVibrate(new long[]{0, 1300, 800, 300});
+		mNotificationData.setSound("default");
+		mNotificationData.setLight(false);
+		mNotificationData.setTimestamp(System.currentTimeMillis() + 10000);
+		Notify notify = new Notify();
+		notify.setTitle(id + "");
+		notify.setContent(mNotificationData.getTimestamp() + "");
+		notify.setCover(true);
+		mNotificationData.setNotify(notify);
+		if (!NotificationsUtils.isNotificationEnabled(mContext)) {
+			WYACustomDialog notificationDialog = new WYACustomDialog.Builder(mContext)
+				.title("提示")
+				.message("检测到您没有打开通知权限，是否去打开")
+				.width(ScreenUtil.getScreenWidth(mContext) * 3 / 4)
+				.build();
+			notificationDialog.setNoClickListener(new WYACustomDialog.NoClickListener() {
+				@Override
+				public void onNoClick() {
+					notificationDialog.dismiss();
+				}
+			});
+			notificationDialog.setYesClickListener(new WYACustomDialog.YesClickListener() {
+				@Override
+				public void onYesClick() {
+					Intent localIntent = new Intent();
+					localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					if (Build.VERSION.SDK_INT >= 9) {
+						localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+						localIntent.setData(Uri.fromParts("package", mContext.getPackageName(), null));
+					} else if (Build.VERSION.SDK_INT <= 8) {
+						localIntent.setAction(Intent.ACTION_VIEW);
+						localIntent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
+						localIntent.putExtra("com.android.settings.ApplicationPkgName", mContext.getPackageName());
+					}
+					mContext.startActivity(localIntent);
+				}
+			});
+			notificationDialog.show();
+		} else {
+			//AlarmReceiver.class为广播接受者
+			Intent intent = new Intent(mContext, AlarmReceiver.class);
+			intent.setAction("com.start");
+			Bundle bundle = new Bundle();
+			bundle.putInt("id", id);
+			bundle.putString("title", mNotificationData.getNotify().getTitle());
+			bundle.putString("content", mNotificationData.getNotify().getContent());
+			bundle.putString("sound", mNotificationData.getSound());
+			bundle.putBoolean("cover", mNotificationData.getNotify().isCover());
+			bundle.putLongArray("vibrate", mNotificationData.getVibrate());
+			intent.putExtras(bundle);
+			PendingIntent pi = PendingIntent.getBroadcast(mContext, id, intent, 0);
+			//得到AlarmManager实例
+			AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
+			/**
+			 * 单次提醒
+			 * mCalendar.getTimeInMillis() 上面设置的15点21分0秒的时间点
+			 */
+			alarmManager.set(AlarmManager.RTC_WAKEUP, mNotificationData.getTimestamp(), pi);
+			NotificationEmit notificationEmit = new NotificationEmit();
+			notificationEmit.setId(id);
+			setEmitData(1, "响应成功", notificationEmit);
+			send(name, getEmitData());
+		}
+	}
+
+	/**
+	 * `
+	 * 获取剩余存储空间
+	 *
+	 * @param name
+	 * @param id
+	 * @param data
+	 */
+	private void getFreeDiskSpace(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mCacheData = new Gson().fromJson(data, CacheData.class);
 		mCacheData.setType("storageDir");
 		if (mCacheData != null && mCacheData.getType() != null && !mCacheData.getType().equals("")) {
 			long freeDiskSpace = 0;
+			SpaceData freeDiskSpaceData = new SpaceData();
 			switch (mCacheData.getType()) {
 				case "dataDir":
 					freeDiskSpace = getAvailableInternalMemorySize(mContext);
-					setEmitData(1, "响应成功", null);
+					freeDiskSpaceData.setSize(String.valueOf(freeDiskSpace));
+					freeDiskSpaceData.setLabel(Formatter.formatFileSize(mContext, freeDiskSpace));
+					setEmitData(1, "响应成功", freeDiskSpaceData);
 					send(name, getEmitData());
 					break;
 				case "storageDir":
 					if (isExternalStorageAvailable()) {
 						freeDiskSpace = getAvailableExternalMemorySize(mContext);
-						setEmitData(1, "响应成功", null);
+						freeDiskSpaceData.setSize(String.valueOf(freeDiskSpace));
+						freeDiskSpaceData.setLabel(Formatter.formatFileSize(mContext, freeDiskSpace));
+						setEmitData(1, "响应成功", freeDiskSpaceData);
 						send(name, getEmitData());
 					} else {
 						setEmitData(0, "SD卡异常", null);
@@ -1009,7 +1223,9 @@ public class HybridManager implements JsCallBack {
 					break;
 				case "total":
 					freeDiskSpace = getAvailableExternalMemorySize(mContext) + getAvailableInternalMemorySize(mContext);
-					setEmitData(1, "响应成功", null);
+					freeDiskSpaceData.setSize(String.valueOf(freeDiskSpace));
+					freeDiskSpaceData.setLabel(Formatter.formatFileSize(mContext, freeDiskSpace));
+					setEmitData(1, "响应成功", freeDiskSpaceData);
 					send(name, getEmitData());
 					break;
 				default:
@@ -1032,16 +1248,21 @@ public class HybridManager implements JsCallBack {
 		mCacheData.setType("storageDir");
 		if (mCacheData != null && mCacheData.getType() != null && !mCacheData.getType().equals("")) {
 			long totalSpace = 0;
+			SpaceData totalSpaceData = new SpaceData();
 			switch (mCacheData.getType()) {
 				case "dataDir":
 					totalSpace = getInternalMemorySize(mContext);
-					setEmitData(1, "响应成功", null);
+					totalSpaceData.setSize(String.valueOf(totalSpace));
+					totalSpaceData.setLabel(Formatter.formatFileSize(mContext, totalSpace));
+					setEmitData(1, "响应成功", totalSpaceData);
 					send(name, getEmitData());
 					break;
 				case "storageDir":
 					if (isExternalStorageAvailable()) {
 						totalSpace = getExternalMemorySize(mContext);
-						setEmitData(1, "响应成功", null);
+						totalSpaceData.setSize(String.valueOf(totalSpace));
+						totalSpaceData.setLabel(Formatter.formatFileSize(mContext, totalSpace));
+						setEmitData(1, "响应成功", totalSpaceData);
 						send(name, getEmitData());
 					} else {
 						setEmitData(0, "SD卡异常", null);
@@ -1050,7 +1271,9 @@ public class HybridManager implements JsCallBack {
 					break;
 				case "total":
 					totalSpace = getExternalMemorySize(mContext) + getInternalMemorySize(mContext);
-					setEmitData(1, "响应成功", null);
+					totalSpaceData.setSize(String.valueOf(totalSpace));
+					totalSpaceData.setLabel(Formatter.formatFileSize(mContext, totalSpace));
+					setEmitData(1, "响应成功", totalSpaceData);
 					send(name, getEmitData());
 					break;
 				default:
@@ -1179,7 +1402,7 @@ public class HybridManager implements JsCallBack {
 	private void appInstalled(String name, int id, String data) {
 		boolean isAppInstalled = false;
 		mEventMap.put(name, id);
-		mInstalledAppData = new Gson().fromJson(data, InstalledAppData.class);
+		mInstalledAppData = new Gson().fromJson(data, InstalledData.class);
 		mInstalledAppData.setScheme("com.wya.shanda");
 		if (mInstalledAppData != null && mInstalledAppData.getScheme() != null && !mInstalledAppData.getScheme().equals("")) {
 			isAppInstalled = PhoneUtil.getInstance().isApkInstalled(mContext, mInstalledAppData.getScheme());
@@ -1263,7 +1486,7 @@ public class HybridManager implements JsCallBack {
 	 * @param id
 	 * @param data
 	 */
-	private void closeToWin(String name, int id, String data) {
+	private void pop(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mCloseWinData = new Gson().fromJson(data, CloseWinData.class);
 		mCloseWinData.setName(winName);
@@ -1284,7 +1507,7 @@ public class HybridManager implements JsCallBack {
 	 * @param id
 	 * @param data
 	 */
-	private void openWin(String name, int id, String data) {
+	private void push(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mOpenWinData = new Gson().fromJson(data, OpenWinData.class);
 		mOpenWinData.setTitle(winName);

@@ -1,12 +1,12 @@
-package com.wya.hybrid.methods.installedapp;
+package com.wya.hybrid.methods.installed;
 
 /**
  * @date: 2019/2/19 15:56
  * @author: Chunjiang Mao
- * @classname: InstalledAppData
+ * @classname: InstalledData
  * @describe:
  */
-public class InstalledAppData {
+public class InstalledData {
 	/**
 	 * 执行结果的返回方式。为false时通过callback返回，为true时直接返回。
 	 */

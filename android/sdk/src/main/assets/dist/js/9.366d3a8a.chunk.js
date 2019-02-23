@@ -1,24 +1,107 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[10],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[9],{
 
-/***/ "./src/pages/containers/events/modules/events-detail.vue":
+/***/ "../../docs/assists/error.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n异常信息捕获\n\n#### 2. Client传递参数给Native\n\n```javascript\n// 不需要传递\n```\n#### 3. Native 传递参数给 Client\n\n```javascript\n// 直接返回异常信息\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.onError((msg) => {\n\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.on('_error_', (msg) => {\n\n})\n// 或者\nwindow.addEventListener('_error_', () => {\n\n})\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('_error_', '@String')\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n";
+
+/***/ }),
+
+/***/ "../../docs/assists/ready.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n初始化后执行\n\n#### 2. Client传递参数给Native\n\n```javascript\n// 不需要传递\n```\n#### 3. Native 传递参数给 Client\n\n```javascript\n// 返回常量\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.ready(() => {\n\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nwindow.addEventListener('_ready_', (e) => {\n\t// 这个只被允许执行一次\n})\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('_ready_', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
+/***/ "./src/pages/components/assists/detail/modules/root.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/containers/events/modules/events-detail.vue?vue&type=template&id=56d785e0&scoped=true&
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/assists/ready.md
+var ready = __webpack_require__("../../docs/assists/ready.md");
+var ready_default = /*#__PURE__*/__webpack_require__.n(ready);
+
+// CONCATENATED MODULE: ./src/pages/components/assists/detail/modules/ready.js
+
+/* harmony default export */ var modules_ready = ({
+  to: '/assists/ready',
+  title: 'ready',
+  label: '初始化后执行',
+  markdown: ready_default.a
+});
+// EXTERNAL MODULE: ../sdk/dist/wya.umd.js
+var wya_umd = __webpack_require__("../sdk/dist/wya.umd.js");
+var wya_umd_default = /*#__PURE__*/__webpack_require__.n(wya_umd);
+
+// EXTERNAL MODULE: ./src/pages/components/_common/toasts/toasts.js + 5 modules
+var toasts = __webpack_require__("./src/pages/components/_common/toasts/toasts.js");
+
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/assists/error.md
+var error = __webpack_require__("../../docs/assists/error.md");
+var error_default = /*#__PURE__*/__webpack_require__.n(error);
+
+// CONCATENATED MODULE: ./src/pages/components/assists/detail/modules/error.js
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+
+
+
+
+var error_invoke = function invoke() {
+  wya_umd_default.a.once('error', function (res) {
+    res = _typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
+    toasts["a" /* default */].info(res, 0);
+  }); // 强制执行
+
+  wya_umd_default.a.invoke('debugger', {
+    event: 'error'
+  }).then(function (res) {
+    toasts["a" /* default */].info('执行成功', 0);
+  }).catch(function () {
+    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
+  });
+};
+
+/* harmony default export */ var modules_error = ({
+  to: '/assists/error',
+  title: 'onError',
+  label: '异常捕获',
+  invoke: error_invoke,
+  markdown: error_default.a
+});
+// CONCATENATED MODULE: ./src/pages/components/assists/detail/modules/root.js
+/* concated harmony reexport ready */__webpack_require__.d(__webpack_exports__, "ready", function() { return modules_ready; });
+/* concated harmony reexport error */__webpack_require__.d(__webpack_exports__, "error", function() { return modules_error; });
+
+
+
+
+
+/***/ }),
+
+/***/ "./src/pages/containers/assists/modules/assists-detail.vue":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/containers/assists/modules/assists-detail.vue?vue&type=template&id=0b28c6f4&scoped=true&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('set-title',{attrs:{"title":_vm.id}},[_c('contents',{attrs:{"id":_vm.id}})],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/pages/containers/events/modules/events-detail.vue?vue&type=template&id=56d785e0&scoped=true&
+// CONCATENATED MODULE: ./src/pages/containers/assists/modules/assists-detail.vue?vue&type=template&id=0b28c6f4&scoped=true&
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/events/detail/contents.vue?vue&type=template&id=91490e50&scoped=true&
-var contentsvue_type_template_id_91490e50_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"md",rawName:"v-md"}],staticClass:"g-md-reset g-pd-lr-10 g-bg-white g-pd-tb-10",domProps:{"innerHTML":_vm._s(_vm.markdown)}})}
-var contentsvue_type_template_id_91490e50_scoped_true_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/assists/detail/contents.vue?vue&type=template&id=ee2fb122&scoped=true&
+var contentsvue_type_template_id_ee2fb122_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{directives:[{name:"md",rawName:"v-md"}],staticClass:"g-md-reset g-pd-lr-10 g-bg-white g-pd-tb-10",domProps:{"innerHTML":_vm._s(_vm.markdown)}})}
+var contentsvue_type_template_id_ee2fb122_scoped_true_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/pages/components/events/detail/contents.vue?vue&type=template&id=91490e50&scoped=true&
+// CONCATENATED MODULE: ./src/pages/components/assists/detail/contents.vue?vue&type=template&id=ee2fb122&scoped=true&
 
 // EXTERNAL MODULE: ../sdk/dist/wya.umd.js
 var wya_umd = __webpack_require__("../sdk/dist/wya.umd.js");
@@ -29,10 +112,10 @@ var hljs = __webpack_require__("./src/pages/extends/directives/hljs.js");
 // EXTERNAL MODULE: ./src/pages/extends/directives/md.js
 var md = __webpack_require__("./src/pages/extends/directives/md.js");
 
-// EXTERNAL MODULE: ./src/pages/components/events/detail/modules/root.js + 29 modules
-var root = __webpack_require__("./src/pages/components/events/detail/modules/root.js");
+// EXTERNAL MODULE: ./src/pages/components/assists/detail/modules/root.js + 2 modules
+var root = __webpack_require__("./src/pages/components/assists/detail/modules/root.js");
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/events/detail/contents.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/assists/detail/contents.vue?vue&type=script&lang=js&
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -68,12 +151,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     handleClick: function handleClick() {}
   }
 });
-// CONCATENATED MODULE: ./src/pages/components/events/detail/contents.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./src/pages/components/assists/detail/contents.vue?vue&type=script&lang=js&
  /* harmony default export */ var detail_contentsvue_type_script_lang_js_ = (contentsvue_type_script_lang_js_); 
 // EXTERNAL MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 var componentNormalizer = __webpack_require__("./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
-// CONCATENATED MODULE: ./src/pages/components/events/detail/contents.vue
+// CONCATENATED MODULE: ./src/pages/components/assists/detail/contents.vue
 
 
 
@@ -83,11 +166,11 @@ var componentNormalizer = __webpack_require__("./node_modules/vue-loader/lib/run
 
 var component = Object(componentNormalizer["a" /* default */])(
   detail_contentsvue_type_script_lang_js_,
-  contentsvue_type_template_id_91490e50_scoped_true_render,
-  contentsvue_type_template_id_91490e50_scoped_true_staticRenderFns,
+  contentsvue_type_template_id_ee2fb122_scoped_true_render,
+  contentsvue_type_template_id_ee2fb122_scoped_true_staticRenderFns,
   false,
   null,
-  "91490e50",
+  "ee2fb122",
   null
   
 )
@@ -97,7 +180,7 @@ component.options.__file = "contents.vue"
 // EXTERNAL MODULE: ./src/pages/extends/filters/capitalize.js
 var capitalize = __webpack_require__("./src/pages/extends/filters/capitalize.js");
 
-// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/containers/events/modules/events-detail.vue?vue&type=script&lang=js&
+// CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/containers/assists/modules/assists-detail.vue?vue&type=script&lang=js&
 //
 //
 //
@@ -106,8 +189,8 @@ var capitalize = __webpack_require__("./src/pages/extends/filters/capitalize.js"
 //
 
 
-/* harmony default export */ var events_detailvue_type_script_lang_js_ = ({
-  name: 'events-detail',
+/* harmony default export */ var assists_detailvue_type_script_lang_js_ = ({
+  name: 'assists-detail',
   components: {
     Contents: contents
   },
@@ -123,9 +206,9 @@ var capitalize = __webpack_require__("./src/pages/extends/filters/capitalize.js"
   created: function created() {},
   methods: {}
 });
-// CONCATENATED MODULE: ./src/pages/containers/events/modules/events-detail.vue?vue&type=script&lang=js&
- /* harmony default export */ var modules_events_detailvue_type_script_lang_js_ = (events_detailvue_type_script_lang_js_); 
-// CONCATENATED MODULE: ./src/pages/containers/events/modules/events-detail.vue
+// CONCATENATED MODULE: ./src/pages/containers/assists/modules/assists-detail.vue?vue&type=script&lang=js&
+ /* harmony default export */ var modules_assists_detailvue_type_script_lang_js_ = (assists_detailvue_type_script_lang_js_); 
+// CONCATENATED MODULE: ./src/pages/containers/assists/modules/assists-detail.vue
 
 
 
@@ -133,19 +216,19 @@ var capitalize = __webpack_require__("./src/pages/extends/filters/capitalize.js"
 
 /* normalize component */
 
-var events_detail_component = Object(componentNormalizer["a" /* default */])(
-  modules_events_detailvue_type_script_lang_js_,
+var assists_detail_component = Object(componentNormalizer["a" /* default */])(
+  modules_assists_detailvue_type_script_lang_js_,
   render,
   staticRenderFns,
   false,
   null,
-  "56d785e0",
+  "0b28c6f4",
   null
   
 )
 
-events_detail_component.options.__file = "events-detail.vue"
-/* harmony default export */ var events_detail = __webpack_exports__["default"] = (events_detail_component.exports);
+assists_detail_component.options.__file = "assists-detail.vue"
+/* harmony default export */ var assists_detail = __webpack_exports__["default"] = (assists_detail_component.exports);
 
 /***/ }),
 
@@ -190,13 +273,13 @@ function () {
             html = vm.data.domProps.innerHTML;
             el.style.display = 'none';
             _context.next = 7;
-            return __webpack_require__.e(/* import() */ 0).then(__webpack_require__.t.bind(null, "./node_modules/highlight.js/lib/index.js", 7));
+            return __webpack_require__.e(/* import() */ 2).then(__webpack_require__.t.bind(null, "./node_modules/highlight.js/lib/index.js", 7));
 
           case 7:
             _ref2 = _context.sent;
             _ = _ref2.default;
             _context.next = 11;
-            return __webpack_require__.e(/* import() */ 3).then(__webpack_require__.t.bind(null, "./node_modules/js-beautify/js/lib/beautify.js", 7));
+            return __webpack_require__.e(/* import() */ 4).then(__webpack_require__.t.bind(null, "./node_modules/js-beautify/js/lib/beautify.js", 7));
 
           case 11:
             _ref3 = _context.sent;
@@ -291,19 +374,19 @@ function () {
             html = vm.data.domProps.innerHTML;
             el.innerHTML = '';
             _context.next = 7;
-            return __webpack_require__.e(/* import() */ 14).then(__webpack_require__.t.bind(null, "./node_modules/marked/lib/marked.js", 7));
+            return __webpack_require__.e(/* import() */ 16).then(__webpack_require__.t.bind(null, "./node_modules/marked/lib/marked.js", 7));
 
           case 7:
             _ref2 = _context.sent;
             marked = _ref2.default;
             _context.next = 11;
-            return __webpack_require__.e(/* import() */ 0).then(__webpack_require__.t.bind(null, "./node_modules/highlight.js/lib/index.js", 7));
+            return __webpack_require__.e(/* import() */ 2).then(__webpack_require__.t.bind(null, "./node_modules/highlight.js/lib/index.js", 7));
 
           case 11:
             _ref3 = _context.sent;
             hljs = _ref3.default;
             _context.next = 15;
-            return __webpack_require__.e(/* import() */ 3).then(__webpack_require__.t.bind(null, "./node_modules/js-beautify/js/lib/beautify.js", 7));
+            return __webpack_require__.e(/* import() */ 4).then(__webpack_require__.t.bind(null, "./node_modules/js-beautify/js/lib/beautify.js", 7));
 
           case 15:
             _ref4 = _context.sent;

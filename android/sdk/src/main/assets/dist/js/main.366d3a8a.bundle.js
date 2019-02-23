@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + "." + "396451ab" + ".chunk.js"
+/******/ 		return __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + "." + "366d3a8a" + ".chunk.js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -213,7 +213,7 @@
 /******/
 /******/
 /******/ 	// add entry module to deferred list
-/******/ 	deferredModules.push(["./src/pages/main.js",4]);
+/******/ 	deferredModules.push(["./src/pages/main.js",1]);
 /******/ 	// run deferred modules when ready
 /******/ 	return checkDeferredModules();
 /******/ })
@@ -12425,7 +12425,7 @@ var loginConfig = [{
   path: '/login',
   name: 'login',
   component: function component() {
-    return __webpack_require__.e(/* import() */ 15).then(__webpack_require__.bind(null, "./src/pages/containers/login/modules/login.vue"));
+    return __webpack_require__.e(/* import() */ 17).then(__webpack_require__.bind(null, "./src/pages/containers/login/modules/login.vue"));
   },
   meta: {
     title: "登录"
@@ -12461,7 +12461,7 @@ var eventsConfig = [{
   path: '/events',
   name: 'events',
   component: function component() {
-    return Promise.all(/* import() */[__webpack_require__.e(2), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, "./src/pages/containers/events/modules/events.vue"));
+    return Promise.all(/* import() */[__webpack_require__.e(3), __webpack_require__.e(14)]).then(__webpack_require__.bind(null, "./src/pages/containers/events/modules/events.vue"));
   },
   meta: {
     title: "事件"
@@ -12470,7 +12470,7 @@ var eventsConfig = [{
   path: '/events/:id',
   name: 'events-detail',
   component: function component() {
-    return Promise.all(/* import() */[__webpack_require__.e(2), __webpack_require__.e(10)]).then(__webpack_require__.bind(null, "./src/pages/containers/events/modules/events-detail.vue"));
+    return Promise.all(/* import() */[__webpack_require__.e(3), __webpack_require__.e(12)]).then(__webpack_require__.bind(null, "./src/pages/containers/events/modules/events-detail.vue"));
   },
   meta: {
     title: "事件"
@@ -12486,7 +12486,7 @@ var methodsConfig = [{
   path: '/methods',
   name: 'methods',
   component: function component() {
-    return Promise.all(/* import() */[__webpack_require__.e(1), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, "./src/pages/containers/methods/modules/methods.vue"));
+    return Promise.all(/* import() */[__webpack_require__.e(0), __webpack_require__.e(15)]).then(__webpack_require__.bind(null, "./src/pages/containers/methods/modules/methods.vue"));
   },
   meta: {
     title: "方法"
@@ -12495,10 +12495,19 @@ var methodsConfig = [{
   path: '/methods/:id',
   name: 'methods-detail',
   component: function component() {
-    return Promise.all(/* import() */[__webpack_require__.e(1), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, "./src/pages/containers/methods/modules/methods-detail.vue"));
+    return Promise.all(/* import() */[__webpack_require__.e(0), __webpack_require__.e(13)]).then(__webpack_require__.bind(null, "./src/pages/containers/methods/modules/methods-detail.vue"));
   },
   meta: {
     title: "方法"
+  }
+}, {
+  path: '/methods/run/:id',
+  name: 'methods-run',
+  component: function component() {
+    return Promise.all(/* import() */[__webpack_require__.e(1), __webpack_require__.e(8), __webpack_require__.e(0), __webpack_require__.e(11)]).then(__webpack_require__.bind(null, "./src/pages/containers/methods/modules/methods-run.vue"));
+  },
+  meta: {
+    title: "方法执行"
   }
 }, {
   path: '/methods/*',
@@ -12511,7 +12520,7 @@ var assistsConfig = [{
   path: '/assists',
   name: 'assists',
   component: function component() {
-    return __webpack_require__.e(/* import() */ 9).then(__webpack_require__.bind(null, "./src/pages/containers/assists/modules/assists.vue"));
+    return __webpack_require__.e(/* import() */ 10).then(__webpack_require__.bind(null, "./src/pages/containers/assists/modules/assists.vue"));
   },
   meta: {
     title: "辅助"
@@ -12520,7 +12529,7 @@ var assistsConfig = [{
   path: '/assists/:id',
   name: 'assists-detail',
   component: function component() {
-    return __webpack_require__.e(/* import() */ 8).then(__webpack_require__.bind(null, "./src/pages/containers/assists/modules/assists-detail.vue"));
+    return __webpack_require__.e(/* import() */ 9).then(__webpack_require__.bind(null, "./src/pages/containers/assists/modules/assists-detail.vue"));
   },
   meta: {
     title: "辅助"
