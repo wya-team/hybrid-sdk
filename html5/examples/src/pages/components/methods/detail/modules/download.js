@@ -18,5 +18,12 @@ export default {
 	title: 'download',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		url: '',
+		encode: true,
+		path: '',
+		report: false,
+		allowResume: false
+	}
 };

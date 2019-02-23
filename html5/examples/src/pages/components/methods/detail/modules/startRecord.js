@@ -18,5 +18,8 @@ export default {
 	title: 'startRecord',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		path: ''
+	}
 };

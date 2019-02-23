@@ -18,5 +18,9 @@ export default {
 	title: 'getFreeDiskSpace',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		path: '',
+		type: ''
+	}
 };

@@ -18,5 +18,10 @@ export default {
 	title: 'showFloatBox',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		preventDefault: false,
+		iconPath: '/image/icon.png',
+		duration: 5000
+	}
 };

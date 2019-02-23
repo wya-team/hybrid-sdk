@@ -18,5 +18,19 @@ export default {
 	title: 'push',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		name: '',
+		title: '',
+		url: '',
+		pageParam: '',
+		scrollToTop: false,
+		vScrollBarEnabled: true,
+		hScrollBarEnabled: true,
+		scaleEnabled: false,
+		hideTopBar: true,
+		hideBottomBar: true,
+		animation: 'card',
+		replace: false
+	}
 };

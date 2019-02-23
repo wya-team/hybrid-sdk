@@ -18,5 +18,8 @@ export default {
 	title: 'installApp',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		url: ''
+	}
 };

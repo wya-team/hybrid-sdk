@@ -18,5 +18,8 @@ export default {
 	title: 'setKeepScreenOn',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		keepOn: false
+	}
 };

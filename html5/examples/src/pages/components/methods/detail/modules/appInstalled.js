@@ -18,5 +18,9 @@ export default {
 	title: 'appInstalled',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		sync: false,
+		scheme: ''
+	}
 };

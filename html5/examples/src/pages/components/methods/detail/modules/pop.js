@@ -18,5 +18,9 @@ export default {
 	title: 'pop',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		name: '',
+		animation: 'card'
+	}
 };

@@ -18,5 +18,19 @@ export default {
 	title: 'notification',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		vibrate: [100, 500, 100, 500],
+		sound: 'default',
+		light: false,
+		notify: { 
+			title: '测试', 
+			content: '测试', 
+			extra: {
+				name: '1'
+			}, 
+			cover: false 
+		},
+		timestamp: (new Date()).getTime() + 30000
+	}
 };

@@ -18,5 +18,8 @@ export default {
 	title: 'cancelNotification',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		id: ''
+	}
 };

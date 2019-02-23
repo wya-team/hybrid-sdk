@@ -18,5 +18,8 @@ export default {
 	title: 'clearCache',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		path: ''
+	}
 };
