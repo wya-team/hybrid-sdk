@@ -18,5 +18,10 @@ export default {
 	title: 'setStatusBarStyle',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		style: 'light',
+		color: '#000',
+		animated: true
+	}
 };

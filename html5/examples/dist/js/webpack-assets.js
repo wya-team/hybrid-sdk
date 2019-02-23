@@ -1,1 +1,1 @@
-window.WEBPACK_ASSETS={"common":{"js":"/hybrid-sdk/html5/examples/dist/js/common.7a31ac31.chunk.js","css":"/hybrid-sdk/html5/examples/dist/css/initial.common.7a31ac31.css"},"main":{"js":"/hybrid-sdk/html5/examples/dist/js/main.7a31ac31.bundle.js","css":"/hybrid-sdk/html5/examples/dist/css/initial.main.7a31ac31.css"}}
+window.WEBPACK_ASSETS={"common":{"js":"/hybrid-sdk/html5/examples/dist/js/common.7a0605d7.chunk.js"},"main":{"js":"/hybrid-sdk/html5/examples/dist/js/main.7a0605d7.bundle.js","css":"/hybrid-sdk/html5/examples/dist/css/initial.main.7a0605d7.css"}}

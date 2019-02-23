@@ -18,5 +18,9 @@ export default {
 	title: 'getCacheSize',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		path: '',
+		type: ''
+	}
 };

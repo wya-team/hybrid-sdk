@@ -1,5 +1,5 @@
 <template>
-	<div class="c-cell" @click="handleClick">
+	<div class="c-cell">
 		<div class="__wrapper">
 			<div @click.stop="$emit('click', title)">
 				<!-- <i :class="icon" class="__icon" /> -->
@@ -7,7 +7,7 @@
 					class="__title"
 				>{{ extra || '' }} {{ title }}</span>
 			</div>
-			<span class="__span">{{ label }}</span>
+			<span class="__span" @click.stop="$emit('run', title)">{{ label || 'run' }}</span>
 			<i class="__arrow-right" />
 		</div>
 	</div>

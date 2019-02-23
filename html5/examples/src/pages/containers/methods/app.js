@@ -16,6 +16,14 @@ export const methodsConfig = [
 		}
 	},
 	{ 
+		path: '/methods/run/:id',
+		name: 'methods-run',
+		component: () => import('./modules/methods-run.vue'),
+		meta: {
+			title: "方法执行",
+		}
+	},
+	{ 
 		path: '/methods/*',
 		redirect: { name: 'methods' }
 	}

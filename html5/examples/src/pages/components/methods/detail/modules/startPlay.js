@@ -18,5 +18,8 @@ export default {
 	title: 'startPlay',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		path: ''
+	}
 };

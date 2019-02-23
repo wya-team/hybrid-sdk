@@ -18,5 +18,9 @@ export default {
 	title: 'saveMediaToAlbum',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		url: '',
+		groupName: ''
+	}
 };

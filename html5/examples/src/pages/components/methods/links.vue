@@ -6,6 +6,7 @@
 			v-bind="item"
 			extra="☞ "
 			@click="handleClick"
+			@run="handleRun"
 		/>
 	</div>
 </template>
@@ -30,6 +31,9 @@ export default {
 	methods: {
 		handleClick(name) {
 			rootConfig[name] && rootConfig[name].invoke();
+		},
+		handleRun(name) {
+			this.$router.push(`/methods/run/${name}`);
 		}
 	},
 };
