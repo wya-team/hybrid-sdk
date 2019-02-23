@@ -16,6 +16,14 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+    <key>NSCameraUsageDescription</key>
+    <string>哈哈</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>麦克风</string>
+    <key>NSPhotoLibraryAddUsageDescription</key>
+    <string>呵呵</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>嘿嘿</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

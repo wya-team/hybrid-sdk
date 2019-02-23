@@ -148,6 +148,7 @@ class WYAWebViewManager: NSObject , CNContactPickerDelegate{
     let netManager = NetworkReachabilityManager(host: "www.apple.com")
     var recorder : AVAudioRecorder? = nil
     var audioPlayer : AVAudioPlayer? = nil
+    var rect : CGRect?
 
     var recorderPath : String?
 
@@ -204,6 +205,9 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         func push(_ vc: UIViewController, _ animation: Bool) {
             DispatchQueue.main.async {
                 vc.hidesBottomBarWhenPushed = model.pageParams?.hideBottomBar ?? true
+                if (model.pageParams?.replace)! {
+                    rootVC.navigationController?.popViewController(animated: false)
+                }
                 rootVC.navigationController?.pushViewController(vc, animated: animation)
             }
         }
@@ -492,19 +496,10 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
 
         }else{
-            let setDate = Date(timeIntervalSince1970: model.timestamp!)
-            print(setDate as Any)
 
-            let nowDate = Date()
-            if setDate.compare(nowDate) == .orderedAscending {
-                return
-            }
-            if setDate.compare(nowDate) == .orderedSame {
-
-            }
-            if setDate.compare(nowDate) == .orderedDescending {
+            func addNotiction(date : Date) {
                 let not = UILocalNotification()
-                not.fireDate = setDate
+                not.fireDate = date
                 not.timeZone = TimeZone.autoupdatingCurrent
                 if #available(iOS 8.2, *) {
                     not.alertTitle = model.notify?.title
@@ -516,6 +511,21 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
                 not.userInfo = ["key" : "xxx"]
                 UIApplication.shared.scheduleLocalNotification(not)
             }
+
+            let setDate = Date(timeIntervalSince1970: model.timestamp!)
+            print(setDate as Any)
+
+            let nowDate = Date()
+            if setDate.compare(nowDate) == .orderedAscending {
+                return
+            }
+            if setDate.compare(nowDate) == .orderedSame {
+                addNotiction(date: setDate)
+            }
+            if setDate.compare(nowDate) == .orderedDescending {
+                addNotiction(date: setDate)
+            }
+
         }
         listenAction("notification", ["id":"1"])
 
@@ -701,6 +711,49 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         }
     }
 
+    @objc func setScreenOrientationWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developParams["rootVC"] as! UIViewController
+        let webView = developParams["webView"] as! WYAWebView
+        rect = webView.frame
+        let params = outParams["params"] as! [String : Any]
+
+        switch params["orientation"] as! String {
+        case "portraitUp":
+            UIDevice.current.newOrientation(UIInterfaceOrientation.portrait)
+            break
+        case "portraitDown":
+
+            break
+        case "landscapeLeft":
+            UIDevice.current.newOrientation(UIInterfaceOrientation.landscapeLeft)
+            break
+        case "landscapeRight":
+
+            break
+        case "auto":
+            break
+        case "autoPortrait":
+            break
+        case "autoLandscape":
+            break
+        default:
+            break
+        }
+
+
+
+        UIView.animate(withDuration: 0.5, animations: {
+            webView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
+//            webView.bounds = CGRect(x: 0.0, y: 0.0, width: (self.rect?.size.height)!, height: (self.rect?.size.width)!)
+//            webView.center = CGPoint(x: UIScreen.main.bounds.size.height/2, y: UIScreen.main.bounds.size.width/2)
+
+        }) { (finish) in
+            webView.setNeedsLayout()
+            webView.layoutIfNeeded()
+        }
+    }
+
     /// 设置状态栏颜色
     ///
     /// - Parameter outParams: 需要改变的颜色参数
@@ -716,12 +769,6 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         }
     }
 
-    /// 设置屏幕旋转方向
-    ///
-    /// - Parameter outParams: 旋转方向
-    @objc func setScreenOrientationWithParams(outParams: [String: Any]) {
-
-    }
 
     /// 设置是否禁止屏幕休眠
     ///
@@ -745,17 +792,149 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func setCustomRefreshHeaderInfoWithParams(outParams: [String: Any]) {}
     @objc func refreshHeaderLoadingWithParams(outParams: [String: Any]) {}
     @objc func refreshHeaderLoadDoneWithParams(outParams: [String: Any]) {}
+    @objc func getPictureWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developParams["rootVC"] as! UIViewController
 
+        let model = getModel(outParams["params"] as! [String : Any]) as GetPictureModel
+        switch model.sourceType {
+        case "camera":
+            var camera : WYACameraViewController?
+            var orientation : WYACameraOrientation?
+
+            if model.direction! {
+                orientation = .front
+            }else {
+                orientation = .back
+            }
+
+            if model.mediaValue == "pic" {
+
+                camera = WYACameraViewController(type: .video, cameraOrientation: orientation!)
+            } else if model.mediaValue == "video" {
+                camera = WYACameraViewController(type: .image, cameraOrientation: orientation!)
+            } else {
+                camera = WYACameraViewController(type: .all, cameraOrientation: orientation!)
+            }
+
+            if model.videoQuality == "low" {
+                camera?.preset = .low
+            } else if model.videoQuality == "medium" {
+                camera?.preset = .medium
+            } else if model.videoQuality == "high" {
+                camera?.preset = .high
+            }
+
+            camera?.saveAblum = model.saveToPhotoAlbum!
+            camera?.albumName = model.groupName
+
+            camera?.takePhoto = { image in
+                var data : Data?
+                if model.encodingType == "png" {
+                    let img = UIImage.wya_ImageCompressFitSizeScale(image!, targetSize: CGSize(width: model.targetWidth!, height: model.targetHeight!))
+
+                    data = UIImagePNGRepresentation(img!)
+
+                }else if model.encodingType == "jpg" {
+                    let img = UIImage.wya_ImageCompressFitSizeScale(image!, targetSize: CGSize(width: model.targetWidth!, height: model.targetHeight!))
+                    data = UIImageJPEGRepresentation(img!, CGFloat(model.quality!/100))
+                }
+
+                if model.destinationType == "url" {
+                    if model.saveToPhotoAlbum == false {
+
+                    }else {
+
+                    }
+                } else if model.destinationType == "base64" {
+                    let base = data?.base64EncodedString()
+                    self.listenAction("getPicture",
+                                      [
+                                        "status":"1",
+                                        "msg":"调用成功",
+                                        "data":[
+                                            "list":
+                                                ["base64":base]
+                                            ]
+                                    ])
+                }
+
+            }
+            camera?.takeVideo = { url in
+                self.listenAction("getPicture",
+                                  [
+                                    "status":"1",
+                                    "msg":"调用成功",
+                                    "data":[
+                                        "list":
+                                            ["url":url]
+                                    ]
+                    ])
+            }
+            rootVC.present(camera!, animated: true, completion: nil)
+
+            break
+        case "album":
+            var photoBrowser : WYAPhotoBrowser?
+
+            if model.mediaValue == "pic" {
+
+                photoBrowser = WYAPhotoBrowser(maxCount: 1, photoBrowserType: .photo)
+            } else if model.mediaValue == "video" {
+                photoBrowser = WYAPhotoBrowser(maxCount: 1, photoBrowserType: .video)
+            }
+            photoBrowser?.callBackBlock = { images in
+                var items = [[String : Any]]()
+                for image in images {
+                    var item = [String : Any]()
+
+                    if image is UIImage {
+                        let img = UIImage.wya_ImageCompressFitSizeScale(image as? UIImage, targetSize: CGSize(width: model.targetWidth!, height: model.targetHeight!))
+
+                        var data : Data?
+                        if model.encodingType == "png" {
+                            data = UIImagePNGRepresentation(img!)
+                        }else if model.encodingType == "jpg" {
+                            data = UIImageJPEGRepresentation(img!, CGFloat(model.quality!/100))
+                        }
+                        let base64 = data?.base64EncodedString()
+                        item["base64"] = base64
+                    } else if image is URL {
+                        item["url"] = (image as! URL).absoluteString
+                    }
+                    items.append(item)
+                }
+
+                self.listenAction("getPicture", ["status":"1",
+                                                 "msg":"调用成功",
+                                                 "data":["list":items]])
+            }
+            rootVC.present(photoBrowser!, animated: true, completion: nil)
+            break
+        default:
+            break
+        }
+    }
 
     /// 展示一个悬浮框，浮动在屏幕上。
     ///
     /// - Parameter outParams: 浮窗图片，自动消失时间
     @objc func showFloatBoxWithParams(outParams: [String: Any]) {
         
-    }
-    @objc func getPictureWithParams(outParams: [String: Any]) {}
 
-    @objc func saveMediaToAlbumWithParams(outParams: [String: Any]) {}
+    }
+
+    @objc func saveMediaToAlbumWithParams(outParams: [String: Any]) {
+        let param = outParams["params"] as! [String : Any]
+        let url = param["url"] as! String
+
+        let tool = WYACameraTool(cameraOrientation: .front)
+        tool?.albumName = param["groupName"] as? String
+        let data = try? Data(contentsOf: URL(string: url)!)
+
+        tool?.savePhtots(with: UIImage(data: data!), videoUrl: nil)
+
+    }
 
     /// 由于ios生成音频格式为WAV，需要转化为amr
     ///

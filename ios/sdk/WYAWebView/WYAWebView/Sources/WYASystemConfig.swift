@@ -85,6 +85,31 @@ extension UIDevice {
         default: return ""
         }
     }
+
+    func newOrientation(_ orientation : UIInterfaceOrientation) {
+        DispatchQueue.main.async {
+            UIDevice.current.setValue(NSNumber(integerLiteral: UIInterfaceOrientation.unknown.rawValue), forKey: "orientation")
+            UIDevice.current.setValue(NSNumber(integerLiteral: orientation.rawValue), forKey: "orientation")
+
+            switch orientation {
+            case UIInterfaceOrientation.portrait :
+                UIApplication.shared.setStatusBarOrientation(UIInterfaceOrientation.portraitUpsideDown, animated: true)
+            break
+            case UIInterfaceOrientation.portraitUpsideDown :
+                UIApplication.shared.setStatusBarOrientation(UIInterfaceOrientation.portrait, animated: true)
+                break
+            case UIInterfaceOrientation.landscapeLeft :
+                UIApplication.shared.setStatusBarOrientation(UIInterfaceOrientation.landscapeRight, animated: true)
+                break
+            case UIInterfaceOrientation.landscapeRight :
+                UIApplication.shared.setStatusBarOrientation(UIInterfaceOrientation.landscapeLeft, animated: true)
+                break
+            default :
+                break
+            }
+
+        }
+    }
 }
 
 public struct safeFrame {
