@@ -18,5 +18,9 @@ export default {
 	title: 'openApp',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		param: {},
+		scheme: ''
+	}
 };

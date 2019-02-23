@@ -18,5 +18,8 @@ export default {
 	title: 'openVideo',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		url: ''
+	}
 };

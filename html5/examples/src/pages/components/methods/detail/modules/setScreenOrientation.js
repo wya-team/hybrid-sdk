@@ -18,5 +18,8 @@ export default {
 	title: 'setScreenOrientation',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		orientation: 'auto'
+	}
 };

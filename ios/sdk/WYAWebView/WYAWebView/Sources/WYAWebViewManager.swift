@@ -693,7 +693,6 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         }
     }
 
-    @objc func setStatusBarStyleWithParams(outParams: [String: Any]) {}
     @objc func setScreenOrientationWithParams(outParams: [String: Any]) {
         let developParams = outParams["DevelopParams"] as! [String : Any]
         let rootVC = developParams["rootVC"] as! UIViewController
@@ -736,7 +735,30 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             webView.layoutIfNeeded()
         }
     }
-    @objc func setKeepScreenOnWithParams(outParams: [String: Any]) {}
+
+    /// 设置状态栏颜色
+    ///
+    /// - Parameter outParams: 需要改变的颜色参数
+    @objc func setStatusBarStyleWithParams(outParams: [String: Any]) {
+        DispatchQueue.main.async {
+        UIApplication.shared.statusBarStyle = .lightContent
+        let developeParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developeParams["rootVC"] as! UIViewController
+        let stateView = UIView()
+        stateView.frame = CGRect(x: 0, y: 0, width: rootVC.view.frame.size.width, height: UIApplication.shared.statusBarFrame.size.height)
+        stateView.backgroundColor = UIColor.black
+        rootVC.view.addSubview(stateView)
+        }
+    }
+
+
+    /// 设置是否禁止屏幕休眠
+    ///
+    /// - Parameter outParams: 是否禁止休眠
+    @objc func setKeepScreenOnWithParams(outParams: [String: Any]) {
+        UIApplication.shared.isIdleTimerDisabled = true
+        UIView.wya_showCenterToast(withMessage: "屏幕常量设置成功")
+    }
     @objc func toLauncherWithParams(outParams: [String: Any]) {}
     @objc func setScreenSecureWithParams(outParams: [String: Any]) {}
     @objc func setAppIconBadgeWithParams(outParams: [String: Any]) {}
@@ -752,12 +774,6 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func setCustomRefreshHeaderInfoWithParams(outParams: [String: Any]) {}
     @objc func refreshHeaderLoadingWithParams(outParams: [String: Any]) {}
     @objc func refreshHeaderLoadDoneWithParams(outParams: [String: Any]) {}
-
-    @objc func showFloatBoxWithParams(outParams: [String: Any]) {
-
-
-    }
-
     @objc func getPictureWithParams(outParams: [String: Any]) {
         let developParams = outParams["DevelopParams"] as! [String : Any]
         let rootVC = developParams["rootVC"] as! UIViewController
@@ -880,6 +896,14 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         default:
             break
         }
+    }
+
+    /// 展示一个悬浮框，浮动在屏幕上。
+    ///
+    /// - Parameter outParams: 浮窗图片，自动消失时间
+    @objc func showFloatBoxWithParams(outParams: [String: Any]) {
+        
+
     }
 
     @objc func saveMediaToAlbumWithParams(outParams: [String: Any]) {

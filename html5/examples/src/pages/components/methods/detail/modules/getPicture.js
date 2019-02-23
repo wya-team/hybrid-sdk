@@ -18,5 +18,20 @@ export default {
 	title: 'getPicture',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		sourceType: 'camera',
+		encodingType: 'png',
+		mediaValue: 'pic',
+		destinationType: 'url',
+		direction: false,
+		allowEdit: false,
+		preview: false,
+		quality: 50,
+		videoQuality: 'high',
+		targetWidth: '',
+		targetHeight: '',
+		saveToPhotoAlbum: false,
+		groupName: false,
+	}
 };

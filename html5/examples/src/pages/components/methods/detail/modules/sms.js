@@ -18,5 +18,10 @@ export default {
 	title: 'sms',
 	label: '',
 	invoke,
-	markdown
+	markdown,
+	param: {
+		numbers: ['10086'],
+		text: '测试',
+		silent: false
+	}
 };
