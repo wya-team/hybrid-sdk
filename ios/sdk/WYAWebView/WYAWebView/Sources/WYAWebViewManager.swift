@@ -466,12 +466,12 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
         guard !path.isEmpty else {
             WYAClearCache.wya_cacheFileSizeValue(atPath: path) { (size) in
-                self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":size]])
+                self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":size,"label":NSNull()]])
             }
             return
         }
         WYAClearCache.wya_defaultCachesFolderSizeValueBlock { (folderSize) in
-            self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":"1KB"]])
+            self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":NSNull()]])
         }
     }
 
@@ -481,7 +481,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func getTotalSpaceWithParams(outParams: [String: Any]) {
        let divceTotalSpace = WYAClearCache.wya_getDivceTotalSizeValue()
         print("系统总空间\(divceTotalSpace)")
-        self.listenAction("getTotalSpace", ["status":1,"msg":"调用成功","data":["size":divceTotalSpace,"label":"1KB"]])
+        self.listenAction("getTotalSpace", ["status":1,"msg":"调用成功","data":["size":divceTotalSpace,"label":NSNull()]])
 
     }
 
@@ -492,7 +492,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         let space = NSString.wya_phoneFreeMemory()
         WYAClearCache.wya_getDivceAvailableSizeValueBlock { (folderSize) in
             print("系统可用空间\(folderSize)")
-             self.listenAction("getFreeDiskSpace", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":"1KB"]])
+             self.listenAction("getFreeDiskSpace", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":NSNull()]])
         }
         print(space)
     }
@@ -663,12 +663,9 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 邮件收件人以及发送内容
     @objc func mailWithParams(outParams: [String: Any]) {
-
-//        self.listenAction("sms", ["status":0,"msg":"调用失败","data":NSNull()])
-
         guard MFMailComposeViewController.canSendMail()else{
             print("无法发送邮件")
-            UIView.wya_showCenterToast(withMessage: "无法发送邮件")
+            self.listenAction("sms", ["status":0,"msg":"调用失败","data":NSNull()])
             return
         }
         let developeParams = outParams["DevelopParams"] as! [String : Any]
