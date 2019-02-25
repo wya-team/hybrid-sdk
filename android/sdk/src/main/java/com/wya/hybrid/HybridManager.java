@@ -101,9 +101,11 @@ import java.util.List;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static android.content.Context.ALARM_SERVICE;
 import static com.wya.uikit.toolbar.StatusBarUtil.getStatusBarHeight;
 import static com.wya.utils.utils.FileManagerUtil.TASK_COMPLETE;
+import static com.wya.utils.utils.FileManagerUtil.TASK_FAIL;
 
 /**
  * @author :
@@ -140,8 +142,6 @@ public class HybridManager implements JsCallBack {
 	 * 打开window
 	 */
 	private OpenWinData mOpenWinData;
-
-	private String winName = "a";
 
 	/**
 	 * 关闭window
@@ -1051,12 +1051,6 @@ public class HybridManager implements JsCallBack {
 	private void sms(String name, int id, String data) {
 		mEventMap.put(name, id);
 		sms = new Gson().fromJson(data, Sms.class);
-		List<String> numbers = new ArrayList<>();
-		numbers.add("10086");
-		numbers.add("15858394228");
-		sms.setNumbers(numbers);
-		sms.setText("test");
-		sms.setSilent(false);
 		if (sms != null && sms.isSilent()) {
 			// 后台直接发送
 			for (int i = 0; i < sms.getNumbers().size(); i++) {
@@ -1104,10 +1098,10 @@ public class HybridManager implements JsCallBack {
 	private void cancelNotification(String name, int id, String data) {
 		mEventMap.put(name, id);
 		Intent intent = new Intent(mContext, AlarmReceiver.class);
-		PendingIntent pi = PendingIntent.getBroadcast(mContext, id, intent, 0);
+		PendingIntent pi = PendingIntent.getBroadcast(mContext, id, intent, FLAG_UPDATE_CURRENT);
 		AlarmManager am = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
 		am.cancel(pi);
-		setEmitData(1, "响应成功", null);
+		setEmitData(1, "取消通知" + id + "成功", null);
 		send(name, getEmitData());
 	}
 
@@ -1162,7 +1156,6 @@ public class HybridManager implements JsCallBack {
 		} else {
 			//AlarmReceiver.class为广播接受者
 			Intent intent = new Intent(mContext, AlarmReceiver.class);
-			intent.setAction("com.start");
 			Bundle bundle = new Bundle();
 			bundle.putInt("id", id);
 			bundle.putString("title", mNotificationData.getNotify().getTitle());
@@ -1171,7 +1164,7 @@ public class HybridManager implements JsCallBack {
 			bundle.putBoolean("cover", mNotificationData.getNotify().isCover());
 			bundle.putLongArray("vibrate", mNotificationData.getVibrate());
 			intent.putExtras(bundle);
-			PendingIntent pi = PendingIntent.getBroadcast(mContext, id, intent, 0);
+			PendingIntent pi = PendingIntent.getBroadcast(mContext, id, intent, FLAG_UPDATE_CURRENT);
 			//得到AlarmManager实例
 			AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
 			/**
@@ -1197,7 +1190,6 @@ public class HybridManager implements JsCallBack {
 	private void getFreeDiskSpace(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mCacheData = new Gson().fromJson(data, CacheData.class);
-		mCacheData.setType("storageDir");
 		if (mCacheData != null && mCacheData.getType() != null && !mCacheData.getType().equals("")) {
 			long freeDiskSpace = 0;
 			SpaceData freeDiskSpaceData = new SpaceData();
@@ -1231,6 +1223,9 @@ public class HybridManager implements JsCallBack {
 				default:
 					break;
 			}
+		} else {
+			setEmitData(0, "路径错误", null);
+			send(name, getEmitData());
 		}
 	}
 
@@ -1243,9 +1238,7 @@ public class HybridManager implements JsCallBack {
 	 */
 	private void getTotalSpace(String name, int id, String data) {
 		mEventMap.put(name, id);
-		mEventMap.put(name, id);
 		mCacheData = new Gson().fromJson(data, CacheData.class);
-		mCacheData.setType("storageDir");
 		if (mCacheData != null && mCacheData.getType() != null && !mCacheData.getType().equals("")) {
 			long totalSpace = 0;
 			SpaceData totalSpaceData = new SpaceData();
@@ -1279,6 +1272,9 @@ public class HybridManager implements JsCallBack {
 				default:
 					break;
 			}
+		} else {
+			setEmitData(0, "路径错误", null);
+			send(name, getEmitData());
 		}
 	}
 
@@ -1360,7 +1356,6 @@ public class HybridManager implements JsCallBack {
 	private void getCacheSize(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mCacheData = new Gson().fromJson(data, CacheData.class);
-		mCacheData.setPath(fileRootPath + "/yzws");
 		if (mCacheData != null && mCacheData.getPath() != null && !mCacheData.getPath().equals("")) {
 			File file = new File(mCacheData.getPath());
 			if (file.exists()) {
@@ -1371,6 +1366,9 @@ public class HybridManager implements JsCallBack {
 				setEmitData(0, "文件不存在", null);
 				send(name, getEmitData());
 			}
+		} else {
+			setEmitData(0, "路径错误", null);
+			send(name, getEmitData());
 		}
 	}
 
@@ -1384,10 +1382,12 @@ public class HybridManager implements JsCallBack {
 	private void clearCache(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mCacheData = new Gson().fromJson(data, CacheData.class);
-		mCacheData.setPath(fileRootPath + "/yzws");
 		if (mCacheData != null && mCacheData.getPath() != null && !mCacheData.getPath().equals("")) {
 			DataCleanUtil.cleanCustomCache(mCacheData.getPath());
 			setEmitData(1, "响应成功", null);
+			send(name, getEmitData());
+		} else {
+			setEmitData(0, "路径错误", null);
 			send(name, getEmitData());
 		}
 	}
@@ -1421,7 +1421,6 @@ public class HybridManager implements JsCallBack {
 	private void openApp(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mOpenAppData = new Gson().fromJson(data, OpenAppData.class);
-		mOpenAppData.setScheme("com.wya.shanda");
 		if (mOpenAppData != null && mOpenAppData.getScheme() != null && !mOpenAppData.getScheme().equals("")) {
 			Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mOpenAppData.getScheme());
 			if (intent != null) {
@@ -1432,6 +1431,9 @@ public class HybridManager implements JsCallBack {
 				setEmitData(0, "未安装应用", null);
 				send(name, getEmitData());
 			}
+		} else {
+			setEmitData(0, "响应失败", null);
+			send(name, getEmitData());
 		}
 	}
 
@@ -1445,9 +1447,8 @@ public class HybridManager implements JsCallBack {
 	private void installApp(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mInstallAppData = new Gson().fromJson(data, InstallAppData.class);
-		mInstallAppData.setUrl("https://oss.ruishan666.com/file/xcx/190219/560100273267/apprelease(1).apk");
 		mFileManagerUtil = new FileManagerUtil();
-		if (mInstallAppData != null && mInstallAppData.getUrl() != null && !mInstallAppData.getUrl().equals("")) {
+		if (mInstallAppData != null && mInstallAppData.getUrl() != null && !mInstallAppData.getUrl().equals("") && mInstallAppData.getUrl().contains(".apk")) {
 			String fileName = mInstallAppData.getUrl().split("/")[mInstallAppData.getUrl().split("/").length - 1];
 			mFileManagerUtil.getDownloadReceiver().load(mInstallAppData.getUrl()).setFilePath(fileRootPath + "/" + fileName).start();
 			mFileManagerUtil.setOnDownLoaderListener(new FileManagerUtil.OnDownLoaderListener() {
@@ -1457,16 +1458,22 @@ public class HybridManager implements JsCallBack {
 						installAPK(fileRootPath + "/" + fileName);
 						setEmitData(1, "响应成功", null);
 						send(name, getEmitData());
+					} else if (state == TASK_FAIL) {
+						setEmitData(0, "下载失败", null);
+						send(name, getEmitData());
 					}
 				}
 			});
+		} else {
+			setEmitData(0, "下载地址不正确", null);
+			send(name, getEmitData());
 		}
 	}
 
 	/**
 	 * 下载到本地后执行安装
 	 */
-	protected void installAPK(String filePath) {
+	private void installAPK(String filePath) {
 		File apkFile = new File(filePath);
 		if (!apkFile.exists()) {
 			return;
@@ -1489,14 +1496,17 @@ public class HybridManager implements JsCallBack {
 	private void pop(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mCloseWinData = new Gson().fromJson(data, CloseWinData.class);
-		mCloseWinData.setName(winName);
-		mCloseWinData.setAnimation("card");
+		boolean success;
 		if (mCloseWinData != null && mCloseWinData.getName() != null && !mCloseWinData.getName().equals("")) {
-			ActivityManager.getInstance().closeToWinByName(mCloseWinData.getName());
+			success = ActivityManager.getInstance().closeToWinByName(mCloseWinData);
 		} else {
-			ActivityManager.getInstance().finishTopActivity();
+			success = ActivityManager.getInstance().finishTopActivity();
 		}
-		setEmitData(1, "响应成功", null);
+		if (success) {
+			setEmitData(1, "响应成功", null);
+		} else {
+			setEmitData(0, "响应失败", null);
+		}
 		send(name, getEmitData());
 	}
 
@@ -1510,22 +1520,26 @@ public class HybridManager implements JsCallBack {
 	private void push(String name, int id, String data) {
 		mEventMap.put(name, id);
 		mOpenWinData = new Gson().fromJson(data, OpenWinData.class);
-		mOpenWinData.setTitle(winName);
-		mOpenWinData.setName(winName);
-		mOpenWinData.setHideBottomBar(false);
-		mOpenWinData.setHideTopBar(true);
-		mOpenWinData.sethScrollBarEnabled(false);
-		mOpenWinData.setvScrollBarEnabled(false);
-		mOpenWinData.setReplace(false);
-		mOpenWinData.setUrl("https://wya-team.github.io/hybrid-sdk/html5/examples/dist/");
-		mOpenWinData.setScaleEnabled(false);
-		Intent intent = new Intent(mContext, OpenWinActivity.class);
-		intent.putExtra("mOpenWinData", mOpenWinData);
-		mContext.startActivity(intent);
-		if (mOpenWinData.isReplace()) {
-			mContext.finish();
+		if (mOpenWinData != null && mOpenWinData.getName() != null && !mOpenWinData.getName().equals("")) {
+			Intent intent = new Intent(mContext, OpenWinActivity.class);
+			intent.putExtra("mOpenWinData", mOpenWinData);
+			mContext.startActivity(intent);
+			if (mOpenWinData.getAnimation() != null) {
+				if (mOpenWinData.getAnimation().equals("card")) {
+					mContext.overridePendingTransition(R.anim.card_anim_enter, R.anim.card_anim_exit);
+				} else if (mOpenWinData.getAnimation().equals("modal")) {
+					mContext.overridePendingTransition(R.anim.modal_anim_enter, R.anim.modal_anim_exit);
+				}
+			}
+			if (mOpenWinData.isReplace()) {
+				mContext.finish();
+			}
+			setEmitData(1, "响应成功", null);
+			send(name, getEmitData());
+		} else {
+			setEmitData(0, "参数错误", null);
+			send(name, getEmitData());
 		}
-		send(name, getEmitData());
 	}
 
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

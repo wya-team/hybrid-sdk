@@ -31,6 +31,7 @@ public class OpenWinActivity extends BaseToolBarActivity {
 	private WYAWebView mWebView;
 	private ProgressBar mProgressBar;
 	private HybridManager mHybridManager;
+	private OpenWinData mOpenWinData;
 
 	@Override
 	protected int getLayoutId() {
@@ -47,11 +48,24 @@ public class OpenWinActivity extends BaseToolBarActivity {
 
 	private void initView() {
 		initHybrid();
-		OpenWinData mOpenWinData = (OpenWinData) getIntent().getSerializableExtra("mOpenWinData");
-
+		mOpenWinData = (OpenWinData) getIntent().getSerializableExtra("mOpenWinData");
 		showToolBar(!mOpenWinData.isHideTopBar());
-		setTitle(mOpenWinData.getTitle());
-
+		if(mOpenWinData.getTitle() != null){
+			setTitle(mOpenWinData.getTitle());
+		}
+		setLeftIconClickListener(new LeftIconClickListener() {
+			@Override
+			public void leftIconClick(View view) {
+				finish();
+				if(mOpenWinData.getAnimation() != null){
+					if(mOpenWinData.getAnimation().equals("card")){
+						overridePendingTransition(R.anim.card_anim_back_enter, R.anim.card_anim_back_exit);
+					} else if(mOpenWinData.getAnimation().equals("modal")){
+						overridePendingTransition(0, R.anim.modal_anim_back_exit);
+					}
+				}
+			}
+		});
 		mWebView.loadUrl(mOpenWinData.getUrl());
 		ActivityManager.getInstance().addOpenWinActivity(mOpenWinData.getName(), this);
 	}
@@ -120,6 +134,18 @@ public class OpenWinActivity extends BaseToolBarActivity {
 		if (null != mHybridManager) {
 			mHybridManager.release();
 			mHybridManager.onActivityDestroy();
+		}
+	}
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		if(mOpenWinData.getAnimation() != null){
+			if(mOpenWinData.getAnimation().equals("card")){
+				overridePendingTransition(R.anim.card_anim_back_enter, R.anim.card_anim_back_exit);
+			} else if(mOpenWinData.getAnimation().equals("modal")){
+				overridePendingTransition(0, R.anim.modal_anim_back_exit);
+			}
 		}
 	}
 

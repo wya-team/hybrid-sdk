@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.wya.hybrid.R;
+import com.wya.hybrid.methods.closewin.CloseWinData;
 import com.wya.hybrid.methods.openwin.bean.ActivityData;
 
 import java.lang.ref.WeakReference;
@@ -25,6 +27,10 @@ public class ActivityManager {
 	private boolean mIsForeground;
 
 	private List<ActivityData> activityDataList = new ArrayList<>();
+	/**
+	 * 关闭窗口动画
+	 */
+	private String animation;
 
 	public boolean isForeground() {
 		return mIsForeground;
@@ -158,18 +164,21 @@ public class ActivityManager {
 	/**
 	 * 结束当前栈顶Activity
 	 */
-	public void finishTopActivity() {
+	public boolean finishTopActivity() {
+		boolean success = false;
 		if (null == mActivityStack || mActivityStack.isEmpty()) {
-			return;
+			return success;
 		}
 		try {
 			Activity activity = mActivityStack.lastElement();
 			if (activity != null) {
+				success = true;
 				finishActivity(activity);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return  success;
 	}
 
 	/**
@@ -182,6 +191,11 @@ public class ActivityManager {
 		try {
 			if (activity != null) {
 				activity.finish();
+				if (animation.equals("card")) {
+					activity.overridePendingTransition(R.anim.card_anim_back_enter, R.anim.card_anim_back_exit);
+				} else if (animation.equals("modal")) {
+					activity.overridePendingTransition(0, R.anim.modal_anim_back_exit);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -239,13 +253,15 @@ public class ActivityManager {
 	/**
 	 * 关闭window到某个页面
 	 *
-	 * @param name
+	 * @param closeWinData
 	 */
-	public void closeToWinByName(String name) {
-		int toPosition = 0;
+	public boolean closeToWinByName(CloseWinData closeWinData) {
+		boolean success = false;
+		int toPosition = activityDataList.size() - 1;
 		for (int i = 0; i < activityDataList.size(); i++) {
-			if (name.equals(activityDataList.get(i).getName())) {
+			if (closeWinData.getName().equals(activityDataList.get(i).getName())) {
 				toPosition = i;
+				success = true;
 				break;
 			}
 		}
@@ -253,6 +269,7 @@ public class ActivityManager {
 			finishActivity(activityDataList.get(i).getActivity());
 			activityDataList.remove(i);
 		}
+		return success;
 	}
 
 	/**

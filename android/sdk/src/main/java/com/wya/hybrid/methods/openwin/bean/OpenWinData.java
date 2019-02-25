@@ -21,10 +21,10 @@ public class OpenWinData implements Serializable {
 	 * 页面地址
 	 */
 	private String url;
-	/**
-	 * 页面参数
-	 */
-	private PageParam pageParam;
+//	/**
+//	 * 页面参数
+//	 */
+//	private PageParam pageParam;
 	/**
 	 * 是否显示垂直滚动条
 	 */
@@ -87,13 +87,13 @@ public class OpenWinData implements Serializable {
 		this.url = url;
 	}
 
-	public PageParam getPageParam() {
-		return pageParam;
-	}
-
-	public void setPageParam(PageParam pageParam) {
-		this.pageParam = pageParam;
-	}
+//	public PageParam getPageParam() {
+//		return pageParam;
+//	}
+//
+//	public void setPageParam(PageParam pageParam) {
+//		this.pageParam = pageParam;
+//	}
 
 	public boolean isvScrollBarEnabled() {
 		return vScrollBarEnabled;
