@@ -13,6 +13,9 @@ public class WYAViewController: UIViewController {
     static let shared = WYAViewController()
 
     var model : OpenWinModel?
+    var orientation: String?
+
+    public var needLocalService : Bool?//只能开启一次
 
     var needNavBar : Bool?
 
@@ -28,25 +31,7 @@ public class WYAViewController: UIViewController {
         return nav
     }
 
-    var webView : WYAWebView {
-        let web = WYAWebView()
-        var y : CGFloat?
-        var height : CGFloat?
-
-        if model?.pageParams?.hideTopBar ?? true {
-            y = 0
-            height = self.view.cmam_height
-        }else {
-            y = navBar.cmam_height
-            height = self.view.cmam_height-navBar.cmam_height
-        }
-        web.frame = CGRect(x: 0.0, y: y!, width: self.view.cmam_width, height:height!)
-        web.webView?.scrollView.showsVerticalScrollIndicator = model?.pageParams?.vScrollBarEnabled ?? true
-        web.webView?.scrollView.showsHorizontalScrollIndicator = model?.pageParams?.hScrollBarEnabled ?? true
-        web.webView?.scrollView.bouncesZoom = model?.pageParams?.scaleEnabled ?? true
-        web.openLocationHttpServer()
-        return web
-    }
+    var webView : WYAWebView?
 
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -57,6 +42,11 @@ public class WYAViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    deinit {
+        webView = nil
+        webView?.removeFromSuperview()
+
+    }
 
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -67,7 +57,7 @@ public class WYAViewController: UIViewController {
 
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        self.navigationController?.navigationBar.isHidden = false
         
     }
 
@@ -78,11 +68,35 @@ public class WYAViewController: UIViewController {
 
         self.view.backgroundColor = .white
 
-//        if (model?.pageParams?.hideTopBar!)! {
-//            self.view.addSubview(navBar)
-//        }
+        if model?.hideTopBar == false {
+            self.view.addSubview(navBar)
+        }
 
-        self.view.addSubview(webView)
+
+        webView = WYAWebView()
+        var y : CGFloat?
+        var height : CGFloat?
+
+        if model?.hideTopBar ?? true {
+            y = 0
+            height = self.view.cmam_height
+        }else {
+            y = navBar.cmam_height
+            height = self.view.cmam_height-navBar.cmam_height
+        }
+        webView?.frame = CGRect(x: 0.0, y: y!, width: self.view.cmam_width, height:height!)
+        webView?.webView?.scrollView.showsVerticalScrollIndicator = model?.vScrollBarEnabled ?? true
+        webView?.webView?.scrollView.showsHorizontalScrollIndicator = model?.hScrollBarEnabled ?? true
+        webView?.webView?.scrollView.bouncesZoom = model?.scaleEnabled ?? true
+        if needLocalService ?? false {
+            webView?.openLocationHttpServer()
+        }
+        if model?.url != nil {
+            if model?.url != "" {
+                webView?.loadUrl(url: (model?.url!)!)
+            }
+        }
+        self.view.addSubview(webView!)
 
     }
     
@@ -99,9 +113,41 @@ public class WYAViewController: UIViewController {
 
 }
 
-extension WYAViewController: WYANavBarDelegate, UIGestureRecognizerDelegate {
+extension WYAViewController {
+    // 默认为true
+    override public var shouldAutorotate: Bool {
+        return true
+    }
+    // 支持的旋转方向
+    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if orientation == "portraitUp" {
+            return .portrait
+        }else if orientation == "portraitDown" {
+            return .portraitUpsideDown
+        }else if orientation == "landscapeLeft" {
+            return .landscapeLeft
+        }else if orientation == "landscapeRight" {
+            return .landscapeRight
+        }else if orientation == "auto" {
+            return .all
+        } else if orientation == "autoLandscape" {
+            return .landscape
+        } else if orientation == "autoPortrait" {
+            return .allButUpsideDown
+        }
+        return .portrait
 
-    func wya_goBackPressed(_ sender: UIButton) {
+    }
+    // 模态切换的默认方向
+    override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .portraitUpsideDown
+    }
+
+}
+
+extension WYAViewController : WYANavBarDelegate {
+
+    public func wya_goBackPressed(_ sender: UIButton) {
         NotificationCenter.default.post(name: NSNotification.Name.closeWin, object: nil)
         if self.navigationController == nil {
             self.dismiss(animated: true) {
@@ -111,7 +157,9 @@ extension WYAViewController: WYANavBarDelegate, UIGestureRecognizerDelegate {
             self.navigationController?.popViewController(animated: true)
         }
     }
+}
 
+extension WYAViewController : UIGestureRecognizerDelegate {
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         NotificationCenter.default.post(name: NSNotification.Name.closeWin, object: nil)
         if self.navigationController?.childViewControllers.count == 1 {
@@ -120,7 +168,6 @@ extension WYAViewController: WYANavBarDelegate, UIGestureRecognizerDelegate {
             return true
         }
     }
-
 }
 
 extension UIApplication {
