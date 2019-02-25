@@ -22,6 +22,13 @@
 }
 ```
 
+属性 | 说明 | 类型 | 默认值 | 如
+---|---|---|---|---
+recipients | 电话号码 | arr | - | ['tech@weiyian.com']
+subject | 邮件主题 | str | - | -
+body | 邮件内容 | str | - | -
+~~attachments~~ | ~~附件地址~~ | ~~arr~~ | - | -
+
 #### 4. Client端示例代码
 
 ```javascript
