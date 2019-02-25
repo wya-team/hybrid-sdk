@@ -1,7 +1,6 @@
 #### 1. 说明
 
 获取总存储空间大小
-
 #### 2. Client传递参数给Native
 
 ```javascript
@@ -12,6 +11,10 @@
 
 属性 | 说明 | 类型 | 默认值 | 如
 ---|---|---|---|---
+storageType | `` | str | total, dataDir, storageDir | -
+
+
+> dataDir(内部存储)；storageDir(外部存储)；total(全部)
 
 #### 3. Native传递参数给Client
 

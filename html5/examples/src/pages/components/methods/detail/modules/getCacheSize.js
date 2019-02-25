@@ -21,6 +21,6 @@ export default {
 	markdown,
 	param: {
 		path: '',
-		type: ''
+		storageType: 'total'
 	}
 };

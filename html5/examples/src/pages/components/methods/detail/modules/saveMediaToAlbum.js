@@ -21,6 +21,7 @@ export default {
 	markdown,
 	param: {
 		url: '',
+		mediaType: 'pic',
 		groupName: ''
 	}
 };

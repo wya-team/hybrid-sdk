@@ -20,6 +20,6 @@ export default {
 	invoke,
 	markdown,
 	param: {
-		path: ''
+		path: '',
 	}
 };

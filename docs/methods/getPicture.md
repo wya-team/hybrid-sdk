@@ -14,7 +14,7 @@
 ---|---|---|---|---
 sourceType | 图片源类型，从相册、图片库或相机获取图片 | str | camera,album | -
 encodingType | 返回图片类型，jpg或png | str | png,jpg | -
-mediaValue | 媒体类型，图片或视频 | str | pic,viedo | -
+mediaType | 媒体类型，图片或视频 | str | pic,viedo | -
 destinationType | 返回数据类型，指定返回图片地址或图片经过base64编码后的字符串 | str | url,base64 | -
 direction | 选择前置或后置摄像头，取值范围（front、rear）| bool | false | -
 ~~allowEdit~~ | ~~是否可以选择图片后进行编辑~~| ~~bool~~ | ~~false~~ | -
