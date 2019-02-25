@@ -13,6 +13,8 @@ public class WYAViewController: UIViewController {
     static let shared = WYAViewController()
 
     var model : OpenWinModel?
+    var orientation: String?
+
     public var needLocalService : Bool?//只能开启一次
 
     var needNavBar : Bool?
@@ -108,6 +110,38 @@ public class WYAViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
+
+}
+
+extension WYAViewController {
+    // 默认为true
+    override public var shouldAutorotate: Bool {
+        return true
+    }
+    // 支持的旋转方向
+    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        if orientation == "portraitUp" {
+            return .portrait
+        }else if orientation == "portraitDown" {
+            return .portraitUpsideDown
+        }else if orientation == "landscapeLeft" {
+            return .landscapeLeft
+        }else if orientation == "landscapeRight" {
+            return .landscapeRight
+        }else if orientation == "auto" {
+            return .all
+        } else if orientation == "autoLandscape" {
+            return .landscape
+        } else if orientation == "autoPortrait" {
+            return .allButUpsideDown
+        }
+        return .portrait
+
+    }
+    // 模态切换的默认方向
+    override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return .portraitUpsideDown
+    }
 
 }
 

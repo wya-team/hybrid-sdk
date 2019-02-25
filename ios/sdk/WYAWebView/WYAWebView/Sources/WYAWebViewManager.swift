@@ -747,22 +747,22 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
     @objc func setScreenOrientationWithParams(outParams: [String: Any]) {
         let developParams = outParams["DevelopParams"] as! [String : Any]
-        let rootVC = developParams["rootVC"] as! UIViewController
-        let webView = developParams["webView"] as! WYAWebView
+        let rootVC = developParams["rootVC"] as! WYAViewController
+        
         let params = outParams["params"] as! [String : Any]
-
+        rootVC.orientation = params["orientation"] as? String
         switch params["orientation"] as! String {
         case "portraitUp":
             UIDevice.current.newOrientation(UIInterfaceOrientation.portrait)
             break
         case "portraitDown":
-
+            UIDevice.current.newOrientation(UIInterfaceOrientation.portraitUpsideDown)
             break
         case "landscapeLeft":
             UIDevice.current.newOrientation(UIInterfaceOrientation.landscapeLeft)
             break
         case "landscapeRight":
-
+            UIDevice.current.newOrientation(UIInterfaceOrientation.landscapeRight)
             break
         case "auto":
             break
@@ -773,6 +773,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         default:
             break
         }
+
     }
 
     /// 设置状态栏颜色
@@ -850,7 +851,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             camera?.saveAblum = model.saveToPhotoAlbum!
             camera?.albumName = model.groupName
 
-            camera?.takePhoto = { image in
+            camera?.takePhoto = { image, url in
                 var data : Data?
                 if model.encodingType == "png" {
                     let img = UIImage.wya_ImageCompressFitSizeScale(image!, targetSize: CGSize(width: model.targetWidth!, height: model.targetHeight!))
@@ -864,9 +865,21 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
                 if model.destinationType == "url" {
                     if model.saveToPhotoAlbum == false {
-//                        listenAction("getPicture", )
+                        self.listenAction("getPicture", [
+                            "status":"0",
+                            "msg":"参数不匹配",
+                            "data":NSNull()
+                            ])
                     }else {
-
+                        self.listenAction("getPicture",
+                                          [
+                                            "status":"1",
+                                            "msg":"调用成功",
+                                            "data":[
+                                                "list":
+                                                    ["url":url]
+                                            ]
+                            ])
                     }
                 } else if model.destinationType == "base64" {
                     let base = data?.base64EncodedString()
@@ -970,8 +983,20 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: <#outParams description#>
     @objc func startRecordWithParams(outParams: [String: Any]) {
         let param = outParams["params"] as! [String : Any]
+        let path =  param["path"] as? String
 
-        recorderPath = param["path"] as? String
+        let date = Date().timeIntervalSince1970
+        if (path != nil && (path?.count)! > 0) {
+            recorderPath = path! + "/" + "\(date)"
+        } else {
+            let audioFile = NSHomeDirectory() + "/Documents/WYAHybridAudio"
+            let success = FileManager.default.fileExists(atPath: audioFile)
+            if success == false {
+                try! FileManager.default.createDirectory(atPath: audioFile, withIntermediateDirectories: true, attributes: nil)
+            }
+            recorderPath = audioFile + "/" + "\(date)"
+        }
+
         let url = URL(fileURLWithPath: recorderPath! + ".wav")
 
         recorder = try! AVAudioRecorder(url: url, settings: NTYAmrCoder.audioRecorderSettings() as! [String : Any])
@@ -980,7 +1005,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             try! AVAudioSession.sharedInstance().setActive(true)
             if (recorder?.record())! {
                 /// 开始录制
-                listenAction("startRecord", ["status":"1","msg":"调用成功","data":["path":recorderPath]])
+                listenAction("startRecord", ["status":"1","msg":"调用成功","data":["path":path]])
             }
         }else {
             print("音频格式出错")
@@ -990,6 +1015,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func stopRecordWithParams(outParams: [String: Any]) {
         if (recorder?.isRecording)! {
             recorder?.stop()
+
             let isSuccess = NTYAmrCoder.encodeWavFile(recorderPath! + ".wav", toAmrFile: recorderPath! + ".amr")
             if isSuccess {
                 let data = try! Data(contentsOf: URL(fileURLWithPath: recorderPath!+".amr"))
@@ -1013,6 +1039,8 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
                 }
 
                 listenAction("stopRecord", ["status":"1","msg":"调用成功","data":["path":recorderPath!+".amr","duration":time]])
+            }else {
+                listenAction("stopRecord", ["status":"0","msg":"格式转换失败","data":NSNull()])
             }
 
         }
@@ -1023,7 +1051,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         let path = param["path"] as! String
 
         let isSuccess = NTYAmrCoder.decodeAmrFile(path + ".amr", toWavFile: path + ".wav")
-        if isSuccess {
+        if isSuccess == true {
             let url = URL(fileURLWithPath: path  + ".wav")
             audioPlayer = try? AVAudioPlayer(contentsOf: url)
             audioPlayer?.volume = 0.5
@@ -1031,12 +1059,16 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             audioPlayer?.currentTime = 0
             audioPlayer?.prepareToPlay()
             audioPlayer?.play()
+            listenAction("startPlay", ["status":"1","msg":"调用成功","data":NSNull()])
+        }else {
+            listenAction("startPlay", ["status":"0","msg":"播放失败，音频格式不正确","data":NSNull()])
         }
 
     }
 
     @objc func stopPlayWithParams(outParams: [String: Any]) {
         audioPlayer?.stop()
+        listenAction("startPlay", ["status":"1","msg":"调用成功","data":NSNull()])
     }
 
     @objc func openVideoWithParams(outParams: [String: Any]) {
