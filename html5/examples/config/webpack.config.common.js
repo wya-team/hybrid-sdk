@@ -92,7 +92,8 @@ const webpackConfig = {
 				],
 				include: [
 					path.resolve(APP_ROOT, 'src/'),
-					path.resolve(APP_ROOT, '../sdk/src/')
+					path.resolve(APP_ROOT, '../sdk/src/'),
+					path.resolve(APP_ROOT, 'node_modules/highlight.js')
 				],
 				use: [
 					{

@@ -26,7 +26,8 @@ export const hljs = async (el, opts = {}, vm = {}) => {
 			blocks = el.querySelectorAll('pre code');
 		}
 		el.style.display = 'block';
-		blocks.forEach((block) => {
+		// [...blocks] NodeList转数组，低版本没有forEach方法
+		[...blocks].forEach((block) => {
 			_.highlightBlock(block);
 		});
 		let betterScroller = findBSInstance(vm.context);
