@@ -32,7 +32,7 @@ protocol WebViewDelegate: AnyObject {
     func getNativeActionResult(_ type: String, _ obj: String) -> Void
 }
 
-class WYAWebViewManager: NSObject , CNContactPickerDelegate{
+class WYAWebViewManager: NSObject {
     // 方法配置表
     let actionParams: [String: Selector] = {
         var params = [String: Selector]()
@@ -343,11 +343,14 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 需要下载的appUri
     @objc func installAppWithParams(outParams: [String: Any]) {
-        print(outParams)
+
         let params = outParams["params"] as! [String:Any]
         let tempString = params["url"] as! String
-//"https://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"
-
+        //"https://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"
+        guard !tempString.isEmpty else{
+            UIView.wya_showCenterToast(withMessage: "url错误")
+            return
+        }
         var urlString = ""
         if tempString.hasPrefix("http") {
            urlString = tempString.replacingOccurrences(of: "http", with: "itms-apps")
@@ -355,16 +358,19 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         if tempString.hasPrefix("https") {
             urlString = tempString.replacingOccurrences(of: "https", with: "itms-apps")
         }
+
+
+
         if urlString.hasPrefix("itms-apps"){
             let url = URL(string: urlString)
             DispatchQueue.main.async {
                 guard UIApplication.shared.canOpenURL(url!) else{
                     UIView.wya_showCenterToast(withMessage: "无效的地址")
-                    self.listenAction("installApp", ["status":0,"msg":"无效的地址","data":NSNull()])
+                    self.listenAction("installApp", self.callBackJsonData(0, "无效地址"))
                     return
                 }
                  UIApplication.shared.openURL(url!)
-                self.listenAction("installApp", ["status":1,"msg":"调用成功","data":NSNull()])
+                self.listenAction("installApp", self.callBackJsonData(1, "调用成功"))
 
             }
         }
@@ -375,16 +381,18 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 需要传递的参数
     @objc func openAppWithParams(outParams: [String: Any]) {
         print(outParams)
-//        let str = "sinaweibo://hello"
+//        let str = "sinaweibo://"
         let params = outParams["params"] as! [String:Any]
-        let str = params["scheme"] as! String
-        let url = URL.init(string: str)
+        let scheme = params["scheme"] as! String
+        let url = URL.init(string: scheme)
         DispatchQueue.main.async {
             guard UIApplication.shared.canOpenURL(url!) else{
                 UIView.wya_showCenterToast(withMessage: "无法打开APP")
+                self.listenAction("openApp", self.callBackJsonData(0, "无效的scheme"))
                 return
             }
             UIApplication.shared.openURL(url!)
+            self.listenAction("openApp", self.callBackJsonData(1, "调用成功"))
         }
 
     }
@@ -394,8 +402,10 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 需要传递的参数
     @objc func appInstalledWithParams(outParams: [String: Any]) {
-        let str = "sinaweibo://hello"
-        let url = URL.init(string: str)
+//        let str = "sinaweibo://hello"
+        let params = outParams["params"] as! [String:Any]
+        let scheme = params["scheme"] as! String
+        let url = URL.init(string: scheme)
         DispatchQueue.main.async {
             if UIApplication.shared.canOpenURL(url!) {
                 print("存在")
@@ -426,10 +436,22 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 需要的清理的路径信息
     @objc func clearCacheWithParams(outParams: [String: Any]) {
+
+        let params = outParams["params"] as! [String:Any]
+
+        let path = params["path"] as! String
+
+        guard !path.isEmpty else {
+            WYAClearCache.wya_clearFile(atPath: path) { (clearStatus) in
+                print("清理缓存成功")
+                self.listenAction("clearCache", self.callBackJsonData(1, "调用成功"))
+            }
+            return
+        }
+
         WYAClearCache.wya_clearCachesClearStatusBlock { (clearStatus) in
             print("清理缓存成功")
-            UIView.wya_showCenterToast(withMessage: "缓存清理成功")
-
+            self.listenAction("clearCache", self.callBackJsonData(1, "调用成功"))
         }
     }
 
@@ -437,9 +459,19 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 缓存的路径默认为Cache
     @objc func getCacheSizeWithParams(outParams: [String: Any]) {
-        WYAClearCache.wya_defaultCachesFolderSizeBlock { (folderSize) in
-            print("系统缓存空间\(folderSize)")
-            UIView.wya_showCenterToast(withMessage: "系统缓存空间\(folderSize)")
+
+        let params = outParams["params"] as! [String:Any]
+
+        let path = params["path"] as! String
+
+        guard !path.isEmpty else {
+            WYAClearCache.wya_cacheFileSizeValue(atPath: path) { (size) in
+                self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":size]])
+            }
+            return
+        }
+        WYAClearCache.wya_defaultCachesFolderSizeValueBlock { (folderSize) in
+            self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":"1KB"]])
         }
     }
 
@@ -447,9 +479,10 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 无参数
     @objc func getTotalSpaceWithParams(outParams: [String: Any]) {
-       let divceTotalSpace = WYAClearCache.wya_getDivceTotalSize()
+       let divceTotalSpace = WYAClearCache.wya_getDivceTotalSizeValue()
         print("系统总空间\(divceTotalSpace)")
-        UIView.wya_showCenterToast(withMessage:"系统总空间\(divceTotalSpace)")
+        self.listenAction("getTotalSpace", ["status":1,"msg":"调用成功","data":["size":divceTotalSpace,"label":"1KB"]])
+
     }
 
     /// 获取剩余存储空间大小
@@ -457,9 +490,9 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 无参数
     @objc func getFreeDiskSpaceWithParams(outParams: [String: Any]) {
         let space = NSString.wya_phoneFreeMemory()
-        WYAClearCache.wya_getDivceAvailableSizeBlock { (folderSize) in
+        WYAClearCache.wya_getDivceAvailableSizeValueBlock { (folderSize) in
             print("系统可用空间\(folderSize)")
-            UIView.wya_showCenterToast(withMessage:"系统可用空间\(folderSize)")
+             self.listenAction("getFreeDiskSpace", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":"1KB"]])
         }
         print(space)
     }
@@ -565,15 +598,12 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         case .sent:
             print("短信发送成功")
             msg = "发送成功"
-            UIView.wya_showCenterToast(withMessage:"短信发送成功")
         case .cancelled:
             print("短信取消发送")
             msg = "取消发送"
-             UIView.wya_showCenterToast(withMessage:"短信取消发送")
         case .failed:
             print("短信发送失败")
             msg = "发送失败"
-             UIView.wya_showCenterToast(withMessage:"短信发送失败")
         }
         listenAction("sms", ["status":1,"msg":msg,"data":NSNull()])
     }
@@ -584,7 +614,6 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         guard MFMessageComposeViewController.canSendText()else{
             print("该设备不能发送短信")
             listenAction("sms", ["status":0,"msg":"调用失败","data":NSNull()])
-            UIView.wya_showCenterToast(withMessage:"该设备不能发送短信")
             return
         }
         let developParams = outParams["DevelopParams"] as! [String : Any]
@@ -635,15 +664,15 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 邮件收件人以及发送内容
     @objc func mailWithParams(outParams: [String: Any]) {
 
-        let developeParams = outParams["DevelopParams"] as! [String : Any]
-        let rootVC = developeParams["rootVC"] as! UIViewController
+//        self.listenAction("sms", ["status":0,"msg":"调用失败","data":NSNull()])
 
         guard MFMailComposeViewController.canSendMail()else{
             print("无法发送邮件")
             UIView.wya_showCenterToast(withMessage: "无法发送邮件")
             return
         }
-
+        let developeParams = outParams["DevelopParams"] as! [String : Any]
+        let rootVC = developeParams["rootVC"] as! UIViewController
         let emailVC = MFMailComposeViewController()
         emailVC.mailComposeDelegate = self
         emailVC.setSubject("hybrid测试邮件")
@@ -666,50 +695,51 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 通讯录所需的参数
     @objc func openContactsWithParams(outParams: [String: Any]) {
-        let developeParams = outParams["DevelopParams"] as! [String : Any]
-        let rootVC = developeParams["rootVC"] as! UIViewController
-        //联系人选择控制器
-        guard #available(iOS 9.0, *) else{
-            return
-        }
-        let contactPicker = CNContactPickerViewController()
-        //设置代理
-        contactPicker.delegate = self
+//        let developeParams = outParams["DevelopParams"] as! [String : Any]
+//        let rootVC = developeParams["rootVC"] as! UIViewController
+//        //联系人选择控制器
+//        guard #available(iOS 9.0, *) else{
+//            return
+//        }
+//        let contactPicker = CNContactPickerViewController()
+//        //设置代理
+//        contactPicker.delegate = self
+//
+//        //弹出控制器
+//        rootVC.present(contactPicker, animated: true, completion: nil)
 
-        //弹出控制器
-        rootVC.present(contactPicker, animated: true, completion: nil)
-
-//        let manager = WYAContacts()
-//        let string = manager.getConTacts()
-//        print(string)
-//        UIView.wya_showCenterToast(withMessage: "获取联系人成功")
+        let manager = WYAContacts()
+        let list = manager.getConTacts()
+        print(list)
+        self.listenAction("openContacts", ["status":1,"msg":"调用成功","data":list])
+        UIView.wya_showCenterToast(withMessage: "获取联系人成功")
 
     }
 
     //多选联系人
-    @available(iOS 9.0, *)
-    func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
-        print("一共选择了\(contacts.count)个联系人。")
-        for contact in contacts {
-            print("--------------")
-            //获取联系人的姓名
-            let lastName = contact.familyName
-            let firstName = contact.givenName
-            print("选中人的姓：\(lastName)")
-            print("选中人的名：\(firstName)")
-
-            //获取联系人电话号码
-            print("选中人电话：")
-            let phones = contact.phoneNumbers
-            for phone in phones {
-                //获得标签名（转为能看得懂的本地标签名，比如work、home）
-                let phoneLabel = CNLabeledValue<NSString>.localizedString(forLabel: phone.label!)
-                //获取号码
-                let phoneValue = phone.value.stringValue
-                print("\(phoneLabel):\(phoneValue)")
-            }
-        }
-    }
+//    @available(iOS 9.0, *)
+//    func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
+//        print("一共选择了\(contacts.count)个联系人。")
+//        for contact in contacts {
+//            print("--------------")
+//            //获取联系人的姓名
+//            let lastName = contact.familyName
+//            let firstName = contact.givenName
+//            print("选中人的姓：\(lastName)")
+//            print("选中人的名：\(firstName)")
+//
+//            //获取联系人电话号码
+//            print("选中人电话：")
+//            let phones = contact.phoneNumbers
+//            for phone in phones {
+//                //获得标签名（转为能看得懂的本地标签名，比如work、home）
+//                let phoneLabel = CNLabeledValue<NSString>.localizedString(forLabel: phone.label!)
+//                //获取号码
+//                let phoneValue = phone.value.stringValue
+//                print("\(phoneLabel):\(phoneValue)")
+//            }
+//        }
+//    }
 
     @objc func setScreenOrientationWithParams(outParams: [String: Any]) {
         let developParams = outParams["DevelopParams"] as! [String : Any]
@@ -1277,4 +1307,10 @@ extension WYAWebViewManager {
 
 extension Notification.Name {
     static let closeWin = NSNotification.Name("closeWin")
+}
+
+extension WYAWebViewManager{
+    func callBackJsonData(_ status:Int ,_ msg:String) -> Dictionary<String, Any> {
+        return ["status":status,"msg":msg,"data":NSNull()]
+    }
 }

@@ -8,20 +8,20 @@
 import AddressBook
 import Contacts
 
-struct MySnail {
-
-    // 字典或者数组 转 JSON
-    static func dataTypeTurnJson(element:AnyObject) -> String {
-
-        let jsonData = try! JSONSerialization.data(withJSONObject: element, options: JSONSerialization.WritingOptions.prettyPrinted)
-        let str = String(data: jsonData, encoding: String.Encoding.utf8)!
-        return str
-    }
-}
+//struct MySnail {
+//
+//    // 字典或者数组 转 JSON
+//    static func dataTypeTurnJson(element:AnyObject) -> String {
+//
+//        let jsonData = try! JSONSerialization.data(withJSONObject: element, options: JSONSerialization.WritingOptions.prettyPrinted)
+//        let str = String(data: jsonData, encoding: String.Encoding.utf8)!
+//        return str
+//    }
+//}
 
 class WYAContacts: NSObject {
 
-    var jsonString = ""
+    var listData = Dictionary<String, Any>()
 
     var array = Array<Any>()
 
@@ -38,14 +38,14 @@ class WYAContacts: NSObject {
         return cn
     }()
 
-    @objc func getConTacts() -> String{
+    @objc func getConTacts() -> Dictionary<String, Any>{
         if #available(iOS 9.0, *){
             chechkContactStoreAuth()
 
         }else{
             checkAddressBookAuth()
         }
-        return jsonString
+        return listData
     }
 }
 
@@ -99,7 +99,7 @@ extension WYAContacts{
             }
         }
         let mySort = WYASortAddressBook()
-        jsonString = MySnail.dataTypeTurnJson(element: mySort.wya_dealData(with: self.array) as AnyObject)
+        listData = ["list":mySort.wya_dealData(with: self.array)]
 
     }
 
@@ -158,7 +158,7 @@ extension WYAContacts{
             print(error)
         }
         let mySort = WYASortAddressBook()
-        jsonString = MySnail.dataTypeTurnJson(element: mySort.wya_dealData(with:self.array) as AnyObject)
+        listData = ["list":mySort.wya_dealData(with: self.array)]
     }
 
 }
