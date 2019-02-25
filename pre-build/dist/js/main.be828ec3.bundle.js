@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + "." + "813406cc" + ".chunk.js"
+/******/ 		return __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + "." + "be828ec3" + ".chunk.js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -11911,12 +11911,11 @@ wya_umd_default.a.ready(function () {
 wya_umd_default.a.onError(function (error) {
   _typeof(error) === 'object' ? JSON.stringify(error) : error;
   var msg = "\u5168\u5C40\u5F02\u5E38\u6355\u83B7\uFF1A ".concat(error); // Toasts.info(msg);
-});
-window.addEventListener('keypress', function (e) {
-  if (e.keyCode == 114) {
-    location.reload();
-  }
-});
+}); // window.addEventListener('keypress', (e) => {
+// 	if (e.keyCode == 114) {
+// 		location.reload();
+// 	}
+// });
 // CONCATENATED MODULE: ./src/pages/router/router.dist.js
 /**
  * dist 未来用于服务端渲染

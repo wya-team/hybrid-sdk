@@ -19,8 +19,8 @@ wya.onError((error) => {
 	// Toasts.info(msg);
 });
 
-window.addEventListener('keypress', (e) => {
-	if (e.keyCode == 114) {
-		location.reload();
-	}
-});
+// window.addEventListener('keypress', (e) => {
+// 	if (e.keyCode == 114) {
+// 		location.reload();
+// 	}
+// });
