@@ -47,7 +47,10 @@ var update = add("f25e28ba", content, true, {});
 "use strict";
 /* harmony import */ var wya_js_sdk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("../sdk/dist/wya.umd.js");
 /* harmony import */ var wya_js_sdk__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(wya_js_sdk__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _common_toasts_toasts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./src/pages/components/_common/toasts/toasts.js");
+/* harmony import */ var _babel_standalone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./node_modules/@babel/standalone/babel.js");
+/* harmony import */ var _babel_standalone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_standalone__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _common_toasts_toasts__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./src/pages/components/_common/toasts/toasts.js");
+
 
 
 /**
@@ -56,7 +59,7 @@ var update = add("f25e28ba", content, true, {});
  */
 
 window.wya = wya_js_sdk__WEBPACK_IMPORTED_MODULE_0___default.a;
-window.Toasts = _common_toasts_toasts__WEBPACK_IMPORTED_MODULE_1__[/* default */ "a"];
+window.Toasts = _common_toasts_toasts__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"];
 
 var stringify = function stringify(output) {
   var result;
@@ -83,7 +86,12 @@ var runHidden = function runHidden(code) {
 
 var run = function run(code) {
   try {
-    stringify(runHidden(code));
+    var _transform = Object(_babel_standalone__WEBPACK_IMPORTED_MODULE_1__["transform"])(code, {
+      presets: ['es2015']
+    }),
+        newCode = _transform.code;
+
+    stringify(runHidden(newCode));
   } catch (e) {
     console.error(e.message);
   }
@@ -207,7 +215,7 @@ var main = __webpack_require__("./node_modules/wya-utils/lib/main.js");
 // EXTERNAL MODULE: ./src/pages/components/methods/run/run.js
 var run = __webpack_require__("./src/pages/components/methods/run/run.js");
 
-// EXTERNAL MODULE: ./src/pages/components/methods/detail/modules/root.js + 100 modules
+// EXTERNAL MODULE: ./src/pages/components/methods/detail/modules/root.js + 36 modules
 var root = __webpack_require__("./src/pages/components/methods/detail/modules/root.js");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/methods/run/contents.vue?vue&type=script&lang=js&
