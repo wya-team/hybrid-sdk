@@ -148,7 +148,6 @@ class WYAWebViewManager: NSObject , CNContactPickerDelegate{
     let netManager = NetworkReachabilityManager(host: "www.apple.com")
     var recorder : AVAudioRecorder? = nil
     var audioPlayer : AVAudioPlayer? = nil
-    var rect : CGRect?
 
     var recorderPath : String?
 
@@ -204,17 +203,19 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
         func push(_ vc: UIViewController, _ animation: Bool) {
             DispatchQueue.main.async {
-                vc.hidesBottomBarWhenPushed = model.pageParams?.hideBottomBar ?? true
-                if (model.pageParams?.replace)! {
+                vc.hidesBottomBarWhenPushed = model.hideBottomBar ?? true
+                if (model.replace)! {
                     rootVC.navigationController?.popViewController(animated: false)
                 }
                 rootVC.navigationController?.pushViewController(vc, animated: animation)
+                self.listenAction("push", ["status":1,"msg":"调用成功","data":NSNull()])
             }
         }
 
         func present(_ vc: UIViewController) {
             DispatchQueue.main.async {
                 rootVC.present(vc, animated: true, completion: {})
+                self.listenAction("push", ["status":1,"msg":"调用成功","data":NSNull()])
             }
         }
 
@@ -223,11 +224,12 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         let centerVC = WYAViewController()
         centerVC.model = model
 
-        switch model.pageParams?.animation {
+        switch model.animation {
         case "card": push(centerVC, true); break
         case "modal": present(centerVC); break
         case "none":push(centerVC, false);  break
         default:
+            listenAction("push", ["status":0,"msg":"调用失败，未指定跳转动画","data":NSNull()])
             break
         }
     }
@@ -238,24 +240,29 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         let rootVC = developParams["rootVC"] as! UIViewController
 
         let param = outParams["params"] as! [String : Any]
-        let vcName = param["name"]
+        let vcName = param["name"] as? String
         let animation = param["animation"] as? String
 
 
         func pop(_ animation : Bool) {
 
-            if vcName != nil{
+            if vcName != nil && (vcName?.count)! > 0{
                 let viewControllers = rootVC.navigationController?.viewControllers
                 for vc in viewControllers! {
                     if vc is WYAViewController {
                         let viewController = vc as! WYAViewController
-                        if viewController.model?.name == (vcName as? String) {
-                            rootVC.navigationController?.popToViewController(viewController, animated: animation)
+                        if viewController.model?.name == vcName  {
+                            DispatchQueue.main.async {
+                                rootVC.navigationController?.popToViewController(viewController, animated: animation)
+                                self.listenAction("pop", ["status":1,"msg":"调用成功","data":NSNull()])
+                            }
                         }
                     }
                 }
-            }else{
-                rootVC.navigationController?.popViewController(animated: animation)
+            }else if vcName?.count == 0 {
+                listenAction("pop", ["status":0,"msg":"vcName不能为空字符串","data":NSNull()])
+            }else {
+                listenAction("pop", ["status":0,"msg":"vcName不能为空","data":NSNull()])
             }
 
         }
@@ -473,9 +480,6 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func notificationWithParams(outParams: [String: Any]) {
         let model = getModel(outParams["params"] as! [String : Any]) as NotificationModel
         print(model as Any)
-//        let sound = SystemSoundID(4095)
-//        AudioServicesPlaySystemSound(sound)
-//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
 
         if #available(iOS 10.0, *) {
             let content = UNMutableNotificationContent()
@@ -527,7 +531,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             }
 
         }
-        listenAction("notification", ["id":"1"])
+        listenAction("notification", ["status":0,"msg":"调用失败，未指定跳转动画","data":["id":"xxx"]])
 
     }
 
@@ -715,7 +719,6 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         let developParams = outParams["DevelopParams"] as! [String : Any]
         let rootVC = developParams["rootVC"] as! UIViewController
         let webView = developParams["webView"] as! WYAWebView
-        rect = webView.frame
         let params = outParams["params"] as! [String : Any]
 
         switch params["orientation"] as! String {
@@ -739,18 +742,6 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             break
         default:
             break
-        }
-
-
-
-        UIView.animate(withDuration: 0.5, animations: {
-            webView.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
-//            webView.bounds = CGRect(x: 0.0, y: 0.0, width: (self.rect?.size.height)!, height: (self.rect?.size.width)!)
-//            webView.center = CGPoint(x: UIScreen.main.bounds.size.height/2, y: UIScreen.main.bounds.size.width/2)
-
-        }) { (finish) in
-            webView.setNeedsLayout()
-            webView.layoutIfNeeded()
         }
     }
 
@@ -792,6 +783,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func setCustomRefreshHeaderInfoWithParams(outParams: [String: Any]) {}
     @objc func refreshHeaderLoadingWithParams(outParams: [String: Any]) {}
     @objc func refreshHeaderLoadDoneWithParams(outParams: [String: Any]) {}
+
     @objc func getPictureWithParams(outParams: [String: Any]) {
         let developParams = outParams["DevelopParams"] as! [String : Any]
         let rootVC = developParams["rootVC"] as! UIViewController
@@ -810,9 +802,9 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
             if model.mediaValue == "pic" {
 
-                camera = WYACameraViewController(type: .video, cameraOrientation: orientation!)
-            } else if model.mediaValue == "video" {
                 camera = WYACameraViewController(type: .image, cameraOrientation: orientation!)
+            } else if model.mediaValue == "video" {
+                camera = WYACameraViewController(type: .video, cameraOrientation: orientation!)
             } else {
                 camera = WYACameraViewController(type: .all, cameraOrientation: orientation!)
             }
@@ -842,7 +834,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
                 if model.destinationType == "url" {
                     if model.saveToPhotoAlbum == false {
-
+//                        listenAction("getPicture", )
                     }else {
 
                     }
@@ -871,7 +863,10 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
                                     ]
                     ])
             }
-            rootVC.present(camera!, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                rootVC.present(camera!, animated: true, completion: nil)
+            }
+
 
             break
         case "album":
@@ -909,7 +904,11 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
                                                  "msg":"调用成功",
                                                  "data":["list":items]])
             }
-            rootVC.present(photoBrowser!, animated: true, completion: nil)
+
+            DispatchQueue.main.async {
+                rootVC.present(photoBrowser!, animated: true, completion: nil)
+            }
+
             break
         default:
             break

@@ -22,8 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if DEBUG
         Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection10.bundle")?.load()
         #endif
-
-        let nav = UINavigationController(rootViewController: WYAViewController())
+        let vc = WYAViewController()
+        vc.needLocalService = true
+        let nav = UINavigationController(rootViewController: vc)
         window?.rootViewController = nav
 
         if #available(iOS 10.0, *) {

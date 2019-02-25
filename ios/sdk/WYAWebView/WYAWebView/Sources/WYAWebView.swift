@@ -68,6 +68,7 @@ public class WYAWebView: UIView {
     }
 
     deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "estimatedProgress"), object: nil)
         webManager?.removeNotice()
         webManager = nil
     }
