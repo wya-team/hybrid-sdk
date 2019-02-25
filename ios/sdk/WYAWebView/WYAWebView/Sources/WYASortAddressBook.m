@@ -27,7 +27,7 @@
 - (NSArray *)wya_dealDataWithArray:(NSArray *)array{
 
     self.dataSource = [NSMutableArray array];
-
+//    NSArray * keyArray = @[@"A",@"B",@"C",@"D",@"E",@"F",@"G",@"H",@"I",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z",@"#"];
     NSMutableArray * tempArray = [NSMutableArray array];
     // 创建分组
     for (NSInteger i = 0; i < 27; i++) {
@@ -53,16 +53,34 @@
             [tepArray addObject:dict];
         }
     }
+    NSMutableArray * tempDictArray = [NSMutableArray array];
+//    for (int i = 0; i< keyArray.count; i++) {
+//        NSDictionary * dict = @{keyArray[i]:tempArray[i]};
+//        [tempDictArray addObject:dict];
+//    }
 
-    // 遍历数组删掉空数组
-    for (NSMutableArray * tepArray in tempArray) {
-        // 如果数组不为空就添加到数据源中
-        if (tepArray.count != 0) {
-            [self.dataSource addObject:tepArray];
+    for (NSArray * array in tempArray) {
+        for (NSDictionary * dict in array) {
+            NSArray * keys = [dict allKeys];
+            NSArray * values = [dict allValues];
+            NSDictionary * tempDict = @{@"name":values.firstObject,@"phone":keys.firstObject};
+            [tempDictArray addObject:tempDict];
         }
     }
-    
-    return [self.dataSource copy];
+
+    for (NSDictionary * dict in tempDictArray) {
+        NSLog(@"%@",dict);
+    }
+
+//    // 遍历数组删掉空数组
+//    for (NSMutableArray * tepArray in tempArray) {
+//        // 如果数组不为空就添加到数据源中
+//        if (tepArray.count != 0) {
+//            [self.dataSource addObject:tepArray];
+//        }
+//    }
+
+    return [tempDictArray copy];
 }
 
 @end
