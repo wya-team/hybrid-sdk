@@ -49,6 +49,5 @@ dependencies {
     implementation depends.eventbus
     implementation depends.converter_gson
     implementation depends.kotlin_stdlib_jdk7
-    implementation 'com.github.promeg:tinypinyin:2.0.3'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }

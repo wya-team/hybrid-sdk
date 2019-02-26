@@ -12,6 +12,7 @@
 		android:theme="@style/AppTheme"
 		tools:ignore="GoogleAppIndexingWarning">
 		<activity android:name=".ExampleActivity"
+			android:configChanges="keyboardHidden|orientation|screenSize"
 			android:launchMode="singleTop">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />

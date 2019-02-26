@@ -11,6 +11,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -23,7 +26,9 @@ import android.os.PowerManager;
 import android.os.StatFs;
 import android.os.Vibrator;
 import android.provider.ContactsContract;
+import android.support.v4.content.FileProvider;
 import android.telephony.SmsManager;
+import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.ViewTreeObserver;
@@ -92,8 +97,12 @@ import com.wya.utils.utils.ScreenUtil;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,7 +140,6 @@ public class HybridManager implements JsCallBack {
 	private CloseWinData closeWinData;
 	private MediaPlayer mMediaPlayer;
 	private MediaRecorder mRecorder;
-	private PictureBean mPictureBean;
 
 	/**
 	 * 软键盘的显示状态
@@ -181,6 +189,8 @@ public class HybridManager implements JsCallBack {
 	private Sms sms;
 
 	private boolean saveToPhotoAlbum;
+	private String recordPath;
+	private PictureBean mPictureBean;
 
 	public HybridManager(Activity context, WYAWebView webView) {
 		if (!CheckUtil.isValidate(context)) {
@@ -693,11 +703,6 @@ public class HybridManager implements JsCallBack {
 				setStatusBarStyle(data, id, name);
 				break;
 			case "openContacts":
-//				Intent i = new Intent();
-////				i.setAction(Intent.ACTION_PICK);
-////				i.setData(ContactsContract.Contacts.CONTENT_URI);
-////				mContext.startActivityForResult(i, 1);
-
 				openContacts(data, id, name);
 				break;
 			case "installApp":
@@ -788,33 +793,42 @@ public class HybridManager implements JsCallBack {
 	 * @param name
 	 */
 	private void setKeepScreenOn(String data, int id, String name) {
+		boolean keepOn = false;
+		try {
+			JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
+			keepOn = jsonObject.getBoolean("keepOn");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		mEventMap.put(name, id);
-		mContext.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		if (keepOn) {
+			mContext.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		}
 		setEmitData(1, "响应成功", null);
 		send(name, getEmitData());
 	}
 
 	private void getPicture(String data, int id, String name) {
 		mEventMap.put(name, id);
-//		PictureBean pictureBean = new Gson().fromJson(data, PictureBean.class);\
-		PictureBean pictureBean = new PictureBean();
-		saveToPhotoAlbum = pictureBean.isSaveToPhotoAlbum();
-		if ("camera".equals(pictureBean.getSourceType())) {
-			switch (pictureBean.getMediaValue()) {
+		mPictureBean = new Gson().fromJson(data.replaceAll("\\\\", ""), PictureBean.class);
+//		PictureBean pictureBean = new PictureBean();
+		saveToPhotoAlbum = mPictureBean.isSaveToPhotoAlbum();
+		if ("camera".equals(mPictureBean.getSourceType())) {
+			switch (mPictureBean.getMediaValue()) {
 				case "pic":
 					Intent intent = new Intent(mContext, CameraActivity.class);
 					intent.putExtra("state", WYACameraView.BUTTON_STATE_ONLY_CAPTURE);
 					intent.putExtra("duration", 1000);
-					intent.putExtra("direction", pictureBean.isDirection());
-					intent.putExtra("videoQuality", pictureBean.getVideoQuality());
+					intent.putExtra("direction", mPictureBean.isDirection());
+					intent.putExtra("videoQuality", mPictureBean.getVideoQuality());
 					mContext.startActivityForResult(intent, CAMERA_PIC_REQUEST);
 					break;
 				case "video":
 					Intent intent2 = new Intent(mContext, CameraActivity.class);
 					intent2.putExtra("state", WYACameraView.BUTTON_STATE_ONLY_RECORDER);
 					intent2.putExtra("duration", 10000);
-					intent2.putExtra("direction", pictureBean.isDirection());
-					intent2.putExtra("videoQuality", pictureBean.getVideoQuality());
+					intent2.putExtra("direction", mPictureBean.isDirection());
+					intent2.putExtra("videoQuality", mPictureBean.getVideoQuality());
 					mContext.startActivityForResult(intent2, CAMERA_VIDEO_REQUEST);
 					break;
 				default:
@@ -822,7 +836,7 @@ public class HybridManager implements JsCallBack {
 			}
 		} else {
 
-			switch (pictureBean.getMediaValue()) {
+			switch (mPictureBean.getMediaValue()) {
 				case "pic":
 					ImagePickerCreator
 						.create(mContext)
@@ -845,24 +859,39 @@ public class HybridManager implements JsCallBack {
 	}
 
 	/**
-	 * 保存图片
+	 * 保存图片或视频
 	 *
 	 * @param data
 	 * @param id
 	 * @param name
 	 */
 	private void savePicture(String data, int id, String name) {
+		//参数残缺，缺少判断是否是图片的字段
+		String url = null;
+		String groupName = null;
+		try {
+			JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
+			url = jsonObject.getString("url");
+			groupName = jsonObject.getString("groupName");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+//		"http://pic43.nipic.com/20140711/19187786_140828149528_2.jpg"
+//		Environment.getExternalStorageDirectory().getPath() + "/Recordings/test.jpg"
 		mEventMap.put(name, id);
 		mFileManagerUtil = new FileManagerUtil();
 		mFileManagerUtil.getDownloadReceiver().
-			load("http://pic43.nipic.com/20140711/19187786_140828149528_2.jpg").
-			setFilePath(Environment.getExternalStorageDirectory().getPath() + "/Recordings/test.jpg").start();
+			load(url).
+			setFilePath(groupName).start();
 		mFileManagerUtil.setOnDownLoaderListener(new FileManagerUtil.OnDownLoaderListener() {
 			@Override
 			public void onDownloadState(int state, DownloadTask task, Exception e) {
 				if (state == TASK_COMPLETE) {
 					setEmitData(1, "响应成功", null);
 					send(name, getEmitData());
+				} else if (state == TASK_FAIL) {
+					Toast.makeText(mContext, "无效的地址,无法保存", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
@@ -877,8 +906,15 @@ public class HybridManager implements JsCallBack {
 	 * @param name
 	 */
 	private void setStatusBarStyle(String data, int id, String name) {
+		String color = null;
+		try {
+			JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
+			color = jsonObject.getString("color");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		mEventMap.put(name, id);
-		StatusBarUtil.setColor(mContext, mContext.getResources().getColor(R.color.black));
+		StatusBarUtil.setColor(mContext, Color.parseColor(color));
 		setEmitData(1, "响应成功", null);
 		send(name, getEmitData());
 	}
@@ -892,7 +928,25 @@ public class HybridManager implements JsCallBack {
 	 */
 	private void setScreenOrientation(String data, int id, String name) {
 		mEventMap.put(name, id);
-		mContext.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+		String orientation = null;
+		try {
+			JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
+			orientation = jsonObject.getString("orientation");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		switch (orientation) {
+			case "portraitUp":
+			case "portraitDown":
+				mContext.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				break;
+			case "landscapeLeft":
+			case "landscapeRight":
+				mContext.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				break;
+			default:
+				break;
+		}
 		setEmitData(1, "响应成功", null);
 		send(name, getEmitData());
 	}
@@ -915,19 +969,41 @@ public class HybridManager implements JsCallBack {
 	}
 
 	/**
+	 * 打开系统视频播放器
+	 *
 	 * @param data
 	 * @param id
 	 * @param name
 	 */
 	private void openVideo(String data, int id, String name) {
 		mEventMap.put(name, id);
-		//本地视频暂不考虑
-		String url = "https://vd1.bdstatic.com/mda-hgvt5nvfzpftdxcs/sc/mda-hgvt5nvfzpftdxcs.mp4";
-		String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-		String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-		Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
-		mediaIntent.setDataAndType(Uri.parse(url), mimeType);
-		mContext.startActivity(mediaIntent);
+		String url = "";
+		try {
+			JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
+			url = jsonObject.getString("url");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		if (url.startsWith("http://") || url.startsWith("https://")) {
+
+			String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+			String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+			Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
+			mediaIntent.setDataAndType(Uri.parse(url), mimeType);
+			mContext.startActivity(mediaIntent);
+		} else {
+			Uri uri;
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+				uri = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(url));
+			} else {
+				uri = Uri.fromFile(new File(url));
+			}
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setDataAndType(uri, "video/*");
+			mContext.startActivity(intent);
+		}
+
 		setEmitData(1, "响应成功", null);
 		send(name, getEmitData());
 	}
@@ -937,11 +1013,21 @@ public class HybridManager implements JsCallBack {
 	 */
 	private void startRecording(String data, int id, String name) {
 		mEventMap.put(name, id);
+		String path = null;
+		try {
+			JSONObject jsonObject = new JSONObject(data);
+			path = jsonObject.getString("url");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		path = TextUtils.isEmpty(path) ? "/storage/emulated/0/Recordings/" + System.currentTimeMillis() + ".amr"
+			: path + System.currentTimeMillis() + ".amr";
+
 		mRecorder = new MediaRecorder();
 		mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 		//设置封装格式
 		mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-		mRecorder.setOutputFile(Environment.getExternalStorageDirectory().getPath() + "/Recordings/test.amr");
+		mRecorder.setOutputFile(path);
 		//设置编码格式
 		mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
@@ -953,8 +1039,9 @@ public class HybridManager implements JsCallBack {
 		//录音
 		mRecorder.start();
 
+		recordPath = path;
 		RecordBean recordBean = new RecordBean();
-		recordBean.setPath(Environment.getExternalStorageDirectory().getPath() + "/Recordings/test.amr");
+		recordBean.setPath(path);
 		setEmitData(1, "响应成功", recordBean);
 		send(name, getEmitData());
 	}
@@ -972,7 +1059,7 @@ public class HybridManager implements JsCallBack {
 		mRecorder = null;
 		MediaPlayer mediaPlayer = new MediaPlayer();
 		try {
-			mediaPlayer.setDataSource(Environment.getExternalStorageDirectory().getPath() + "/Recordings/test.amr");
+			mediaPlayer.setDataSource(recordPath);
 			mediaPlayer.prepare();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -980,7 +1067,7 @@ public class HybridManager implements JsCallBack {
 		int duration = mediaPlayer.getDuration();
 
 		RecordBean recordBean = new RecordBean();
-		recordBean.setPath(Environment.getExternalStorageDirectory().getPath() + "/Recordings/test.amr");
+		recordBean.setPath(recordPath);
 		recordBean.setDuration(duration);
 		setEmitData(1, "响应成功", recordBean);
 		send(name, getEmitData());
@@ -1006,9 +1093,17 @@ public class HybridManager implements JsCallBack {
 	 */
 	private void startPlay(String data, int id, String name) {
 		mEventMap.put(name, id);
+		String path = null;
+		try {
+			JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
+			path = jsonObject.getString("path");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
 		mMediaPlayer = new MediaPlayer();
 		try {
-			mMediaPlayer.setDataSource(Environment.getExternalStorageDirectory().getPath() + "/Recordings/Honor.mp3");
+			mMediaPlayer.setDataSource(path);
 			mMediaPlayer.prepareAsync();
 			mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 				@Override
@@ -1016,7 +1111,8 @@ public class HybridManager implements JsCallBack {
 					mMediaPlayer.start();
 				}
 			});
-		} catch (IOException e) {
+		} catch (Exception e) {
+			Toast.makeText(mContext, "无效的音频地址", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
 		setEmitData(1, "响应成功", null);
@@ -1552,9 +1648,10 @@ public class HybridManager implements JsCallBack {
 						final File file = new File(path);
 						mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
 					}
+
 					ReturnPictureBean returnPictureBean = new ReturnPictureBean();
 					ReturnPictureBean.PictureUrl pictureUrl = new ReturnPictureBean.PictureUrl();
-					pictureUrl.setUrl(path);
+					pictureUrl.setUrl(saveTransferImage(path));
 					List<ReturnPictureBean.PictureUrl> list = new ArrayList<>();
 					list.add(pictureUrl);
 					returnPictureBean.setList(list);
@@ -1595,7 +1692,7 @@ public class HybridManager implements JsCallBack {
 						ReturnPictureBean.PictureUrl pictureUrl = new ReturnPictureBean.PictureUrl();
 						List<ReturnPictureBean.PictureUrl> list = new ArrayList<>();
 						for (String path : lists) {
-							pictureUrl.setUrl(path);
+							pictureUrl.setUrl(saveTransferImage(path));
 							list.add(pictureUrl);
 						}
 						returnPictureBean.setList(list);
@@ -1631,5 +1728,63 @@ public class HybridManager implements JsCallBack {
 			default:
 				break;
 		}
+	}
+
+	private String saveTransferImage(String path) {
+		String encodingType = mPictureBean.getEncodingType();
+		BitmapFactory.Options newOpts = new BitmapFactory.Options();
+		// 开始读入图片，此时把options.inJustDecodeBounds 设回true了
+		newOpts.inJustDecodeBounds = true;
+		Bitmap bitmap = BitmapFactory.decodeFile(path, newOpts);
+		newOpts.inJustDecodeBounds = false;
+		int w = newOpts.outWidth;
+		int h = newOpts.outHeight;
+		// 现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
+		float hh = Float.parseFloat(mPictureBean.getTargetHeight());
+		float ww = Float.parseFloat(mPictureBean.getTargetWidth());
+		// 缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
+		int be = 1;
+		if (w > h && w > ww) {
+			be = (int) (newOpts.outWidth / ww);
+		} else if (w < h && h > hh) {
+			be = (int) (newOpts.outHeight / hh);
+		}
+		if (be <= 0) {
+			be = 1;
+		}
+		newOpts.inSampleSize = be;
+		// 重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+		bitmap = BitmapFactory.decodeFile(path, newOpts);
+
+		String changePath = null;
+		try {
+
+			switch (encodingType) {
+				case "png":
+					File file = new File(Environment.getExternalStorageDirectory().getPath() + "/Recordings/" + System.currentTimeMillis() + ".png");
+					FileOutputStream out = new FileOutputStream(file);
+					changePath = file.getPath();
+					bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+					out.flush();
+					out.close();
+					break;
+				case "jpg":
+					File file1 = new File(Environment.getExternalStorageDirectory().getPath() + "/Recordings/" + System.currentTimeMillis() + ".jpg");
+					FileOutputStream out1 = new FileOutputStream(file1);
+					changePath = file1.getPath();
+					bitmap.compress(Bitmap.CompressFormat.JPEG, mPictureBean.getQuality(), out1);
+					out1.flush();
+					out1.close();
+					break;
+				default:
+					break;
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return changePath;
 	}
 }

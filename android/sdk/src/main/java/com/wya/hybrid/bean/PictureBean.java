@@ -13,8 +13,8 @@ public class PictureBean {
 	private boolean direction = true;
 	private int quality = 50;
 	private String videoQuality = "high";
-	private int targetWidth = 600;
-	private int targetHeight = 600;
+	private String targetWidth;
+	private String targetHeight;
 	private boolean saveToPhotoAlbum = true;
 	private String groupName = "Recordings";
 
@@ -74,19 +74,19 @@ public class PictureBean {
 		this.videoQuality = videoQuality;
 	}
 
-	public int getTargetWidth() {
+	public String getTargetWidth() {
 		return targetWidth;
 	}
 
-	public void setTargetWidth(int targetWidth) {
+	public void setTargetWidth(String targetWidth) {
 		this.targetWidth = targetWidth;
 	}
 
-	public int getTargetHeight() {
+	public String getTargetHeight() {
 		return targetHeight;
 	}
 
-	public void setTargetHeight(int targetHeight) {
+	public void setTargetHeight(String targetHeight) {
 		this.targetHeight = targetHeight;
 	}
 
