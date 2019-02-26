@@ -214,6 +214,7 @@
 - 思考事件的注册方式由用户决定
 - 思考 `registerMethod` -> `registerModule`
 - 思考 h5/native `Components`, 以及`registerComponents`
+- Android 内核调整方案
 
 
 
