@@ -238,6 +238,14 @@ assists_detail_component.options.__file = "assists-detail.vue"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return hljs; });
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./src/pages/extends/directives/utils.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -304,10 +312,12 @@ function () {
               blocks = el.querySelectorAll('pre code');
             }
 
-            el.style.display = 'block';
-            blocks.forEach(function (block) {
+            el.style.display = 'block'; // [...blocks] NodeList转数组，低版本没有forEach方法
+
+            _toConsumableArray(blocks).forEach(function (block) {
               _.highlightBlock(block);
             });
+
             betterScroller = Object(_utils__WEBPACK_IMPORTED_MODULE_0__[/* findBSInstance */ "a"])(vm.context);
             betterScroller && betterScroller.refresh();
             _context.next = 24;

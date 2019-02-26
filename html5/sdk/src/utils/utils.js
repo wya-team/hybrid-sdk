@@ -35,10 +35,7 @@ export const useDispatchEvent = (eventName, data) => {
 // @createMixins({})
 // class {}
 export const createMixins = (...mixins) => target => {
-	target.prototype = {
-		...target.prototype,
-		...mixins
-	};
+	Object.assign(target.prototype, ...mixins);
 };
 
 /**

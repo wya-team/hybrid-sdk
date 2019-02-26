@@ -1,6 +1,6 @@
 import wya from 'wya-js-sdk';
+import { transform, transformFromAst } from '@babel/standalone';
 import Toasts from '@common/toasts/toasts';
-
 /**
  * 执行上下文
  * eval
@@ -32,7 +32,8 @@ let runHidden = (code) => {
 
 const run = (code) => {
 	try {
-		stringify(runHidden(code));
+		const { code: newCode } = transform(code, { presets: ['es2015'] });
+		stringify(runHidden(newCode));
 	} catch (e) {
 		console.error(e.message);
 	}

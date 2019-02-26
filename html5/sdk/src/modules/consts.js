@@ -16,8 +16,6 @@ module.exports = [
 	'operatorName',
 	'connectionType',
 	'fullScreen',
-	'screenWidth',
-	'screenHeight',
 	'name',
 	'safeArea',
 	'pageParam',

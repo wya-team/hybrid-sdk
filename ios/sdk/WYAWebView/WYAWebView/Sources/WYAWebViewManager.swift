@@ -473,12 +473,12 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
         guard !path.isEmpty else {
             WYAClearCache.wya_cacheFileSizeValue(atPath: path) { (size) in
-                self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":size]])
+                self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":size,"label":NSNull()]])
             }
             return
         }
         WYAClearCache.wya_defaultCachesFolderSizeValueBlock { (folderSize) in
-            self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":"1KB"]])
+            self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":NSNull()]])
         }
     }
 
@@ -488,7 +488,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func getTotalSpaceWithParams(outParams: [String: Any]) {
        let divceTotalSpace = WYAClearCache.wya_getDivceTotalSizeValue()
         print("系统总空间\(divceTotalSpace)")
-        self.listenAction("getTotalSpace", ["status":1,"msg":"调用成功","data":["size":divceTotalSpace,"label":"1KB"]])
+        self.listenAction("getTotalSpace", ["status":1,"msg":"调用成功","data":["size":divceTotalSpace,"label":NSNull()]])
 
     }
 
@@ -499,7 +499,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         let space = NSString.wya_phoneFreeMemory()
         WYAClearCache.wya_getDivceAvailableSizeValueBlock { (folderSize) in
             print("系统可用空间\(folderSize)")
-             self.listenAction("getFreeDiskSpace", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":"1KB"]])
+             self.listenAction("getFreeDiskSpace", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":NSNull()]])
         }
         print(space)
     }
@@ -667,12 +667,9 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 邮件收件人以及发送内容
     @objc func mailWithParams(outParams: [String: Any]) {
-
-//        self.listenAction("sms", ["status":0,"msg":"调用失败","data":NSNull()])
-
         guard MFMailComposeViewController.canSendMail()else{
             print("无法发送邮件")
-            UIView.wya_showCenterToast(withMessage: "无法发送邮件")
+            self.listenAction("sms", ["status":0,"msg":"调用失败","data":NSNull()])
             return
         }
         let developeParams = outParams["DevelopParams"] as! [String : Any]
@@ -781,14 +778,25 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 需要改变的颜色参数
     @objc func setStatusBarStyleWithParams(outParams: [String: Any]) {
         DispatchQueue.main.async {
-        UIApplication.shared.statusBarStyle = .lightContent
-        let developeParams = outParams["DevelopParams"] as! [String : Any]
-        let rootVC = developeParams["rootVC"] as! UIViewController
-        let stateView = UIView()
-        stateView.frame = CGRect(x: 0, y: 0, width: rootVC.view.frame.size.width, height: UIApplication.shared.statusBarFrame.size.height)
-        stateView.backgroundColor = UIColor.black
-        rootVC.view.addSubview(stateView)
+            let developeParams = outParams["DevelopParams"] as! [String : Any]
+            let rootVC = developeParams["rootVC"] as! UIViewController
+            let params = outParams["params"] as! [String : Any]
+            let style = params["style"] as! String
+            var bgColor = UIColor.white
+            if style == "dark"{
+                UIApplication.shared.statusBarStyle = .lightContent
+                bgColor = UIColor.black
+            }else if style == "light"{
+                UIApplication.shared.statusBarStyle = .default
+                bgColor = UIColor.white
+            }
+
+            let stateView = UIView()
+            stateView.frame = CGRect(x: 0, y: 0, width: rootVC.view.frame.size.width, height: UIApplication.shared.statusBarFrame.size.height)
+            stateView.backgroundColor = bgColor
+            rootVC.view.addSubview(stateView)
         }
+        self.listenAction("setStatusBarStyle", ["status":1,"msg":"调用成功","data":NSNull()])
     }
 
 
@@ -796,8 +804,12 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 是否禁止休眠
     @objc func setKeepScreenOnWithParams(outParams: [String: Any]) {
-        UIApplication.shared.isIdleTimerDisabled = true
-        UIView.wya_showCenterToast(withMessage: "屏幕常量设置成功")
+        let params = outParams["params"] as! [String : Any]
+        let keepOn = params["keepOn"] as! Bool
+        DispatchQueue.main.async {
+        UIApplication.shared.isIdleTimerDisabled = keepOn
+        }
+        self.listenAction("setKeepScreenOn", ["status":1,"msg":"调用成功","data":NSNull()])
     }
     @objc func toLauncherWithParams(outParams: [String: Any]) {}
     @objc func setScreenSecureWithParams(outParams: [String: Any]) {}

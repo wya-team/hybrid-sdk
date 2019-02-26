@@ -1,12 +1,5 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[3],{
 
-/***/ "../../docs/events/appIdle.md":
-/***/ (function(module, exports) {
-
-module.exports = "> web/native均可处理\n\n#### 1. 说明\n\n应用多长时间不操作屏幕后触发的事件\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\t// ...\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('appIdle', () => {\n\n});\n\n// on / once / last / first / off\nwya.onAppIdle(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('appIdle', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('appIdle', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
-
-/***/ }),
-
 /***/ "../../docs/events/appIntent.md":
 /***/ (function(module, exports) {
 
@@ -56,20 +49,6 @@ module.exports = "#### 1. 说明\n\n系统键盘弹出的回调\n\n#### 2. Nativ
 
 /***/ }),
 
-/***/ "../../docs/events/launchViewClick.md":
-/***/ (function(module, exports) {
-
-module.exports = "#### 1. 说明\n\n启动页被点击后的回调\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\tvalue: ''        // 附加信息，字符串类型\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('launchViewClick', () => {\n\n});\n\n// on / once / last / first / off\nwya.onLaunchViewClick(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('launchViewClick', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('launchViewClick', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
-
-/***/ }),
-
-/***/ "../../docs/events/longPress.md":
-/***/ (function(module, exports) {
-
-module.exports = "> web/native均可处理\n\n#### 1. 说明\n\n页面全局长按事件，字符串类型\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('longPress', () => {\n\n});\n\n// on / once / last / first / off\nwya.onLongPress(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('longPress', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('longPress', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
-
-/***/ }),
-
 /***/ "../../docs/events/noticeClick.md":
 /***/ (function(module, exports) {
 
@@ -112,13 +91,6 @@ module.exports = "#### 1. 说明\n\n安全区域发生变化的回调\n\n#### 2.
 
 /***/ }),
 
-/***/ "../../docs/events/scrollToBottom.md":
-/***/ (function(module, exports) {
-
-module.exports = "> web/native均可处理\n\n#### 1. 说明\n\nWindow 或者 Frame 页面滑动到底部事件，字符串类型\n\n可用于实现滚动到底部，加载更多功能\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('scrollToBottom', () => {\n\n});\n\n// on / once / last / first / off\nwya.onScrollToBottom(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('scrollToBottom', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('scrollToBottom', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
-
-/***/ }),
-
 /***/ "../../docs/events/shake.md":
 /***/ (function(module, exports) {
 
@@ -126,52 +98,10 @@ module.exports = "#### 1. 说明\n\n设备摇动事件，字符串类型。设�
 
 /***/ }),
 
-/***/ "../../docs/events/smartUpdateFinish.md":
-/***/ (function(module, exports) {
-
-module.exports = "#### 1. 说明\n\n云修复使用静默修复时，更新完毕事件。可通过监听此事件来通知用户做是否强制重启应用等操作或者提示，以使更新生效，字符串类型\n\n如果是提示修复，则不会触发该事件\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\tvalue: '' // 在控制台云修复里面进行静默修复时填写的附加信息，字符串类型\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('smartUpdateFinish', () => {\n\n});\n\n// on / once / last / first / off\nwya.onSmartUpdateFinish(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('smartUpdateFinish', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('smartUpdateFinish', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
-
-/***/ }),
-
-/***/ "../../docs/events/swipeDown.md":
-/***/ (function(module, exports) {
-
-module.exports = "> web/native均可处理\n\n#### 1. 说明\n\nWindow 或者 Frame 的页面全局向下轻扫事件\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('swipeDown', () => {\n\n});\n\n// on / once / last / first / off\nwya.onSwipeDown(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('swipeDown', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('swipeDown', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
-
-/***/ }),
-
-/***/ "../../docs/events/swipeLeft.md":
-/***/ (function(module, exports) {
-
-module.exports = "> web/native均可处理\n\n#### 1. 说明\n\nWindow 或者 Frame 的页面全局向左轻扫事件\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('swipeLeft', () => {\n\n});\n\n// on / once / last / first / off\nwya.onSwipeLeft(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('swipeLeft', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('swipeLeft', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
-
-/***/ }),
-
-/***/ "../../docs/events/swipeRight.md":
-/***/ (function(module, exports) {
-
-module.exports = "> web/native均可处理\n\n#### 1. 说明\n\nWindow 或者 Frame 的页面全局向右轻扫事件\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('swipeRight', () => {\n\n});\n\n// on / once / last / first / off\nwya.onSwipeRight(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('swipeRight', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('swipeRight', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
-
-/***/ }),
-
-/***/ "../../docs/events/swipeUp.md":
-/***/ (function(module, exports) {
-
-module.exports = "> web/native均可处理\n\n#### 1. 说明\n\nWindow 或者 Frame 的页面全局向上轻扫事件\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('swipeUp', () => {\n\n});\n\n// on / once / last / first / off\nwya.onSwipeUp(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('swipeUp', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('swipeUp', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
-
-/***/ }),
-
 /***/ "../../docs/events/takeScreenshot.md":
 /***/ (function(module, exports) {
 
 module.exports = "#### 1. 说明\n\n应用在前台运行期间，用户屏幕截图事件\n\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\timage: '' // 是否回传图片待定\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('takeScreenshot', () => {\n\n});\n\n// on / once / last / first / off\nwya.onTakeScreenshot(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('takeScreenshot', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('takeScreenshot', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
-
-/***/ }),
-
-/***/ "../../docs/events/tap.md":
-/***/ (function(module, exports) {
-
-module.exports = "> web/native均可处理\n\n#### 1. 说明\n\nWindow 或者 Frame 的页面全局单击事件\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('tap', () => {\n\n});\n\n// on / once / last / first / off\nwya.onTap(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('tap', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('tap', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -454,278 +384,6 @@ var shake_invoke = function invoke() {
   invoke: shake_invoke,
   markdown: shake_default.a
 });
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/appIdle.md
-var appIdle = __webpack_require__("../../docs/events/appIdle.md");
-var appIdle_default = /*#__PURE__*/__webpack_require__.n(appIdle);
-
-// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/appIdle.js
-function appIdle_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { appIdle_typeof = function _typeof(obj) { return typeof obj; }; } else { appIdle_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return appIdle_typeof(obj); }
-
-
-
-
-
-var appIdle_invoke = function invoke() {
-  wya_umd_default.a.once('appIdle', function (res) {
-    res = appIdle_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
-    toasts["a" /* default */].info(res, 0);
-  }); // 强制执行
-
-  wya_umd_default.a.invoke('debugger', {
-    event: 'appIdle'
-  }).then(function (res) {
-    toasts["a" /* default */].info('执行成功', 0);
-  }).catch(function () {
-    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
-  });
-};
-
-/* harmony default export */ var modules_appIdle = ({
-  to: '/events/appIdle',
-  title: 'appIdle',
-  label: '多长时间不操作屏幕',
-  invoke: appIdle_invoke,
-  markdown: appIdle_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/scrollToBottom.md
-var scrollToBottom = __webpack_require__("../../docs/events/scrollToBottom.md");
-var scrollToBottom_default = /*#__PURE__*/__webpack_require__.n(scrollToBottom);
-
-// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/scrollToBottom.js
-function scrollToBottom_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { scrollToBottom_typeof = function _typeof(obj) { return typeof obj; }; } else { scrollToBottom_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return scrollToBottom_typeof(obj); }
-
-
-
-
-
-var scrollToBottom_invoke = function invoke() {
-  wya_umd_default.a.once('scrollToBottom', function (res) {
-    res = scrollToBottom_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
-    toasts["a" /* default */].info(res, 0);
-  }); // 强制执行
-
-  wya_umd_default.a.invoke('debugger', {
-    event: 'scrollToBottom'
-  }).then(function (res) {
-    toasts["a" /* default */].info('执行成功', 0);
-  }).catch(function () {
-    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
-  });
-};
-
-/* harmony default export */ var modules_scrollToBottom = ({
-  to: '/events/scrollToBottom',
-  title: 'scrollToBottom',
-  label: '页面滑动到底部事件',
-  invoke: scrollToBottom_invoke,
-  markdown: scrollToBottom_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/swipeDown.md
-var swipeDown = __webpack_require__("../../docs/events/swipeDown.md");
-var swipeDown_default = /*#__PURE__*/__webpack_require__.n(swipeDown);
-
-// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/swipeDown.js
-function swipeDown_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { swipeDown_typeof = function _typeof(obj) { return typeof obj; }; } else { swipeDown_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return swipeDown_typeof(obj); }
-
-
-
-
-
-var swipeDown_invoke = function invoke() {
-  wya_umd_default.a.once('swipeDown', function (res) {
-    res = swipeDown_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
-    toasts["a" /* default */].info(res, 0);
-  }); // 强制执行
-
-  wya_umd_default.a.invoke('debugger', {
-    event: 'swipeDown'
-  }).then(function (res) {
-    toasts["a" /* default */].info('执行成功', 0);
-  }).catch(function () {
-    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
-  });
-};
-
-/* harmony default export */ var modules_swipeDown = ({
-  to: '/events/swipeDown',
-  title: 'swipeDown',
-  label: '向下',
-  invoke: swipeDown_invoke,
-  markdown: swipeDown_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/swipeLeft.md
-var swipeLeft = __webpack_require__("../../docs/events/swipeLeft.md");
-var swipeLeft_default = /*#__PURE__*/__webpack_require__.n(swipeLeft);
-
-// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/swipeLeft.js
-function swipeLeft_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { swipeLeft_typeof = function _typeof(obj) { return typeof obj; }; } else { swipeLeft_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return swipeLeft_typeof(obj); }
-
-
-
-
-
-var swipeLeft_invoke = function invoke() {
-  wya_umd_default.a.once('swipeLeft', function (res) {
-    res = swipeLeft_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
-    toasts["a" /* default */].info(res, 0);
-  }); // 强制执行
-
-  wya_umd_default.a.invoke('debugger', {
-    event: 'swipeLeft'
-  }).then(function (res) {
-    toasts["a" /* default */].info('执行成功', 0);
-  }).catch(function () {
-    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
-  });
-};
-
-/* harmony default export */ var modules_swipeLeft = ({
-  to: '/events/swipeLeft',
-  title: 'swipeLeft',
-  label: '向左',
-  invoke: swipeLeft_invoke,
-  markdown: swipeLeft_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/swipeRight.md
-var swipeRight = __webpack_require__("../../docs/events/swipeRight.md");
-var swipeRight_default = /*#__PURE__*/__webpack_require__.n(swipeRight);
-
-// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/swipeRight.js
-function swipeRight_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { swipeRight_typeof = function _typeof(obj) { return typeof obj; }; } else { swipeRight_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return swipeRight_typeof(obj); }
-
-
-
-
-
-var swipeRight_invoke = function invoke() {
-  wya_umd_default.a.once('swipeRight', function (res) {
-    res = swipeRight_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
-    toasts["a" /* default */].info(res, 0);
-  }); // 强制执行
-
-  wya_umd_default.a.invoke('debugger', {
-    event: 'swipeRight'
-  }).then(function (res) {
-    toasts["a" /* default */].info('执行成功', 0);
-  }).catch(function () {
-    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
-  });
-};
-
-/* harmony default export */ var modules_swipeRight = ({
-  to: '/events/swipeRight',
-  title: 'swipeRight',
-  label: '向右',
-  invoke: swipeRight_invoke,
-  markdown: swipeRight_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/swipeUp.md
-var swipeUp = __webpack_require__("../../docs/events/swipeUp.md");
-var swipeUp_default = /*#__PURE__*/__webpack_require__.n(swipeUp);
-
-// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/swipeUp.js
-function swipeUp_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { swipeUp_typeof = function _typeof(obj) { return typeof obj; }; } else { swipeUp_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return swipeUp_typeof(obj); }
-
-
-
-
-
-var swipeUp_invoke = function invoke() {
-  wya_umd_default.a.once('swipeUp', function (res) {
-    res = swipeUp_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
-    toasts["a" /* default */].info(res, 0);
-  }); // 强制执行
-
-  wya_umd_default.a.invoke('debugger', {
-    event: 'swipeUp'
-  }).then(function (res) {
-    toasts["a" /* default */].info('执行成功', 0);
-  }).catch(function () {
-    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
-  });
-};
-
-/* harmony default export */ var modules_swipeUp = ({
-  to: '/events/swipeUp',
-  title: 'swipeUp',
-  label: '向上',
-  invoke: swipeUp_invoke,
-  markdown: swipeUp_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/tap.md
-var tap = __webpack_require__("../../docs/events/tap.md");
-var tap_default = /*#__PURE__*/__webpack_require__.n(tap);
-
-// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/tap.js
-function tap_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { tap_typeof = function _typeof(obj) { return typeof obj; }; } else { tap_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return tap_typeof(obj); }
-
-
-
-
-
-var tap_invoke = function invoke() {
-  wya_umd_default.a.once('tap', function (res) {
-    res = tap_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
-    toasts["a" /* default */].info(res, 0);
-  }); // 强制执行
-
-  wya_umd_default.a.invoke('debugger', {
-    event: 'tap'
-  }).then(function (res) {
-    toasts["a" /* default */].info('执行成功', 0);
-  }).catch(function () {
-    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
-  });
-};
-
-/* harmony default export */ var modules_tap = ({
-  to: '/events/tap',
-  title: 'tap',
-  label: '单击',
-  invoke: tap_invoke,
-  markdown: tap_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/longPress.md
-var longPress = __webpack_require__("../../docs/events/longPress.md");
-var longPress_default = /*#__PURE__*/__webpack_require__.n(longPress);
-
-// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/longPress.js
-function longPress_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { longPress_typeof = function _typeof(obj) { return typeof obj; }; } else { longPress_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return longPress_typeof(obj); }
-
-
-
-
-
-var longPress_invoke = function invoke() {
-  wya_umd_default.a.once('longPress', function (res) {
-    res = longPress_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
-    toasts["a" /* default */].info(res, 0);
-  }); // 强制执行
-
-  wya_umd_default.a.invoke('debugger', {
-    event: 'longPress'
-  }).then(function (res) {
-    toasts["a" /* default */].info('执行成功', 0);
-  }).catch(function () {
-    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
-  });
-};
-
-/* harmony default export */ var modules_longPress = ({
-  to: '/events/longPress',
-  title: 'longPress',
-  label: '长按',
-  invoke: longPress_invoke,
-  markdown: longPress_default.a
-});
 // EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/takeScreenshot.md
 var takeScreenshot = __webpack_require__("../../docs/events/takeScreenshot.md");
 var takeScreenshot_default = /*#__PURE__*/__webpack_require__.n(takeScreenshot);
@@ -895,74 +553,6 @@ var appIntent_invoke = function invoke() {
   label: '应用被调起',
   invoke: appIntent_invoke,
   markdown: appIntent_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/smartUpdateFinish.md
-var smartUpdateFinish = __webpack_require__("../../docs/events/smartUpdateFinish.md");
-var smartUpdateFinish_default = /*#__PURE__*/__webpack_require__.n(smartUpdateFinish);
-
-// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/smartUpdateFinish.js
-function smartUpdateFinish_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { smartUpdateFinish_typeof = function _typeof(obj) { return typeof obj; }; } else { smartUpdateFinish_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return smartUpdateFinish_typeof(obj); }
-
-
-
-
-
-var smartUpdateFinish_invoke = function invoke() {
-  wya_umd_default.a.once('smartUpdateFinish', function (res) {
-    res = smartUpdateFinish_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
-    toasts["a" /* default */].info(res, 0);
-  }); // 强制执行
-
-  wya_umd_default.a.invoke('debugger', {
-    event: 'smartUpdateFinish'
-  }).then(function (res) {
-    toasts["a" /* default */].info('执行成功', 0);
-  }).catch(function () {
-    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
-  });
-};
-
-/* harmony default export */ var modules_smartUpdateFinish = ({
-  to: '/events/smartUpdateFinish',
-  title: 'smartUpdateFinish',
-  label: '静默修复',
-  invoke: smartUpdateFinish_invoke,
-  markdown: smartUpdateFinish_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/launchViewClick.md
-var launchViewClick = __webpack_require__("../../docs/events/launchViewClick.md");
-var launchViewClick_default = /*#__PURE__*/__webpack_require__.n(launchViewClick);
-
-// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/launchViewClick.js
-function launchViewClick_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { launchViewClick_typeof = function _typeof(obj) { return typeof obj; }; } else { launchViewClick_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return launchViewClick_typeof(obj); }
-
-
-
-
-
-var launchViewClick_invoke = function invoke() {
-  wya_umd_default.a.once('launchViewClick', function (res) {
-    res = launchViewClick_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
-    toasts["a" /* default */].info(res, 0);
-  }); // 强制执行
-
-  wya_umd_default.a.invoke('debugger', {
-    event: 'launchViewClick'
-  }).then(function (res) {
-    toasts["a" /* default */].info('执行成功', 0);
-  }).catch(function () {
-    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
-  });
-};
-
-/* harmony default export */ var modules_launchViewClick = ({
-  to: '/events/launchViewClick',
-  title: 'launchViewClick',
-  label: '启动页被点击后的回调',
-  invoke: launchViewClick_invoke,
-  markdown: launchViewClick_default.a
 });
 // EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/keyboardShow.md
 var keyboardShow = __webpack_require__("../../docs/events/keyboardShow.md");
@@ -1210,21 +800,11 @@ var volumeDown_invoke = function invoke() {
 /* concated harmony reexport pause */__webpack_require__.d(__webpack_exports__, "pause", function() { return modules_pause; });
 /* concated harmony reexport resume */__webpack_require__.d(__webpack_exports__, "resume", function() { return modules_resume; });
 /* concated harmony reexport shake */__webpack_require__.d(__webpack_exports__, "shake", function() { return modules_shake; });
-/* concated harmony reexport appIdle */__webpack_require__.d(__webpack_exports__, "appIdle", function() { return modules_appIdle; });
-/* concated harmony reexport scrollToBottom */__webpack_require__.d(__webpack_exports__, "scrollToBottom", function() { return modules_scrollToBottom; });
-/* concated harmony reexport swipeDown */__webpack_require__.d(__webpack_exports__, "swipeDown", function() { return modules_swipeDown; });
-/* concated harmony reexport swipeLeft */__webpack_require__.d(__webpack_exports__, "swipeLeft", function() { return modules_swipeLeft; });
-/* concated harmony reexport swipeRight */__webpack_require__.d(__webpack_exports__, "swipeRight", function() { return modules_swipeRight; });
-/* concated harmony reexport swipeUp */__webpack_require__.d(__webpack_exports__, "swipeUp", function() { return modules_swipeUp; });
-/* concated harmony reexport tap */__webpack_require__.d(__webpack_exports__, "tap", function() { return modules_tap; });
-/* concated harmony reexport longPress */__webpack_require__.d(__webpack_exports__, "longPress", function() { return modules_longPress; });
 /* concated harmony reexport takeScreenshot */__webpack_require__.d(__webpack_exports__, "takeScreenshot", function() { return modules_takeScreenshot; });
 /* concated harmony reexport viewAppear */__webpack_require__.d(__webpack_exports__, "viewAppear", function() { return modules_viewAppear; });
 /* concated harmony reexport viewDisappear */__webpack_require__.d(__webpack_exports__, "viewDisappear", function() { return modules_viewDisappear; });
 /* concated harmony reexport noticeClick */__webpack_require__.d(__webpack_exports__, "noticeClick", function() { return modules_noticeClick; });
 /* concated harmony reexport appIntent */__webpack_require__.d(__webpack_exports__, "appIntent", function() { return modules_appIntent; });
-/* concated harmony reexport smartUpdateFinish */__webpack_require__.d(__webpack_exports__, "smartUpdateFinish", function() { return modules_smartUpdateFinish; });
-/* concated harmony reexport launchViewClick */__webpack_require__.d(__webpack_exports__, "launchViewClick", function() { return modules_launchViewClick; });
 /* concated harmony reexport keyboardShow */__webpack_require__.d(__webpack_exports__, "keyboardShow", function() { return modules_keyboardShow; });
 /* concated harmony reexport keyboardHide */__webpack_require__.d(__webpack_exports__, "keyboardHide", function() { return modules_keyboardHide; });
 /* concated harmony reexport safeAreaChange */__webpack_require__.d(__webpack_exports__, "safeAreaChange", function() { return modules_safeAreaChange; });
@@ -1232,26 +812,6 @@ var volumeDown_invoke = function invoke() {
 /* concated harmony reexport keyMenu */__webpack_require__.d(__webpack_exports__, "keyMenu", function() { return modules_keyMenu; });
 /* concated harmony reexport volumeUp */__webpack_require__.d(__webpack_exports__, "volumeUp", function() { return modules_volumeUp; });
 /* concated harmony reexport volumeDown */__webpack_require__.d(__webpack_exports__, "volumeDown", function() { return modules_volumeDown; });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

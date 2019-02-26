@@ -57,7 +57,7 @@ describe('web.js', () => {
 		});
 
 		wya.once('batteryLow', (res) => {
-			expect(res.tip).toBe(20);
+			expect(res.tip).toBe('xxx');
 		});
 
 		// Native 模拟触发

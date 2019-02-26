@@ -23,7 +23,7 @@ export default {
 		name: '',
 		title: '',
 		url: '',
-		pageParam: '',
+		pageParam: {},
 		scrollToTop: false,
 		vScrollBarEnabled: true,
 		hScrollBarEnabled: true,

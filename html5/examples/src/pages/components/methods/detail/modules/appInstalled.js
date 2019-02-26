@@ -20,7 +20,6 @@ export default {
 	invoke,
 	markdown,
 	param: {
-		sync: false,
 		scheme: ''
 	}
 };
