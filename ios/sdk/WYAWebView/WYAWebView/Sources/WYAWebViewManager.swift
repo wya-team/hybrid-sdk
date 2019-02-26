@@ -352,12 +352,12 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func installAppWithParams(outParams: [String: Any]) {
 
         let params = outParams["params"] as! [String:Any]
-        let tempString = params["url"] as! String
-        //"https://itunes.apple.com/cn/app/jie-zou-da-shi/id493901993?mt=8"
-        guard !tempString.isEmpty else{
-            UIView.wya_showCenterToast(withMessage: "url错误")
+
+        guard params.count != 0 else {
+            self.listenAction("installApp", self.callBackJsonData(0, "缺少参数"))
             return
         }
+        let tempString = params["url"] as! String
         var urlString = ""
         if tempString.hasPrefix("http") {
            urlString = tempString.replacingOccurrences(of: "http", with: "itms-apps")
@@ -365,8 +365,6 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         if tempString.hasPrefix("https") {
             urlString = tempString.replacingOccurrences(of: "https", with: "itms-apps")
         }
-
-
 
         if urlString.hasPrefix("itms-apps"){
             let url = URL(string: urlString)
@@ -388,8 +386,11 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 需要传递的参数
     @objc func openAppWithParams(outParams: [String: Any]) {
         print(outParams)
-//        let str = "sinaweibo://"
         let params = outParams["params"] as! [String:Any]
+        guard params.count != 0 else {
+            self.listenAction("openApp", self.callBackJsonData(0, "缺少参数"))
+            return
+        }
         let scheme = params["scheme"] as! String
         let url = URL.init(string: scheme)
         DispatchQueue.main.async {
@@ -409,17 +410,20 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 需要传递的参数
     @objc func appInstalledWithParams(outParams: [String: Any]) {
-//        let str = "sinaweibo://hello"
         let params = outParams["params"] as! [String:Any]
+        guard params.count != 0 else {
+            self.listenAction("appInstalled", self.callBackJsonData(0, "缺少参数"))
+            return
+        }
         let scheme = params["scheme"] as! String
         let url = URL.init(string: scheme)
         DispatchQueue.main.async {
             if UIApplication.shared.canOpenURL(url!) {
                 print("存在")
-                UIView.wya_showCenterToast(withMessage: "新浪微博APP存在")
+                self.listenAction("appInstalled", self.callBackJsonData(1, "没有查询到APP"))
             } else {
                 print("不存在")
-                UIView.wya_showCenterToast(withMessage: "新浪微博APP不存在")
+                self.listenAction("appInstalled", self.callBackJsonData(1, "调用成功"))
             }
         }
     }
@@ -445,10 +449,13 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func clearCacheWithParams(outParams: [String: Any]) {
 
         let params = outParams["params"] as! [String:Any]
-
+        guard params.count != 0 else {
+            self.listenAction("clearCache", self.callBackJsonData(0, "缺少参数"))
+            return
+        }
         let path = params["path"] as! String
 
-        guard !path.isEmpty else {
+        guard path == "" else {
             WYAClearCache.wya_clearFile(atPath: path) { (clearStatus) in
                 print("清理缓存成功")
                 self.listenAction("clearCache", self.callBackJsonData(1, "调用成功"))
@@ -468,10 +475,13 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func getCacheSizeWithParams(outParams: [String: Any]) {
 
         let params = outParams["params"] as! [String:Any]
-
+        guard params.count != 0 else {
+            self.listenAction("getCacheSize", self.callBackJsonData(0, "缺少参数"))
+            return
+        }
         let path = params["path"] as! String
 
-        guard !path.isEmpty else {
+        guard path == "" else {
             WYAClearCache.wya_cacheFileSizeValue(atPath: path) { (size) in
                 self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":size,"label":NSNull()]])
             }
@@ -624,6 +634,10 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         let rootVC = developParams["rootVC"] as! UIViewController
 
         let params = outParams["params"] as! [String:Any]
+        guard params.count != 0 else {
+            self.listenAction("sms", self.callBackJsonData(0, "缺少参数"))
+            return
+        }
         let body = params["text"] as! String
         let phoneNumbers = params["numbers"] as! Array<String>
         // 发送短信的Controller
@@ -643,24 +657,27 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true, completion: nil)
+        var msg = ""
         switch result {
         case .cancelled:
             print("取消发送")
             UIView.wya_showCenterToast(withMessage:"取消发送")
-
+            msg = "取消发送"
         case .saved:
             print("保存成功")
             UIView.wya_showCenterToast(withMessage:"保存成功")
-
+            msg = "保存成功"
         case .sent:
             print("发送成功")
             UIView.wya_showCenterToast(withMessage:"发送成功")
-
+            msg = "发送成功"
         case .failed:
             print("发送失败")
             UIView.wya_showCenterToast(withMessage:"发送失败")
-
+            msg = "发送失败"
         }
+        listenAction("mail", ["status":1,"msg":msg,"data":NSNull()])
+
     }
 
     /// 发送邮件
@@ -669,16 +686,24 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func mailWithParams(outParams: [String: Any]) {
         guard MFMailComposeViewController.canSendMail()else{
             print("无法发送邮件")
-            self.listenAction("sms", ["status":0,"msg":"调用失败","data":NSNull()])
+            self.listenAction("mail", ["status":0,"msg":"调用失败","data":NSNull()])
             return
         }
         let developeParams = outParams["DevelopParams"] as! [String : Any]
         let rootVC = developeParams["rootVC"] as! UIViewController
         let emailVC = MFMailComposeViewController()
+        let params = outParams["params"] as! [String:Any]
+        guard params.count != 0 else {
+            self.listenAction("mail", self.callBackJsonData(0, "缺少参数"))
+            return
+        }
+        let recipients = params["recipients"] as! Array<String>
+        let subject = params["subject"] as! String
+        let body = params["body"] as! String
         emailVC.mailComposeDelegate = self
-        emailVC.setSubject("hybrid测试邮件")
-        emailVC.setToRecipients(["lsh@weiyian.com"])
-        emailVC.setMessageBody("hybrid邮件发送测试内容", isHTML: false)
+        emailVC.setSubject(subject)
+        emailVC.setToRecipients(recipients)
+        emailVC.setMessageBody(body, isHTML: false)
         rootVC.present(emailVC, animated: true, completion: nil)
     }
 
@@ -713,7 +738,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         let list = manager.getConTacts()
         print(list)
         self.listenAction("openContacts", ["status":1,"msg":"调用成功","data":list])
-        UIView.wya_showCenterToast(withMessage: "获取联系人成功")
+//        UIView.wya_showCenterToast(withMessage: "获取联系人成功")
 
     }
 
@@ -745,8 +770,12 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func setScreenOrientationWithParams(outParams: [String: Any]) {
         let developParams = outParams["DevelopParams"] as! [String : Any]
         let rootVC = developParams["rootVC"] as! WYAViewController
-        
+
         let params = outParams["params"] as! [String : Any]
+        guard params.count != 0 else {
+            self.listenAction("setScreenOrientation", self.callBackJsonData(0, "缺少参数"))
+            return
+        }
         rootVC.orientation = params["orientation"] as? String
         switch params["orientation"] as! String {
         case "portraitUp":
@@ -781,6 +810,10 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             let developeParams = outParams["DevelopParams"] as! [String : Any]
             let rootVC = developeParams["rootVC"] as! UIViewController
             let params = outParams["params"] as! [String : Any]
+            guard params.count != 0 else {
+                self.listenAction("setStatusBarStyle", self.callBackJsonData(0, "缺少参数"))
+                return
+            }
             let style = params["style"] as! String
             var bgColor = UIColor.white
             if style == "dark"{
@@ -805,6 +838,10 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 是否禁止休眠
     @objc func setKeepScreenOnWithParams(outParams: [String: Any]) {
         let params = outParams["params"] as! [String : Any]
+        guard params.count != 0 else {
+            self.listenAction("setKeepScreenOn", self.callBackJsonData(0, "缺少参数"))
+            return
+        }
         let keepOn = params["keepOn"] as! Bool
         DispatchQueue.main.async {
         UIApplication.shared.isIdleTimerDisabled = keepOn

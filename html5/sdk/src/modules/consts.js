@@ -24,4 +24,7 @@ module.exports = [
 	'debug',
 	'channel',
 	'jailbreak',
+	'documentsDir',
+	'libraryDir',
+	'tmpDir', 
 ];

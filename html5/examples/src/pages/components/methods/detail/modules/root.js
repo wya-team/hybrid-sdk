@@ -34,3 +34,6 @@ export stopRecord from './stopRecord';
 export startPlay from './startPlay';
 export stopPlay from './stopPlay';
 export openVideo from './openVideo';
+export setWinAttr from './setWinAttr';
+export uninstallApp from './uninstallApp';
+export require from './require';

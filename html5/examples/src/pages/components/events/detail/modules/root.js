@@ -17,3 +17,4 @@ export keyBack from './keyBack';
 export keyMenu from './keyMenu';
 export volumeUp from './volumeUp';
 export volumeDown from './volumeDown';
+export appIdle from './appIdle';
