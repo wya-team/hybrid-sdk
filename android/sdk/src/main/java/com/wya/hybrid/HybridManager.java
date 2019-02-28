@@ -31,12 +31,17 @@ import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.arialyy.aria.core.download.DownloadTask;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.wya.hardware.camera.WYACameraView;
 import com.wya.hybrid.base.ActivityManager;
@@ -67,6 +72,11 @@ import com.wya.hybrid.data.event.NetEvent;
 import com.wya.hybrid.data.event.ShakeEvent;
 import com.wya.hybrid.data.sp.BatterySp;
 import com.wya.hybrid.data.sp.ForegroundStateSp;
+import com.wya.hybrid.floatwindow.FloatWindow;
+import com.wya.hybrid.floatwindow.IFloatWindow;
+import com.wya.hybrid.floatwindow.MoveType;
+import com.wya.hybrid.floatwindow.PermissionUtil;
+import com.wya.hybrid.floatwindow.Screen;
 import com.wya.hybrid.methods.cache.CacheData;
 import com.wya.hybrid.methods.cache.SpaceData;
 import com.wya.hybrid.methods.closewin.CloseWinData;
@@ -780,10 +790,73 @@ public class HybridManager implements JsCallBack {
 
 	private void showFloatBox(String data, int id, String name) {
 		mEventMap.put(name, id);
-//		startFloat();
+		startFloat();
 		setEmitData(1, "响应成功", null);
 		send(name, getEmitData());
 	}
+
+	private void startFloat() {
+		if (PermissionUtil.hasPermission(mContext)) {
+			IFloatWindow old = FloatWindow.get("old");
+			if (old == null) {
+				IFloatWindow cancel2 = FloatWindow.get("cancel2");
+				if (cancel2 == null) {
+					FloatWindow
+						.with(mContext.getApplicationContext())
+						.setTag("cancel2")
+						.setView(R.layout.layout_window)
+						.setCancelParam2(320)
+						.setMoveType(MoveType.inactive, 0, 0)
+						.setDesktopShow(false)
+						.build();
+				}
+				IFloatWindow cancel = FloatWindow.get("cancel");
+				if (cancel == null) {
+					FloatWindow
+						.with(mContext.getApplicationContext())
+						.setTag("cancel")
+						.setView(R.layout.layout_window)
+						.setCancelParam2(300)
+						.setMoveType(MoveType.inactive, 0, 0)
+						.setDesktopShow(false)
+						.build();
+				}
+
+				ImageView imageView = new ImageView(mContext);
+				RequestOptions requestOptions = RequestOptions.circleCropTransform();
+				Glide.with(mContext.getApplicationContext())
+					.load("http://pic43.nipic.com/20140711/19187786_140828149528_2.jpg")
+					.apply(requestOptions).into(imageView);
+
+				FloatWindow
+					.with(mContext.getApplicationContext())
+					.setTag("old")
+					.setView(imageView)
+					.setMoveType(MoveType.slide, 0, 0)
+					.setWidth(60)
+					.setFilter(false, mContext.getClass())
+					.setHeight(60)
+					.setX(Screen.width, 0.8f)
+					.setY(ScreenUtil.getScreenHeight(mContext) / 3)
+					.setParentHeight(ScreenUtil.getScreenHeight(mContext))
+					.setMoveStyle(300, new AccelerateInterpolator())
+					.setDesktopShow(false)
+					.build();
+				imageView.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						v.getContext().startActivity(new Intent(mContext.getApplicationContext(), mContext.getClass()));
+					}
+				});
+				mContext.finish();
+			} else {
+				mContext.finish();
+			}
+		} else {
+			Toast.makeText(mContext, "没有浮窗权限！", Toast.LENGTH_SHORT).show();
+		}
+	}
+
 
 	/**
 	 * 保持屏幕亮度
