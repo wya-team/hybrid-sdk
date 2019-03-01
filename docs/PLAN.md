@@ -27,6 +27,10 @@
 [debug][debug] | - | `` | 1 | 0 | 0
 [channel][channel] | app来源 | `Apple App Store` | 1 | 0 | 0
 [jailbreak][jailbreak] | 设备是否越狱 | `` | 1 | 0 | 0
+[documentsDir][documentsDir] | 文档目录，可存放用户数据 | `` | 1 | 0 | 0
+[libraryDir][libraryDir] | 系统默认的缓存目录，系统永远不会删除这里的文件需要手动清理 | `` | 1 | 0 | 0
+[tmpDir][tmpDir] | 用于存放临时文件，保存应用程序再次启动过程中不需要的信息 | `` | 1 | 0 | 0
+
 
 [version]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/consts/version.md
 [appId]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/consts/appId.md
@@ -54,7 +58,9 @@
 [debug]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/consts/debug.md
 [channel]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/consts/channel.md
 [jailbreak]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/consts/jailbreak.md
-
+[documentsDir]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/consts/documentsDir.md
+[libraryDir]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/consts/libraryDir.md
+[tmpDir]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/consts/tmpDir.md
 
 ## 二、事件系统
 
@@ -214,6 +220,7 @@
 - 思考事件的注册方式由用户决定
 - 思考 `registerMethod` -> `registerModule`
 - 思考 h5/native `Components`, 以及`registerComponents`
+- Android 内核调整方案
 
 
 
