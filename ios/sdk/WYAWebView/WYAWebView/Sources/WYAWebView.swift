@@ -273,6 +273,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                     var param = [String: Any]()
                     param.updateValue(self.cmam_parentController(), forKey: "rootVC")
                     param.updateValue(self, forKey: "webView")
+                    param.updateValue(self.actionID ?? "", forKey: "actionID")
                     allParams.updateValue(params as! [String : Any], forKey: "params")
                     allParams.updateValue(param, forKey: "DevelopParams")
                     // 获取到参数执行调用原生

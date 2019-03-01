@@ -455,17 +455,21 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         }
         let path = params["path"] as! String
 
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let actionID = developParams["actionID"] as! String
+
+
         guard path == "" else {
             WYAClearCache.wya_clearFile(atPath: path) { (clearStatus) in
                 print("清理缓存成功")
-                self.listenAction("clearCache", self.callBackJsonData(1, "调用成功"))
+                self.listenAction(actionID, self.callBackJsonData(1, "调用成功"))
             }
             return
         }
 
         WYAClearCache.wya_clearCachesClearStatusBlock { (clearStatus) in
             print("清理缓存成功")
-            self.listenAction("clearCache", self.callBackJsonData(1, "调用成功"))
+            self.listenAction(actionID, self.callBackJsonData(1, "调用成功"))
         }
     }
 
