@@ -132,8 +132,22 @@ extension WYAWebView {
                                 indexFilename: nil, cacheAge: 3600,
                                 allowRangeRequests: true)
 
+//        webServer.addDefaultHandler(forMethod: "GET", request: GCDWebServerRequest.self) { (request) -> GCDWebServerResponse? in
+//            let jsString = bund.path(forResource: "dist/index", ofType: "html")
+//
+//            var jsPath = String()
+//            do {
+//                jsPath = try String(contentsOfFile: jsString!)
+//            } catch {
+//                print(error)
+//            }
+//
+//            return GCDWebServerDataResponse(html: jsPath)
+//
+//        }
+
         // 再覆盖个新的handler处理动态页面（html页面）
-        webServer.addHandler(forMethod: "GET", pathRegex: "^/.*\\$",
+        webServer.addHandler(forMethod: "GET", pathRegex: "^/.*\\$.html",
                              request: GCDWebServerDataRequest.self,
                              processBlock: { (_) -> GCDWebServerResponse? in
 
@@ -166,11 +180,7 @@ extension WYAWebView {
 
                                 return GCDWebServerResponse(redirect: url!, permanent: false)
         })
-//        webServer.addDefaultHandler(forMethod: "GET", request: GCDWebServerRequest.self) { (request) -> GCDWebServerResponse? in
-//            print(request)
-//            return GCDWebServerResponse()
-//
-//        }
+
         let options: Dictionary<String, Any> = ["Port": 8080,
                                                 "AutomaticallySuspendInBackground": false,
                                                 "BindToLocalhost": true]
@@ -240,7 +250,7 @@ extension WYAWebView: GCDWebServerDelegate {
         print(server.isRunning)
     }
     public func webServerDidStop(_ server: GCDWebServer) {
-        print("已停止")
+
     }
 
 }
@@ -289,8 +299,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
             if arrContain! {
                 self.getParams(self.actionID!) { params in
-                    // 假数据
-//                    let testDic = self.testParams(dictory: dic?["method"] as! String)
 
                     var allParams = [String : Dictionary<String, Any>]()
 
@@ -307,86 +315,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             }
         }
         decisionHandler(.allow)
-    }
-
-    func testParams(dictory: String) -> [String : Any] {
-
-        if dictory == "push" {
-            /// 假数据
-            var params = [String: Any]()
-            params["name"] = "test"
-            params["title"] = "XXX"
-            params["url"] = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/"
-            params["pageParams"] = [
-                "vScrollBarEnabled":true,
-                "hScrollBarEnabled":true,
-                "scaleEnabled":false,
-                "hideTopBar":true,
-                "hideBottomBar":true,
-                "animation":"card"
-            ]
-            return params
-        }else if dictory == "pop" {
-            var params = [String: Any]()
-            params["name"] = "test"
-            params["animation"] = "card"
-            return params
-        }else if dictory == "closeToWin" {
-            var params = [String: Any]()
-            params["name"] = "test"
-            params["animation"] = "card"
-            return params
-        }else if dictory == "notification" {
-            var params = [String: Any]()
-            params["vibrate"] = ""
-            params["sound"] = "default"
-            params["light"] = true
-            params["notify"] = ["title":"测试notification","content":"有新消息","extra":""]
-            params["timestamp"] = 1550800520
-            return params
-        }else if dictory == "cancelNotification" {
-            var params = [String: Any]()
-            params["id"] = "-1"
-
-            return params
-
-        }else if dictory == "setScreenOrientation" {
-            var params = [String: Any]()
-            params["orientation"] = "landscapeLeft"
-
-            return params
-
-        }else if dictory == "getPicture" {
-            var params = [String: Any]()
-            params["sourceType"] = "album"
-            params["encodingType"] = "png"
-            params["mediaValue"] = "pic"
-            params["destinationType"] = "url"
-            params["direction"] = false
-            params["quality"] = 50
-            params["videoQuality"] = "low"
-            params["targetWidth"] = 500
-            params["targetHeight"] = 500
-            params["saveToPhotoAlbum"] = false
-            params["groupName"] = "haha"
-            return params
-        }else if dictory == "startRecord" {
-            var params = [String: Any]()
-            params["path"] = "/Users/lishihang/Desktop/test"
-
-            return params
-        }else if dictory == "startPlay" {
-            var params = [String: Any]()
-            params["path"] = "/Users/lishihang/Desktop/test"
-
-            return params
-        }else if dictory == "openVideo" {
-            var params = [String: Any]()
-            params["url"] = "https://vd1.bdstatic.com/mda-hgvt5nvfzpftdxcs/sc/mda-hgvt5nvfzpftdxcs.mp4"
-            return params
-        }else {
-            return [String : Any]()
-        }
     }
 
     /// 拿到响应后决定是否允许跳转

@@ -89,3 +89,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+
+extension UIViewController{
+    @objc func injected() {
+        viewDidLoad()
+        viewWillAppear(true)
+        viewWillDisappear(true)
+    }
+}
