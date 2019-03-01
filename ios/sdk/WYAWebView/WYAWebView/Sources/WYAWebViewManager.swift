@@ -151,6 +151,10 @@ class WYAWebViewManager: NSObject {
 
     var recorderPath : String?
 
+    typealias callbackBlock = () -> Void
+    var callback : callbackBlock!
+
+
     func listenAction(_ actionType: String, _ params: [String: Any]) {
         let string = dicTosJsonString(params)
         nativeDelegate?.getNativeActionResult(actionType, string)
@@ -1022,12 +1026,39 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func saveMediaToAlbumWithParams(outParams: [String: Any]) {
         let param = outParams["params"] as! [String : Any]
         let url = param["url"] as! String
+        let type = param["mediaType"] as! String
 
         let tool = WYACameraTool(cameraOrientation: .front)
         tool?.albumName = param["groupName"] as? String
-        let data = try? Data(contentsOf: URL(string: url)!)
+        switch type {
+        case "pic":
+            let data = try? Data(contentsOf: URL(string: url)!)
+            tool?.savePhtots(with: UIImage(data: data!), videoUrl: nil)
+            break
+        case "video":
 
-        tool?.savePhtots(with: UIImage(data: data!), videoUrl: nil)
+
+            let downloader = WYADownloader.shared()
+
+            let model = WYADownloadModel()
+            model.urlString = "https://vd1.bdstatic.com/mda-hgvt5nvfzpftdxcs/sc/mda-hgvt5nvfzpftdxcs.mp4"
+            model.addObserver(self, forKeyPath: "downloadState", options: .new, context: nil)
+            downloader.wya_DownloadTask(with: model) { (model, result) in
+                print(result)
+            }
+            self.callback = { () in
+                DispatchQueue.main.asyncAfter(deadline: .now()+5.0) {
+                    let data = try! Data(contentsOf: URL(fileURLWithPath: model.destinationPath))
+                    print(data)
+                    tool?.savePhtots(with: nil, videoUrl: URL(fileURLWithPath: model.destinationPath))
+                }
+            }
+
+            break
+        default:
+            break
+        }
+
 
     }
 
@@ -1262,13 +1293,13 @@ extension WYAWebViewManager {
             self.listenAction("takeScreenshot", inParams)
         }
 
-        note.addObserver(forName: NSNotification.Name.closeWin, object: nil, queue: OperationQueue.main) { _ in
-            // 关闭窗口
-            print("closewin")
-            let inParams = [String: Any]()
-
-            self.listenAction("closeWin", inParams)
-        }
+//        note.addObserver(forName: NSNotification.Name.closeWin, object: nil, queue: OperationQueue.main) { _ in
+//            // 关闭窗口
+//            print("closewin")
+//            let inParams = [String: Any]()
+//
+//            self.listenAction("closeWin", inParams)
+//        }
     }
 }
 
@@ -1278,6 +1309,53 @@ extension WYAWebViewManager {
 
         // 回传信息
         self.nativeDelegate?.getNativeActionResult("", "sss")
+    }
+}
+
+// MARK: 按键事件
+
+extension WYAWebViewManager {
+    /**
+     返回事件
+     */
+    func backBtnPressed() {
+        self.nativeDelegate?.getNativeActionResult("keyBack", "")
+    }
+
+    /// 音量变化监听
+    func handleVolum() {
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let error as NSError {
+            print("\(error)")
+        }
+        self.currentVolume = AVAudioSession.sharedInstance().outputVolume
+        NotificationCenter.default.addObserver(self, selector: #selector(self.changeVolumSlider(notifi:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+    }
+
+    @objc func changeVolumSlider(notifi: NSNotification) {
+        if let volum: Float = notifi.userInfo?["AVSystemController_AudioVolumeNotificationParameter"] as! Float? {
+            if volum > self.currentVolume! {
+                self.nativeDelegate?.getNativeActionResult("volumeUp", "")
+                print("增大")
+            } else {
+                self.nativeDelegate?.getNativeActionResult("voolumeDown", "")
+                print("减小")
+            }
+            self.currentVolume = volum
+        }
+    }
+}
+
+extension WYAWebViewManager {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "downloadState" {
+            let prog = change![.newKey] as! WYADownloadState.RawValue
+            if prog == 4 {
+                self.callback()
+            }
+        }
     }
 }
 
@@ -1334,41 +1412,7 @@ extension WYAWebViewManager {
     }
 }
 
-// MARK: 按键事件
 
-extension WYAWebViewManager {
-    /**
-     返回事件
-     */
-    func backBtnPressed() {
-        self.nativeDelegate?.getNativeActionResult("keyBack", "")
-    }
-
-    /// 音量变化监听
-    func handleVolum() {
-        do {
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch let error as NSError {
-            print("\(error)")
-        }
-        self.currentVolume = AVAudioSession.sharedInstance().outputVolume
-        NotificationCenter.default.addObserver(self, selector: #selector(self.changeVolumSlider(notifi:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
-        UIApplication.shared.beginReceivingRemoteControlEvents()
-    }
-
-    @objc func changeVolumSlider(notifi: NSNotification) {
-        if let volum: Float = notifi.userInfo?["AVSystemController_AudioVolumeNotificationParameter"] as! Float? {
-            if volum > self.currentVolume! {
-                self.nativeDelegate?.getNativeActionResult("volumeUp", "")
-                print("增大")
-            } else {
-                self.nativeDelegate?.getNativeActionResult("voolumeDown", "")
-                print("减小")
-            }
-            self.currentVolume = volum
-        }
-    }
-}
 
 extension WYAWebViewManager {
     public func removeNotice() {

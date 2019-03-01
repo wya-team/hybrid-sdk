@@ -27,8 +27,8 @@ public class WYAWebView: UIView {
 
     var pathString : String?
 
+    var webServer = GCDWebServer()
 
-    let webServer = GCDWebServer()
     var webManager : WYAWebViewManager?
     var actionID: String?
     var webView: WKWebView?
@@ -124,16 +124,30 @@ extension WYAWebView {
     @objc public func openLocationHttpServer() {
         let bund = Bundle(for: classForCoder)
         let websitePath = bund.path(forResource: "dist", ofType: nil)
-
-
+        GCDWebServer.setLogLevel(4)
+        webServer.delegate = self
 
         // 先设置个默认的handler处理静态文件（比如css、js、图片等）
         webServer.addGETHandler(forBasePath: "/", directoryPath: websitePath!,
                                 indexFilename: nil, cacheAge: 3600,
                                 allowRangeRequests: true)
 
+//        webServer.addDefaultHandler(forMethod: "GET", request: GCDWebServerRequest.self) { (request) -> GCDWebServerResponse? in
+//            let jsString = bund.path(forResource: "dist/index", ofType: "html")
+//
+//            var jsPath = String()
+//            do {
+//                jsPath = try String(contentsOfFile: jsString!)
+//            } catch {
+//                print(error)
+//            }
+//
+//            return GCDWebServerDataResponse(html: jsPath)
+//
+//        }
+
         // 再覆盖个新的handler处理动态页面（html页面）
-        webServer.addHandler(forMethod: "GET", pathRegex: "^/.*\\.html$",
+        webServer.addHandler(forMethod: "GET", pathRegex: "^/.*\\$.html",
                              request: GCDWebServerDataRequest.self,
                              processBlock: { (_) -> GCDWebServerResponse? in
 
@@ -172,14 +186,11 @@ extension WYAWebView {
                                                 "BindToLocalhost": true]
         do {
             try webServer.start(options: options)
+            // 打开网页
+            self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
         } catch {
             print(error)
         }
-        print("服务启动成功，使用你的浏览器访问：\(String(describing: webServer.serverURL))")
-        print(webServer.bonjourServerURL ?? "没有url")
-        // 打开网页
-        self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
-
     }
 
     @objc public func openwin(_ vc : UIViewController, _ type : jumpType) {
@@ -219,6 +230,29 @@ extension WYAWebView {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
+}
+
+extension WYAWebView: GCDWebServerDelegate {
+    public func webServerDidStart(_ server: GCDWebServer) {
+
+    }
+    public func webServerDidCompleteBonjourRegistration(_ server: GCDWebServer) {
+
+    }
+    public func webServerDidUpdateNATPortMapping(_ server: GCDWebServer) {
+
+    }
+    public func webServerDidConnect(_ server: GCDWebServer) {
+
+    }
+    public func webServerDidDisconnect(_ server: GCDWebServer) {
+        print("未连接")
+        print(server.isRunning)
+    }
+    public func webServerDidStop(_ server: GCDWebServer) {
+
+    }
+
 }
 
 // MARK: 负责处理webview的代理方法
@@ -265,8 +299,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
             if arrContain! {
                 self.getParams(self.actionID!) { params in
-                    // 假数据
-//                    let testDic = self.testParams(dictory: dic?["method"] as! String)
 
                     var allParams = [String : Dictionary<String, Any>]()
 
@@ -284,86 +316,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             }
         }
         decisionHandler(.allow)
-    }
-
-    func testParams(dictory: String) -> [String : Any] {
-
-        if dictory == "push" {
-            /// 假数据
-            var params = [String: Any]()
-            params["name"] = "test"
-            params["title"] = "XXX"
-            params["url"] = "https://wya-team.github.io/hybrid-sdk/html5/examples/dist/"
-            params["pageParams"] = [
-                "vScrollBarEnabled":true,
-                "hScrollBarEnabled":true,
-                "scaleEnabled":false,
-                "hideTopBar":true,
-                "hideBottomBar":true,
-                "animation":"card"
-            ]
-            return params
-        }else if dictory == "pop" {
-            var params = [String: Any]()
-            params["name"] = "test"
-            params["animation"] = "card"
-            return params
-        }else if dictory == "closeToWin" {
-            var params = [String: Any]()
-            params["name"] = "test"
-            params["animation"] = "card"
-            return params
-        }else if dictory == "notification" {
-            var params = [String: Any]()
-            params["vibrate"] = ""
-            params["sound"] = "default"
-            params["light"] = true
-            params["notify"] = ["title":"测试notification","content":"有新消息","extra":""]
-            params["timestamp"] = 1550800520
-            return params
-        }else if dictory == "cancelNotification" {
-            var params = [String: Any]()
-            params["id"] = "-1"
-
-            return params
-
-        }else if dictory == "setScreenOrientation" {
-            var params = [String: Any]()
-            params["orientation"] = "landscapeLeft"
-
-            return params
-
-        }else if dictory == "getPicture" {
-            var params = [String: Any]()
-            params["sourceType"] = "album"
-            params["encodingType"] = "png"
-            params["mediaValue"] = "pic"
-            params["destinationType"] = "url"
-            params["direction"] = false
-            params["quality"] = 50
-            params["videoQuality"] = "low"
-            params["targetWidth"] = 500
-            params["targetHeight"] = 500
-            params["saveToPhotoAlbum"] = false
-            params["groupName"] = "haha"
-            return params
-        }else if dictory == "startRecord" {
-            var params = [String: Any]()
-            params["path"] = "/Users/lishihang/Desktop/test"
-
-            return params
-        }else if dictory == "startPlay" {
-            var params = [String: Any]()
-            params["path"] = "/Users/lishihang/Desktop/test"
-
-            return params
-        }else if dictory == "openVideo" {
-            var params = [String: Any]()
-            params["url"] = "https://vd1.bdstatic.com/mda-hgvt5nvfzpftdxcs/sc/mda-hgvt5nvfzpftdxcs.mp4"
-            return params
-        }else {
-            return [String : Any]()
-        }
     }
 
     /// 拿到响应后决定是否允许跳转

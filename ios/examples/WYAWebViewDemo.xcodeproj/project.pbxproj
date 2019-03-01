@@ -7,10 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		212B131D220139E1003B5D24 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212B131C220139E1003B5D24 /* MainViewController.swift */; };
-		213DF7722213C08F007CB0FD /* WYAViewControllerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 213DF7712213C08F007CB0FD /* WYAViewControllerCategory.swift */; };
 		21FADB552143CD0B00C37689 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB542143CD0B00C37689 /* AppDelegate.swift */; };
-		21FADB572143CD0B00C37689 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB562143CD0B00C37689 /* ViewController.swift */; };
 		21FADB5A2143CD0B00C37689 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21FADB582143CD0B00C37689 /* Main.storyboard */; };
 		21FADB5C2143CD0C00C37689 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21FADB5B2143CD0C00C37689 /* Assets.xcassets */; };
 		21FADB5F2143CD0C00C37689 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21FADB5D2143CD0C00C37689 /* LaunchScreen.storyboard */; };
@@ -32,11 +29,8 @@
 		0486B0485816FE862A3DA4D0 /* Pods-WYAWebViewDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WYAWebViewDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		202F696169BF10D084190628 /* Pods-WYAWebViewDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WYAWebViewDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo.release.xcconfig"; sourceTree = "<group>"; };
 		2107734E221A99710060D1B0 /* WYAWebViewDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WYAWebViewDemo.entitlements; sourceTree = "<group>"; };
-		212B131C220139E1003B5D24 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		213DF7712213C08F007CB0FD /* WYAViewControllerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WYAViewControllerCategory.swift; sourceTree = "<group>"; };
 		21FADB512143CD0B00C37689 /* WYAWebViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WYAWebViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FADB542143CD0B00C37689 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		21FADB562143CD0B00C37689 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		21FADB592143CD0B00C37689 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		21FADB5B2143CD0C00C37689 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21FADB5E2143CD0C00C37689 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -91,9 +85,6 @@
 			children = (
 				2107734E221A99710060D1B0 /* WYAWebViewDemo.entitlements */,
 				21FADB542143CD0B00C37689 /* AppDelegate.swift */,
-				21FADB562143CD0B00C37689 /* ViewController.swift */,
-				212B131C220139E1003B5D24 /* MainViewController.swift */,
-				213DF7712213C08F007CB0FD /* WYAViewControllerCategory.swift */,
 				21FADB582143CD0B00C37689 /* Main.storyboard */,
 				21FADB5B2143CD0C00C37689 /* Assets.xcassets */,
 				21FADB5D2143CD0C00C37689 /* LaunchScreen.storyboard */,
@@ -354,10 +345,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				213DF7722213C08F007CB0FD /* WYAViewControllerCategory.swift in Sources */,
-				21FADB572143CD0B00C37689 /* ViewController.swift in Sources */,
 				21FADB552143CD0B00C37689 /* AppDelegate.swift in Sources */,
-				212B131D220139E1003B5D24 /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
