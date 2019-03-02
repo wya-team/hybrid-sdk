@@ -10,7 +10,6 @@ export deviceModel from './deviceModel';
 export deviceName from './deviceName';
 export deviceWidth from './deviceWidth';
 export deviceHeight from './deviceHeight';
-export devicePixelRatio	 from './devicePixelRatio';
 export uiMode from './uiMode';
 export operatorName from './operatorName';
 export connectionType from './connectionType';
