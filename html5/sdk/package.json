@@ -31,7 +31,7 @@
     "url": "https://github.com/wya-team/hybrid-sdk/issues"
   },
   "dependencies": {
-    "wya-ps": "^0.1.4"
+    "wya-ps": "^0.1.8"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",

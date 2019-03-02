@@ -12,28 +12,70 @@ class WYAJSBridge {
 		this.count = 0;
 		
 		// 事件源
-		this.source = new EventStore({}, { throwError });
+		this.source = new EventStore({}, { 
+			onError: throwError, 
+			onInvoke: ::this.handleInvoke
+		});
 
 		// 初始化事件触发的次数
 		this.initCount = 0;
 
 		// 等待触发的
 		this.waitEmit = [];
+
+		// 当前事件原生以开启的事件
+		this.nativeEvents = [];
 	}
-	_send(id, scheme){
-		const { eventName } = this.store[id] || {};
-		setTimeout(() => {
-			// 创建 iframe 并设置src
-			const iframe = document.createElement('iframe');
-			iframe.src = `command://${scheme}?id=${id}`;
-			iframe.style.display = 'none';
-			document.body.appendChild(iframe);
-			
-			// 延迟删除节点
-			setTimeout(() => {
-				iframe.parentNode.removeChild(iframe);
-			}, 300);
-		}, 0);
+	/**
+	 * 通知Native开启相关事件，暂时不对外不暴露
+	 * 外部强制开启 wya.invoke()
+	 */
+	handleInvoke(type, eventName, ...rest) {
+		// 方法，_error_，_ready_不处理
+		if (/(__[0-9]|_error_|_ready_)/.test(eventName)) return;
+
+		let isAdd;
+		switch (type) {
+			case 'on':
+				isAdd = true;
+				break;
+			case 'off':
+				isAdd = false;
+				break;
+			default :
+				return;
+		}
+
+		// 已注册
+		if (isAdd && this.nativeEvents.includes(eventName)) return;
+
+		let scheme = isAdd ? 'event/add' : 'event/remove';
+		let tipMsg = isAdd ? '开启' : '关闭';
+
+		this.invoke(scheme, {
+			eventName
+		}).then(() => {
+			this.nativeEvents = isAdd 
+				? [...this.nativeEvents, eventName]
+				: this.nativeEvents.filter(i => i != eventName);
+		}).catch((e) => {
+			// todo
+			console.log(e);
+		});
+	}
+	/**
+	 * 生成唯一 id 标识
+	 */
+	saveParam(scheme, params) {
+		const id = this.count++;
+		const eventName = `${scheme}__${id}`;
+		this.store[id] = {
+			params,
+			scheme,
+			eventName
+		};
+
+		return { id, eventName };
 	}
 	/**
 	 * getParam Native层调用
@@ -43,7 +85,21 @@ class WYAJSBridge {
 	 */
 	getParam(id) {
 		const { params } = this.store[id] || {};
+
 		return params;
+	}
+	/**
+	 * 1. on(scheme, { success: () => {}, fail: () => {} })
+	 * 2. on(scheme, () => {}, () => {})
+	 */
+	getCb(rest) {
+		const success = (typeof rest[0] === 'object' ? rest[0].success : rest[0]) || (() => {});
+		const fail = (typeof rest[1] === 'object' ? rest[0].fail : rest[1]) || (() => {});
+
+		return {
+			success,
+			fail
+		};
 	}
 	invoke(scheme, params) {
 		return new Promise((resolve, reject) => {
@@ -55,44 +111,33 @@ class WYAJSBridge {
 			params = params ? decodeURIComponent(JSON.stringify(params)) : '';
 
 			// 生成唯一 id 标识
-			const id = this.count++;
-			this.store[id] = {
-				params,
-				eventName: `${scheme}__${id}`
-			};
+			const { id, eventName } = this.saveParam(scheme, params);
 
 			// 注册自定义事件，并绑定回调
 			// 回调会在接收到`WYAJSBridge.emit`时被触发执行；
-			const { eventName } = this.store[id];
 			// 一次订阅
 			this.source.once(eventName, e => {
-				const { data, id, status } = e;
+				const { data, status, msg } = e;
 				if (status == 1) {
 					resolve(data);
 				} else {
-					reject(data);
+					reject(e);
 				}
 				delete this.store[id];
 			});
 
 			// 发送指令
-			if (this.initCount === 0) {
-				this.waitEmit.push(this._send.bind(this, id, scheme));
-			} else {
-				this._send(id, scheme);
-			}
+			this._send(id);
 		});
 	}
 	addEventListener(key, eventName,  ...rest) {
-		// { success: () => {}, fail: () => {} }
-		const successFn = (typeof rest[0] === 'object' ? rest[0].success : rest[0]) || (() => {});
-		const failFn = (typeof rest[1] === 'object' ? rest[0].fail : rest[1]) || (() => {});
+		const { success, fail } = this.getCb(rest);
 		this.source[key](eventName, (e) => {
-			const { data, id, status } = e;
+			const { data, id, status, msg } = e;
 			if (status == 1) {
-				successFn(data);
+				success(data);
 			} else {
-				failFn(data);
+				fail(e);
 			}
 		});
 	}
@@ -167,6 +212,32 @@ class WYAJSBridge {
 	}
 	off(eventName) {
 		this.source.off(eventName);
+	}
+
+	/**
+	 * JS -> Native 通信
+	 */
+	_send(id){
+
+		// 还没有初始化成功
+		if (this.initCount === 0) {
+			this.waitEmit.push(this._send.bind(this, id));
+			return;
+		}
+
+		const { scheme, eventName } = this.store[id] || {};
+		setTimeout(() => {
+			// 创建 iframe 并设置src
+			const iframe = document.createElement('iframe');
+			iframe.src = `command://${scheme}?id=${id}`;
+			iframe.style.display = 'none';
+			document.body.appendChild(iframe);
+			
+			// 延迟删除节点
+			setTimeout(() => {
+				iframe.parentNode.removeChild(iframe);
+			}, 300);
+		}, 0);
 	}
 }
 export default new WYAJSBridge();

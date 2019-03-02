@@ -66,15 +66,20 @@ describe('native.js', () => {
 			});
 
 		// Native 响应
-		let params = JSON.parse(WYAJSBridge.getParam(0));
+		let id = 1;
+
+		expect(typeof WYAJSBridge.store[id]).toBe("object");
+
+		let params = JSON.parse(WYAJSBridge.getParam(id));		
 		expect(params.user).toBe("wya");
 
-		WYAJSBridge.emit(0, { 
+		WYAJSBridge.emit(id, { 
 			status: 1,
 			data: {
 				type: '3g'
 			}
 		});
+		expect(typeof WYAJSBridge.store[id]).toBe("undefined");
 	});
 
 	test('验证业务端订阅', () => {
@@ -102,6 +107,22 @@ describe('native.js', () => {
 				type: '3g'
 			}
 		});
+	});
+
+	test('验证业务端多次订阅', () => {
+		WYAJSBridge.on('_test_', () => {
+
+		});
+		WYAJSBridge.once('_test_', () => {
+
+		});
+		expect(WYAJSBridge.source.__events__._test_.length).toBe(2);
+
+		WYAJSBridge.emit('_test_');
+		expect(WYAJSBridge.source.__events__._test_.length).toBe(1);
+
+		WYAJSBridge.off('_test_');
+		expect(WYAJSBridge.source.__events__._test_).toBe(undefined);
 	});
 
 });
