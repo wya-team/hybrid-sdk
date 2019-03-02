@@ -135,8 +135,13 @@ export default {
 	mounted() {
 		this.styleSelectedText = true;
 		this.cmOption.styleActiveLine = true;
+
+		this.ignoreFastClick();
 	},
 	methods: {
+		ignoreFastClick() {
+			
+		},
 		handleChange(code) {
 			this.code = code;
 

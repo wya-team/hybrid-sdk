@@ -11,7 +11,7 @@
 			<h1 class="title">{{ title }}</h1>
 		</div>
 		<div class="fixed-placeholder" />
-		<better-scroll ref="bs" :style="{ height: height + 'px' }">
+		<better-scroll ref="bs" :style="{ height: height + 'px' }" :bs-opts="bsOpts">
 			<slot />
 		</better-scroll>
 	</div>
@@ -40,7 +40,8 @@ export default {
 		offset: {
 			type: Number,
 			default: -45
-		}
+		},
+		bsOpts: Object
 	},
 	data() {
 		return {
