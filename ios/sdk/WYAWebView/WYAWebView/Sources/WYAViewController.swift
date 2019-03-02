@@ -28,6 +28,7 @@ public class WYAViewController: UIViewController {
         let bundle = Bundle(for: classForCoder)
         let image = UIImage(named: "返回", in: bundle, compatibleWith: nil)
         nav.wya_customGoback(with: image!)
+        nav.wya_addRightNavBarButton(withNormalTitle: ["刷新"])
         return nav
     }
 
@@ -58,7 +59,7 @@ public class WYAViewController: UIViewController {
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.isHidden = false
-        
+
     }
 
     override public func viewDidLoad() {
@@ -90,6 +91,7 @@ public class WYAViewController: UIViewController {
         webView?.webView?.scrollView.bouncesZoom = model?.scaleEnabled ?? true
         if needLocalService ?? false {
             webView?.openLocationHttpServer()
+//            webView?.localHost()
         }
         if model?.url != nil {
             if model?.url != "" {
@@ -98,18 +100,29 @@ public class WYAViewController: UIViewController {
         }
         self.view.addSubview(webView!)
 
+
+        let button = UIButton(type: .custom)
+        button.frame = CGRect(x: self.view.cmam_width - 100, y: 88, width: 50, height: 50)
+        button.wya_setBackgroundColor(.red, for: .normal)
+        button.wya_setBackgroundColor(.gray, for: .selected)
+        button.addCallBackAction { (button) in
+            self.webView?.webView?.reloadFromOrigin()
+            //            self.webView?.loadUrl(url: (self.webView?.webServer.serverURL?.absoluteString)!)
+
+        }
+        self.view.addSubview(button)
     }
-    
+
 
     /*
-    // MARK: - Navigation
+     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
 
 }
 
@@ -175,3 +188,4 @@ extension UIApplication {
         return UIInterfaceOrientationMask.all
     }
 }
+

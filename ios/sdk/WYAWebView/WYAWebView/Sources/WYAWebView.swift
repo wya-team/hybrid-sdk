@@ -12,6 +12,7 @@ import SnapKit
 import UIKit
 import WebKit
 import WYAKit
+//import CVCocoaHTTPServeriOS
 
 /// 初始版本号
 fileprivate let jsBuildVersion = 0.1
@@ -25,11 +26,12 @@ public class WYAWebView: UIView {
         return true
     }
 
-    var pathString : String?
+    var pathString: String?
 
     var webServer = GCDWebServer()
+//    let server = HTTPServer()
 
-    var webManager : WYAWebViewManager?
+    var webManager: WYAWebViewManager?
     var actionID: String?
     var webView: WKWebView?
     let userContentControll = WKUserContentController()
@@ -44,20 +46,20 @@ public class WYAWebView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        webManager = WYAWebViewManager()
-        webManager?.nativeDelegate = self as WebViewDelegate
-        webManager?.registerSystemNotice()
+        self.webManager = WYAWebViewManager()
+        self.webManager?.nativeDelegate = self as WebViewDelegate
+        self.webManager?.registerSystemNotice()
         self.createWkWebView()
     }
 
     public override func layoutSubviews() {
         super.layoutSubviews()
 
-        webView?.snp.makeConstraints({ make in
+        self.webView?.snp.makeConstraints({ make in
             make.edges.equalTo(UIEdgeInsetsMake(0, 0, 0, 0))
         })
 
-        progressView.snp.makeConstraints { make in
+        self.progressView.snp.makeConstraints { make in
             make.left.right.top.equalTo(self)
             make.height.equalTo(1)
         }
@@ -75,6 +77,7 @@ public class WYAWebView: UIView {
 }
 
 // MARK: 初始化webView
+
 extension WYAWebView {
     func createWkWebView() {
         self.loadJSFolder()
@@ -124,79 +127,121 @@ extension WYAWebView {
     @objc public func openLocationHttpServer() {
         let bund = Bundle(for: classForCoder)
         let websitePath = bund.path(forResource: "dist", ofType: nil)
-        GCDWebServer.setLogLevel(4)
-        webServer.delegate = self
 
         // 先设置个默认的handler处理静态文件（比如css、js、图片等）
         webServer.addGETHandler(forBasePath: "/", directoryPath: websitePath!,
                                 indexFilename: nil, cacheAge: 3600,
                                 allowRangeRequests: true)
+        // ^/.*\\.html$
+                let arr = ["event", "const", "methods", "assists"]
+                for string in arr {
+                    self.webServer.addHandler(
+                        forMethod: "GET",
+                        pathRegex: string,
+                        request: GCDWebServerRequest.self,
+                        processBlock: { (request) -> GCDWebServerResponse? in
+                            print(request)
+                            
+                            let jsString = bund.path(forResource: "dist/index", ofType: "html")
 
-//        webServer.addDefaultHandler(forMethod: "GET", request: GCDWebServerRequest.self) { (request) -> GCDWebServerResponse? in
-//            let jsString = bund.path(forResource: "dist/index", ofType: "html")
-//
-//            var jsPath = String()
-//            do {
-//                jsPath = try String(contentsOfFile: jsString!)
-//            } catch {
-//                print(error)
-//            }
-//
-//            return GCDWebServerDataResponse(html: jsPath)
-//
-//        }
+                            var jsPath: String?
+                            do {
+                                jsPath = try String(contentsOfFile: jsString!)
 
-        // 再覆盖个新的handler处理动态页面（html页面）
-        webServer.addHandler(forMethod: "GET", pathRegex: "^/.*\\$.html",
-                             request: GCDWebServerDataRequest.self,
-                             processBlock: { (_) -> GCDWebServerResponse? in
+                                return GCDWebServerDataResponse(html: jsPath!)
+                            } catch {
+                                print(error)
+                                return GCDWebServerDataResponse(redirect: self.webServer.serverURL!, permanent: false)
+                            }
 
-                                 let jsString = bund.path(forResource: "dist/index", ofType: "html")
-
-                                 var jsPath = String()
-                                 do {
-                                     jsPath = try String(contentsOfFile: jsString!)
-                                 } catch {
-                                     print(error)
-                                 }
-
-                                 return GCDWebServerDataResponse(html: jsPath)
-        })
+                    })
+                }
 
         // HTTP请求重定向（/从定向到/index.html）
-        webServer.addHandler(forMethod: "GET", path: "/",
-                             request: GCDWebServerRequest.self,
-                             processBlock: { (request) -> GCDWebServerResponse? in
-                                 let url = URL(string: "index.html", relativeTo: request.url)
+        self.webServer.addHandler(
+            forMethod: "GET",
+            path: "/",
+            request: GCDWebServerRequest.self,
+            processBlock: { (request) -> GCDWebServerResponse? in
+                let url = URL(string: "index.html", relativeTo: request.url)
 
-                                 return GCDWebServerResponse(redirect: url!, permanent: false)
+                return GCDWebServerResponse(redirect: url!, permanent: false)
         })
 
-
-        webServer.addHandler(forMethod: "GET", path:  "/consts",
-                             request: GCDWebServerRequest.self,
-                             processBlock: { (request) -> GCDWebServerResponse? in
-                                let url = URL(string: "index.html", relativeTo: request.url)
-
-                                return GCDWebServerResponse(redirect: url!, permanent: false)
-        })
-
+        //            webServer.addHandler(forMethod: "GET", pathRegex: string, request: GCDWebServerRequest.self) { (request) -> GCDWebServerResponse? in
+        //                if request.path == "index.html" {
+        //                    return GCDWebServerResponse(redirect: request.url, permanent: false)
+        //                }
+        //
+        //                let jss = bund.path(forResource: "dist", ofType: nil)
+        //                print(jss as Any)
+        //
+        //                let jsString = bund.path(forResource: "dist/index", ofType: "html")
+        //
+        //                var jsPath : String?
+        //                do {
+        //                    jsPath = try String(contentsOfFile: jsString!)
+        //                } catch {
+        //                    print(error)
+        //                }
+        //
+        //
+        //                let path = jss! + request.path
+        //
+        //                let response = GCDWebServerDataResponse(html: jsPath!)
+        //
+        //                if FileManager.default.fileExists(atPath: path) {
+        //
+        //                    response?.statusCode = 200
+        //
+        //                }else {
+        //
+        //
+        //                }
+        //                return response
+        //            }
+        //        }
+        //
+//        "ConnectionClass": String(describing: WYAConenct.self)
         let options: Dictionary<String, Any> = ["Port": 8080,
                                                 "AutomaticallySuspendInBackground": false,
-                                                "BindToLocalhost": true]
+                                                "BindToLocalhost": true,
+                                                ]
         do {
-            try webServer.start(options: options)
+            try self.webServer.start(options: options)
             // 打开网页
-            self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
+            self.loadUrl(url: (self.webServer.serverURL?.absoluteString)!)
+            //            self.loadUrl(url: "http://www.baidu.com")
         } catch {
             print(error)
         }
     }
 
-    @objc public func openwin(_ vc : UIViewController, _ type : jumpType) {
-        var allParams = [String : Any]()
+    /// CVCocoaHTTPServeriOS
+//    public func localHost() {
+//        let bund = Bundle(for: classForCoder)
+//        let websitePath = bund.path(forResource: "dist", ofType: nil)
+//
+//        server.setType("_http.tcp")
+//        server.setDocumentRoot(websitePath)
+//        do {
+//            try self.server.start()
+//        } catch {
+//            print(error)
+//        }
+//        print(self.server.listeningPort())
+//
+//        let port = String(format: "%d", server.listeningPort())
+//        let urlString = "http://localhost:" + port
+//
+//        self.loadUrl(url: urlString)
+//    }
 
-        var params = [String : Any]()
+
+    @objc public func openwin(_ vc: UIViewController, _ type: jumpType) {
+        var allParams = [String: Any]()
+
+        var params = [String: Any]()
         params.updateValue(self.cmam_parentController(), forKey: "rootVC")
         params.updateValue(vc, forKey: "vc")
         params.updateValue(type, forKey: "jumpType")
@@ -205,7 +250,7 @@ extension WYAWebView {
     }
 
     @objc public func removeNoticeAndObserver() {
-        webManager?.removeNotice()
+        self.webManager?.removeNotice()
     }
 }
 
@@ -230,29 +275,6 @@ extension WYAWebView {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
         }
     }
-}
-
-extension WYAWebView: GCDWebServerDelegate {
-    public func webServerDidStart(_ server: GCDWebServer) {
-
-    }
-    public func webServerDidCompleteBonjourRegistration(_ server: GCDWebServer) {
-
-    }
-    public func webServerDidUpdateNATPortMapping(_ server: GCDWebServer) {
-
-    }
-    public func webServerDidConnect(_ server: GCDWebServer) {
-
-    }
-    public func webServerDidDisconnect(_ server: GCDWebServer) {
-        print("未连接")
-        print(server.isRunning)
-    }
-    public func webServerDidStop(_ server: GCDWebServer) {
-
-    }
-
 }
 
 // MARK: 负责处理webview的代理方法
@@ -299,28 +321,33 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
             if arrContain! {
                 self.getParams(self.actionID!) { params in
-
-                    var allParams = [String : Dictionary<String, Any>]()
-
+                    var allParams = [String: Dictionary<String, Any>]()
                     var param = [String: Any]()
                     param.updateValue(self.cmam_parentController(), forKey: "rootVC")
                     param.updateValue(self, forKey: "webView")
                     param.updateValue(self.actionID ?? "", forKey: "actionID")
-                    allParams.updateValue(params as! [String : Any], forKey: "params")
+                    allParams.updateValue(params as! [String: Any], forKey: "params")
                     allParams.updateValue(param, forKey: "DevelopParams")
                     // 获取到参数执行调用原生
                     self.webManager?.nativeAction(dic?["method"] as! String, params: allParams)
                 }
-            } else {
-                // 不需要参数执行原生
             }
         }
+
         decisionHandler(.allow)
     }
 
     /// 拿到响应后决定是否允许跳转
     public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Swift.Void) {
-//        self.webManager.backBtnPressed()
+        //        self.webManager.backBtnPressed()
+        let urlRespon = navigationResponse.response as! HTTPURLResponse
+        //
+        if urlRespon.statusCode == 200 {
+
+        }else if urlRespon.statusCode == 404 {
+//            loadUrl(url: (webServer.serverURL?.absoluteString)!)
+
+        }
         decisionHandler(WKNavigationResponsePolicy.allow)
     }
 
@@ -331,7 +358,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
     /// 收到服务器重定向时调用（ios8）
     public func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
-
         print("重定向")
     }
 
@@ -474,9 +500,8 @@ extension WYAWebView {
              */
             dictory = self.webManager?.jsonStringToDic(params as! String) as Any
             print(dictory)
-            
-            handler(dictory)
 
+            handler(dictory)
         }
     }
 
@@ -542,5 +567,24 @@ extension WYAWebView {
                 userContentControll.addUserScript(userScript)
             }
         }
+    }
+}
+
+
+class WYAConenct: GCDWebServerConnection {
+    override func rewriteRequest(_ url: URL, withMethod method: String, headers: [String : String]) -> URL {
+        return super.rewriteRequest(url, withMethod: method, headers: headers)
+    }
+
+    override func preflightRequest(_ request: GCDWebServerRequest) -> GCDWebServerResponse? {
+        return super.preflightRequest(request)
+    }
+
+    override func overrideResponse(_ response: GCDWebServerResponse, for request: GCDWebServerRequest) -> GCDWebServerResponse {
+        return super.overrideResponse(response, for: request)
+    }
+
+    override func abortRequest(_ request: GCDWebServerRequest?, withStatusCode statusCode: Int) {
+        return super.abortRequest(request, withStatusCode: statusCode)
     }
 }

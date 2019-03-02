@@ -136,6 +136,9 @@ class WYAWebViewManager: NSObject {
         params.updateValue(#selector(openVideoWithParams(outParams:)), forKey: "openVideo")
         return params
     }()
+    var smsID : String?
+    var mailID : String?
+
 
     weak var nativeDelegate: WebViewDelegate?
 
@@ -148,7 +151,7 @@ class WYAWebViewManager: NSObject {
     let netManager = NetworkReachabilityManager(host: "www.apple.com")
     var recorder : AVAudioRecorder? = nil
     var audioPlayer : AVAudioPlayer? = nil
-
+    var audioRecorder = WYAAudioRecoder()
     var recorderPath : String?
 
     typealias callbackBlock = () -> Void
@@ -171,8 +174,8 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     func nativeAction(_ method: String, params: [String: Any]) {
         if self.actionParams.keys.contains(method) {
             let sel = actionParams[method]
-//            let data = try! JSONSerialization.data(withJSONObject: params, options: [])
-//            let person = try? JSONDecoder().decode(OpenWinModel.self, from: data)
+            //            let data = try! JSONSerialization.data(withJSONObject: params, options: [])
+            //            let person = try? JSONDecoder().decode(OpenWinModel.self, from: data)
             print(sel!)
             performSelector(inBackground: sel!, with: params)
         }
@@ -212,14 +215,14 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
                     rootVC.navigationController?.popViewController(animated: false)
                 }
                 rootVC.navigationController?.pushViewController(vc, animated: animation)
-                self.listenAction("push", ["status":1,"msg":"调用成功","data":NSNull()])
+                self.listenAction(developParams["actionID"] as! String, ["status":1,"msg":"调用成功","data":NSNull()])
             }
         }
 
         func present(_ vc: UIViewController) {
             DispatchQueue.main.async {
                 rootVC.present(vc, animated: true, completion: {})
-                self.listenAction("push", ["status":1,"msg":"调用成功","data":NSNull()])
+                self.listenAction(developParams["actionID"] as! String, ["status":1,"msg":"调用成功","data":NSNull()])
             }
         }
 
@@ -233,7 +236,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         case "modal": present(centerVC); break
         case "none":push(centerVC, false);  break
         default:
-            listenAction("push", ["status":0,"msg":"调用失败，未指定跳转动画","data":NSNull()])
+            listenAction(developParams["actionID"] as! String, ["status":0,"msg":"调用失败，未指定跳转动画","data":NSNull()])
             break
         }
     }
@@ -258,15 +261,15 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
                         if viewController.model?.name == vcName  {
                             DispatchQueue.main.async {
                                 rootVC.navigationController?.popToViewController(viewController, animated: animation)
-                                self.listenAction("pop", ["status":1,"msg":"调用成功","data":NSNull()])
+                                self.listenAction(developParams["actionID"] as! String, ["status":1,"msg":"调用成功","data":NSNull()])
                             }
                         }
                     }
                 }
             }else if vcName?.count == 0 {
-                listenAction("pop", ["status":0,"msg":"vcName不能为空字符串","data":NSNull()])
+                listenAction(developParams["actionID"] as! String, ["status":0,"msg":"vcName不能为空字符串","data":NSNull()])
             }else {
-                listenAction("pop", ["status":0,"msg":"vcName不能为空","data":NSNull()])
+                listenAction(developParams["actionID"] as! String, ["status":0,"msg":"vcName不能为空","data":NSNull()])
             }
 
         }
@@ -356,15 +359,15 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func installAppWithParams(outParams: [String: Any]) {
 
         let params = outParams["params"] as! [String:Any]
-
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         guard params.count != 0 else {
-            self.listenAction("installApp", self.callBackJsonData(0, "缺少参数"))
+            self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(0, "缺少参数"))
             return
         }
         let tempString = params["url"] as! String
         var urlString = ""
         if tempString.hasPrefix("http") {
-           urlString = tempString.replacingOccurrences(of: "http", with: "itms-apps")
+            urlString = tempString.replacingOccurrences(of: "http", with: "itms-apps")
         }
         if tempString.hasPrefix("https") {
             urlString = tempString.replacingOccurrences(of: "https", with: "itms-apps")
@@ -375,11 +378,11 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             DispatchQueue.main.async {
                 guard UIApplication.shared.canOpenURL(url!) else{
                     UIView.wya_showCenterToast(withMessage: "无效的地址")
-                    self.listenAction("installApp", self.callBackJsonData(0, "无效地址"))
+                    self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(0, "无效地址"))
                     return
                 }
-                 UIApplication.shared.openURL(url!)
-                self.listenAction("installApp", self.callBackJsonData(1, "调用成功"))
+                UIApplication.shared.openURL(url!)
+                self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(1, "调用成功"))
 
             }
         }
@@ -391,8 +394,9 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func openAppWithParams(outParams: [String: Any]) {
         print(outParams)
         let params = outParams["params"] as! [String:Any]
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         guard params.count != 0 else {
-            self.listenAction("openApp", self.callBackJsonData(0, "缺少参数"))
+            self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(0, "缺少参数"))
             return
         }
         let scheme = params["scheme"] as! String
@@ -400,11 +404,11 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         DispatchQueue.main.async {
             guard UIApplication.shared.canOpenURL(url!) else{
                 UIView.wya_showCenterToast(withMessage: "无法打开APP")
-                self.listenAction("openApp", self.callBackJsonData(0, "无效的scheme"))
+                self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(0, "无效的scheme"))
                 return
             }
             UIApplication.shared.openURL(url!)
-            self.listenAction("openApp", self.callBackJsonData(1, "调用成功"))
+            self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(1, "调用成功"))
         }
 
     }
@@ -415,6 +419,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 需要传递的参数
     @objc func appInstalledWithParams(outParams: [String: Any]) {
         let params = outParams["params"] as! [String:Any]
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         guard params.count != 0 else {
             self.listenAction("appInstalled", self.callBackJsonData(0, "缺少参数"))
             return
@@ -424,10 +429,10 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         DispatchQueue.main.async {
             if UIApplication.shared.canOpenURL(url!) {
                 print("存在")
-                self.listenAction("appInstalled", self.callBackJsonData(1, "没有查询到APP"))
+                self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(1, "没有查询到APP"))
             } else {
                 print("不存在")
-                self.listenAction("appInstalled", self.callBackJsonData(1, "调用成功"))
+                self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(1, "调用成功"))
             }
         }
     }
@@ -451,16 +456,16 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 需要的清理的路径信息
     @objc func clearCacheWithParams(outParams: [String: Any]) {
-
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let actionID = developParams["actionID"] as! String
         let params = outParams["params"] as! [String:Any]
         guard params.count != 0 else {
-            self.listenAction("clearCache", self.callBackJsonData(0, "缺少参数"))
+            self.listenAction(actionID, self.callBackJsonData(0, "缺少参数"))
             return
         }
         let path = params["path"] as! String
 
-        let developParams = outParams["DevelopParams"] as! [String : Any]
-        let actionID = developParams["actionID"] as! String
+
 
 
         guard path == "" else {
@@ -481,22 +486,22 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 缓存的路径默认为Cache
     @objc func getCacheSizeWithParams(outParams: [String: Any]) {
-
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         let params = outParams["params"] as! [String:Any]
         guard params.count != 0 else {
-            self.listenAction("getCacheSize", self.callBackJsonData(0, "缺少参数"))
+            self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(0, "缺少参数"))
             return
         }
         let path = params["path"] as! String
 
         guard path == "" else {
             WYAClearCache.wya_cacheFileSizeValue(atPath: path) { (size) in
-                self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":size,"label":NSNull()]])
+                self.listenAction(developParams["actionID"] as! String, ["status":1,"msg":"调用成功","data":["size":size,"label":NSNull()]])
             }
             return
         }
         WYAClearCache.wya_defaultCachesFolderSizeValueBlock { (folderSize) in
-            self.listenAction("getCacheSize", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":NSNull()]])
+            self.listenAction(developParams["actionID"] as! String, ["status":1,"msg":"调用成功","data":["size":folderSize,"label":NSNull()]])
         }
     }
 
@@ -504,9 +509,10 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 无参数
     @objc func getTotalSpaceWithParams(outParams: [String: Any]) {
-       let divceTotalSpace = WYAClearCache.wya_getDivceTotalSizeValue()
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        let divceTotalSpace = WYAClearCache.wya_getDivceTotalSizeValue()
         print("系统总空间\(divceTotalSpace)")
-        self.listenAction("getTotalSpace", ["status":1,"msg":"调用成功","data":["size":divceTotalSpace,"label":NSNull()]])
+        self.listenAction(developParams["actionID"] as! String, ["status":1,"msg":"调用成功","data":["size":divceTotalSpace,"label":NSNull()]])
 
     }
 
@@ -514,10 +520,11 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 无参数
     @objc func getFreeDiskSpaceWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         let space = NSString.wya_phoneFreeMemory()
         WYAClearCache.wya_getDivceAvailableSizeValueBlock { (folderSize) in
             print("系统可用空间\(folderSize)")
-             self.listenAction("getFreeDiskSpace", ["status":1,"msg":"调用成功","data":["size":folderSize,"label":NSNull()]])
+            self.listenAction(developParams["actionID"] as! String, ["status":1,"msg":"调用成功","data":["size":folderSize,"label":NSNull()]])
         }
         print(space)
     }
@@ -529,6 +536,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     @objc func accessNativeWithParams(outParams: [String: Any]) {}
 
     @objc func notificationWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         let model = getModel(outParams["params"] as! [String : Any]) as NotificationModel
         print(model as Any)
 
@@ -544,7 +552,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             let dateComponents = Calendar.current.dateComponents([.year,.month,.day, .hour,.minute,.second], from: date)
 
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
-//            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
+            //            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
             let request = UNNotificationRequest(identifier: "xxx", content: content, trigger: trigger)
 
             // 4
@@ -582,11 +590,12 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             }
 
         }
-        listenAction("notification", ["status":0,"msg":"调用失败，未指定跳转动画","data":["id":"xxx"]])
+        listenAction(developParams["actionID"] as! String, ["status":0,"msg":"调用失败，未指定跳转动画","data":["id":"xxx"]])
 
     }
 
     @objc func cancelNotificationWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         let param = outParams["params"] as! [String : Any]
         let id = param["id"] as! String
         if id == "-1" {
@@ -627,23 +636,25 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             print("短信发送失败")
             msg = "发送失败"
         }
-        listenAction("sms", ["status":1,"msg":msg,"data":NSNull()])
+        listenAction(smsID!, ["status":1,"msg":msg,"data":NSNull()])
     }
     /// 调用系统短信界面发送短信，或者后台直接发送短信
     ///
     /// - Parameter outParams: 需要的参数
     @objc func smsWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        smsID = developParams["actionID"] as? String
         guard MFMessageComposeViewController.canSendText()else{
             print("该设备不能发送短信")
-            listenAction("sms", ["status":0,"msg":"调用失败","data":NSNull()])
+            listenAction(developParams["actionID"] as! String, ["status":0,"msg":"调用失败","data":NSNull()])
             return
         }
-        let developParams = outParams["DevelopParams"] as! [String : Any]
+
         let rootVC = developParams["rootVC"] as! UIViewController
 
         let params = outParams["params"] as! [String:Any]
         guard params.count != 0 else {
-            self.listenAction("sms", self.callBackJsonData(0, "缺少参数"))
+            self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(0, "缺少参数"))
             return
         }
         let body = params["text"] as! String
@@ -684,7 +695,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             UIView.wya_showCenterToast(withMessage:"发送失败")
             msg = "发送失败"
         }
-        listenAction("mail", ["status":1,"msg":msg,"data":NSNull()])
+        listenAction(mailID!, ["status":1,"msg":msg,"data":NSNull()])
 
     }
 
@@ -692,17 +703,19 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 邮件收件人以及发送内容
     @objc func mailWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        mailID = developParams["actionID"] as? String
         guard MFMailComposeViewController.canSendMail()else{
             print("无法发送邮件")
-            self.listenAction("mail", ["status":0,"msg":"调用失败","data":NSNull()])
+            self.listenAction(developParams["actionID"] as! String, ["status":0,"msg":"调用失败","data":NSNull()])
             return
         }
-        let developeParams = outParams["DevelopParams"] as! [String : Any]
-        let rootVC = developeParams["rootVC"] as! UIViewController
+
+        let rootVC = developParams["rootVC"] as! UIViewController
         let emailVC = MFMailComposeViewController()
         let params = outParams["params"] as! [String:Any]
         guard params.count != 0 else {
-            self.listenAction("mail", self.callBackJsonData(0, "缺少参数"))
+            self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(0, "缺少参数"))
             return
         }
         let recipients = params["recipients"] as! Array<String>
@@ -721,7 +734,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     /// - Parameter outParams: 打电话的参数
     @objc func callWithParams(outParams: [String: Any]) {
         DispatchQueue.main.async {
-        UIApplication.shared.openURL(URL(string: "telprompt://"+"10086")!)
+            UIApplication.shared.openURL(URL(string: "telprompt://"+"10086")!)
         }
     }
 
@@ -729,51 +742,51 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 通讯录所需的参数
     @objc func openContactsWithParams(outParams: [String: Any]) {
-//        let developeParams = outParams["DevelopParams"] as! [String : Any]
-//        let rootVC = developeParams["rootVC"] as! UIViewController
-//        //联系人选择控制器
-//        guard #available(iOS 9.0, *) else{
-//            return
-//        }
-//        let contactPicker = CNContactPickerViewController()
-//        //设置代理
-//        contactPicker.delegate = self
-//
-//        //弹出控制器
-//        rootVC.present(contactPicker, animated: true, completion: nil)
+        let developeParams = outParams["DevelopParams"] as! [String : Any]
+        //        let rootVC = developeParams["rootVC"] as! UIViewController
+        //        //联系人选择控制器
+        //        guard #available(iOS 9.0, *) else{
+        //            return
+        //        }
+        //        let contactPicker = CNContactPickerViewController()
+        //        //设置代理
+        //        contactPicker.delegate = self
+        //
+        //        //弹出控制器
+        //        rootVC.present(contactPicker, animated: true, completion: nil)
 
         let manager = WYAContacts()
         let list = manager.getConTacts()
         print(list)
-        self.listenAction("openContacts", ["status":1,"msg":"调用成功","data":list])
-//        UIView.wya_showCenterToast(withMessage: "获取联系人成功")
+        self.listenAction(developeParams["actionID"] as! String, ["status":1,"msg":"调用成功","data":list])
+        //        UIView.wya_showCenterToast(withMessage: "获取联系人成功")
 
     }
 
     //多选联系人
-//    @available(iOS 9.0, *)
-//    func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
-//        print("一共选择了\(contacts.count)个联系人。")
-//        for contact in contacts {
-//            print("--------------")
-//            //获取联系人的姓名
-//            let lastName = contact.familyName
-//            let firstName = contact.givenName
-//            print("选中人的姓：\(lastName)")
-//            print("选中人的名：\(firstName)")
-//
-//            //获取联系人电话号码
-//            print("选中人电话：")
-//            let phones = contact.phoneNumbers
-//            for phone in phones {
-//                //获得标签名（转为能看得懂的本地标签名，比如work、home）
-//                let phoneLabel = CNLabeledValue<NSString>.localizedString(forLabel: phone.label!)
-//                //获取号码
-//                let phoneValue = phone.value.stringValue
-//                print("\(phoneLabel):\(phoneValue)")
-//            }
-//        }
-//    }
+    //    @available(iOS 9.0, *)
+    //    func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
+    //        print("一共选择了\(contacts.count)个联系人。")
+    //        for contact in contacts {
+    //            print("--------------")
+    //            //获取联系人的姓名
+    //            let lastName = contact.familyName
+    //            let firstName = contact.givenName
+    //            print("选中人的姓：\(lastName)")
+    //            print("选中人的名：\(firstName)")
+    //
+    //            //获取联系人电话号码
+    //            print("选中人电话：")
+    //            let phones = contact.phoneNumbers
+    //            for phone in phones {
+    //                //获得标签名（转为能看得懂的本地标签名，比如work、home）
+    //                let phoneLabel = CNLabeledValue<NSString>.localizedString(forLabel: phone.label!)
+    //                //获取号码
+    //                let phoneValue = phone.value.stringValue
+    //                print("\(phoneLabel):\(phoneValue)")
+    //            }
+    //        }
+    //    }
 
     @objc func setScreenOrientationWithParams(outParams: [String: Any]) {
         let developParams = outParams["DevelopParams"] as! [String : Any]
@@ -781,7 +794,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
         let params = outParams["params"] as! [String : Any]
         guard params.count != 0 else {
-            self.listenAction("setScreenOrientation", self.callBackJsonData(0, "缺少参数"))
+            self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(0, "缺少参数"))
             return
         }
         rootVC.orientation = params["orientation"] as? String
@@ -814,12 +827,13 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 需要改变的颜色参数
     @objc func setStatusBarStyleWithParams(outParams: [String: Any]) {
+        let developeParams = outParams["DevelopParams"] as! [String : Any]
         DispatchQueue.main.async {
-            let developeParams = outParams["DevelopParams"] as! [String : Any]
+
             let rootVC = developeParams["rootVC"] as! UIViewController
             let params = outParams["params"] as! [String : Any]
             guard params.count != 0 else {
-                self.listenAction("setStatusBarStyle", self.callBackJsonData(0, "缺少参数"))
+                self.listenAction(developeParams["actionID"] as! String, self.callBackJsonData(0, "缺少参数"))
                 return
             }
             let style = params["style"] as! String
@@ -837,7 +851,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
             stateView.backgroundColor = bgColor
             rootVC.view.addSubview(stateView)
         }
-        self.listenAction("setStatusBarStyle", ["status":1,"msg":"调用成功","data":NSNull()])
+        self.listenAction(developeParams["actionID"] as! String, ["status":1,"msg":"调用成功","data":NSNull()])
     }
 
 
@@ -845,16 +859,17 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 是否禁止休眠
     @objc func setKeepScreenOnWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         let params = outParams["params"] as! [String : Any]
         guard params.count != 0 else {
-            self.listenAction("setKeepScreenOn", self.callBackJsonData(0, "缺少参数"))
+            self.listenAction(developParams["actionID"] as! String, self.callBackJsonData(0, "缺少参数"))
             return
         }
         let keepOn = params["keepOn"] as! Bool
         DispatchQueue.main.async {
-        UIApplication.shared.isIdleTimerDisabled = keepOn
+            UIApplication.shared.isIdleTimerDisabled = keepOn
         }
-        self.listenAction("setKeepScreenOn", ["status":1,"msg":"调用成功","data":NSNull()])
+        self.listenAction(developParams["actionID"] as! String, ["status":1,"msg":"调用成功","data":NSNull()])
     }
     @objc func toLauncherWithParams(outParams: [String: Any]) {}
     @objc func setScreenSecureWithParams(outParams: [String: Any]) {}
@@ -922,13 +937,13 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
                 if model.destinationType == "url" {
                     if model.saveToPhotoAlbum == false {
-                        self.listenAction("getPicture", [
+                        self.listenAction(developParams["actionID"] as! String, [
                             "status":"0",
                             "msg":"参数不匹配",
                             "data":NSNull()
                             ])
                     }else {
-                        self.listenAction("getPicture",
+                        self.listenAction(developParams["actionID"] as! String,
                                           [
                                             "status":"1",
                                             "msg":"调用成功",
@@ -940,20 +955,20 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
                     }
                 } else if model.destinationType == "base64" {
                     let base = data?.base64EncodedString()
-                    self.listenAction("getPicture",
+                    self.listenAction(developParams["actionID"] as! String,
                                       [
                                         "status":"1",
                                         "msg":"调用成功",
                                         "data":[
                                             "list":
                                                 ["base64":base]
-                                            ]
-                                    ])
+                                        ]
+                        ])
                 }
 
             }
             camera?.takeVideo = { url in
-                self.listenAction("getPicture",
+                self.listenAction(developParams["actionID"] as! String,
                                   [
                                     "status":"1",
                                     "msg":"调用成功",
@@ -1000,9 +1015,9 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
                     items.append(item)
                 }
 
-                self.listenAction("getPicture", ["status":"1",
-                                                 "msg":"调用成功",
-                                                 "data":["list":items]])
+                self.listenAction(developParams["actionID"] as! String, ["status":"1",
+                                                                         "msg":"调用成功",
+                                                                         "data":["list":items]])
             }
 
             DispatchQueue.main.async {
@@ -1019,7 +1034,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: 浮窗图片，自动消失时间
     @objc func showFloatBoxWithParams(outParams: [String: Any]) {
-        
+
 
     }
 
@@ -1033,7 +1048,9 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
         switch type {
         case "pic":
             let data = try? Data(contentsOf: URL(string: url)!)
-            tool?.savePhtots(with: UIImage(data: data!), videoUrl: nil)
+            tool?.savePhtots(with: UIImage(data: data!), videoUrl: nil, callBack: { (success, result) in
+
+            })
             break
         case "video":
 
@@ -1050,7 +1067,9 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
                 DispatchQueue.main.asyncAfter(deadline: .now()+5.0) {
                     let data = try! Data(contentsOf: URL(fileURLWithPath: model.destinationPath))
                     print(data)
-                    tool?.savePhtots(with: nil, videoUrl: URL(fileURLWithPath: model.destinationPath))
+                    tool?.savePhtots(with: nil, videoUrl: URL(fileURLWithPath: model.destinationPath), callBack: { (success, result) in
+
+                    })
                 }
             }
 
@@ -1066,6 +1085,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
     ///
     /// - Parameter outParams: <#outParams description#>
     @objc func startRecordWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         let param = outParams["params"] as! [String : Any]
         let path =  param["path"] as? String
 
@@ -1083,76 +1103,84 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
         let url = URL(fileURLWithPath: recorderPath! + ".wav")
 
-        recorder = try! AVAudioRecorder(url: url, settings: NTYAmrCoder.audioRecorderSettings() as! [String : Any])
-        if (recorder?.prepareToRecord())! {
-            try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
-            try! AVAudioSession.sharedInstance().setActive(true)
-            if (recorder?.record())! {
-                /// 开始录制
-                listenAction("startRecord", ["status":"1","msg":"调用成功","data":["path":path]])
-            }
-        }else {
-            print("音频格式出错")
+        let error = Error.self
+        let isSuccess = audioRecorder.wya_startRecorder(with: url, error: error as! Error)
+        if isSuccess {
+            listenAction(developParams["actionID"] as! String, ["status":"1","msg":"调用成功","data":["path":path]])
+        }else{
+            listenAction(developParams["actionID"] as! String, ["status":"0","msg":"录制失败","data":["path":path]])
         }
+
+        //        recorder = try! AVAudioRecorder(url: url, settings: NTYAmrCoder.audioRecorderSettings() as! [String : Any])
+        //        if (recorder?.prepareToRecord())! {
+        //            try! AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord)
+        //            try! AVAudioSession.sharedInstance().setActive(true)
+        //            if (recorder?.record())! {
+        //                /// 开始录制
+        //
+        //            }
+        //        }else {
+        //            print("音频格式出错")
+        //        }
     }
 
     @objc func stopRecordWithParams(outParams: [String: Any]) {
-        if (recorder?.isRecording)! {
-            recorder?.stop()
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        audioRecorder.wya_stopRecorder()
+        let issuccess = audioRecorder.wya_turnAmrAudio(withWavPath: recorderPath! + ".wav", amrPath: recorderPath! + ".amr", deleteRedundantAudio: true)
+        if issuccess {
+            let data = try! Data(contentsOf: URL(fileURLWithPath: recorderPath!+".amr"))
+            var time = 0.0
 
-            let isSuccess = NTYAmrCoder.encodeWavFile(recorderPath! + ".wav", toAmrFile: recorderPath! + ".amr")
-            if isSuccess {
-                let data = try! Data(contentsOf: URL(fileURLWithPath: recorderPath!+".amr"))
-                var time = 0.0
-
-                if #available(iOS 10.0, *) {
-                    do {
-                        let player = try AVAudioPlayer(data: data)
-                        time = player.duration
-                        let format = player.format
-                        time = time*(8000/format.sampleRate)
-                    } catch {
-                        print(error)
-                    }
-
-                } else {
-                    let avURL = AVURLAsset(url: URL(fileURLWithPath: recorderPath!+".amr"))
-                    let duration = avURL.duration
-                    time = CMTimeGetSeconds(duration)
-
+            if #available(iOS 10.0, *) {
+                do {
+                    let player = try AVAudioPlayer(data: data)
+                    time = player.duration
+                    let format = player.format
+                    time = time*(8000/format.sampleRate)
+                } catch {
+                    print(error)
                 }
 
-                listenAction("stopRecord", ["status":"1","msg":"调用成功","data":["path":recorderPath!+".amr","duration":time]])
-            }else {
-                listenAction("stopRecord", ["status":"0","msg":"格式转换失败","data":NSNull()])
+            } else {
+                let avURL = AVURLAsset(url: URL(fileURLWithPath: recorderPath!+".amr"))
+                let duration = avURL.duration
+                time = CMTimeGetSeconds(duration)
             }
-
+            listenAction(developParams["actionID"] as! String, ["status":"1","msg":"调用成功","data":["path":recorderPath!+".amr","duration":time]])
+        }else {
+            listenAction(developParams["actionID"] as! String, ["status":"0","msg":"格式转换失败","data":NSNull()])
         }
     }
 
     @objc func startPlayWithParams(outParams: [String: Any]) {
+        let developParams = outParams["DevelopParams"] as! [String : Any]
         let param = outParams["params"] as! [String : Any]
         let path = param["path"] as! String
+        let isSuccess = audioRecorder.wya_turnWavAudio(withAmrPath: path + ".amr", wavPath: path + ".wav", deleteRedundantAudio: true)
 
-        let isSuccess = NTYAmrCoder.decodeAmrFile(path + ".amr", toWavFile: path + ".wav")
         if isSuccess == true {
             let url = URL(fileURLWithPath: path  + ".wav")
-            audioPlayer = try? AVAudioPlayer(contentsOf: url)
-            audioPlayer?.volume = 0.5
-            audioPlayer?.numberOfLoops = 1
-            audioPlayer?.currentTime = 0
-            audioPlayer?.prepareToPlay()
-            audioPlayer?.play()
-            listenAction("startPlay", ["status":"1","msg":"调用成功","data":NSNull()])
+            let err = Error.self
+
+            audioRecorder.wya_startPlayAudio(with: url, volume: 0.5, numberOfLoops: 1, currentTime: 0, error: err as! Error)
+            //            audioPlayer = try? AVAudioPlayer(contentsOf: url)
+            //            audioPlayer?.volume = 0.5
+            //            audioPlayer?.numberOfLoops = 1
+            //            audioPlayer?.currentTime = 0
+            //            audioPlayer?.prepareToPlay()
+            //            audioPlayer?.play()
+            listenAction(developParams["actionID"] as! String, ["status":"1","msg":"调用成功","data":NSNull()])
         }else {
-            listenAction("startPlay", ["status":"0","msg":"播放失败，音频格式不正确","data":NSNull()])
+            listenAction(developParams["actionID"] as! String, ["status":"0","msg":"播放失败，音频格式不正确","data":NSNull()])
         }
 
     }
 
     @objc func stopPlayWithParams(outParams: [String: Any]) {
-        audioPlayer?.stop()
-        listenAction("startPlay", ["status":"1","msg":"调用成功","data":NSNull()])
+        let developParams = outParams["DevelopParams"] as! [String : Any]
+        audioRecorder.wya_stopPlayAudio()
+        listenAction(developParams["actionID"] as! String, ["status":"1","msg":"调用成功","data":NSNull()])
     }
 
     @objc func openVideoWithParams(outParams: [String: Any]) {
@@ -1172,7 +1200,7 @@ extension WYAWebViewManager :MFMessageComposeViewControllerDelegate,MFMailCompos
 
         }
 
-        listenAction("openVideo", ["status":"1","msg":"调用成功","data":""])
+        listenAction(developParams["actionID"] as! String, ["status":"1","msg":"调用成功","data":""])
     }
 }
 
@@ -1217,10 +1245,10 @@ extension WYAWebViewManager {
             if device.batteryLevel <= 0.2 {
                 subParams.updateValue(device.batteryLevel * 100, forKey: "level")
                 switch device.batteryState {
-                    case .unknown: break
-                    case .unplugged: subParams.updateValue(false, forKey: "isPlugged"); break
-                    case .charging: subParams.updateValue(true, forKey: "isPlugged"); break
-                    case .full: subParams.updateValue(false, forKey: "isPlugged"); break
+                case .unknown: break
+                case .unplugged: subParams.updateValue(false, forKey: "isPlugged"); break
+                case .charging: subParams.updateValue(true, forKey: "isPlugged"); break
+                case .full: subParams.updateValue(false, forKey: "isPlugged"); break
                 }
                 assemblyParams("batteryStatus", subParams)
             }
@@ -1232,10 +1260,10 @@ extension WYAWebViewManager {
             var subParams = [String: Any]()
             subParams.updateValue(device.batteryLevel * 100, forKey: "level")
             switch device.batteryState {
-                case .unknown: subParams.updateValue(false, forKey: "isPlugged"); break
-                case .unplugged: subParams.updateValue(false, forKey: "isPlugged"); break
-                case .charging: subParams.updateValue(true, forKey: "isPlugged"); break
-                case .full: subParams.updateValue(false, forKey: "isPlugged"); break
+            case .unknown: subParams.updateValue(false, forKey: "isPlugged"); break
+            case .unplugged: subParams.updateValue(false, forKey: "isPlugged"); break
+            case .charging: subParams.updateValue(true, forKey: "isPlugged"); break
+            case .full: subParams.updateValue(false, forKey: "isPlugged"); break
             }
             assemblyParams("batteryStatus", subParams)
         }
@@ -1293,13 +1321,13 @@ extension WYAWebViewManager {
             self.listenAction("takeScreenshot", inParams)
         }
 
-//        note.addObserver(forName: NSNotification.Name.closeWin, object: nil, queue: OperationQueue.main) { _ in
-//            // 关闭窗口
-//            print("closewin")
-//            let inParams = [String: Any]()
-//
-//            self.listenAction("closeWin", inParams)
-//        }
+        //        note.addObserver(forName: NSNotification.Name.closeWin, object: nil, queue: OperationQueue.main) { _ in
+        //            // 关闭窗口
+        //            print("closewin")
+        //            let inParams = [String: Any]()
+        //
+        //            self.listenAction("closeWin", inParams)
+        //        }
     }
 }
 
