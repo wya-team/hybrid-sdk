@@ -140,6 +140,13 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 
 /***/ }),
 
+/***/ "../../docs/methods/require.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '响应成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.require({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('require', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('require', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
 /***/ "../../docs/methods/saveMediaToAlbum.md":
 /***/ (function(module, exports) {
 
@@ -172,6 +179,13 @@ module.exports = "#### 1. 说明\n\n设置屏幕旋转方向\n\n#### 2. Client�
 /***/ (function(module, exports) {
 
 module.exports = "#### 1. 说明\n\n设置状态栏样式为白色（适用于深色背景）或黑色（适用于浅色背景），以及设置状态栏背景颜色\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n属性 | 说明 | 类型 | 默认值 | 如\n---|---|---|---|---\nstyle | 状态栏样式 | str | light | dark,light\ncolor | 状态栏背景颜色，只 Android 5.0 及以上有效 | str | #000 | -\nanimated | 是否有动画效果，只iOS有效 | bool | true | -\n\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.setStatusBarStyle({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('setStatusBarStyle', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('setStatusBarStyle', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
+/***/ "../../docs/methods/setWinAttr.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.setWinAttr({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('setWinAttr', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('setWinAttr', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -249,6 +263,13 @@ module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n
 /***/ (function(module, exports) {
 
 module.exports = "#### 1. 说明\n\n回到系统桌面, 该接口仅Android平台支持\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.toLauncher({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('toLauncher', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('toLauncher', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
+/***/ "../../docs/methods/uninstallApp.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n~\n\n#### 2. Client传递参数给Native\n\n```javascript\n{\n\t// ....\n}\n```\n\n#### 3. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.uninstallApp({\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n\n// 或者\nwya.invoke('uninstallApp', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.invoke('uninstallApp', {\n\t// ...\n}).then(() => {\n\t// ...\n}).catch(() => {\n\t// ...\n});\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('[对应的唯一id]', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -1429,6 +1450,93 @@ var openVideo_invoke = function invoke() {
     url: ''
   }
 });
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/methods/setWinAttr.md
+var setWinAttr = __webpack_require__("../../docs/methods/setWinAttr.md");
+var setWinAttr_default = /*#__PURE__*/__webpack_require__.n(setWinAttr);
+
+// CONCATENATED MODULE: ./src/pages/components/methods/detail/modules/setWinAttr.js
+function setWinAttr_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { setWinAttr_typeof = function _typeof(obj) { return typeof obj; }; } else { setWinAttr_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return setWinAttr_typeof(obj); }
+
+
+
+
+
+var setWinAttr_invoke = function invoke() {
+  wya_umd_default.a.invoke('setWinAttr', {// ...
+  }).then(function (res) {
+    res = setWinAttr_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
+    toasts["a" /* default */].info(res, 0);
+  }).catch(function () {
+    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
+  });
+};
+
+/* harmony default export */ var modules_setWinAttr = ({
+  to: '/methods/setWinAttr',
+  title: 'setWinAttr',
+  label: '',
+  invoke: setWinAttr_invoke,
+  markdown: setWinAttr_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/methods/uninstallApp.md
+var uninstallApp = __webpack_require__("../../docs/methods/uninstallApp.md");
+var uninstallApp_default = /*#__PURE__*/__webpack_require__.n(uninstallApp);
+
+// CONCATENATED MODULE: ./src/pages/components/methods/detail/modules/uninstallApp.js
+function uninstallApp_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { uninstallApp_typeof = function _typeof(obj) { return typeof obj; }; } else { uninstallApp_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return uninstallApp_typeof(obj); }
+
+
+
+
+
+var uninstallApp_invoke = function invoke() {
+  wya_umd_default.a.invoke('uninstallApp', {// ...
+  }).then(function (res) {
+    res = uninstallApp_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
+    toasts["a" /* default */].info(res, 0);
+  }).catch(function () {
+    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
+  });
+};
+
+/* harmony default export */ var modules_uninstallApp = ({
+  to: '/methods/uninstallApp',
+  title: 'uninstallApp',
+  label: '',
+  invoke: uninstallApp_invoke,
+  markdown: uninstallApp_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/methods/require.md
+var require = __webpack_require__("../../docs/methods/require.md");
+var require_default = /*#__PURE__*/__webpack_require__.n(require);
+
+// CONCATENATED MODULE: ./src/pages/components/methods/detail/modules/require.js
+function require_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { require_typeof = function _typeof(obj) { return typeof obj; }; } else { require_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return require_typeof(obj); }
+
+
+
+
+
+var require_invoke = function invoke() {
+  wya_umd_default.a.invoke('require', {// ...
+  }).then(function (res) {
+    res = require_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
+    toasts["a" /* default */].info(res, 0);
+  }).catch(function () {
+    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
+  });
+};
+
+/* harmony default export */ var modules_require = ({
+  to: '/methods/require',
+  title: 'require',
+  label: '',
+  invoke: require_invoke,
+  markdown: require_default.a
+});
 // CONCATENATED MODULE: ./src/pages/components/methods/detail/modules/root.js
 /* concated harmony reexport push */__webpack_require__.d(__webpack_exports__, "push", function() { return modules_push; });
 /* concated harmony reexport pop */__webpack_require__.d(__webpack_exports__, "pop", function() { return modules_pop; });
@@ -1466,6 +1574,15 @@ var openVideo_invoke = function invoke() {
 /* concated harmony reexport startPlay */__webpack_require__.d(__webpack_exports__, "startPlay", function() { return modules_startPlay; });
 /* concated harmony reexport stopPlay */__webpack_require__.d(__webpack_exports__, "stopPlay", function() { return modules_stopPlay; });
 /* concated harmony reexport openVideo */__webpack_require__.d(__webpack_exports__, "openVideo", function() { return modules_openVideo; });
+/* concated harmony reexport setWinAttr */__webpack_require__.d(__webpack_exports__, "setWinAttr", function() { return modules_setWinAttr; });
+/* concated harmony reexport uninstallApp */__webpack_require__.d(__webpack_exports__, "uninstallApp", function() { return modules_uninstallApp; });
+/* concated harmony reexport require */__webpack_require__.d(__webpack_exports__, "require", function() { return modules_require; });
+
+
+
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[7],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[6],{
 
 /***/ "../../docs/consts/appId.md":
 /***/ (function(module, exports) {
@@ -46,6 +46,20 @@ module.exports = "##### 1. 说明\n\n当前网络连接类型，如 2g、3g、4g
 /***/ (function(module, exports) {
 
 module.exports = "##### 1. 说明\n\n调试模式\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet debug = wya.debug;                 // 比如： true\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------\n";
+
+/***/ }),
+
+/***/ "../../docs/consts/deveiceHeight.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n~\n\n#### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet deveiceHeight = wya.deveiceHeight; // 比如： ~\n```\n\n#### 3. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
+/***/ "../../docs/consts/deveiceWidth.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n~\n\n#### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet deveiceWidth = wya.deveiceWidth; // 比如： ~\n```\n\n#### 3. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -98,6 +112,13 @@ module.exports = "##### 1. 说明\n\n屏幕分辨率宽，数字类型\n\n##### 
 
 /***/ }),
 
+/***/ "../../docs/consts/documentsDir.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n文档目录，可存放用户数据\n\n#### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet documentsDir = wya.documentsDir; // 比如： ~\n```\n\n#### 3. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
 /***/ "../../docs/consts/fullScreen.md":
 /***/ (function(module, exports) {
 
@@ -109,6 +130,13 @@ module.exports = "##### 1. 说明\n\n应用是否全屏，布尔类型，只支�
 /***/ (function(module, exports) {
 
 module.exports = "##### 1. 说明\n\n设备是否越狱，布尔类型\n\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet jailbreak = wya.jailbreak;         //如：false\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
+
+/***/ }),
+
+/***/ "../../docs/consts/libraryDir.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n系统默认的缓存目录，系统永远不会删除这里的文件需要手动清理\n\n#### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet libraryDir = wya.libraryDir; // 比如： ~\n```\n\n#### 3. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -158,6 +186,13 @@ module.exports = "##### 1. 说明\n\n系统类型，字符串类型\n\n- 取值�
 /***/ (function(module, exports) {
 
 module.exports = "##### 1. 说明\n\n手机平台的系统版本，字符串类型\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet systemVersion = wya.systemVersion;  // 比如： 8.0\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
+
+/***/ }),
+
+/***/ "../../docs/consts/tmpDir.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n用于存放临时文件，保存应用程序再次启动过程中不需要的信息\n\n#### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet tmpDir = wya.tmpDir; // 比如： ~\n```\n\n#### 3. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -532,25 +567,6 @@ var deviceHeight_invoke = function invoke() {// ...
   invoke: deviceHeight_invoke,
   markdown: deviceHeight_default.a
 });
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/devicePixelRatio.md
-var devicePixelRatio = __webpack_require__("../../docs/consts/devicePixelRatio.md");
-var devicePixelRatio_default = /*#__PURE__*/__webpack_require__.n(devicePixelRatio);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/devicePixelRatio.js
-
-
-
-
-var devicePixelRatio_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_devicePixelRatio = ({
-  to: '/consts/devicePixelRatio',
-  title: 'devicePixelRatio',
-  label: '屏幕像素比',
-  invoke: devicePixelRatio_invoke,
-  markdown: devicePixelRatio_default.a
-});
 // EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/uiMode.md
 var uiMode = __webpack_require__("../../docs/consts/uiMode.md");
 var uiMode_default = /*#__PURE__*/__webpack_require__.n(uiMode);
@@ -779,6 +795,120 @@ var jailbreak_invoke = function invoke() {// ...
   invoke: jailbreak_invoke,
   markdown: jailbreak_default.a
 });
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/deveiceWidth.md
+var deveiceWidth = __webpack_require__("../../docs/consts/deveiceWidth.md");
+var deveiceWidth_default = /*#__PURE__*/__webpack_require__.n(deveiceWidth);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/deveiceWidth.js
+
+
+
+
+var deveiceWidth_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_deveiceWidth = ({
+  to: '/consts/deveiceWidth',
+  title: 'deveiceWidth',
+  label: '',
+  invoke: deveiceWidth_invoke,
+  markdown: deveiceWidth_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/deveiceHeight.md
+var deveiceHeight = __webpack_require__("../../docs/consts/deveiceHeight.md");
+var deveiceHeight_default = /*#__PURE__*/__webpack_require__.n(deveiceHeight);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/deveiceHeight.js
+
+
+
+
+var deveiceHeight_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_deveiceHeight = ({
+  to: '/consts/deveiceHeight',
+  title: 'deveiceHeight',
+  label: '',
+  invoke: deveiceHeight_invoke,
+  markdown: deveiceHeight_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/devicePixelRatio.md
+var devicePixelRatio = __webpack_require__("../../docs/consts/devicePixelRatio.md");
+var devicePixelRatio_default = /*#__PURE__*/__webpack_require__.n(devicePixelRatio);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/devicePixelRatio.js
+
+
+
+
+var devicePixelRatio_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_devicePixelRatio = ({
+  to: '/consts/devicePixelRatio',
+  title: 'devicePixelRatio',
+  label: '屏幕像素比',
+  invoke: devicePixelRatio_invoke,
+  markdown: devicePixelRatio_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/documentsDir.md
+var documentsDir = __webpack_require__("../../docs/consts/documentsDir.md");
+var documentsDir_default = /*#__PURE__*/__webpack_require__.n(documentsDir);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/documentsDir.js
+
+
+
+
+var documentsDir_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_documentsDir = ({
+  to: '/consts/documentsDir',
+  title: 'documentsDir',
+  label: '文档目录',
+  invoke: documentsDir_invoke,
+  markdown: documentsDir_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/libraryDir.md
+var libraryDir = __webpack_require__("../../docs/consts/libraryDir.md");
+var libraryDir_default = /*#__PURE__*/__webpack_require__.n(libraryDir);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/libraryDir.js
+
+
+
+
+var libraryDir_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_libraryDir = ({
+  to: '/consts/libraryDir',
+  title: 'libraryDir',
+  label: '系统缓存',
+  invoke: libraryDir_invoke,
+  markdown: libraryDir_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/tmpDir.md
+var tmpDir = __webpack_require__("../../docs/consts/tmpDir.md");
+var tmpDir_default = /*#__PURE__*/__webpack_require__.n(tmpDir);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/tmpDir.js
+
+
+
+
+var tmpDir_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_tmpDir = ({
+  to: '/consts/tmpDir',
+  title: 'tmpDir',
+  label: '临时存放',
+  invoke: tmpDir_invoke,
+  markdown: tmpDir_default.a
+});
 // CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/root.js
 /* concated harmony reexport version */__webpack_require__.d(__webpack_exports__, "version", function() { return modules_version; });
 /* concated harmony reexport appId */__webpack_require__.d(__webpack_exports__, "appId", function() { return modules_appId; });
@@ -792,7 +922,6 @@ var jailbreak_invoke = function invoke() {// ...
 /* concated harmony reexport deviceName */__webpack_require__.d(__webpack_exports__, "deviceName", function() { return modules_deviceName; });
 /* concated harmony reexport deviceWidth */__webpack_require__.d(__webpack_exports__, "deviceWidth", function() { return modules_deviceWidth; });
 /* concated harmony reexport deviceHeight */__webpack_require__.d(__webpack_exports__, "deviceHeight", function() { return modules_deviceHeight; });
-/* concated harmony reexport devicePixelRatio */__webpack_require__.d(__webpack_exports__, "devicePixelRatio", function() { return modules_devicePixelRatio; });
 /* concated harmony reexport uiMode */__webpack_require__.d(__webpack_exports__, "uiMode", function() { return modules_uiMode; });
 /* concated harmony reexport operatorName */__webpack_require__.d(__webpack_exports__, "operatorName", function() { return modules_operatorName; });
 /* concated harmony reexport connectionType */__webpack_require__.d(__webpack_exports__, "connectionType", function() { return modules_connectionType; });
@@ -805,6 +934,22 @@ var jailbreak_invoke = function invoke() {// ...
 /* concated harmony reexport debug */__webpack_require__.d(__webpack_exports__, "debug", function() { return modules_debug; });
 /* concated harmony reexport channel */__webpack_require__.d(__webpack_exports__, "channel", function() { return modules_channel; });
 /* concated harmony reexport jailbreak */__webpack_require__.d(__webpack_exports__, "jailbreak", function() { return modules_jailbreak; });
+/* concated harmony reexport deveiceWidth */__webpack_require__.d(__webpack_exports__, "deveiceWidth", function() { return modules_deveiceWidth; });
+/* concated harmony reexport deveiceHeight */__webpack_require__.d(__webpack_exports__, "deveiceHeight", function() { return modules_deveiceHeight; });
+/* concated harmony reexport devicePixelRatio */__webpack_require__.d(__webpack_exports__, "devicePixelRatio", function() { return modules_devicePixelRatio; });
+/* concated harmony reexport documentsDir */__webpack_require__.d(__webpack_exports__, "documentsDir", function() { return modules_documentsDir; });
+/* concated harmony reexport libraryDir */__webpack_require__.d(__webpack_exports__, "libraryDir", function() { return modules_libraryDir; });
+/* concated harmony reexport tmpDir */__webpack_require__.d(__webpack_exports__, "tmpDir", function() { return modules_tmpDir; });
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -954,7 +1099,7 @@ var linksvue_type_template_id_b7803376_scoped_true_staticRenderFns = []
 // EXTERNAL MODULE: ./src/pages/components/_common/cell/cell.vue + 4 modules
 var cell = __webpack_require__("./src/pages/components/_common/cell/cell.vue");
 
-// EXTERNAL MODULE: ./src/pages/components/consts/detail/modules/root.js + 25 modules
+// EXTERNAL MODULE: ./src/pages/components/consts/detail/modules/root.js + 30 modules
 var root = __webpack_require__("./src/pages/components/consts/detail/modules/root.js");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/consts/links.vue?vue&type=script&lang=js&

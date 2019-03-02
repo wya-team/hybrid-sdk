@@ -1,5 +1,12 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[3],{
 
+/***/ "../../docs/events/appIdle.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n~\n\n#### 2. Native传递参数给Client\n\n```javascript\n{\n\tstatus: 1,\n\tmsg: '调用成功',\n\tdata: {\n\t\t// ....\n\t}\n}\n```\n\n#### 3. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\n// on / once / last / first / off\nwya.on('appIdle', () => {\n\n});\n\n// on / once / last / first / off\nwya.onAppIdle(() => {\n\n});\n```\n\n#### 4. 不引入sdk示例代码\n\n```javascript\n// on / once / last / first / off\nWYAJSBridge.on('appIdle', () => {\n\n});\n```\n\n#### 5. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('appIdle', '@Object');\n```\n\n#### 6. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
 /***/ "../../docs/events/appIntent.md":
 /***/ (function(module, exports) {
 
@@ -792,6 +799,40 @@ var volumeDown_invoke = function invoke() {
   invoke: volumeDown_invoke,
   markdown: volumeDown_default.a
 });
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/events/appIdle.md
+var appIdle = __webpack_require__("../../docs/events/appIdle.md");
+var appIdle_default = /*#__PURE__*/__webpack_require__.n(appIdle);
+
+// CONCATENATED MODULE: ./src/pages/components/events/detail/modules/appIdle.js
+function appIdle_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { appIdle_typeof = function _typeof(obj) { return typeof obj; }; } else { appIdle_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return appIdle_typeof(obj); }
+
+
+
+
+
+var appIdle_invoke = function invoke() {
+  wya_umd_default.a.once('appIdle', function (res) {
+    res = appIdle_typeof(res) === 'object' ? JSON.stringify(res) : res || '无数据';
+    toasts["a" /* default */].info(res, 0);
+  }); // 强制执行
+
+  wya_umd_default.a.invoke('debugger', {
+    event: 'appIdle'
+  }).then(function (res) {
+    toasts["a" /* default */].info('执行成功', 0);
+  }).catch(function () {
+    var res = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    toasts["a" /* default */].info("\u6267\u884C\u5931\u8D25\uFF1A".concat(res.msg), 0);
+  });
+};
+
+/* harmony default export */ var modules_appIdle = ({
+  to: '/events/appIdle',
+  title: 'appIdle',
+  label: '',
+  invoke: appIdle_invoke,
+  markdown: appIdle_default.a
+});
 // CONCATENATED MODULE: ./src/pages/components/events/detail/modules/root.js
 /* concated harmony reexport batteryLow */__webpack_require__.d(__webpack_exports__, "batteryLow", function() { return modules_batteryLow; });
 /* concated harmony reexport batteryStatus */__webpack_require__.d(__webpack_exports__, "batteryStatus", function() { return modules_batteryStatus; });
@@ -812,6 +853,9 @@ var volumeDown_invoke = function invoke() {
 /* concated harmony reexport keyMenu */__webpack_require__.d(__webpack_exports__, "keyMenu", function() { return modules_keyMenu; });
 /* concated harmony reexport volumeUp */__webpack_require__.d(__webpack_exports__, "volumeUp", function() { return modules_volumeUp; });
 /* concated harmony reexport volumeDown */__webpack_require__.d(__webpack_exports__, "volumeDown", function() { return modules_volumeDown; });
+/* concated harmony reexport appIdle */__webpack_require__.d(__webpack_exports__, "appIdle", function() { return modules_appIdle; });
+
+
 
 
 

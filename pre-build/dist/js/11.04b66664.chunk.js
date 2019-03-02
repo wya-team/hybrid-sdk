@@ -114,12 +114,12 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/pages/containers/methods/modules/methods-run.vue?vue&type=template&id=e95a1d84&scoped=true&
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/methods/run/contents.vue?vue&type=template&id=26f40ace&
-var contentsvue_type_template_id_26f40ace_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"g-flex g-fd-c"},[_c('span',{staticClass:"g-pd-tb-10 g-pd-lr-10 g-bg-blue-mid g-tc",on:{"click":_vm.handleClick}},[_vm._v("执行")]),_vm._v(" "),_c('codemirror',{attrs:{"value":_vm.code,"options":_vm.cmOption},on:{"input":_vm.handleChange}}),_vm._v(" "),_c('span',{staticClass:"g-pd-tb-10 g-pd-lr-10 g-bg-yellow-mid g-tc",on:{"click":_vm.handleClear}},[_vm._v("初始化")])],1)}
-var contentsvue_type_template_id_26f40ace_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/methods/run/contents.vue?vue&type=template&id=778104aa&
+var contentsvue_type_template_id_778104aa_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"g-flex g-fd-c"},[_c('span',{staticClass:"g-pd-tb-10 g-pd-lr-10 g-bg-blue-mid g-tc",on:{"click":_vm.handleClick}},[_vm._v("执行")]),_vm._v(" "),_c('codemirror',{ref:"codemirror",attrs:{"value":_vm.code,"options":_vm.cmOption},on:{"input":_vm.handleChange}}),_vm._v(" "),_c('span',{staticClass:"g-pd-tb-10 g-pd-lr-10 g-bg-yellow-mid g-tc",on:{"click":_vm.handleClear}},[_vm._v("初始化")])],1)}
+var contentsvue_type_template_id_778104aa_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/pages/components/methods/run/contents.vue?vue&type=template&id=26f40ace&
+// CONCATENATED MODULE: ./src/pages/components/methods/run/contents.vue?vue&type=template&id=778104aa&
 
 // EXTERNAL MODULE: ./node_modules/codemirror/mode/javascript/javascript.js
 var javascript = __webpack_require__("./node_modules/codemirror/mode/javascript/javascript.js");
@@ -215,12 +215,21 @@ var main = __webpack_require__("./node_modules/wya-utils/lib/main.js");
 // EXTERNAL MODULE: ./src/pages/components/methods/run/run.js
 var run = __webpack_require__("./src/pages/components/methods/run/run.js");
 
-// EXTERNAL MODULE: ./src/pages/components/methods/detail/modules/root.js + 36 modules
+// EXTERNAL MODULE: ./src/pages/components/methods/detail/modules/root.js + 39 modules
 var root = __webpack_require__("./src/pages/components/methods/detail/modules/root.js");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/methods/run/contents.vue?vue&type=script&lang=js&
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+//
 //
 //
 //
@@ -339,8 +348,17 @@ var initCode = function initCode(id) {
   mounted: function mounted() {
     this.styleSelectedText = true;
     this.cmOption.styleActiveLine = true;
+    this.ignoreFastClick();
   },
   methods: {
+    ignoreFastClick: function ignoreFastClick() {
+      console.log(this.$refs.codemirror.$el);
+      [].concat(_toConsumableArray(document.querySelectorAll(".CodeMirror span")), _toConsumableArray(document.querySelectorAll(".CodeMirror pre"))).forEach(function (item) {
+        if (!item.classList.contains('needsclick')) {
+          item.classList.add('needsclick');
+        }
+      });
+    },
     handleChange: function handleChange(code) {
       this.code = code;
       Object(main["setItem"])(this.id, code);
@@ -374,8 +392,8 @@ var componentNormalizer = __webpack_require__("./node_modules/vue-loader/lib/run
 
 var component = Object(componentNormalizer["a" /* default */])(
   run_contentsvue_type_script_lang_js_,
-  contentsvue_type_template_id_26f40ace_render,
-  contentsvue_type_template_id_26f40ace_staticRenderFns,
+  contentsvue_type_template_id_778104aa_render,
+  contentsvue_type_template_id_778104aa_staticRenderFns,
   false,
   null,
   null,

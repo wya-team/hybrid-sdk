@@ -140,7 +140,7 @@ var linksvue_type_template_id_44f4553b_scoped_true_staticRenderFns = []
 // EXTERNAL MODULE: ./src/pages/components/_common/cell/cell.vue + 4 modules
 var cell = __webpack_require__("./src/pages/components/_common/cell/cell.vue");
 
-// EXTERNAL MODULE: ./src/pages/components/events/detail/modules/root.js + 19 modules
+// EXTERNAL MODULE: ./src/pages/components/events/detail/modules/root.js + 20 modules
 var root = __webpack_require__("./src/pages/components/events/detail/modules/root.js");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/events/links.vue?vue&type=script&lang=js&

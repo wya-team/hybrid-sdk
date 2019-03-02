@@ -29,7 +29,7 @@ var hljs = __webpack_require__("./src/pages/extends/directives/hljs.js");
 // EXTERNAL MODULE: ./src/pages/extends/directives/md.js
 var md = __webpack_require__("./src/pages/extends/directives/md.js");
 
-// EXTERNAL MODULE: ./src/pages/components/events/detail/modules/root.js + 19 modules
+// EXTERNAL MODULE: ./src/pages/components/events/detail/modules/root.js + 20 modules
 var root = __webpack_require__("./src/pages/components/events/detail/modules/root.js");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/events/detail/contents.vue?vue&type=script&lang=js&
