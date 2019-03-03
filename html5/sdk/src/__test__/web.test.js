@@ -2,6 +2,7 @@ import WYAJSBridge from '../native.js';
 import wya from '../web.js';
 describe('web.js', () => {
 	window.WYAJSBridge = WYAJSBridge;
+	let id = WYAJSBridge.count;
 
 	test('验证api', () => {
 		expect(typeof wya).toBe('object');
@@ -51,14 +52,24 @@ describe('web.js', () => {
 	});
 
 	test('验证event', () => {
-
 		wya.on('batteryLow', (res) => {
 			expect(res.level).toBe(20);
 		});
+		WYAJSBridge.emit(id, { 
+			status: 1,
+			msg: '成功打开',
+			data: {
+				
+			}
+		});
+		id++;
 
 		wya.once('batteryLow', (res) => {
 			expect(res.tip).toBe('xxx');
 		});
+
+		// 再次订阅，之前没有取消，不会通知Native, id 不会增加
+		expect(WYAJSBridge.count).toBe(id);
 
 		// Native 模拟触发
 		WYAJSBridge.emit('batteryLow', {
@@ -70,5 +81,17 @@ describe('web.js', () => {
 			}
 		});
 
+		WYAJSBridge.off('batteryLow');
+		WYAJSBridge.emit(id, { 
+			status: 1,
+			msg: '关闭成功',
+			data: {
+				
+			}
+		});
+		id++; // 触发后增加''
+		
+		expect(WYAJSBridge.nativeEvents.includes('batteryLow')).toBe(false);
+		expect(WYAJSBridge.count).toBe(id);
 	});
 });

@@ -13,8 +13,7 @@ class WYAJSBridge {
 		
 		// 事件源
 		this.source = new EventStore({}, { 
-			onError: throwError, 
-			onInvoke: ::this.handleInvoke
+			onError: throwError
 		});
 
 		// 初始化事件触发的次数
@@ -25,48 +24,16 @@ class WYAJSBridge {
 
 		// 当前事件原生以开启的事件
 		this.nativeEvents = [];
-	}
-	/**
-	 * 通知Native开启相关事件，暂时不对外不暴露
-	 * 外部强制开启 wya.invoke()
-	 */
-	handleInvoke(type, eventName, ...rest) {
-		// 方法，_error_，_ready_不处理
-		if (/(__[0-9]|_error_|_ready_)/.test(eventName)) return;
 
-		let isAdd;
-		switch (type) {
-			case 'on':
-				isAdd = true;
-				break;
-			case 'off':
-				isAdd = false;
-				break;
-			default :
-				return;
-		}
-
-		// 已注册
-		if (isAdd && this.nativeEvents.includes(eventName)) return;
-
-		let scheme = isAdd ? 'event/add' : 'event/remove';
-		let tipMsg = isAdd ? '开启' : '关闭';
-
-		this.invoke(scheme, {
-			eventName
-		}).then(() => {
-			this.nativeEvents = isAdd 
-				? [...this.nativeEvents, eventName]
-				: this.nativeEvents.filter(i => i != eventName);
-		}).catch((e) => {
-			// todo
-			console.log(e);
-		});
+		// 处理历史问题
+		this.saveParam = this.saveParams;
+		this.parseParam = this.parseParams;
+		this.getParam = this.getParams;
 	}
 	/**
 	 * 生成唯一 id 标识
 	 */
-	saveParam(scheme, params) {
+	saveParams(scheme, params) {
 		const id = this.count++;
 		const eventName = `${scheme}__${id}`;
 		this.store[id] = {
@@ -78,12 +45,12 @@ class WYAJSBridge {
 		return { id, eventName };
 	}
 	/**
-	 * getParam Native层调用
-	 * 客户端接收到请求后，会使用 id 调用 getParam 从参数池中获取对应的参数
+	 * getParams Native层调用
+	 * 客户端接收到请求后，会使用 id 调用 getParams 从参数池中获取对应的参数
 	 * @param  number id 唯一标识符
 	 * @return string
 	 */
-	getParam(id) {
+	getParams(id) {
 		const { params } = this.store[id] || {};
 
 		return params;
@@ -92,14 +59,63 @@ class WYAJSBridge {
 	 * 1. on(scheme, { success: () => {}, fail: () => {} })
 	 * 2. on(scheme, () => {}, () => {})
 	 */
-	getCb(rest) {
-		const success = (typeof rest[0] === 'object' ? rest[0].success : rest[0]) || (() => {});
-		const fail = (typeof rest[1] === 'object' ? rest[0].fail : rest[1]) || (() => {});
+	parseParams(rest) {
+		let isObj0 = typeof rest[0] === 'object';
+		let isObj1 = typeof rest[1] === 'object';
+
+		let params = {};
+
+		if (isObj0) {
+			params = { ...reset[0] };
+
+			delete params.success;
+			delete params.fail;
+		}
+
+		const success = (isObj0 ? rest[0].success : rest[0]) || (() => {});
+		const fail = (isObj1 ? rest[0].fail : rest[1]) || (() => {});
 
 		return {
+			params,
 			success,
 			fail
 		};
+	}
+	setNativeEvents(isAdd, eventName) {
+		this.nativeEvents = isAdd 
+			? [...this.nativeEvents, eventName]
+			: this.nativeEvents.filter(i => i != eventName);
+	}
+	/**
+	 * 通知Native开启相关事件，暂时不对外不暴露
+	 * 外部强制开启 wya.invoke()
+	 */
+	sendEvent(isAdd, eventName, ...rest) {
+		if (/(_error_|_ready_)/.test(eventName)) return;
+		
+		const { success, fail } = this.parseParams(rest);
+
+		// 已注册
+		if (isAdd && this.nativeEvents.includes(eventName)) return;
+
+		let scheme = isAdd ? 'event/add' : 'event/remove';
+		let tipMsg = isAdd ? '开启' : '关闭';
+
+		// 存在异步返回, 会影响两次重复发起开启请求
+		this.setNativeEvents(isAdd, eventName);
+
+		this.invoke(scheme, {
+			eventName
+		}).then(() => {
+			// todo, 输出打印日志
+		}).catch((e) => {
+			// 事件失败，从数组中移除
+			this.setNativeEvents(!isAdd, eventName);
+
+			// 异常处理
+			fail(e);
+			throwError(`${eventName}${tipMsg}失败`);
+		});
 	}
 	invoke(scheme, params) {
 		return new Promise((resolve, reject) => {
@@ -111,7 +127,7 @@ class WYAJSBridge {
 			params = params ? decodeURIComponent(JSON.stringify(params)) : '';
 
 			// 生成唯一 id 标识
-			const { id, eventName } = this.saveParam(scheme, params);
+			const { id, eventName } = this.saveParams(scheme, params);
 
 			// 注册自定义事件，并绑定回调
 			// 回调会在接收到`WYAJSBridge.emit`时被触发执行；
@@ -130,38 +146,24 @@ class WYAJSBridge {
 			this._send(id);
 		});
 	}
-	addEventListener(key, eventName,  ...rest) {
-		const { success, fail } = this.getCb(rest);
-		this.source[key](eventName, (e) => {
-			const { data, id, status, msg } = e;
+	on(eventName, ...rest) {
+		const { success, fail } = this.parseParams(rest);
+
+		this.source.on(eventName, (e) => {
+			const { data, status, msg } = e;
 			if (status == 1) {
 				success(data);
 			} else {
 				fail(e);
 			}
 		});
+
+		this.sendEvent(true, eventName, ...rest);
 	}
-	
-	on(eventName, ...rest) {
-		this.addEventListener('on', eventName, ...rest);
-	}
-	once(eventName, ...rest) {
-		this.addEventListener('once', eventName, ...rest);
-	}
-	/**
-	 * 其他
-	 */
-	last(eventName, ...rest) {
-		this.off(eventName);
-		this.on(eventName, ...rest);
-	}
-	first(eventName, ...rest) {
-		if (this.source.__events__[eventName] || this.source.__events__[eventName].length === 0) {
-			this.on(eventName, ...rest);
-		} else {
-			let msg = `${eventName}只执行触发一次绑定`;
-			throwError(msg);
-		}
+	off(eventName, ...rest) {
+		this.source.off(eventName, ...rest);
+
+		this.sendEvent(false, eventName, ...rest);
 	}
 	/**
 	 * emit Native层调用
@@ -210,8 +212,38 @@ class WYAJSBridge {
 				
 		}
 	}
-	off(eventName) {
-		this.source.off(eventName);
+	/**
+	 * 其他, 与this.source.once不同
+	 */
+	once(eventName, ...rest) {
+		const { success, fail } = this.parseParams(rest);
+
+		if (typeof eventName === 'string' && typeof success === "function") {
+			const successFn = (e) => {
+				this.off(eventName, successFn);
+				success(e);
+			};
+
+			// 特殊处理
+			const failFn = (e) => {
+				this.off(eventName, successFn); // 卸载绑定的函数
+				fail(e);
+			};
+
+			this.on(eventName, successFn, failFn);
+		}
+	}
+	last(eventName, ...rest) {
+		this.off(eventName);
+		this.on(eventName, ...rest);
+	}
+	first(eventName, ...rest) {
+		if (this.source.__events__[eventName] || this.source.__events__[eventName].length === 0) {
+			this.on(eventName, ...rest);
+		} else {
+			let msg = `${eventName}只执行触发一次绑定`;
+			throwError(msg);
+		}
 	}
 
 	/**
