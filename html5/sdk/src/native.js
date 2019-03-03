@@ -98,6 +98,10 @@ class WYAJSBridge {
 		// 已注册
 		if (isAdd && this.nativeEvents.includes(eventName)) return;
 
+		// once事件后的off, 避免卸载之前on处理的事件
+		let events = this.source.__events__[eventName];
+		if (!isAdd && events && events.length > 0) return;
+
 		let scheme = isAdd ? 'event/add' : 'event/remove';
 		let tipMsg = isAdd ? '开启' : '关闭';
 

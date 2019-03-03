@@ -176,9 +176,19 @@ describe('native.js', () => {
 
 		// 再次订阅，之前没有取消，不会通知Native, id 不会增加
 		WYAJSBridge.once("_network_", (res) => {
-			
+			expect(res.tip).toBe("xxx");
 		});
 		expect(WYAJSBridge.count).toBe(id);
+
+		// 再次触发
+		WYAJSBridge.emit('_network_', { 
+			status: 1,
+			msg: '',
+			data: {
+				type: '3g',
+				tip: 'xxx'
+			}
+		});
 
 		// 再次订阅，之前没有取消，不会通知Native, id 不会增加
 		WYAJSBridge.off('_network_');
