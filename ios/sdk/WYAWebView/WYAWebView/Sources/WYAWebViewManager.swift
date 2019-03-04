@@ -510,6 +510,7 @@ extension WYAWebViewManager: MFMessageComposeViewControllerDelegate, MFMailCompo
 
     @objc func notificationWithParams(outParams: [String: Any]) {
         let developParams = outParams["DevelopParams"] as! [String: Any]
+        let actionID = developParams["actionID"] as! String
         let model = getModel(outParams["params"] as! [String: Any]) as NotificationModel
         print(model as Any)
 
@@ -526,7 +527,7 @@ extension WYAWebViewManager: MFMessageComposeViewControllerDelegate, MFMailCompo
 
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
             //            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: true)
-            let request = UNNotificationRequest(identifier: "xxx", content: content, trigger: trigger)
+            let request = UNNotificationRequest(identifier: actionID, content: content, trigger: trigger)
 
             // 4
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
@@ -541,7 +542,7 @@ extension WYAWebViewManager: MFMessageComposeViewControllerDelegate, MFMailCompo
                     not.repeatInterval = NSCalendar.Unit(rawValue: 1)
                 } else {}
                 not.alertBody = model.notify?.content
-                not.userInfo = ["key": "xxx"]
+                not.userInfo = ["key": actionID]
                 UIApplication.shared.scheduleLocalNotification(not)
             }
 
@@ -559,27 +560,27 @@ extension WYAWebViewManager: MFMessageComposeViewControllerDelegate, MFMailCompo
                 addNotiction(date: setDate)
             }
         }
-        self.listenAction(developParams["actionID"] as! String, ["status": 0, "msg": "调用失败，未指定跳转动画", "data": ["id": "xxx"]])
+        self.listenAction(actionID, ["status": 1, "msg": "调用成功", "data": ["id": actionID]])
     }
 
     @objc func cancelNotificationWithParams(outParams: [String: Any]) {
         let developParams = outParams["DevelopParams"] as! [String: Any]
+        let actionID = developParams["actionID"] as! String
         let param = outParams["params"] as! [String: Any]
         let id = param["id"] as! String
-        if id == "-1" {
-            if #available(iOS 10.0, *) {
-                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["xxx"])
-            } else {
-                let arr = UIApplication.shared.scheduledLocalNotifications
-                if (arr?.count)! > 0 {
-                    for item in arr! {
-                        if (item.userInfo!["key"] as! String) == "xxx" {
-                            UIApplication.shared.cancelLocalNotification(item)
-                        }
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: [id])
+        } else {
+            let arr = UIApplication.shared.scheduledLocalNotifications
+            if (arr?.count)! > 0 {
+                for item in arr! {
+                    if (item.userInfo!["key"] as! String) == id {
+                        UIApplication.shared.cancelLocalNotification(item)
                     }
                 }
             }
         }
+        self.listenAction(actionID, ["status": 1, "msg": "调用成功", "data": NSNull()])
     }
 
     @objc func startLocationWithParams(outParams: [String: Any]) {}
@@ -1260,7 +1261,7 @@ extension WYAWebViewManager {
         //            // 关闭窗口
         //            print("closewin")
         //            let inParams = [String: Any]()
-        //
+        //成功
         //            self.listenAction("closeWin", inParams)
         //        }
     }
