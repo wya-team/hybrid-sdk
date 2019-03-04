@@ -110,8 +110,9 @@ class WYAJSBridge {
 
 		this.invoke(scheme, {
 			eventName
-		}).then(() => {
+		}).then((e) => {
 			// todo, 输出打印日志
+			throwError(`${eventName}${tipMsg}成功`);
 		}).catch((e) => {
 			// 事件失败，从数组中移除
 			this.setNativeEvents(!isAdd, eventName);
