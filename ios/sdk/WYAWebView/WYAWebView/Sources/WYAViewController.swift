@@ -9,31 +9,28 @@ import UIKit
 import WYAKit
 
 public class WYAViewController: UIViewController {
-
     static let shared = WYAViewController()
 
-    var model : OpenWinModel?
+    var model: OpenWinModel?
     var orientation: String?
 
-    public var needLocalService : Bool?//只能开启一次
+    public var needLocalService: Bool? // 只能开启一次
 
-    var needNavBar : Bool?
+    var needNavBar: Bool?
 
-    var navBar : WYANavBar {
+    var navBar: WYANavBar {
         let nav = WYANavBar()
         nav.delegate = self as WYANavBarDelegate
-        nav.navTitleColor   = .black
+        nav.navTitleColor = .black
         nav.navTitle = model?.title ?? ""
         nav.backgroundColor = .white
         let bundle = Bundle(for: classForCoder)
         let image = UIImage(named: "返回", in: bundle, compatibleWith: nil)
         nav.wya_customGoback(with: image!)
-        nav.wya_addRightNavBarButton(withNormalTitle: ["刷新"])
         return nav
     }
 
-    var webView : WYAWebView?
-
+    var webView: WYAWebView?
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -46,73 +43,63 @@ public class WYAViewController: UIViewController {
     deinit {
         webView = nil
         webView?.removeFromSuperview()
-
     }
 
-    override public func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = true
-
-
+        navigationController?.navigationBar.isHidden = true
     }
 
-    override public func viewWillDisappear(_ animated: Bool) {
+    public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.isHidden = false
-
+        navigationController?.navigationBar.isHidden = false
     }
 
-    override public func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
 
-        self.view.backgroundColor = .white
+        view.backgroundColor = .white
 
         if model?.hideTopBar == false {
-            self.view.addSubview(navBar)
+            view.addSubview(navBar)
         }
 
-
         webView = WYAWebView()
-        var y : CGFloat?
-        var height : CGFloat?
+        var y: CGFloat?
+        var height: CGFloat?
 
         if model?.hideTopBar ?? true {
             y = 0
-            height = self.view.cmam_height
-        }else {
+            height = view.cmam_height
+        } else {
             y = navBar.cmam_height
-            height = self.view.cmam_height-navBar.cmam_height
+            height = view.cmam_height - navBar.cmam_height
         }
-        webView?.frame = CGRect(x: 0.0, y: y!, width: self.view.cmam_width, height:height!)
+        webView?.frame = CGRect(x: 0.0, y: y!, width: view.cmam_width, height: height!)
         webView?.webView?.scrollView.showsVerticalScrollIndicator = model?.vScrollBarEnabled ?? true
         webView?.webView?.scrollView.showsHorizontalScrollIndicator = model?.hScrollBarEnabled ?? true
         webView?.webView?.scrollView.bouncesZoom = model?.scaleEnabled ?? true
         if needLocalService ?? false {
             webView?.openLocationHttpServer()
-//            webView?.localHost()
         }
         if model?.url != nil {
             if model?.url != "" {
                 webView?.loadUrl(url: (model?.url!)!)
             }
         }
-        self.view.addSubview(webView!)
-
+        view.addSubview(webView!)
 
         let button = UIButton(type: .custom)
-        button.frame = CGRect(x: self.view.cmam_width - 100, y: 88, width: 50, height: 50)
+        button.frame = CGRect(x: view.cmam_width - 100, y: 88, width: 50, height: 50)
         button.wya_setBackgroundColor(.red, for: .normal)
         button.wya_setBackgroundColor(.gray, for: .selected)
-        button.addCallBackAction { (button) in
+        button.addCallBackAction { _ in
             self.webView?.webView?.reloadFromOrigin()
-            //            self.webView?.loadUrl(url: (self.webView?.webServer.serverURL?.absoluteString)!)
-
         }
-        self.view.addSubview(button)
+        view.addSubview(button)
     }
-
 
     /*
      // MARK: - Navigation
@@ -123,25 +110,25 @@ public class WYAViewController: UIViewController {
      // Pass the selected object to the new view controller.
      }
      */
-
 }
 
 extension WYAViewController {
     // 默认为true
-    override public var shouldAutorotate: Bool {
+    public override var shouldAutorotate: Bool {
         return true
     }
+
     // 支持的旋转方向
-    override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if orientation == "portraitUp" {
             return .portrait
-        }else if orientation == "portraitDown" {
+        } else if orientation == "portraitDown" {
             return .portraitUpsideDown
-        }else if orientation == "landscapeLeft" {
+        } else if orientation == "landscapeLeft" {
             return .landscapeLeft
-        }else if orientation == "landscapeRight" {
+        } else if orientation == "landscapeRight" {
             return .landscapeRight
-        }else if orientation == "auto" {
+        } else if orientation == "auto" {
             return .all
         } else if orientation == "autoLandscape" {
             return .landscape
@@ -149,33 +136,29 @@ extension WYAViewController {
             return .allButUpsideDown
         }
         return .portrait
-
     }
+
     // 模态切换的默认方向
-    override public var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+    public override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         return .portraitUpsideDown
     }
-
 }
 
-extension WYAViewController : WYANavBarDelegate {
-
+extension WYAViewController: WYANavBarDelegate {
     public func wya_goBackPressed(_ sender: UIButton) {
         NotificationCenter.default.post(name: NSNotification.Name.closeWin, object: nil)
-        if self.navigationController == nil {
-            self.dismiss(animated: true) {
-
-            }
+        if navigationController == nil {
+            dismiss(animated: true) {}
         } else {
-            self.navigationController?.popViewController(animated: true)
+            navigationController?.popViewController(animated: true)
         }
     }
 }
 
-extension WYAViewController : UIGestureRecognizerDelegate {
+extension WYAViewController: UIGestureRecognizerDelegate {
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         NotificationCenter.default.post(name: NSNotification.Name.closeWin, object: nil)
-        if self.navigationController?.childViewControllers.count == 1 {
+        if navigationController?.childViewControllers.count == 1 {
             return false
         } else {
             return true
@@ -188,4 +171,3 @@ extension UIApplication {
         return UIInterfaceOrientationMask.all
     }
 }
-

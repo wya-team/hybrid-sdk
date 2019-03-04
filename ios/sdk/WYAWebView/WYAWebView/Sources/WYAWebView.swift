@@ -12,7 +12,6 @@ import SnapKit
 import UIKit
 import WebKit
 import WYAKit
-//import CVCocoaHTTPServeriOS
 
 /// 初始版本号
 fileprivate let jsBuildVersion = 0.1
@@ -26,15 +25,13 @@ public class WYAWebView: UIView {
         return true
     }
 
-    var pathString: String?
-
     var webServer = GCDWebServer()
-//    let server = HTTPServer()
-
     var webManager: WYAWebViewManager?
-    var actionID: String?
     var webView: WKWebView?
     let userContentControll = WKUserContentController()
+
+    var pathString: String?
+    var actionID: String?
     var contentHeight: Double?
 
     var progressView: UIProgressView = {
@@ -114,13 +111,13 @@ extension WYAWebView {
     /// - Parameter htmlName: html名字
     @objc public func loadLocalHtml(htmlName: String) {
         let string = Bundle.main.path(forResource: htmlName, ofType: "html")
-        var path = String()
+        var path : String?
         do {
             path = try String(contentsOfFile: string!)
+            self.webView!.loadHTMLString(path!, baseURL: Bundle.main.bundleURL)
         } catch {
             print(error)
         }
-        self.webView!.loadHTMLString(path, baseURL: Bundle.main.bundleURL)
     }
 
     /// GCDWebServer
@@ -128,93 +125,33 @@ extension WYAWebView {
         let bund = Bundle(for: classForCoder)
         let websitePath = bund.path(forResource: "dist", ofType: nil)
 
-
-        // ^/.*\\.html$
-//                let arr = ["event", "const", "methods", "assists"]
-//                for string in arr {
-//                    self.webServer.addHandler(
-//                        forMethod: "GET",
-//                        pathRegex: string,
-//                        request: GCDWebServerRequest.self,
-//                        processBlock: { (request) -> GCDWebServerResponse? in
-//                            print(request)
-//
-//                            let jsString = bund.path(forResource: "dist/index", ofType: "html")
-//
-//                            var jsPath: String?
-//                            do {
-//                                jsPath = try String(contentsOfFile: jsString!)
-//
-//                                return GCDWebServerDataResponse(html: jsPath!)
-//                            } catch {
-//                                print(error)
-//                                return GCDWebServerDataResponse(redirect: self.webServer.serverURL!, permanent: false)
-//                            }
-//
-//                    })
-//                }
-
-
         // 先设置个默认的handler处理静态文件（比如css、js、图片等）
-        webServer.addGETHandler(forBasePath: "/", directoryPath: websitePath!,
-                                indexFilename: nil, cacheAge: 3600,
+        webServer.addGETHandler(forBasePath: "/",
+                                directoryPath: websitePath!,
+                                indexFilename: nil,
+                                cacheAge: 3600,
                                 allowRangeRequests: true)
 
         // HTTP请求重定向（/从定向到/index.html）
-        self.webServer.addHandler(
-            forMethod: "GET",
-            path: "/",
-            request: GCDWebServerRequest.self,
-            processBlock: { (request) -> GCDWebServerResponse? in
-                let url = URL(string: "index.html", relativeTo: request.url)
-
-                return GCDWebServerResponse(redirect: url!, permanent: false)
+        self.webServer.addHandler(forMethod: "GET",
+                                  path: "/",
+                                  request: GCDWebServerRequest.self,
+                                  processBlock: { (request) -> GCDWebServerResponse? in
+                                      let url = URL(string: "index.html", relativeTo: request.url)
+                                      return GCDWebServerResponse(redirect: url!, permanent: false)
         })
 
-//
         let options: Dictionary<String, Any> = ["Port": 8080,
                                                 "AutomaticallySuspendInBackground": false,
                                                 "BindToLocalhost": true,
-                                                "ConnectionClass":WYAConenct.self]
+                                                "ConnectionClass": WYAConnenction.self]
         do {
             try self.webServer.start(options: options)
             // 打开网页
-            self.loadUrl(url: "http://localhost:8080/")
+            self.loadUrl(url: (webServer.serverURL?.absoluteString)!)
         } catch {
             print(error)
         }
-    }
-
-    /// CVCocoaHTTPServeriOS
-//    public func localHost() {
-//        let bund = Bundle(for: classForCoder)
-//        let websitePath = bund.path(forResource: "dist", ofType: nil)
-//
-//        server.setType("_http.tcp")
-//        server.setDocumentRoot(websitePath)
-//        do {
-//            try self.server.start()
-//        } catch {
-//            print(error)
-//        }
-//        print(self.server.listeningPort())
-//
-//        let port = String(format: "%d", server.listeningPort())
-//        let urlString = "http://localhost:" + port
-//
-//        self.loadUrl(url: urlString)
-//    }
-
-
-    @objc public func openwin(_ vc: UIViewController, _ type: jumpType) {
-        var allParams = [String: Any]()
-
-        var params = [String: Any]()
-        params.updateValue(self.cmam_parentController(), forKey: "rootVC")
-        params.updateValue(vc, forKey: "vc")
-        params.updateValue(type, forKey: "jumpType")
-        allParams.updateValue(params, forKey: "DevelopParams")
-        self.webManager?.nativeAction("openWin", params: allParams)
     }
 
     @objc public func removeNoticeAndObserver() {
@@ -273,9 +210,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
              * key: method   方法名
              * key: id       id
              */
-
             let dic = webManager?.cutString(urlString: url!)
-
             actionID = (dic?["id"] as! String)
             guard self.actionID != nil else { return }
 
@@ -332,7 +267,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
         print("加载完成")
 
         webView.evaluateJavaScript("document.body.scrollHeight") { result, _ in
-
             if let tempHeight: Double = result as? Double {
                 self.contentHeight = tempHeight
             }
@@ -346,7 +280,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
             dataParams?.updateValue(false, forKey: "fullScreen")
         }
         var safe = [String: Float]()
-        // FIXME: 安全区域需要根据情况计算
+
         if #available(iOS 11, *) {
             print(self.safeAreaLayoutGuide.layoutFrame)
             print(self.safeAreaInsets)
@@ -451,17 +385,9 @@ extension WYAWebView {
         webView?.evaluateJavaScript(jsSrring) { params, error in
             print(params ?? "没有参数")
             print(error ?? "没有错误")
+            guard error == nil else { return }
 
-            guard params != nil else { return }
-
-            var dictory: Any
-
-            // 有参数
-            /** params参数为json字符串需要转化为字典
-             */
-            dictory = self.webManager?.jsonStringToDic(params as! String) as Any
-            print(dictory)
-
+            let dictory = self.webManager?.jsonStringToDic(params as! String) as Any
             handler(dictory)
         }
     }
@@ -531,13 +457,13 @@ extension WYAWebView {
     }
 }
 
-
-class WYAConenct: GCDWebServerConnection {
-
+/// 操作网络连接状态
+class WYAConnenction: GCDWebServerConnection {
     override init() {
         super.init()
     }
-    override func rewriteRequest(_ url: URL, withMethod method: String, headers: [String : String]) -> URL {
+
+    override func rewriteRequest(_ url: URL, withMethod method: String, headers: [String: String]) -> URL {
         return super.rewriteRequest(url, withMethod: method, headers: headers)
     }
 
@@ -555,7 +481,7 @@ class WYAConenct: GCDWebServerConnection {
                 jsPath = try String(contentsOfFile: jsString!)
 
                 return GCDWebServerDataResponse(html: jsPath!)!
-            }catch{
+            } catch {
                 print(error)
             }
         }

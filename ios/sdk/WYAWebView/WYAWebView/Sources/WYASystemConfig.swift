@@ -10,8 +10,8 @@ import CoreTelephony
 import UIKit
 
 extension UIDevice {
-    //获取设备具体详细的型号
-    var phoneModel : String {
+    // 获取设备具体详细的型号
+    var phoneModel: String {
         var systemInfo = utsname()
         uname(&systemInfo)
         let machineMirror = Mirror(reflecting: systemInfo.machine)
@@ -21,10 +21,8 @@ extension UIDevice {
         }
         return identifier
     }
-    
-    
+
     var modelName: String {
-        
         switch self.phoneModel {
         case "iPod5,1": return "iPod Touch 5"
         case "iPod7,1": return "iPod Touch 6"
@@ -86,28 +84,27 @@ extension UIDevice {
         }
     }
 
-    func newOrientation(_ orientation : UIInterfaceOrientation) {
+    func newOrientation(_ orientation: UIInterfaceOrientation) {
         DispatchQueue.main.async {
             UIDevice.current.setValue(NSNumber(integerLiteral: UIInterfaceOrientation.unknown.rawValue), forKey: "orientation")
             UIDevice.current.setValue(NSNumber(integerLiteral: orientation.rawValue), forKey: "orientation")
 
             switch orientation {
-            case UIInterfaceOrientation.portrait :
+            case UIInterfaceOrientation.portrait:
                 UIApplication.shared.setStatusBarOrientation(UIInterfaceOrientation.portraitUpsideDown, animated: true)
-            break
-            case UIInterfaceOrientation.portraitUpsideDown :
+                break
+            case UIInterfaceOrientation.portraitUpsideDown:
                 UIApplication.shared.setStatusBarOrientation(UIInterfaceOrientation.portrait, animated: true)
                 break
-            case UIInterfaceOrientation.landscapeLeft :
+            case UIInterfaceOrientation.landscapeLeft:
                 UIApplication.shared.setStatusBarOrientation(UIInterfaceOrientation.landscapeRight, animated: true)
                 break
-            case UIInterfaceOrientation.landscapeRight :
+            case UIInterfaceOrientation.landscapeRight:
                 UIApplication.shared.setStatusBarOrientation(UIInterfaceOrientation.landscapeLeft, animated: true)
                 break
-            default :
+            default:
                 break
             }
-
         }
     }
 }
@@ -155,68 +152,67 @@ public class SystemConfig: NSObject {
 
     public let systemType = "iOS"
 
-    public let systemVersion = UIDevice.current.systemVersion //iOS版本
+    public let systemVersion = UIDevice.current.systemVersion // iOS版本
 
-    public let deviceId = UIDevice.current.identifierForVendor?.uuidString //设备udid
+    public let deviceId = UIDevice.current.identifierForVendor?.uuidString // 设备udid
 
     public var deviceToken = UserDefaults.standard.object(forKey: "DEVICE_TOKEN") ?? "" // deviceToken
 
-    public let deviceModel = UIDevice.current.phoneModel //设备具体型号
+    public let deviceModel = UIDevice.current.phoneModel // 设备具体型号
 
-    public let deviceName = UIDevice.current.name //设备名称
+    public let deviceName = UIDevice.current.name // 设备名称
 
-    public let uiMode = UIDevice.current.model //设备型号
+    public let uiMode = UIDevice.current.model // 设备型号
 
     public lazy var operatorName: String = {
         var operatorName = String()
         let info = CTTelephonyNetworkInfo()
         if Platform.isSimulator {
-            return "";
+            return ""
         } else {
-            
             if let carrier = info.subscriberCellularProvider {
                 operatorName = carrier.carrierName!
             }
             return operatorName
         }
-        
+
     }() // 运营商名称
 
-    public var connectionType = UIDevice.current.contentType //获取网络连接状态
+    public var connectionType = UIDevice.current.contentType // 获取网络连接状态
 
     public var fullScreen: Bool?
 
-    public let screenWidth = UIScreen.main.bounds.size.width //像素尺寸宽度
+    public let screenWidth = UIScreen.main.bounds.size.width // 像素尺寸宽度
 
-    public let screenHeight = UIScreen.main.bounds.size.height //像素尺寸高度
+    public let screenHeight = UIScreen.main.bounds.size.height // 像素尺寸高度
 
-    public var winName: String? //当前window名称
+    public var winName: String? // 当前window名称
 
-    public let winWidth = UIScreen.main.bounds.size.width //物理尺寸宽度
+    public let winWidth = UIScreen.main.bounds.size.width // 物理尺寸宽度
 
-    public let winHeight = UIScreen.main.bounds.size.height //物理尺寸高度
+    public let winHeight = UIScreen.main.bounds.size.height // 物理尺寸高度
 
     public let frameName: String? = nil //  frame 名称, 若当前环境为 window 中，则该属性值为空字符串
 
-    public let frameWidth: Float? = nil //frame 宽度，环境为window时，与winWidth 相同
+    public let frameWidth: Float? = nil // frame 宽度，环境为window时，与winWidth 相同
 
-    public let frameHeight: Float? = nil //frame 高度，环境为window时，与winHeight 相同
+    public let frameHeight: Float? = nil // frame 高度，环境为window时，与winHeight 相同
 
     public var safeArea = safeFrame(left: 0, right: 0, top: 0, bottom: 0)
 
-    public let pageParam: [String: String]? = nil //页面参数, 获取页面间传递的参数值，为 openWin()、openFrame() 等方法
+    public let pageParam: [String: String]? = nil // 页面参数, 获取页面间传递的参数值，为 openWin()、openFrame() 等方法
 
     public var appParam: [String: String] = {
         let appP = UserDefaults.standard.object(forKey: "appParam")
-        guard (appP != nil) else {return [String: String]()}
+        guard appP != nil else { return [String: String]() }
         // FIXME: 第三方调起传递参数需要按照一定的传参规则解析成字典
         let dic = [String: String]()
         return dic
-    }() //当应用被第三方应用打开时，传递过来的参数
+    }() // 当应用被第三方应用打开时，传递过来的参数
 
-    public var statusBarAppearance = true //沉浸式
+    public var statusBarAppearance = true // 沉浸式
 
-    public lazy var debug : Bool = {
+    public lazy var debug: Bool = {
         var debug = true
         #if DEBUG
         debug = true
@@ -225,8 +221,8 @@ public class SystemConfig: NSObject {
         #endif
         return debug
     }()
-    
-    public var channel = "App Store" //APP来源
+
+    public var channel = "App Store" // APP来源
 
     public lazy var jailbreak: Bool = {
         var jailbroken = false
@@ -234,10 +230,10 @@ public class SystemConfig: NSObject {
         jailbroken = WYACheckSystemStatus.isJailBreak()
 
         return jailbroken
-    }() //是否越狱
-    let localizedModel = UIDevice.current.localizedModel //设备区域化型号如A1533
+    }() // 是否越狱
+    let localizedModel = UIDevice.current.localizedModel // 设备区域化型号如A1533
 
-    func getSystemConfigDic() -> [String : Any] {
+    func getSystemConfigDic() -> [String: Any] {
         var params = [String: Any]()
         params.updateValue(self.version, forKey: "version")
         params.updateValue(self.appId, forKey: "appId")
@@ -260,15 +256,15 @@ public class SystemConfig: NSObject {
         params.updateValue(self.frameName ?? "", forKey: "frameName")
         params.updateValue(self.frameWidth ?? 0, forKey: "frameWidth")
         params.updateValue(self.frameHeight ?? 0, forKey: "frameHeight")
-        
-        var safe = [String : Float]()
+
+        var safe = [String: Float]()
         safe.updateValue(self.safeArea.left, forKey: "left")
         safe.updateValue(self.safeArea.right, forKey: "right")
         safe.updateValue(self.safeArea.top, forKey: "top")
         safe.updateValue(self.safeArea.bottom, forKey: "bottom")
-        
+
         params.updateValue(safe, forKey: "safeArea")
-        params.updateValue(self.pageParam ?? [String : String](), forKey: "pageParam")
+        params.updateValue(self.pageParam ?? [String: String](), forKey: "pageParam")
         //        params.updateValue(self.webManager.config.wgtParam, forKey: "wgtParam")
         params.updateValue(self.appParam, forKey: "appParam")
         params.updateValue(self.statusBarAppearance, forKey: "statusBarAppearance")
@@ -278,17 +274,16 @@ public class SystemConfig: NSObject {
         params.updateValue(self.debug, forKey: "debug")
         params.updateValue(self.channel, forKey: "channel")
         params.updateValue(self.jailbreak, forKey: "jailbreak")
-        
+
         return params
     }
-    
+
     /// 获取build版本号
     ///
     /// - Returns: 版本号
     func getBuildVersion() -> String {
         let infoDictionary = Bundle.main.infoDictionary!
-        let minorVersion = infoDictionary["CFBundleVersion"] //版本号（内部标示）
+        let minorVersion = infoDictionary["CFBundleVersion"] // 版本号（内部标示）
         return minorVersion as! String
     }
-
 }

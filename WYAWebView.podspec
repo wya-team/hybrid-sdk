@@ -51,7 +51,5 @@ Pod::Spec.new do |s|
   s.dependency 'MJRefresh'
   s.dependency 'SnapKit'
   s.dependency 'GCDWebServer'
-  
   s.dependency 'WYAKit'
-  s.dependency 'NTYAmrConverter', '~> 0.1'
 end
