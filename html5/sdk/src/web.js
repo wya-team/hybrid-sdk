@@ -2,16 +2,15 @@ import { throwError, createMixins } from './utils/utils';
 
 import modules from './modules/root';
 
-@createMixins({ ...modules })
 class WebSDK {
 	version = '1.0.0';
 	constructor() {
-
 		// 不使用this.__readyArr__, 避免被遍历
 		Object.defineProperty(this, '__readyArr__', {
 			value: [],
 			writable: true
 		});
+		Object.keys(modules).forEach(i => this.registerModule(i, modules[i]));
 
 		// 是否初始化
 		this.isInit = false;
@@ -33,7 +32,6 @@ class WebSDK {
 				// 执行ready
 				this.__readyArr__.forEach(fn => fn());
 				this.__readyArr__ = [];
-
 			}
 		});
 	}
@@ -82,6 +80,30 @@ class WebSDK {
 		return this.useJSBridgeFn('off', eventName);
 	}
 	// -- end
+	/**
+	 * 引入模块
+	 */
+	requireModule(moduleName) {
+		return this[moduleName];
+	}
+	/**
+	 * 注册模块, 不允许重复注册
+	 */
+	registerModule(moduleName, target) {
+		if (this[moduleName] || !target) return;
+
+		if (target instanceof Array) {
+			let methods = target.reduce((pre, cur) => {
+				pre[cur] = this.invoke.bind(this, `${moduleName}/${cur}`);
+				return pre;
+			}, {});
+			this[moduleName] = methods;
+			return methods;
+		} else if (typeof target === 'object') {
+			this[moduleName] = methods;
+			return target;
+		}
+	}
 }
 
 export default new WebSDK();

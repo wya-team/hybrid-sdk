@@ -1,3 +1,5 @@
-export default {
+import modules from './methods';
 
+export default {
+	...modules
 };
