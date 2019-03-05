@@ -29,10 +29,16 @@ export default {
 		// console.log('?');
 	},
 	methods: {
-		handleClick(name) {
+		scheme2id(scheme) {
+			let arr = scheme.split('/');
+			return arr[0] + arr[1].charAt(0).toUpperCase() + arr[1].slice(1);
+		},
+		handleClick(scheme) {
+			let name = this.scheme2id(scheme);
 			rootConfig[name] && rootConfig[name].invoke();
 		},
-		handleRun(name) {
+		handleRun(scheme) {
+			let name = this.scheme2id(scheme);
 			this.$router.push(`/methods/run/${name}`);
 		}
 	},

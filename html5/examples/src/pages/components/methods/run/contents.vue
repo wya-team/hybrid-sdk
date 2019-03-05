@@ -123,11 +123,15 @@ export default {
 		};
 	},
 	created() {
-		let code = getItem(this.id);
+		let [moduleName, methodName] = this.id.replace(/([A-Z])/, ".$1").split('.');
+		methodName = methodName.charAt(0).toLowerCase() + methodName.slice(1);
+		let scheme = `${moduleName}/${methodName}`;
+		
+		let code = getItem(scheme);
 
 		if (!code) {
-			code = initCode(this.id, rootConfig[this.id].param || {});
-			setItem(this.id, code);
+			code = initCode(scheme, rootConfig[this.id].param || {});
+			setItem(scheme, code);
 		}
 
 		this.code = code;
