@@ -1,4 +1,4 @@
-const tpl = (category, filename) => {
+const tpl = (category, filename, scheme) => {
 	let contents = '';
 	switch (category) {
 		case 'events':
@@ -19,8 +19,9 @@ const tpl = (category, filename) => {
 			contents += `};\n`;
 			return contents;
 		case 'methods':
+
 			contents += `const invoke = () => {\n`;
-			contents += `	wya.invoke('${filename}', {\n`;
+			contents += `	wya.invoke('${scheme}', {\n`;
 			contents += `		// ...\n`;
 			contents += `	}).then((res) => {\n`;
 			contents += `		res = typeof res === 'object' ? JSON.stringify(res) : (res || '无数据');\n`;
@@ -40,16 +41,24 @@ const tpl = (category, filename) => {
 	
 };
 module.exports = (category, filename) => {
+
+	let scheme;
+	if (category === 'methods') {
+		let [moduleName, methodName] = filename.replace(/([A-Z])/, ".$1").split('.');
+		methodName = methodName.charAt(0).toLowerCase() + methodName.slice(1);
+		scheme = `${moduleName}/${methodName}`;
+	}
+
 	let contents = '';
 	contents += `import wya from 'wya-js-sdk';\n`;
 	contents += `import Toasts from '@common/toasts/toasts';\n`;
 	contents += `import markdown from '@docs/${category}/${filename}.md';\n`;
 	contents += `\n`;
-	contents += tpl(category, filename);
+	contents += tpl(category, filename, scheme);
 	contents += `\n`;
 	contents += `export default {\n`;
 	contents += `	to: '/${category}/${filename}',\n`;
-	contents += `	title: '${filename}',\n`;
+	contents += `	title: '${category === 'methods' ? scheme : filename}',\n`;
 	contents += `	label: '',\n`;
 	contents += `	invoke,\n`;
 	contents += `	markdown\n`;

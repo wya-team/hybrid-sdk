@@ -1,5 +1,10 @@
 module.exports = (name) => {
 	let contents = '';
+	let [moduleName, methodName] = name.replace(/([A-Z])/, ".$1").split('.');
+	methodName = methodName.charAt(0).toLowerCase() + methodName.slice(1);
+
+	let scheme = `${moduleName}/${methodName}`;
+
 	contents += `#### 1. 说明\n\n`;
 
 	contents += `~\n\n`;
@@ -28,7 +33,8 @@ module.exports = (name) => {
 
 	contents += '```javascript\n';
 	contents += `import wya from 'wya-js-sdk';\n\n`;
-	contents += `wya.${name}({\n`;
+	contents += `let ${moduleName} = wya.requireModule('${moduleName}')\n`;
+	contents += `${moduleName}.${methodName}({\n`;
 	contents += `	// ...\n`;
 	contents += `}).then(() => {\n`;
 	contents += `	// ...\n`;
@@ -37,7 +43,17 @@ module.exports = (name) => {
 	contents += `});\n\n`;
 
 	contents += `// 或者\n`;
-	contents += `wya.invoke('${name}', {\n`;
+	contents += `import wya from 'wya-js-sdk';\n\n`;
+	contents += `wya.${moduleName}.${methodName}({\n`;
+	contents += `	// ...\n`;
+	contents += `}).then(() => {\n`;
+	contents += `	// ...\n`;
+	contents += `}).catch(() => {\n`;
+	contents += `	// ...\n`;
+	contents += `});\n\n`;
+
+	contents += `// 或者\n`;
+	contents += `wya.invoke('${scheme}', {\n`;
 	contents += `	// ...\n`;
 	contents += `}).then(() => {\n`;
 	contents += `	// ...\n`;
@@ -49,7 +65,7 @@ module.exports = (name) => {
 	contents += `#### 5. 不引入sdk示例代码\n\n`;
 
 	contents += '```javascript\n';
-	contents += `WYAJSBridge.invoke('${name}', {\n`;
+	contents += `WYAJSBridge.invoke('${scheme}', {\n`;
 	contents += `	// ...\n`;
 	contents += `}).then(() => {\n`;
 	contents += `	// ...\n`;
