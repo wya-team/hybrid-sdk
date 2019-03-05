@@ -114,12 +114,12 @@ var staticRenderFns = []
 
 // CONCATENATED MODULE: ./src/pages/containers/methods/modules/methods-run.vue?vue&type=template&id=e95a1d84&scoped=true&
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/methods/run/contents.vue?vue&type=template&id=40a7610a&
-var contentsvue_type_template_id_40a7610a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"g-flex g-fd-c"},[_c('span',{staticClass:"g-pd-tb-10 g-pd-lr-10 g-bg-blue-mid g-tc",on:{"click":_vm.handleClick}},[_vm._v("执行")]),_vm._v(" "),_c('codemirror',{attrs:{"value":_vm.code,"options":_vm.cmOption},on:{"input":_vm.handleChange}}),_vm._v(" "),_c('span',{staticClass:"g-pd-tb-10 g-pd-lr-10 g-bg-yellow-mid g-tc",on:{"click":_vm.handleClear}},[_vm._v("初始化")])],1)}
-var contentsvue_type_template_id_40a7610a_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/methods/run/contents.vue?vue&type=template&id=75110fc0&
+var contentsvue_type_template_id_75110fc0_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"g-flex g-fd-c"},[_c('span',{staticClass:"g-pd-tb-10 g-pd-lr-10 g-bg-blue-mid g-tc",on:{"click":_vm.handleClick}},[_vm._v("执行")]),_vm._v(" "),_c('codemirror',{attrs:{"value":_vm.code,"options":_vm.cmOption},on:{"input":_vm.handleChange}}),_vm._v(" "),_c('span',{staticClass:"g-pd-tb-10 g-pd-lr-10 g-bg-yellow-mid g-tc",on:{"click":_vm.handleClear}},[_vm._v("初始化")])],1)}
+var contentsvue_type_template_id_75110fc0_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/pages/components/methods/run/contents.vue?vue&type=template&id=40a7610a&
+// CONCATENATED MODULE: ./src/pages/components/methods/run/contents.vue?vue&type=template&id=75110fc0&
 
 // EXTERNAL MODULE: ./node_modules/codemirror/mode/javascript/javascript.js
 var javascript = __webpack_require__("./node_modules/codemirror/mode/javascript/javascript.js");
@@ -215,10 +215,18 @@ var main = __webpack_require__("./node_modules/wya-utils/lib/main.js");
 // EXTERNAL MODULE: ./src/pages/components/methods/run/run.js
 var run = __webpack_require__("./src/pages/components/methods/run/run.js");
 
-// EXTERNAL MODULE: ./src/pages/components/methods/detail/modules/root.js + 39 modules
+// EXTERNAL MODULE: ./src/pages/components/methods/detail/modules/root.js + 62 modules
 var root = __webpack_require__("./src/pages/components/methods/detail/modules/root.js");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/methods/run/contents.vue?vue&type=script&lang=js&
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 //
@@ -327,11 +335,18 @@ var initCode = function initCode(id) {
     };
   },
   created: function created() {
-    var code = Object(main["getItem"])(this.id);
+    var _this$id$replace$spli = this.id.replace(/([A-Z])/, ".$1").split('.'),
+        _this$id$replace$spli2 = _slicedToArray(_this$id$replace$spli, 2),
+        moduleName = _this$id$replace$spli2[0],
+        methodName = _this$id$replace$spli2[1];
+
+    methodName = methodName.charAt(0).toLowerCase() + methodName.slice(1);
+    var scheme = "".concat(moduleName, "/").concat(methodName);
+    var code = Object(main["getItem"])(scheme);
 
     if (!code) {
-      code = initCode(this.id, root[this.id].param || {});
-      Object(main["setItem"])(this.id, code);
+      code = initCode(scheme, root[this.id].param || {});
+      Object(main["setItem"])(scheme, code);
     }
 
     this.code = code;
@@ -376,8 +391,8 @@ var componentNormalizer = __webpack_require__("./node_modules/vue-loader/lib/run
 
 var component = Object(componentNormalizer["a" /* default */])(
   run_contentsvue_type_script_lang_js_,
-  contentsvue_type_template_id_40a7610a_render,
-  contentsvue_type_template_id_40a7610a_staticRenderFns,
+  contentsvue_type_template_id_75110fc0_render,
+  contentsvue_type_template_id_75110fc0_staticRenderFns,
   false,
   null,
   null,

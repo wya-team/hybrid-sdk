@@ -18,6 +18,11 @@ wya.onError((error) => {
 	let msg = `全局异常捕获： ${error}`;
 	// Toasts.info(msg);
 });
+wya.onLog((res) => {
+	typeof res === 'object' ? JSON.stringify(res) : res;
+	let msg = `全局日志捕获： ${res}`;
+	// Toasts.info(msg);
+});
 
 // window.addEventListener('keypress', (e) => {
 // 	if (e.keyCode == 114) {
