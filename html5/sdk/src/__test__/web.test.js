@@ -1,5 +1,7 @@
 import WYAJSBridge from '../native.js';
 import wya from '../web.js';
+import { useDispatchEvent } from '../utils/utils';
+
 describe('web.js', () => {
 	window.WYAJSBridge = WYAJSBridge;
 	let id = WYAJSBridge.count;
@@ -14,6 +16,7 @@ describe('web.js', () => {
 		expect(typeof wya.last).toBe('function');
 		expect(typeof wya.off).toBe('function');
 		expect(typeof wya.onError).toBe('function');
+		expect(typeof wya.onLog).toBe('function');
 	});
 	test('验证ready', () => {
 		wya.ready(() => {
@@ -51,6 +54,17 @@ describe('web.js', () => {
 
 	});
 
+	test('验证log', () => {
+		wya.ready(() => {
+			expect(1).toBe(1);
+		});
+
+		wya.onLog((res) => {
+			expect(typeof res).toBe('string');
+		});
+
+		useDispatchEvent('成功');
+	});
 	test('验证event', () => {
 		wya.on('batteryLow', (res) => {
 			expect(res.level).toBe(20);

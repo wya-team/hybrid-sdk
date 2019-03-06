@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1c4634c8-c228-4d26-81ea-e4e72d3851bb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/android/sdk/assets/nanohttpd-2.3.2.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/sdk/src/main/java/com/wya/hybrid/localserver/LocalServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/android/sdk/src/main/java/com/wya/hybrid/localserver/LocalService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/debug.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/gradle_wrapper.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/examples/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/examples/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/sdk/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/android/sdk/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/sdk/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/sdk/src/main/AndroidManifest.xml" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="1215664827">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="java" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JAVA" value="1" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/android/sdk/src/main/java/com/wya/hybrid/WYAWebView.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="135">
+              <caret line="35" column="7" lean-forward="true" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="modificationStamps">
+      <map>
+        <entry key="$PROJECT_DIR$/../../../Application_Test" value="4392768965842" />
+        <entry key="E:/AndStudio_Pri/RxAndroid" value="5832783222684" />
+        <entry key="E:/AndStudio_Pri/react-native" value="8748743888124" />
+        <entry key="E:/AndStudio_Pro" value="5766474396810" />
+        <entry key="E:/AndStudio_Pro/BaiGuoLeague" value="4393713581633" />
+        <entry key="E:/AndStudio_Pro/EastLending_as" value="7284536419220" />
+        <entry key="E:/AndStudio_Pro/EastLending_as_branch_v1.4.1" value="4340114805958" />
+        <entry key="E:/AndStudio_Pro/dfjk-library" value="7242180824714" />
+        <entry key="E:/AndStudio_Pro/dfjk-library_dev" value="7260357441762" />
+        <entry key="E:/AndStudio_Pro/dfjk-library_dev_1.0.1_bugfix" value="7260373060860" />
+        <entry key="E:/AndStudio_Pro/loan_w" value="5799020189521" />
+        <entry key="E:/AndStudio_Pro/loan_w_dev" value="7293645643090" />
+        <entry key="E:/AndStudio_Pro/loan_w_r2.2.1_160309_collection" value="7293618674928" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_2.1.7_20160122" value="5813824314378" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_2.1.8_20160228" value="5823156441579" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_2.1.9_20160303" value="5827997210200" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_2.1.9_20160303_bugfix" value="5829285167752" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_38_test_2.1.9_20160301" value="5827240360212" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_38_test_2.1.9_20160302" value="5827624236899" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_test_2.1.7_20160112" value="5810256013614" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_test_2.1.7_20160113" value="5810597441556" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_test_2.1.7_20160114" value="5810942411499" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_test_2.1.7_20160115" value="5811301546273" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_test_2.1.7_20160118" value="5812325041559" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_test_37_2.1.7_20160119" value="5812676178491" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_test_38_2.1.7_20160120" value="5813037794492" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_test_38_2.1.7_20160122" value="5813762301041" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_test_38_2.1.8_20160217" value="5822816570684" />
+        <entry key="E:/AndStudio_Pro/loan_w_release_test_38_2.1.8_20160218" value="5823136936897" />
+        <entry key="E:/AndroidStudio_CT/Application_Test" value="4392759604779" />
+        <entry key="E:/AndroidStudio_CT/CleanArchitecture" value="7293125729157" />
+        <entry key="E:/AndroidStudio_CT/Conversations" value="5834257762045" />
+        <entry key="E:/AndroidStudio_CT/Depth-LIB-Android-" value="5849078440448" />
+        <entry key="E:/AndroidStudio_CT/EasyGank" value="4374876955134" />
+        <entry key="E:/AndroidStudio_CT/EffectiveAndroidUI" value="4375838541893" />
+        <entry key="E:/AndroidStudio_CT/OuNews" value="8749207236117" />
+        <entry key="E:/AndroidStudio_CT/PhotoNoter" value="7292625606312" />
+        <entry key="E:/AndroidStudio_CT/SimplifyReader" value="7292764908830" />
+        <entry key="E:/AndroidStudio_CT/StickyHeaderListView" value="4386797551711" />
+        <entry key="E:/AndroidStudio_CT/archi" value="8751683098258" />
+        <entry key="E:/AndroidStudio_CT/secondary-dex-gradle" value="5834357140952" />
+        <entry key="E:/Pro_Release/Application_Test" value="4392763880306" />
+        <entry key="E:/Pro_Release/loan_w_dev" value="7299522460208" />
+        <entry key="E:/baiguo/BaiGuoLeague" value="11735109882663" />
+        <entry key="E:/wb-pro/BaiGuoLeague" value="4393709645599" />
+        <entry key="Z:/others/dfjk-android-group/wen-pro/stu-pro/EastLending_as_branch_v2.0.6" value="7293228101725" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="405" />
+    <option name="y" value="124" />
+    <option name="width" value="1478" />
+    <option name="height" value="877" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="hybrid-sdk" type="b2602c69:ProjectViewProjectNode" />
+              <item name="merged" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="android.project.structure.last.selected" value="SDK Location" />
+    <property name="android.project.structure.proportion" value="0.15" />
+    <property name="android.sdk.path" value="$PROJECT_DIR$/../../../Android/sdk" />
+    <property name="last_opened_file_path" value="/usr/local/bin/git" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="experimental" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\wen\AppData\Roaming\Subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1c4634c8-c228-4d26-81ea-e4e72d3851bb" name="Default Changelist" comment="" />
+      <created>1548512461852</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1548512461852</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="405" y="124" width="1478" height="877" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Capture Tool" />
+      <window_info active="true" content_ui="combo" id="Project" visible="true" weight="0.25208914" />
+      <window_info id="Structure" side_tool="true" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info id="Build Variants" side_tool="true" />
+      <window_info id="Image Layers" />
+      <window_info id="Designer" />
+      <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="CheckStyle" />
+      <window_info anchor="bottom" id="Logcat" />
+      <window_info anchor="bottom" id="TODO" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Messages" visible="true" weight="0.3299363" />
+      <window_info anchor="bottom" id="Android Profiler" show_stripe_button="false" />
+      <window_info anchor="right" id="Device File Explorer" side_tool="true" />
+      <window_info anchor="right" id="Capture Analysis" />
+      <window_info anchor="right" id="Theme Preview" />
+      <window_info anchor="right" id="Palette&#9;" />
+      <window_info anchor="right" id="Key Promoter X" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/android/sdk/src/main/java/com/wya/hybrid/WYAWebView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="35" column="7" lean-forward="true" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="Copyright.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.32231405" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Android</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>aapt</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.6" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.32231405" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>classes</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

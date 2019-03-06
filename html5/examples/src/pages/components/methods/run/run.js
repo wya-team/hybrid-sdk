@@ -1,6 +1,6 @@
 import wya from 'wya-js-sdk';
 import { transform, transformFromAst } from '@babel/standalone';
-import Toasts from '@common/toasts/toasts';
+import Toasts from '@common/toast/toast';
 /**
  * 执行上下文
  * eval

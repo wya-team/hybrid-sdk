@@ -7,10 +7,18 @@ const comboTpl = require('./tpls/combo');
 const mdDir = resolve(__dirname, '../../../docs');
 const jsDir = resolve(__dirname, '../../examples/src/pages/components');
 
+const parseModule = (modules) => {
+	return Object.keys(modules).reduce((pre, cur) => {
+		modules[cur].forEach((value) => {
+			pre.push(`${cur}${value.charAt(0).toUpperCase() + value.slice(1)}`);
+		});
+		return pre;
+	}, []);
+};
 const filesName = {
 	assists: require('../../sdk/src/modules/assists'),
 	events: require('../../sdk/src/modules/events'),
-	methods: require('../../sdk/src/modules/methods'),
+	methods: parseModule(require('../../sdk/src/modules/methods')),
 	consts: require('../../sdk/src/modules/consts'),
 };
 

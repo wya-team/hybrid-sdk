@@ -91,7 +91,7 @@ class WYAJSBridge {
 	 * 外部强制开启 wya.invoke()
 	 */
 	sendEvent(isAdd, eventName, ...rest) {
-		if (/(_error_|_ready_)/.test(eventName)) return;
+		if (/(_error_|_ready_|_log_)/.test(eventName)) return;
 		
 		const { success, fail } = this.parseParams(rest);
 
@@ -112,7 +112,7 @@ class WYAJSBridge {
 			eventName
 		}).then((e) => {
 			// todo, 输出打印日志
-			throwError(`${eventName}${tipMsg}成功`);
+			useDispatchEvent('_log_', `${eventName}${tipMsg}成功`);
 		}).catch((e) => {
 			// 事件失败，从数组中移除
 			this.setNativeEvents(!isAdd, eventName);

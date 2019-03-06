@@ -43,8 +43,14 @@ class WebSDK {
 		}
 	}
 	onError(fn) {
-		// this.useJSBridgeFn('on', '_error_', fn);
+		// todo, 卸载
 		window.addEventListener('_error_', (e) => {
+			fn && fn(e.data);
+		});
+	}
+	onLog(fn) {
+		// todo, 卸载
+		window.addEventListener('_log_', (e) => {
 			fn && fn(e.data);
 		});
 	}
@@ -92,17 +98,22 @@ class WebSDK {
 	registerModule(moduleName, target) {
 		if (this[moduleName] || !target) return;
 
+		let methods;
 		if (target instanceof Array) {
-			let methods = target.reduce((pre, cur) => {
+			methods = target.reduce((pre, cur) => {
 				pre[cur] = this.invoke.bind(this, `${moduleName}/${cur}`);
 				return pre;
 			}, {});
-			this[moduleName] = methods;
-			return methods;
 		} else if (typeof target === 'object') {
-			this[moduleName] = methods;
-			return target;
+			methods = target;
 		}
+
+		// 不使用this[moduleName], 避免被遍历, 且不可重写
+		Object.defineProperty(this, moduleName, {
+			value: methods,
+			writable: false
+		});
+
 	}
 }
 
