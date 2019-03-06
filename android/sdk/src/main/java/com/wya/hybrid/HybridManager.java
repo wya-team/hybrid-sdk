@@ -140,7 +140,7 @@ public class HybridManager implements JsCallBack {
 	private WYAWebView mWebView;
 	private BaseEmitData<Object> mEmitData = new BaseEmitData<>();
 	private Map<String, Integer> mEventMap;
-	private Map<String, Boolean> mEventRegisterMap;
+	private Map<String, Integer> mEventRegisterMap;
 
 	private boolean mIsDebugger = false;
 	private boolean mIsRegister = false;
@@ -255,12 +255,10 @@ public class HybridManager implements JsCallBack {
 			mNetworkReceiver = new NetworkReceiver();
 		}
 		mContext.registerReceiver(mNetworkReceiver, filter);
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		if (eventName.equals(NetState.EVENT_ONLINE)) {
-			HybridManager.this.onOnline(id);
 			setEmitData(1, "注册网络开启监听成功", new NetState());
 		} else {
-			HybridManager.this.onOffline(id);
 			setEmitData(1, "注册网络关闭监听成功", new NetState());
 		}
 		send(eventName, getEmitData());
@@ -289,8 +287,17 @@ public class HybridManager implements JsCallBack {
 		if (event == null) {
 			return;
 		}
-		setEmitData(0, "响应成功", new NetState());
-		send(event.isOnline() ? NetState.EVENT_ONLINE : NetState.EVENT_OFFLINE, getEmitData());
+		if(event.isOnline()){
+			if (null != mEventRegisterMap && CheckUtil.isNotEmpty(NetState.EVENT_ONLINE) && mEventRegisterMap.containsKey(NetState.EVENT_ONLINE)) {
+				setEmitData(0, NetState.EVENT_ONLINE + "响应成功", new NetState());
+				send(NetState.EVENT_ONLINE, getEmitData());
+			}
+		} else {
+			if (null != mEventRegisterMap && CheckUtil.isNotEmpty(NetState.EVENT_OFFLINE) && mEventRegisterMap.containsKey(NetState.EVENT_OFFLINE)) {
+				setEmitData(0, NetState.EVENT_OFFLINE + "响应成功", new NetState());
+				send(NetState.EVENT_OFFLINE, getEmitData());
+			}
+		}
 	}
 
 	/**
@@ -305,15 +312,13 @@ public class HybridManager implements JsCallBack {
 			mBatteryReceiver = new BatteryReceiver();
 		}
 		mContext.registerReceiver(mBatteryReceiver, filter);
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		Battery battery = new Battery();
 		battery.setIsPlugged(BatterySp.get().isPlugged());
 		battery.setLevel(BatterySp.get().getLevel());
 		if (eventName.equals(Battery.EVENT_BATTERY_LOW)) {
-			HybridManager.this.onBatteryLow(id);
 			setEmitData(1, "低电量监听注册成功", battery);
 		} else {
-			HybridManager.this.onBatteryStatus(id);
 			setEmitData(1, "电量状态监听注册成功", battery);
 		}
 		send(eventName, getEmitData());
@@ -363,8 +368,7 @@ public class HybridManager implements JsCallBack {
 	 * @param id
 	 */
 	private void registerResume(String eventName, int id) {
-		HybridManager.this.onResume(id);
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		setEmitData(1, "注册应用从后台回到前台监听成功", new NetState());
 		send(eventName, getEmitData());
 	}
@@ -376,8 +380,7 @@ public class HybridManager implements JsCallBack {
 	 * @param id
 	 */
 	private void registerPause(String eventName, int id) {
-		HybridManager.this.onPause(id);
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		setEmitData(1, "注册应用进入后台监听成功", new NetState());
 		send(eventName, getEmitData());
 	}
@@ -413,11 +416,12 @@ public class HybridManager implements JsCallBack {
 	 * 注册摇动事件
 	 *
 	 * @param eventName
+	 * @param id
 	 */
-	private void registerShake(String eventName) {
+	private void registerShake(String eventName, int id) {
 		SensorManagerHelper sensorManagerHelper = new SensorManagerHelper(mContext);
 		sensorManagerHelper.setOnShakeListener(() -> onShake(mContext));
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		setEmitData(1, "注册摇动事件监听成功", new NetState());
 		send(eventName, getEmitData());
 	}
@@ -450,8 +454,9 @@ public class HybridManager implements JsCallBack {
 	 * 注册屏幕监听事件
 	 *
 	 * @param eventName
+	 * @param id
 	 */
-	public void registerScreenReceiver(String eventName) {
+	public void registerScreenReceiver(String eventName, int id) {
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(android.content.Intent.ACTION_SCREEN_ON);
 		filter.addAction(android.content.Intent.ACTION_SCREEN_OFF);
@@ -460,7 +465,7 @@ public class HybridManager implements JsCallBack {
 			mScreenReceiver = new ScreenReceiver();
 		}
 		mContext.registerReceiver(mScreenReceiver, filter);
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		setEmitData(1, "注册屏幕监听事件成功", null);
 		send(eventName, getEmitData());
 	}
@@ -503,12 +508,13 @@ public class HybridManager implements JsCallBack {
 	 * 注册屏幕截图事件
 	 *
 	 * @param eventName
+	 * @param id
 	 */
-	private void registerScreenShot(String eventName) {
+	private void registerScreenShot(String eventName, int id) {
 		ScreenShotListenManager manager = ScreenShotListenManager.newInstance(mContext);
 		manager.setListener(this::onScreenshot);
 		manager.startListen();
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		setEmitData(1, "注册屏幕截图事件成功", null);
 		send(eventName, getEmitData());
 	}
@@ -542,8 +548,7 @@ public class HybridManager implements JsCallBack {
 	 * @param id
 	 */
 	private void registerKeyBack(String eventName, int id) {
-		onKeyBack(id);
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		setEmitData(1, "注册返回按钮事件监听成功", null);
 		send(eventName, getEmitData());
 	}
@@ -558,7 +563,7 @@ public class HybridManager implements JsCallBack {
 	 * @param keyCode :
 	 */
 	public void keyBack(int keyCode) {
-		if (null != mEventRegisterMap && mEventRegisterMap.get(KeyBack.EVENT_KEY_BACK) != null && mEventRegisterMap.get(KeyBack.EVENT_KEY_BACK)) {
+		if (null != mEventRegisterMap && CheckUtil.isNotEmpty(KeyBack.EVENT_KEY_BACK) && mEventRegisterMap.containsKey(KeyBack.EVENT_KEY_BACK)) {
 			KeyBack keyBack = new KeyBack();
 			keyBack.setKeyCode(keyCode);
 			keyBack.setLongPress(false);
@@ -574,8 +579,7 @@ public class HybridManager implements JsCallBack {
 	 * @param id
 	 */
 	private void registerVolumeDown(String eventName, int id) {
-		onVolumeDown(id);
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		setEmitData(1, "注册音量减的监听成功", null);
 		send(eventName, getEmitData());
 	}
@@ -590,7 +594,7 @@ public class HybridManager implements JsCallBack {
 	 * @param keyCode :
 	 */
 	public void volumeDown(int keyCode) {
-		if (null != mEventRegisterMap && mEventRegisterMap.get(VolumeDown.EVENT_VOLUME_DOWN) != null && mEventRegisterMap.get(VolumeDown.EVENT_VOLUME_DOWN)) {
+		if (null != mEventRegisterMap && CheckUtil.isNotEmpty(VolumeDown.EVENT_VOLUME_DOWN) && mEventRegisterMap.containsKey(VolumeDown.EVENT_VOLUME_DOWN)) {
 			VolumeDown volumeDown = new VolumeDown();
 			volumeDown.setKeyCode(keyCode);
 			volumeDown.setLongPress(false);
@@ -606,8 +610,7 @@ public class HybridManager implements JsCallBack {
 	 * @param id
 	 */
 	private void registerVolumeUp(String eventName, int id) {
-		onVolumeUp(id);
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		setEmitData(1, "注册音量加的监听成功", null);
 		send(eventName, getEmitData());
 	}
@@ -622,7 +625,7 @@ public class HybridManager implements JsCallBack {
 	 * @param keyCode :
 	 */
 	public void volumeUp(int keyCode) {
-		if (null != mEventRegisterMap && mEventRegisterMap.get(VolumeUp.EVENT_VOLUME_UP) != null && mEventRegisterMap.get(VolumeUp.EVENT_VOLUME_UP)) {
+		if (null != mEventRegisterMap && CheckUtil.isNotEmpty(VolumeUp.EVENT_VOLUME_UP) && mEventRegisterMap.containsKey(VolumeUp.EVENT_VOLUME_UP)) {
 			VolumeUp volumeUp = new VolumeUp();
 			volumeUp.setKeyCode(keyCode);
 			volumeUp.setLongPress(false);
@@ -638,8 +641,7 @@ public class HybridManager implements JsCallBack {
 	 * @param id
 	 */
 	private void registerKeyboard(String eventName, int id) {
-		onKeyboard(eventName, id);
-		mEventRegisterMap.put(eventName, true);
+		mEventRegisterMap.put(eventName, id);
 		if (eventName.equals(Keyboard.EVENT_KEYBOARD_HIDE)) {
 			setEmitData(1, "注册软件盘影藏监听成功", null);
 		} else {
@@ -664,7 +666,7 @@ public class HybridManager implements JsCallBack {
 				keyboard.setHeight(height);
 				setEmitData(1, "响应成功", keyboard);
 				if (mShowKeyboard) {
-					if (null != mEventRegisterMap && mEventRegisterMap.get(Keyboard.EVENT_KEYBOARD_HIDE) != null && mEventRegisterMap.get(Keyboard.EVENT_KEYBOARD_HIDE)) {
+					if (null != mEventRegisterMap && CheckUtil.isNotEmpty(Keyboard.EVENT_KEYBOARD_HIDE) && mEventRegisterMap.containsKey(Keyboard.EVENT_KEYBOARD_HIDE)) {
 						// 如果软键盘是弹出的状态，并且height小于等于状态栏高度，
 						// 说明这时软键盘已经收起
 						if (height - statusBarHeight < minKeyboardHeight) {
@@ -673,7 +675,7 @@ public class HybridManager implements JsCallBack {
 						}
 					}
 				} else {
-					if (null != mEventRegisterMap && mEventRegisterMap.get(Keyboard.EVENT_KEYBOARD_SHOW) != null && mEventRegisterMap.get(Keyboard.EVENT_KEYBOARD_SHOW)) {
+					if (null != mEventRegisterMap && CheckUtil.isNotEmpty(Keyboard.EVENT_KEYBOARD_SHOW) && mEventRegisterMap.containsKey(Keyboard.EVENT_KEYBOARD_SHOW)) {
 						// 如果软键盘是收起的状态，并且height大于状态栏高度，
 						// 说明这时软键盘已经弹出
 						if (height - statusBarHeight > minKeyboardHeight) {
@@ -710,13 +712,22 @@ public class HybridManager implements JsCallBack {
 		}
 		LogUtil.e("send---" + event + "----------" + emitData);
 		if (mIsRegister) {
-			mWebView.send(event, emitData);
-			DebugLogger.logEvent("WYAEventManager .[register true] id = %s, emitData = %s", emitData);
+			if (null != mEventRegisterMap && CheckUtil.isNotEmpty(event) && mEventRegisterMap.containsKey(event)) {
+				int id = mEventRegisterMap.get(event);
+				mWebView.send(id, emitData);
+				DebugLogger.logEvent("WYAEventManager .[register true] id = %s, emitData = %s", id, emitData);
+			}
 		} else if (mIsDebugger) {
 			if (null != mEventMap && CheckUtil.isNotEmpty(event) && mEventMap.containsKey(event)) {
 				int id = mEventMap.get(event);
 				mWebView.send(id, emitData);
 				DebugLogger.logEvent("WYAEventManager .[debugger true] id = %s, emitData = %s", id, emitData);
+
+				//模拟成功
+				mEventMap.remove(event);
+				mIsDebugger = false;
+				setEmitData(1, event + "测试成功", null);
+				send(event, getEmitData());
 			}
 		} else {
 			if (null != mEventMap && CheckUtil.isNotEmpty(event) && mEventMap.containsKey(event)) {
@@ -757,7 +768,7 @@ public class HybridManager implements JsCallBack {
 	}
 
 	public void onActivityResume() {
-		if (null != mEventRegisterMap && mEventRegisterMap.get(Foreground.EVENT_RESUME) != null && mEventRegisterMap.get(Foreground.EVENT_RESUME)) {
+		if (null != mEventRegisterMap && CheckUtil.isNotEmpty(Foreground.EVENT_RESUME) && mEventRegisterMap.containsKey(Foreground.EVENT_RESUME)) {
 			if (ActivityManager.getInstance().isForeground() && mIsFromBackground) {
 				DebugLogger.logEvent("onResume ... ");
 				mIsFromBackground = false;
@@ -773,7 +784,7 @@ public class HybridManager implements JsCallBack {
 	}
 
 	public void onActivityStop() {
-		if (null != mEventRegisterMap && mEventRegisterMap.get(Foreground.EVENT_PAUSE) != null && mEventRegisterMap.get(Foreground.EVENT_PAUSE)) {
+		if (null != mEventMap && CheckUtil.isNotEmpty(Foreground.EVENT_PAUSE) && mEventMap.containsKey(Foreground.EVENT_PAUSE)) {
 			if (!ActivityManager.getInstance().isForeground()) {
 				DebugLogger.logEvent("onStop ... ");
 
@@ -837,13 +848,13 @@ public class HybridManager implements JsCallBack {
 						registerResume(registerEvent.getEventName(), id);
 						break;
 					case Shake.EVENT_SHAKE:
-						registerShake(registerEvent.getEventName());
+						registerShake(registerEvent.getEventName(), id);
 						break;
 					case AppIdle.EVENT_APP_IDLE:
-						registerScreenReceiver(registerEvent.getEventName());
+						registerScreenReceiver(registerEvent.getEventName(), id);
 						break;
 					case TakeScreenshot.EVENT_TAKE_SCREENSHOT:
-						registerScreenShot(registerEvent.getEventName());
+						registerScreenShot(registerEvent.getEventName(), id);
 						break;
 					case KeyBack.EVENT_KEY_BACK:
 						registerKeyBack(registerEvent.getEventName(), id);
@@ -864,8 +875,14 @@ public class HybridManager implements JsCallBack {
 						break;
 				}
 				break;
-			case "debugger":
+			case "event/remove":
+				DebugLogger.logEvent("data = %s , id = %s", data, id);
+				registerEvent = new Gson().fromJson(data, RegisterEvent.class);
+				removeEvent(registerEvent.getEventName(), id);
+				break;
+			case "debugger/invoke":
 				mIsDebugger = true;
+				registerEvent = new Gson().fromJson(data, RegisterEvent.class);
 				if (data.contains(Battery.EVENT_BATTERY_LOW)) {
 					HybridManager.this.onBatteryLow(id);
 				} else if (data.contains(Battery.EVENT_BATTERY_STATUS)) {
@@ -895,6 +912,7 @@ public class HybridManager implements JsCallBack {
 				} else if (data.contains(Keyboard.EVENT_KEYBOARD_HIDE)) {
 					HybridManager.this.onKeyboard(Keyboard.EVENT_KEYBOARD_HIDE, id);
 				}
+				debuggerEvent(registerEvent.getEventName());
 				break;
 			case "push":
 				push(name, id, data);
@@ -979,8 +997,17 @@ public class HybridManager implements JsCallBack {
 		}
 	}
 
-	private void removeEvent(String eventName) {
-		mEventRegisterMap.remove(eventName);
+	private void debuggerEvent(String eventName) {
+		setEmitData(1, "模拟debugger事件", null);
+		send(eventName, getEmitData());
+	}
+
+	private void removeEvent(String eventName, int id) {
+		if (null != mEventRegisterMap && CheckUtil.isNotEmpty(eventName) && mEventRegisterMap.containsKey(eventName)) {
+			mEventRegisterMap.remove(eventName);
+			setEmitData(1, eventName+"移除成功", null);
+			mWebView.send(id, getEmitData());
+		}
 	}
 
 	/**
@@ -1097,7 +1124,6 @@ public class HybridManager implements JsCallBack {
 			mContext.startActivity(localIntent);
 		}
 	}
-
 
 	/**
 	 * 保持屏幕亮度

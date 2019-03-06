@@ -116,7 +116,7 @@ public class WYAWebView extends WebView {
 		BridgeUtil.loadJsUrl(this, String.valueOf(id), new Gson().toJson(result));
 	}
 
-	public void register(String name, JsCallBack callBack) {
+	public void registerModule(String name, JsCallBack callBack) {
 		taskMap.put(name, callBack);
 	}
 
