@@ -7,6 +7,13 @@ module.exports = "#### 1. 说明\n\n异常信息捕获\n\n#### 2. Client传递�
 
 /***/ }),
 
+/***/ "../../docs/assists/log.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\nNative日志信息捕获\n\n#### 2. Client传递参数给Native\n\n```javascript\n// 不需要传递\n```\n#### 3. Native 传递参数给 Client\n\n```javascript\n// 直接返回信息\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.onLog((msg) => {\n\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.on('_log_', (msg) => {\n\n})\n// 或者\nwindow.addEventListener('_log_', () => {\n\n})\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('_log_', '@String')\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n";
+
+/***/ }),
+
 /***/ "../../docs/assists/ready.md":
 /***/ (function(module, exports) {
 
@@ -190,9 +197,31 @@ var error_invoke = function invoke() {
   invoke: error_invoke,
   markdown: error_default.a
 });
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/assists/log.md
+var log = __webpack_require__("../../docs/assists/log.md");
+var log_default = /*#__PURE__*/__webpack_require__.n(log);
+
+// CONCATENATED MODULE: ./src/pages/components/assists/detail/modules/log.js
+
+
+
+
+var log_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_log = ({
+  to: '/assists/log',
+  title: 'log',
+  label: 'Native日志捕获',
+  invoke: log_invoke,
+  markdown: log_default.a
+});
 // CONCATENATED MODULE: ./src/pages/components/assists/detail/modules/root.js
 /* concated harmony reexport ready */__webpack_require__.d(__webpack_exports__, "ready", function() { return modules_ready; });
 /* concated harmony reexport error */__webpack_require__.d(__webpack_exports__, "error", function() { return modules_error; });
+/* concated harmony reexport log */__webpack_require__.d(__webpack_exports__, "log", function() { return modules_log; });
+
+
 
 
 
@@ -223,7 +252,7 @@ var linksvue_type_template_id_adb89e70_scoped_true_staticRenderFns = []
 // EXTERNAL MODULE: ./src/pages/components/_common/cell/cell.vue + 4 modules
 var cell = __webpack_require__("./src/pages/components/_common/cell/cell.vue");
 
-// EXTERNAL MODULE: ./src/pages/components/assists/detail/modules/root.js + 2 modules
+// EXTERNAL MODULE: ./src/pages/components/assists/detail/modules/root.js + 3 modules
 var root = __webpack_require__("./src/pages/components/assists/detail/modules/root.js");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/assists/links.vue?vue&type=script&lang=js&

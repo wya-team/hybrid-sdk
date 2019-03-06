@@ -176,7 +176,7 @@ var invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'batteryLow'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -215,7 +215,7 @@ var batteryStatus_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'batteryStatus'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -254,7 +254,7 @@ var offline_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'offline'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -293,7 +293,7 @@ var online_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'online'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -332,7 +332,7 @@ var pause_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'pause'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -371,7 +371,7 @@ var resume_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'resume'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -410,7 +410,7 @@ var shake_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'shake'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -488,7 +488,7 @@ var takeScreenshot_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'takeScreenshot'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -527,7 +527,7 @@ var viewAppear_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'viewAppear'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -566,7 +566,7 @@ var viewDisappear_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'viewDisappear'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -605,7 +605,7 @@ var noticeClick_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'noticeClick'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -644,7 +644,7 @@ var appIntent_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'appIntent'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -683,7 +683,7 @@ var keyboardShow_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'keyboardShow'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -722,7 +722,7 @@ var keyboardHide_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'keyboardHide'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -761,7 +761,7 @@ var safeAreaChange_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'safeAreaChange'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -800,7 +800,7 @@ var keyBack_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'keyBack'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -839,7 +839,7 @@ var keyMenu_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'keyMenu'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -878,7 +878,7 @@ var volumeUp_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'volumeUp'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
@@ -917,7 +917,7 @@ var volumeDown_invoke = {
   debugger: function _debugger() {
     // 强制执行
     wya_umd_default.a.invoke('debugger/invoke', {
-      eventName: 'appIdle'
+      eventName: 'volumeDown'
     }).then(function (res) {
       toast["a" /* default */].info('执行成功', 0);
     }).catch(function () {
