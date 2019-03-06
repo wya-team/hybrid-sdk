@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/android/sdk/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/aapt.iml" filepath="$PROJECT_DIR$/android/sdk/build/intermediates/aapt_friendly_merged_manifests/debug/processDebugManifest/aapt/aapt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/sdk/build/generated/source/buildConfig/buildConfig.iml" filepath="$PROJECT_DIR$/android/sdk/build/generated/source/buildConfig/buildConfig.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/examples/build/generated/source/buildConfig/buildConfig1.iml" filepath="$PROJECT_DIR$/android/examples/build/generated/source/buildConfig/buildConfig1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/sdk/build/generated/not_namespaced_r_class_sources/debug/generateDebugRFile/generateDebugRFile.iml" filepath="$PROJECT_DIR$/android/sdk/build/generated/not_namespaced_r_class_sources/debug/generateDebugRFile/generateDebugRFile.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/sdk/src/main/main.iml" filepath="$PROJECT_DIR$/android/sdk/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/examples/src/main/main1.iml" filepath="$PROJECT_DIR$/android/examples/src/main/main1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/sdk/build/intermediates/merged_manifests/debug/processDebugManifest/merged/merged.iml" filepath="$PROJECT_DIR$/android/sdk/build/intermediates/merged_manifests/debug/processDebugManifest/merged/merged.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/examples/build/generated/not_namespaced_r_class_sources/debug/processDebugResources/processDebugResources.iml" filepath="$PROJECT_DIR$/android/examples/build/generated/not_namespaced_r_class_sources/debug/processDebugResources/processDebugResources.iml" />
+    </modules>
+  </component>
+</project>
