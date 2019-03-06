@@ -17,7 +17,7 @@ const tpl = (category, filename, scheme) => {
 			/* eslint-disable no-template-curly-in-string */
 			contents += '		// 强制执行\n';
 			contents += `		wya.invoke('debugger/invoke', {\n`;
-			contents += `			eventName: 'appIdle'\n`;
+			contents += `			eventName: '${filename}'\n`;
 			contents += `		}).then((res) => {\n`;
 			contents += `			Toasts.info('执行成功', 0);\n`;
 			contents += `		}).catch((res = {}) => {\n`;

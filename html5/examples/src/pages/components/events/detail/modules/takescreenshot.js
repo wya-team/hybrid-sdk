@@ -16,7 +16,7 @@ const invoke = {
 	debugger: () => {
 		// 强制执行
 		wya.invoke('debugger/invoke', {
-			eventName: 'appIdle'
+			eventName: 'takeScreenshot'
 		}).then((res) => {
 			Toasts.info('执行成功', 0);
 		}).catch((res = {}) => {

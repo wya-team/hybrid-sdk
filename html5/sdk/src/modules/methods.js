@@ -19,5 +19,9 @@ module.exports = {
 	video: ['open'],
 	wifi: [],
 	bluetooth: [],
-	nfc: []
+	nfc: [],
+
+	// 内部使用模块
+	// debugger: ['invoke'],
+	// event: ['add', 'remove'],
 };
