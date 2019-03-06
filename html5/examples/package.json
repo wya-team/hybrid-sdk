@@ -14,7 +14,7 @@
     "build:pre": "cross-env ENV_IS_PRE=true npm run dist:pre && npm run copy:pre",
     "remove:dist": "rm -rf ./dist",
     "remove:pre": "rm -rf ../../pre-build/dist ../../android/sdk/src/main/assets/dist",
-    "copy:pre": "cp ../../pre-build/dist/* ../../android/sdk/src/main/assets/dist/",
+    "copy:pre": "cp-cli ../../pre-build/dist ../../android/sdk/src/main/assets/dist",
     "lint": "esw ./config/*.config.* ./src/pages/**/*.{js,vue}",
     "lint:fix": "npm run lint -- --fix",
     "lint:watch": "npm run lint -- --fix --watch",
