@@ -19,11 +19,11 @@ import java.net.URLDecoder;
  */
 public class WYAWebViewClient extends WebViewClient {
     private WYAWebView webView;
-    
+
     public WYAWebViewClient(WYAWebView webView) {
         this.webView = webView;
     }
-    
+
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         try {
@@ -38,12 +38,12 @@ public class WYAWebViewClient extends WebViewClient {
         } else {
             return super.shouldOverrideUrlLoading(view, url);
         }
-        
+
     }
-    
+
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             String url = request.getUrl().toString();
             try {
@@ -61,17 +61,16 @@ public class WYAWebViewClient extends WebViewClient {
             return super.shouldOverrideUrlLoading(view, request);
         }
     }
-    
+
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-        
+
         if (view.getProgress() == BridgeUtil.FINISH) {
             BridgeUtil.webViewLoadLocalJs(webView, BridgeUtil.WYAJSBRIDGE);
             BridgeUtil.webViewLoadLocalJs(webView, BridgeUtil.WYAMETHOD);
-            
             BridgeUtil.loadJsUrl(view, "'_ready_'", new Gson().toJson(webView.getBaseEmitData()));
         }
-        
+
     }
 }

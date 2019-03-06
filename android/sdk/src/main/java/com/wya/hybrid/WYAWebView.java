@@ -14,6 +14,7 @@ import com.tencent.smtt.sdk.WebView;
 import com.wya.hybrid.bean.BaseEmitData;
 import com.wya.hybrid.bean.InitBean;
 import com.wya.utils.utils.AppUtil;
+import com.wya.utils.utils.LogUtil;
 import com.wya.utils.utils.NetworkUtil;
 import com.wya.utils.utils.PhoneUtil;
 
@@ -125,6 +126,7 @@ public class WYAWebView extends WebView {
 	}
 
 	public void handlerReturnData(String url) {
+		LogUtil.e(url);
 		String[] split = url.split("[?]");
 		String name = split[0];
 		JsCallBack callBack = taskMap.get(name);

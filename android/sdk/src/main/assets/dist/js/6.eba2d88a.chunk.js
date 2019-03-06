@@ -28,13 +28,6 @@ module.exports = "##### 1. 说明\n\n应用版本号，字符串类型\n\n##### 
 
 /***/ }),
 
-/***/ "../../docs/consts/cacheDir.md":
-/***/ (function(module, exports) {
-
-module.exports = "##### 1. 说明\n\ncache://协议对应的真实目录，字符串类型\n\niOS 平台下载的文件一般存放于该目录下，否则提交 AppStore 审核时可能会不通过，且此目录下的内容在手机备份时不会被备份\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet cacheDir = wya.cacheDir; \n/* \n比如： \n/var/mobile/Containers/Data/Application/4E376FDE-D595-4E08-B0A4-A06561B31000/Library/Caches/APICloud/Cache/XXXXXX\n*/\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
-
-/***/ }),
-
 /***/ "../../docs/consts/channel.md":
 /***/ (function(module, exports) {
 
@@ -53,6 +46,27 @@ module.exports = "##### 1. 说明\n\n当前网络连接类型，如 2g、3g、4g
 /***/ (function(module, exports) {
 
 module.exports = "##### 1. 说明\n\n调试模式\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet debug = wya.debug;                 // 比如： true\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------\n";
+
+/***/ }),
+
+/***/ "../../docs/consts/deveiceHeight.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n~\n\n#### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet deveiceHeight = wya.deveiceHeight; // 比如： ~\n```\n\n#### 3. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
+/***/ "../../docs/consts/deveiceWidth.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n~\n\n#### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet deveiceWidth = wya.deveiceWidth; // 比如： ~\n```\n\n#### 3. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
+/***/ "../../docs/consts/deviceHeight.md":
+/***/ (function(module, exports) {
+
+module.exports = "##### 1. 说明\n\n屏幕分辨率高，数字类型\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet deviceHeight = wya.deviceHeight;  // 比如： 960\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
 
 /***/ }),
 
@@ -77,6 +91,13 @@ module.exports = "##### 1. 说明\n\n设备名称，字符串类型\n\n##### 2. 
 
 /***/ }),
 
+/***/ "../../docs/consts/devicePixelRatio.md":
+/***/ (function(module, exports) {
+
+module.exports = "##### 1. 说明\n\n设备像素比，数字类型\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet devicePixelRatio = wya.devicePixelRatio;  // 比如： 640\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
+
+/***/ }),
+
 /***/ "../../docs/consts/deviceToken.md":
 /***/ (function(module, exports) {
 
@@ -84,31 +105,17 @@ module.exports = "##### 1. 说明\n\niOS中用于推送的Token，若未从系�
 
 /***/ }),
 
-/***/ "../../docs/consts/frameHeight.md":
+/***/ "../../docs/consts/deviceWidth.md":
 /***/ (function(module, exports) {
 
-module.exports = "##### 1. 说明\n\nframe 高度，数字类型\n\n> 若当前环境为 window 中，则值和 winHeight 相同\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet frameHeight = wya.frameHeight;  // 比如： 504\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
+module.exports = "##### 1. 说明\n\n屏幕分辨率宽，数字类型\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet deviceWidth = wya.deviceWidth;  // 比如： 640\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
 
 /***/ }),
 
-/***/ "../../docs/consts/frameName.md":
+/***/ "../../docs/consts/documentsDir.md":
 /***/ (function(module, exports) {
 
-module.exports = "##### 1. 说明\n\nframe 名称，字符串类型\n\n若当前环境为 window 中，则该属性值为空字符串\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet winName = wya.frameName;  // 比如： trans-con\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
-
-/***/ }),
-
-/***/ "../../docs/consts/frameWidth.md":
-/***/ (function(module, exports) {
-
-module.exports = "##### 1. 说明\n\nframe 宽度，数字类型\n\n> 若当前环境为 window 中，则值和 winWidth 相同\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet frameWidth = wya.frameWidth;  // 比如： 320\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
-
-/***/ }),
-
-/***/ "../../docs/consts/fsDir.md":
-/***/ (function(module, exports) {
-
-module.exports = "##### 1. 说明\n\nfs: //协议对应地真实目录，字符串类型\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet fsDir = wya.fsDir; \n/* \n比如： \n/var/mobile/Containers/Data/Application/4E376FDE-D595-4E08-B0A4-A06561B31000/Documents/uzfs/A123456789\n*/\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
+module.exports = "#### 1. 说明\n\n文档目录，可存放用户数据\n\n#### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet documentsDir = wya.documentsDir; // 比如： ~\n```\n\n#### 3. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 
@@ -123,6 +130,20 @@ module.exports = "##### 1. 说明\n\n应用是否全屏，布尔类型，只支�
 /***/ (function(module, exports) {
 
 module.exports = "##### 1. 说明\n\n设备是否越狱，布尔类型\n\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet jailbreak = wya.jailbreak;         //如：false\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
+
+/***/ }),
+
+/***/ "../../docs/consts/libraryDir.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n系统默认的缓存目录，系统永远不会删除这里的文件需要手动清理\n\n#### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet libraryDir = wya.libraryDir; // 比如： ~\n```\n\n#### 3. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
+/***/ "../../docs/consts/name.md":
+/***/ (function(module, exports) {
+
+module.exports = "##### 1. 说明\n\n当前 window 名称，字符串类型\n\n该属性值为 push() 时传递的 name 参数值，注意首页的名称为 root\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet name = wya.name;  // 比如： root\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
 
 /***/ }),
 
@@ -147,20 +168,6 @@ module.exports = "##### 1. 说明\n\n页面不被其它内容（如状态栏）�
 
 /***/ }),
 
-/***/ "../../docs/consts/screenHeight.md":
-/***/ (function(module, exports) {
-
-module.exports = "##### 1. 说明\n\n屏幕分辨率高，数字类型\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet screenHeight = wya.screenHeight;  // 比如： 960\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
-
-/***/ }),
-
-/***/ "../../docs/consts/screenWidth.md":
-/***/ (function(module, exports) {
-
-module.exports = "##### 1. 说明\n\n屏幕分辨率宽，数字类型\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet screenWidth = wya.screenWidth;  // 比如： 640\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
-
-/***/ }),
-
 /***/ "../../docs/consts/statusBarAppearance.md":
 /***/ (function(module, exports) {
 
@@ -182,6 +189,13 @@ module.exports = "##### 1. 说明\n\n手机平台的系统版本，字符串类�
 
 /***/ }),
 
+/***/ "../../docs/consts/tmpDir.md":
+/***/ (function(module, exports) {
+
+module.exports = "#### 1. 说明\n\n用于存放临时文件，保存应用程序再次启动过程中不需要的信息\n\n#### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet tmpDir = wya.tmpDir; // 比如： ~\n```\n\n#### 3. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+
+/***/ }),
+
 /***/ "../../docs/consts/uiMode.md":
 /***/ (function(module, exports) {
 
@@ -196,41 +210,6 @@ module.exports = "##### 1. 说明\n\n引擎版本信息，字符串类型 (sdk�
 
 /***/ }),
 
-/***/ "../../docs/consts/wgtParam.md":
-/***/ (function(module, exports) {
-
-module.exports = "##### 1. 说明\n\nwidget 参数，JSON 对象类型\n\n用于获取 widget 间传递的参数值，为 openWidget() 方法中的 wgtParam 参数对应值\n\n\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet wgtParam = wya.wgtParam;  //比如： {\"name\": \"API Demo\"}\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------\n";
-
-/***/ }),
-
-/***/ "../../docs/consts/wgtRootDir.md":
-/***/ (function(module, exports) {
-
-module.exports = "##### 1. 说明\n\nwidget: //协议对应的真实目录，即 widget 网页包的根目录，字符串类型\n\n注意该目录为只读，不要往该目录下面写文件\n\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet wgtRootDir = wya.wgtRootDir;  \n/* \n比如：  \n/private/var/mobile/Containers/Bundle/Application/56218B5B-1B59-48CD-8080-DAC54DB46446/UZApp.app/widget\n*/\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
-
-/***/ }),
-
-/***/ "../../docs/consts/winHeight.md":
-/***/ (function(module, exports) {
-
-module.exports = "##### 1. 说明\n\n当前 window 高度，数字类型\n\n> 此属性值不同于屏幕的分辨率，比如 iPhone 5 的分辨率为 640*1136，但是其 winHeight 为 568（若不使用iOS7风格则为 548），因此前端需根据 winWidth 和 winHeight 来进行布局\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet winHeight = wya.winHeight;  // 比如： 568\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------\n";
-
-/***/ }),
-
-/***/ "../../docs/consts/winName.md":
-/***/ (function(module, exports) {
-
-module.exports = "##### 1. 说明\n\n当前 window 名称，字符串类型\n\n该属性值为 openWin() 时传递的 name 参数值，注意首页的名称为 root\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet winName = wya.winName;  // 比如： root\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
-
-/***/ }),
-
-/***/ "../../docs/consts/winWidth.md":
-/***/ (function(module, exports) {
-
-module.exports = "##### 1. 说明\n\n当前 window 宽度，数字类型\n\n> 此属性值不同于屏幕的分辨率，比如 iPhone 5 的分辨率为 640*1136，但是其 winWidth 为 320，因此前端需根据 winWidth 和 winHeight 来进行布局\n\n##### 2. 示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nlet winWidth = wya.winWidth;  // 比如： 320\n```\n##### 3. 可用性\niOS系统，Android系统\n\n---------";
-
-/***/ }),
-
 /***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js?!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/index.js?!./src/pages/components/_common/cell/cell.vue?vue&type=style&index=0&id=43b396e1&lang=scss&scoped=true&":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -239,7 +218,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, ".c-cell[data-v-43b396e1] {\n  background-color: #fff;\n  box-sizing: border-box;\n  color: inherit;\n  min-height: 48px;\n  display: block;\n  overflow: hidden;\n  position: relative;\n  text-decoration: none;\n}\n.c-cell .__wrapper[data-v-43b396e1] {\n    background-image: linear-gradient(180deg, #d9d9d9, #d9d9d9 50%, transparent 0);\n    background-size: 120% 1px;\n    background-repeat: no-repeat;\n    background-position: 0 100%;\n    background-origin: content-box;\n    align-items: center;\n    box-sizing: border-box;\n    display: flex;\n    font-size: 16px;\n    line-height: 1;\n    min-height: inherit;\n    overflow: hidden;\n    padding: 0 10px;\n    width: 100%;\n}\n.c-cell .__title[data-v-43b396e1] {\n    padding-left: 10px;\n}\n.c-cell .__icon[data-v-43b396e1] {\n    font-size: 22px;\n    color: #26a2ff;\n    display: inline-block;\n    width: 30px;\n    vertical-align: middle;\n}\n.c-cell .__span[data-v-43b396e1] {\n    flex: 1 1 0%;\n    text-align: right;\n    padding-right: 32px;\n    color: #8E8E93;\n}\n.c-cell .__arrow-right[data-v-43b396e1] {\n    border: 2px solid #C7C7CB;\n    border-bottom-width: 0;\n    border-left-width: 0;\n    content: \" \";\n    top: 50%;\n    right: 20px;\n    position: absolute;\n    width: 10px;\n    height: 10px;\n    -webkit-transform: translateY(-50%) rotate(45deg);\n            transform: translateY(-50%) rotate(45deg);\n}\n", ""]);
+exports.push([module.i, ".c-cell[data-v-43b396e1] {\n  background-color: #fff;\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  color: inherit;\n  min-height: 48px;\n  display: block;\n  overflow: hidden;\n  position: relative;\n  text-decoration: none;\n}\n.c-cell .__wrapper[data-v-43b396e1] {\n    background-image: -webkit-gradient(linear, left top, left bottom, from(#d9d9d9), color-stop(50%, #d9d9d9), color-stop(0, transparent));\n    background-image: linear-gradient(180deg, #d9d9d9, #d9d9d9 50%, transparent 0);\n    background-size: 120% 1px;\n    background-repeat: no-repeat;\n    background-position: 0 100%;\n    background-origin: content-box;\n    -webkit-box-align: center;\n    -webkit-align-items: center;\n        -ms-flex-align: center;\n            align-items: center;\n    -webkit-box-sizing: border-box;\n            box-sizing: border-box;\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n    font-size: 16px;\n    line-height: 1;\n    min-height: inherit;\n    overflow: hidden;\n    padding: 0 10px;\n    width: 100%;\n}\n.c-cell .__title[data-v-43b396e1] {\n    padding-left: 10px;\n}\n.c-cell .__icon[data-v-43b396e1] {\n    font-size: 22px;\n    color: #26a2ff;\n    display: inline-block;\n    width: 30px;\n    vertical-align: middle;\n}\n.c-cell .__span[data-v-43b396e1] {\n    -webkit-box-flex: 1;\n    -webkit-flex: 1 1 0%;\n        -ms-flex: 1 1 0%;\n            flex: 1 1 0%;\n    text-align: right;\n    padding-right: 32px;\n    color: #8E8E93;\n}\n.c-cell .__arrow-right[data-v-43b396e1] {\n    border: 2px solid #C7C7CB;\n    border-bottom-width: 0;\n    border-left-width: 0;\n    content: \" \";\n    top: 50%;\n    right: 20px;\n    position: absolute;\n    width: 10px;\n    height: 10px;\n    -webkit-transform: translateY(-50%) rotate(45deg);\n        -ms-transform: translateY(-50%) rotate(45deg);\n            transform: translateY(-50%) rotate(45deg);\n}\n", ""]);
 
 // exports
 
@@ -550,6 +529,44 @@ var deviceName_invoke = function invoke() {// ...
   invoke: deviceName_invoke,
   markdown: deviceName_default.a
 });
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/deviceWidth.md
+var deviceWidth = __webpack_require__("../../docs/consts/deviceWidth.md");
+var deviceWidth_default = /*#__PURE__*/__webpack_require__.n(deviceWidth);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/deviceWidth.js
+
+
+
+
+var deviceWidth_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_deviceWidth = ({
+  to: '/consts/deviceWidth',
+  title: 'screenWidth',
+  label: '屏幕分辨率宽',
+  invoke: deviceWidth_invoke,
+  markdown: deviceWidth_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/deviceHeight.md
+var deviceHeight = __webpack_require__("../../docs/consts/deviceHeight.md");
+var deviceHeight_default = /*#__PURE__*/__webpack_require__.n(deviceHeight);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/deviceHeight.js
+
+
+
+
+var deviceHeight_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_deviceHeight = ({
+  to: '/consts/deviceHeight',
+  title: 'deviceHeight',
+  label: '屏幕分辨率高',
+  invoke: deviceHeight_invoke,
+  markdown: deviceHeight_default.a
+});
 // EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/uiMode.md
 var uiMode = __webpack_require__("../../docs/consts/uiMode.md");
 var uiMode_default = /*#__PURE__*/__webpack_require__.n(uiMode);
@@ -626,157 +643,24 @@ var fullScreen_invoke = function invoke() {// ...
   invoke: fullScreen_invoke,
   markdown: fullScreen_default.a
 });
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/screenWidth.md
-var screenWidth = __webpack_require__("../../docs/consts/screenWidth.md");
-var screenWidth_default = /*#__PURE__*/__webpack_require__.n(screenWidth);
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/name.md
+var consts_name = __webpack_require__("../../docs/consts/name.md");
+var name_default = /*#__PURE__*/__webpack_require__.n(consts_name);
 
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/screenWidth.js
-
-
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/name.js
 
 
-var screenWidth_invoke = function invoke() {// ...
+
+
+var name_invoke = function invoke() {// ...
 };
 
-/* harmony default export */ var modules_screenWidth = ({
-  to: '/consts/screenWidth',
-  title: 'screenWidth',
-  label: '屏幕分辨率宽',
-  invoke: screenWidth_invoke,
-  markdown: screenWidth_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/screenHeight.md
-var screenHeight = __webpack_require__("../../docs/consts/screenHeight.md");
-var screenHeight_default = /*#__PURE__*/__webpack_require__.n(screenHeight);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/screenHeight.js
-
-
-
-
-var screenHeight_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_screenHeight = ({
-  to: '/consts/screenHeight',
-  title: 'screenHeight',
-  label: '屏幕分辨率高',
-  invoke: screenHeight_invoke,
-  markdown: screenHeight_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/winName.md
-var winName = __webpack_require__("../../docs/consts/winName.md");
-var winName_default = /*#__PURE__*/__webpack_require__.n(winName);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/winName.js
-
-
-
-
-var winName_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_winName = ({
-  to: '/consts/winName',
-  title: 'winName',
+/* harmony default export */ var modules_name = ({
+  to: '/consts/name',
+  title: 'name',
   label: 'window 名称',
-  invoke: winName_invoke,
-  markdown: winName_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/winWidth.md
-var winWidth = __webpack_require__("../../docs/consts/winWidth.md");
-var winWidth_default = /*#__PURE__*/__webpack_require__.n(winWidth);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/winWidth.js
-
-
-
-
-var winWidth_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_winWidth = ({
-  to: '/consts/winWidth',
-  title: 'winWidth',
-  label: 'window 宽度',
-  invoke: winWidth_invoke,
-  markdown: winWidth_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/winHeight.md
-var winHeight = __webpack_require__("../../docs/consts/winHeight.md");
-var winHeight_default = /*#__PURE__*/__webpack_require__.n(winHeight);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/winHeight.js
-
-
-
-
-var winHeight_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_winHeight = ({
-  to: '/consts/winHeight',
-  title: 'winHeight',
-  label: 'window 高度',
-  invoke: winHeight_invoke,
-  markdown: winHeight_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/frameName.md
-var frameName = __webpack_require__("../../docs/consts/frameName.md");
-var frameName_default = /*#__PURE__*/__webpack_require__.n(frameName);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/frameName.js
-
-
-
-
-var frameName_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_frameName = ({
-  to: '/consts/frameName',
-  title: 'frameName',
-  label: 'frame 名称',
-  invoke: frameName_invoke,
-  markdown: frameName_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/frameWidth.md
-var frameWidth = __webpack_require__("../../docs/consts/frameWidth.md");
-var frameWidth_default = /*#__PURE__*/__webpack_require__.n(frameWidth);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/frameWidth.js
-
-
-
-
-var frameWidth_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_frameWidth = ({
-  to: '/consts/frameWidth',
-  title: 'frameWidth',
-  label: 'frame 宽度',
-  invoke: frameWidth_invoke,
-  markdown: frameWidth_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/frameHeight.md
-var frameHeight = __webpack_require__("../../docs/consts/frameHeight.md");
-var frameHeight_default = /*#__PURE__*/__webpack_require__.n(frameHeight);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/frameHeight.js
-
-
-
-
-var frameHeight_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_frameHeight = ({
-  to: '/consts/frameHeight',
-  title: 'frameHeight',
-  label: 'frame 高度',
-  invoke: frameHeight_invoke,
-  markdown: frameHeight_default.a
+  invoke: name_invoke,
+  markdown: name_default.a
 });
 // EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/safeArea.md
 var safeArea = __webpack_require__("../../docs/consts/safeArea.md");
@@ -816,25 +700,6 @@ var pageParam_invoke = function invoke() {// ...
   invoke: pageParam_invoke,
   markdown: pageParam_default.a
 });
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/wgtParam.md
-var wgtParam = __webpack_require__("../../docs/consts/wgtParam.md");
-var wgtParam_default = /*#__PURE__*/__webpack_require__.n(wgtParam);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/wgtParam.js
-
-
-
-
-var wgtParam_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_wgtParam = ({
-  to: '/consts/wgtParam',
-  title: 'wgtParam',
-  label: 'widget 参数',
-  invoke: wgtParam_invoke,
-  markdown: wgtParam_default.a
-});
 // EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/appParam.md
 var appParam = __webpack_require__("../../docs/consts/appParam.md");
 var appParam_default = /*#__PURE__*/__webpack_require__.n(appParam);
@@ -872,63 +737,6 @@ var statusBarAppearance_invoke = function invoke() {// ...
   label: '是否状态栏底透明',
   invoke: statusBarAppearance_invoke,
   markdown: statusBarAppearance_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/wgtRootDir.md
-var wgtRootDir = __webpack_require__("../../docs/consts/wgtRootDir.md");
-var wgtRootDir_default = /*#__PURE__*/__webpack_require__.n(wgtRootDir);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/wgtRootDir.js
-
-
-
-
-var wgtRootDir_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_wgtRootDir = ({
-  to: '/consts/wgtRootDir',
-  title: 'wgtRootDir',
-  label: '网页根目录',
-  invoke: wgtRootDir_invoke,
-  markdown: wgtRootDir_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/fsDir.md
-var fsDir = __webpack_require__("../../docs/consts/fsDir.md");
-var fsDir_default = /*#__PURE__*/__webpack_require__.n(fsDir);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/fsDir.js
-
-
-
-
-var fsDir_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_fsDir = ({
-  to: '/consts/fsDir',
-  title: 'fsDir',
-  label: '根目录',
-  invoke: fsDir_invoke,
-  markdown: fsDir_default.a
-});
-// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/cacheDir.md
-var cacheDir = __webpack_require__("../../docs/consts/cacheDir.md");
-var cacheDir_default = /*#__PURE__*/__webpack_require__.n(cacheDir);
-
-// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/cacheDir.js
-
-
-
-
-var cacheDir_invoke = function invoke() {// ...
-};
-
-/* harmony default export */ var modules_cacheDir = ({
-  to: '/consts/cacheDir',
-  title: 'cacheDir',
-  label: '缓存目录',
-  invoke: cacheDir_invoke,
-  markdown: cacheDir_default.a
 });
 // EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/debug.md
 var debug = __webpack_require__("../../docs/consts/debug.md");
@@ -987,6 +795,120 @@ var jailbreak_invoke = function invoke() {// ...
   invoke: jailbreak_invoke,
   markdown: jailbreak_default.a
 });
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/deveiceWidth.md
+var deveiceWidth = __webpack_require__("../../docs/consts/deveiceWidth.md");
+var deveiceWidth_default = /*#__PURE__*/__webpack_require__.n(deveiceWidth);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/deveiceWidth.js
+
+
+
+
+var deveiceWidth_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_deveiceWidth = ({
+  to: '/consts/deveiceWidth',
+  title: 'deveiceWidth',
+  label: '',
+  invoke: deveiceWidth_invoke,
+  markdown: deveiceWidth_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/deveiceHeight.md
+var deveiceHeight = __webpack_require__("../../docs/consts/deveiceHeight.md");
+var deveiceHeight_default = /*#__PURE__*/__webpack_require__.n(deveiceHeight);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/deveiceHeight.js
+
+
+
+
+var deveiceHeight_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_deveiceHeight = ({
+  to: '/consts/deveiceHeight',
+  title: 'deveiceHeight',
+  label: '',
+  invoke: deveiceHeight_invoke,
+  markdown: deveiceHeight_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/devicePixelRatio.md
+var devicePixelRatio = __webpack_require__("../../docs/consts/devicePixelRatio.md");
+var devicePixelRatio_default = /*#__PURE__*/__webpack_require__.n(devicePixelRatio);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/devicePixelRatio.js
+
+
+
+
+var devicePixelRatio_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_devicePixelRatio = ({
+  to: '/consts/devicePixelRatio',
+  title: 'devicePixelRatio',
+  label: '屏幕像素比',
+  invoke: devicePixelRatio_invoke,
+  markdown: devicePixelRatio_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/documentsDir.md
+var documentsDir = __webpack_require__("../../docs/consts/documentsDir.md");
+var documentsDir_default = /*#__PURE__*/__webpack_require__.n(documentsDir);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/documentsDir.js
+
+
+
+
+var documentsDir_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_documentsDir = ({
+  to: '/consts/documentsDir',
+  title: 'documentsDir',
+  label: '文档目录',
+  invoke: documentsDir_invoke,
+  markdown: documentsDir_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/libraryDir.md
+var libraryDir = __webpack_require__("../../docs/consts/libraryDir.md");
+var libraryDir_default = /*#__PURE__*/__webpack_require__.n(libraryDir);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/libraryDir.js
+
+
+
+
+var libraryDir_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_libraryDir = ({
+  to: '/consts/libraryDir',
+  title: 'libraryDir',
+  label: '系统缓存',
+  invoke: libraryDir_invoke,
+  markdown: libraryDir_default.a
+});
+// EXTERNAL MODULE: /Users/deot/Desktop/wya/github/hybrid-sdk/docs/consts/tmpDir.md
+var tmpDir = __webpack_require__("../../docs/consts/tmpDir.md");
+var tmpDir_default = /*#__PURE__*/__webpack_require__.n(tmpDir);
+
+// CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/tmpDir.js
+
+
+
+
+var tmpDir_invoke = function invoke() {// ...
+};
+
+/* harmony default export */ var modules_tmpDir = ({
+  to: '/consts/tmpDir',
+  title: 'tmpDir',
+  label: '临时存放',
+  invoke: tmpDir_invoke,
+  markdown: tmpDir_default.a
+});
 // CONCATENATED MODULE: ./src/pages/components/consts/detail/modules/root.js
 /* concated harmony reexport version */__webpack_require__.d(__webpack_exports__, "version", function() { return modules_version; });
 /* concated harmony reexport appId */__webpack_require__.d(__webpack_exports__, "appId", function() { return modules_appId; });
@@ -998,35 +920,26 @@ var jailbreak_invoke = function invoke() {// ...
 /* concated harmony reexport deviceToken */__webpack_require__.d(__webpack_exports__, "deviceToken", function() { return modules_deviceToken; });
 /* concated harmony reexport deviceModel */__webpack_require__.d(__webpack_exports__, "deviceModel", function() { return modules_deviceModel; });
 /* concated harmony reexport deviceName */__webpack_require__.d(__webpack_exports__, "deviceName", function() { return modules_deviceName; });
+/* concated harmony reexport deviceWidth */__webpack_require__.d(__webpack_exports__, "deviceWidth", function() { return modules_deviceWidth; });
+/* concated harmony reexport deviceHeight */__webpack_require__.d(__webpack_exports__, "deviceHeight", function() { return modules_deviceHeight; });
 /* concated harmony reexport uiMode */__webpack_require__.d(__webpack_exports__, "uiMode", function() { return modules_uiMode; });
 /* concated harmony reexport operatorName */__webpack_require__.d(__webpack_exports__, "operatorName", function() { return modules_operatorName; });
 /* concated harmony reexport connectionType */__webpack_require__.d(__webpack_exports__, "connectionType", function() { return modules_connectionType; });
 /* concated harmony reexport fullScreen */__webpack_require__.d(__webpack_exports__, "fullScreen", function() { return modules_fullScreen; });
-/* concated harmony reexport screenWidth */__webpack_require__.d(__webpack_exports__, "screenWidth", function() { return modules_screenWidth; });
-/* concated harmony reexport screenHeight */__webpack_require__.d(__webpack_exports__, "screenHeight", function() { return modules_screenHeight; });
-/* concated harmony reexport winName */__webpack_require__.d(__webpack_exports__, "winName", function() { return modules_winName; });
-/* concated harmony reexport winWidth */__webpack_require__.d(__webpack_exports__, "winWidth", function() { return modules_winWidth; });
-/* concated harmony reexport winHeight */__webpack_require__.d(__webpack_exports__, "winHeight", function() { return modules_winHeight; });
-/* concated harmony reexport frameName */__webpack_require__.d(__webpack_exports__, "frameName", function() { return modules_frameName; });
-/* concated harmony reexport frameWidth */__webpack_require__.d(__webpack_exports__, "frameWidth", function() { return modules_frameWidth; });
-/* concated harmony reexport frameHeight */__webpack_require__.d(__webpack_exports__, "frameHeight", function() { return modules_frameHeight; });
+/* concated harmony reexport name */__webpack_require__.d(__webpack_exports__, "name", function() { return modules_name; });
 /* concated harmony reexport safeArea */__webpack_require__.d(__webpack_exports__, "safeArea", function() { return modules_safeArea; });
 /* concated harmony reexport pageParam */__webpack_require__.d(__webpack_exports__, "pageParam", function() { return modules_pageParam; });
-/* concated harmony reexport wgtParam */__webpack_require__.d(__webpack_exports__, "wgtParam", function() { return modules_wgtParam; });
 /* concated harmony reexport appParam */__webpack_require__.d(__webpack_exports__, "appParam", function() { return modules_appParam; });
 /* concated harmony reexport statusBarAppearance */__webpack_require__.d(__webpack_exports__, "statusBarAppearance", function() { return modules_statusBarAppearance; });
-/* concated harmony reexport wgtRootDir */__webpack_require__.d(__webpack_exports__, "wgtRootDir", function() { return modules_wgtRootDir; });
-/* concated harmony reexport fsDir */__webpack_require__.d(__webpack_exports__, "fsDir", function() { return modules_fsDir; });
-/* concated harmony reexport cacheDir */__webpack_require__.d(__webpack_exports__, "cacheDir", function() { return modules_cacheDir; });
 /* concated harmony reexport debug */__webpack_require__.d(__webpack_exports__, "debug", function() { return modules_debug; });
 /* concated harmony reexport channel */__webpack_require__.d(__webpack_exports__, "channel", function() { return modules_channel; });
 /* concated harmony reexport jailbreak */__webpack_require__.d(__webpack_exports__, "jailbreak", function() { return modules_jailbreak; });
-
-
-
-
-
-
+/* concated harmony reexport deveiceWidth */__webpack_require__.d(__webpack_exports__, "deveiceWidth", function() { return modules_deveiceWidth; });
+/* concated harmony reexport deveiceHeight */__webpack_require__.d(__webpack_exports__, "deveiceHeight", function() { return modules_deveiceHeight; });
+/* concated harmony reexport devicePixelRatio */__webpack_require__.d(__webpack_exports__, "devicePixelRatio", function() { return modules_devicePixelRatio; });
+/* concated harmony reexport documentsDir */__webpack_require__.d(__webpack_exports__, "documentsDir", function() { return modules_documentsDir; });
+/* concated harmony reexport libraryDir */__webpack_require__.d(__webpack_exports__, "libraryDir", function() { return modules_libraryDir; });
+/* concated harmony reexport tmpDir */__webpack_require__.d(__webpack_exports__, "tmpDir", function() { return modules_tmpDir; });
 
 
 
@@ -1186,7 +1099,7 @@ var linksvue_type_template_id_b7803376_scoped_true_staticRenderFns = []
 // EXTERNAL MODULE: ./src/pages/components/_common/cell/cell.vue + 4 modules
 var cell = __webpack_require__("./src/pages/components/_common/cell/cell.vue");
 
-// EXTERNAL MODULE: ./src/pages/components/consts/detail/modules/root.js + 33 modules
+// EXTERNAL MODULE: ./src/pages/components/consts/detail/modules/root.js + 30 modules
 var root = __webpack_require__("./src/pages/components/consts/detail/modules/root.js");
 
 // CONCATENATED MODULE: ./node_modules/babel-loader/lib??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/consts/links.vue?vue&type=script&lang=js&
@@ -1295,6 +1208,14 @@ consts_component.options.__file = "consts.vue"
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return hljs; });
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./src/pages/extends/directives/utils.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -1361,10 +1282,12 @@ function () {
               blocks = el.querySelectorAll('pre code');
             }
 
-            el.style.display = 'block';
-            blocks.forEach(function (block) {
+            el.style.display = 'block'; // [...blocks] NodeList转数组，低版本没有forEach方法
+
+            _toConsumableArray(blocks).forEach(function (block) {
               _.highlightBlock(block);
             });
+
             betterScroller = Object(_utils__WEBPACK_IMPORTED_MODULE_0__[/* findBSInstance */ "a"])(vm.context);
             betterScroller && betterScroller.refresh();
             _context.next = 24;

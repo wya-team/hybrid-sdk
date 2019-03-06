@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + "." + "366d3a8a" + ".chunk.js"
+/******/ 		return __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + "." + "eba2d88a" + ".chunk.js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -223,715 +223,7 @@
 /***/ "../sdk/dist/wya.umd.js":
 /***/ (function(module, exports, __webpack_require__) {
 
-(function (global, factory) {
-   true ? module.exports = factory() :
-  undefined;
-}(this, (function () { 'use strict';
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
-    }
-
-    return obj;
-  }
-
-  function _objectSpread(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i] != null ? arguments[i] : {};
-      var ownKeys = Object.keys(source);
-
-      if (typeof Object.getOwnPropertySymbols === 'function') {
-        ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {
-          return Object.getOwnPropertyDescriptor(source, sym).enumerable;
-        }));
-      }
-
-      ownKeys.forEach(function (key) {
-        _defineProperty(target, key, source[key]);
-      });
-    }
-
-    return target;
-  }
-
-  function _toArray(arr) {
-    return _arrayWithHoles(arr) || _iterableToArray(arr) || _nonIterableRest();
-  }
-
-  function _arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-  }
-
-  function _iterableToArray(iter) {
-    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
-  }
-
-  function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance");
-  }
-
-  function _toPrimitive(input, hint) {
-    if (typeof input !== "object" || input === null) return input;
-    var prim = input[Symbol.toPrimitive];
-
-    if (prim !== undefined) {
-      var res = prim.call(input, hint || "default");
-      if (typeof res !== "object") return res;
-      throw new TypeError("@@toPrimitive must return a primitive value.");
-    }
-
-    return (hint === "string" ? String : Number)(input);
-  }
-
-  function _toPropertyKey(arg) {
-    var key = _toPrimitive(arg, "string");
-
-    return typeof key === "symbol" ? key : String(key);
-  }
-
-  function _decorate(decorators, factory, superClass) {
-    var r = factory(function initialize(O) {
-      _initializeInstanceElements(O, decorated.elements);
-    }, superClass);
-
-    var decorated = _decorateClass(_coalesceClassElements(r.d.map(_createElementDescriptor)), decorators);
-
-    _initializeClassElements(r.F, decorated.elements);
-
-    return _runClassFinishers(r.F, decorated.finishers);
-  }
-
-  function _createElementDescriptor(def) {
-    var key = _toPropertyKey(def.key);
-
-    var descriptor;
-
-    if (def.kind === "method") {
-      descriptor = {
-        value: def.value,
-        writable: true,
-        configurable: true,
-        enumerable: false
-      };
-      Object.defineProperty(def.value, "name", {
-        value: typeof key === "symbol" ? "" : key,
-        configurable: true
-      });
-    } else if (def.kind === "get") {
-      descriptor = {
-        get: def.value,
-        configurable: true,
-        enumerable: false
-      };
-    } else if (def.kind === "set") {
-      descriptor = {
-        set: def.value,
-        configurable: true,
-        enumerable: false
-      };
-    } else if (def.kind === "field") {
-      descriptor = {
-        configurable: true,
-        writable: true,
-        enumerable: true
-      };
-    }
-
-    var element = {
-      kind: def.kind === "field" ? "field" : "method",
-      key: key,
-      placement: def.static ? "static" : def.kind === "field" ? "own" : "prototype",
-      descriptor: descriptor
-    };
-    if (def.decorators) element.decorators = def.decorators;
-    if (def.kind === "field") element.initializer = def.value;
-    return element;
-  }
-
-  function _coalesceGetterSetter(element, other) {
-    if (element.descriptor.get !== undefined) {
-      other.descriptor.get = element.descriptor.get;
-    } else {
-      other.descriptor.set = element.descriptor.set;
-    }
-  }
-
-  function _coalesceClassElements(elements) {
-    var newElements = [];
-
-    var isSameElement = function (other) {
-      return other.kind === "method" && other.key === element.key && other.placement === element.placement;
-    };
-
-    for (var i = 0; i < elements.length; i++) {
-      var element = elements[i];
-      var other;
-
-      if (element.kind === "method" && (other = newElements.find(isSameElement))) {
-        if (_isDataDescriptor(element.descriptor) || _isDataDescriptor(other.descriptor)) {
-          if (_hasDecorators(element) || _hasDecorators(other)) {
-            throw new ReferenceError("Duplicated methods (" + element.key + ") can't be decorated.");
-          }
-
-          other.descriptor = element.descriptor;
-        } else {
-          if (_hasDecorators(element)) {
-            if (_hasDecorators(other)) {
-              throw new ReferenceError("Decorators can't be placed on different accessors with for " + "the same property (" + element.key + ").");
-            }
-
-            other.decorators = element.decorators;
-          }
-
-          _coalesceGetterSetter(element, other);
-        }
-      } else {
-        newElements.push(element);
-      }
-    }
-
-    return newElements;
-  }
-
-  function _hasDecorators(element) {
-    return element.decorators && element.decorators.length;
-  }
-
-  function _isDataDescriptor(desc) {
-    return desc !== undefined && !(desc.value === undefined && desc.writable === undefined);
-  }
-
-  function _initializeClassElements(F, elements) {
-    var proto = F.prototype;
-    ["method", "field"].forEach(function (kind) {
-      elements.forEach(function (element) {
-        var placement = element.placement;
-
-        if (element.kind === kind && (placement === "static" || placement === "prototype")) {
-          var receiver = placement === "static" ? F : proto;
-
-          _defineClassElement(receiver, element);
-        }
-      });
-    });
-  }
-
-  function _initializeInstanceElements(O, elements) {
-    ["method", "field"].forEach(function (kind) {
-      elements.forEach(function (element) {
-        if (element.kind === kind && element.placement === "own") {
-          _defineClassElement(O, element);
-        }
-      });
-    });
-  }
-
-  function _defineClassElement(receiver, element) {
-    var descriptor = element.descriptor;
-
-    if (element.kind === "field") {
-      var initializer = element.initializer;
-      descriptor = {
-        enumerable: descriptor.enumerable,
-        writable: descriptor.writable,
-        configurable: descriptor.configurable,
-        value: initializer === void 0 ? void 0 : initializer.call(receiver)
-      };
-    }
-
-    Object.defineProperty(receiver, element.key, descriptor);
-  }
-
-  function _decorateClass(elements, decorators) {
-    var newElements = [];
-    var finishers = [];
-    var placements = {
-      static: [],
-      prototype: [],
-      own: []
-    };
-    elements.forEach(function (element) {
-      _addElementPlacement(element, placements);
-    });
-    elements.forEach(function (element) {
-      if (!_hasDecorators(element)) return newElements.push(element);
-
-      var elementFinishersExtras = _decorateElement(element, placements);
-
-      newElements.push(elementFinishersExtras.element);
-      newElements.push.apply(newElements, elementFinishersExtras.extras);
-      finishers.push.apply(finishers, elementFinishersExtras.finishers);
-    });
-
-    if (!decorators) {
-      return {
-        elements: newElements,
-        finishers: finishers
-      };
-    }
-
-    var result = _decorateConstructor(newElements, decorators);
-
-    finishers.push.apply(finishers, result.finishers);
-    result.finishers = finishers;
-    return result;
-  }
-
-  function _addElementPlacement(element, placements, silent) {
-    var keys = placements[element.placement];
-
-    if (!silent && keys.indexOf(element.key) !== -1) {
-      throw new TypeError("Duplicated element (" + element.key + ")");
-    }
-
-    keys.push(element.key);
-  }
-
-  function _decorateElement(element, placements) {
-    var extras = [];
-    var finishers = [];
-
-    for (var decorators = element.decorators, i = decorators.length - 1; i >= 0; i--) {
-      var keys = placements[element.placement];
-      keys.splice(keys.indexOf(element.key), 1);
-
-      var elementObject = _fromElementDescriptor(element);
-
-      var elementFinisherExtras = _toElementFinisherExtras((0, decorators[i])(elementObject) || elementObject);
-
-      element = elementFinisherExtras.element;
-
-      _addElementPlacement(element, placements);
-
-      if (elementFinisherExtras.finisher) {
-        finishers.push(elementFinisherExtras.finisher);
-      }
-
-      var newExtras = elementFinisherExtras.extras;
-
-      if (newExtras) {
-        for (var j = 0; j < newExtras.length; j++) {
-          _addElementPlacement(newExtras[j], placements);
-        }
-
-        extras.push.apply(extras, newExtras);
-      }
-    }
-
-    return {
-      element: element,
-      finishers: finishers,
-      extras: extras
-    };
-  }
-
-  function _decorateConstructor(elements, decorators) {
-    var finishers = [];
-
-    for (var i = decorators.length - 1; i >= 0; i--) {
-      var obj = _fromClassDescriptor(elements);
-
-      var elementsAndFinisher = _toClassDescriptor((0, decorators[i])(obj) || obj);
-
-      if (elementsAndFinisher.finisher !== undefined) {
-        finishers.push(elementsAndFinisher.finisher);
-      }
-
-      if (elementsAndFinisher.elements !== undefined) {
-        elements = elementsAndFinisher.elements;
-
-        for (var j = 0; j < elements.length - 1; j++) {
-          for (var k = j + 1; k < elements.length; k++) {
-            if (elements[j].key === elements[k].key && elements[j].placement === elements[k].placement) {
-              throw new TypeError("Duplicated element (" + elements[j].key + ")");
-            }
-          }
-        }
-      }
-    }
-
-    return {
-      elements: elements,
-      finishers: finishers
-    };
-  }
-
-  function _fromElementDescriptor(element) {
-    var obj = {
-      kind: element.kind,
-      key: element.key,
-      placement: element.placement,
-      descriptor: element.descriptor
-    };
-    var desc = {
-      value: "Descriptor",
-      configurable: true
-    };
-    Object.defineProperty(obj, Symbol.toStringTag, desc);
-    if (element.kind === "field") obj.initializer = element.initializer;
-    return obj;
-  }
-
-  function _toElementDescriptors(elementObjects) {
-    if (elementObjects === undefined) return;
-    return _toArray(elementObjects).map(function (elementObject) {
-      var element = _toElementDescriptor(elementObject);
-
-      _disallowProperty(elementObject, "finisher", "An element descriptor");
-
-      _disallowProperty(elementObject, "extras", "An element descriptor");
-
-      return element;
-    });
-  }
-
-  function _toElementDescriptor(elementObject) {
-    var kind = String(elementObject.kind);
-
-    if (kind !== "method" && kind !== "field") {
-      throw new TypeError('An element descriptor\'s .kind property must be either "method" or' + ' "field", but a decorator created an element descriptor with' + ' .kind "' + kind + '"');
-    }
-
-    var key = _toPropertyKey(elementObject.key);
-
-    var placement = String(elementObject.placement);
-
-    if (placement !== "static" && placement !== "prototype" && placement !== "own") {
-      throw new TypeError('An element descriptor\'s .placement property must be one of "static",' + ' "prototype" or "own", but a decorator created an element descriptor' + ' with .placement "' + placement + '"');
-    }
-
-    var descriptor = elementObject.descriptor;
-
-    _disallowProperty(elementObject, "elements", "An element descriptor");
-
-    var element = {
-      kind: kind,
-      key: key,
-      placement: placement,
-      descriptor: Object.assign({}, descriptor)
-    };
-
-    if (kind !== "field") {
-      _disallowProperty(elementObject, "initializer", "A method descriptor");
-    } else {
-      _disallowProperty(descriptor, "get", "The property descriptor of a field descriptor");
-
-      _disallowProperty(descriptor, "set", "The property descriptor of a field descriptor");
-
-      _disallowProperty(descriptor, "value", "The property descriptor of a field descriptor");
-
-      element.initializer = elementObject.initializer;
-    }
-
-    return element;
-  }
-
-  function _toElementFinisherExtras(elementObject) {
-    var element = _toElementDescriptor(elementObject);
-
-    var finisher = _optionalCallableProperty(elementObject, "finisher");
-
-    var extras = _toElementDescriptors(elementObject.extras);
-
-    return {
-      element: element,
-      finisher: finisher,
-      extras: extras
-    };
-  }
-
-  function _fromClassDescriptor(elements) {
-    var obj = {
-      kind: "class",
-      elements: elements.map(_fromElementDescriptor)
-    };
-    var desc = {
-      value: "Descriptor",
-      configurable: true
-    };
-    Object.defineProperty(obj, Symbol.toStringTag, desc);
-    return obj;
-  }
-
-  function _toClassDescriptor(obj) {
-    var kind = String(obj.kind);
-
-    if (kind !== "class") {
-      throw new TypeError('A class descriptor\'s .kind property must be "class", but a decorator' + ' created a class descriptor with .kind "' + kind + '"');
-    }
-
-    _disallowProperty(obj, "key", "A class descriptor");
-
-    _disallowProperty(obj, "placement", "A class descriptor");
-
-    _disallowProperty(obj, "descriptor", "A class descriptor");
-
-    _disallowProperty(obj, "initializer", "A class descriptor");
-
-    _disallowProperty(obj, "extras", "A class descriptor");
-
-    var finisher = _optionalCallableProperty(obj, "finisher");
-
-    var elements = _toElementDescriptors(obj.elements);
-
-    return {
-      elements: elements,
-      finisher: finisher
-    };
-  }
-
-  function _disallowProperty(obj, name, objectType) {
-    if (obj[name] !== undefined) {
-      throw new TypeError(objectType + " can't have a ." + name + " property.");
-    }
-  }
-
-  function _optionalCallableProperty(obj, name) {
-    var value = obj[name];
-
-    if (value !== undefined && typeof value !== "function") {
-      throw new TypeError("Expected '" + name + "' to be a function");
-    }
-
-    return value;
-  }
-
-  function _runClassFinishers(constructor, finishers) {
-    for (var i = 0; i < finishers.length; i++) {
-      var newConstructor = (0, finishers[i])(constructor);
-
-      if (newConstructor !== undefined) {
-        if (typeof newConstructor !== "function") {
-          throw new TypeError("Finishers must return a constructor.");
-        }
-
-        constructor = newConstructor;
-      }
-    }
-
-    return constructor;
-  }
-
-  var throwError = function throwError(msg, fn) {
-    useDispatchEvent('_error_', msg);
-    fn && fn({
-      status: 0,
-      msg: msg
-    });
-  };
-  var useDispatchEvent = function useDispatchEvent(eventName, data) {
-    // 创建自定义对象事件;
-    var eventItem;
-
-    if (typeof document.CustomEvent === 'function') {
-      eventItem = new document.CustomEvent(eventName, {
-        bubbles: true,
-        cancelable: true
-      });
-    } else if (typeof document.createEvent === 'function') {
-      eventItem = document.createEvent('Event');
-      eventItem.initEvent(eventName, true, true);
-    } // 将数据挂载到事件对象中
-
-
-    if (data && eventItem) {
-      eventItem.data = data;
-    } // 触发自定义事件
-
-
-    if (eventItem) {
-      window.dispatchEvent(eventItem);
-    } else {
-      console.error('Bridge Error: dispatchEvent');
-    }
-  }; // 用于对象 
-  // @createMixins({})
-  // class {}
-
-  var createMixins = function createMixins() {
-    var arguments$1 = arguments;
-
-    for (var _len = arguments.length, mixins = new Array(_len), _key = 0; _key < _len; _key++) {
-      mixins[_key] = arguments$1[_key];
-    }
-
-    return function (target) {
-      target.prototype = _objectSpread({}, target.prototype, mixins);
-    };
-  };
-
-  var modules = {};
-
-  var WebSDK = _decorate([createMixins(_objectSpread({}, modules))], function (_initialize) {
-    var WebSDK = function WebSDK() {
-      var _this = this;
-
-      _classCallCheck(this, WebSDK);
-
-      _initialize(this);
-
-      // 不使用this.__readyArr__, 避免被遍历
-      Object.defineProperty(this, '__readyArr__', {
-        value: [],
-        writable: true
-      }); // 是否初始化
-
-      this.isInit = false; // 初始化
-
-      window.addEventListener('_ready_', function (e) {
-        var _ref = e.data || {},
-            status = _ref.status,
-            _ref$data = _ref.data,
-            data = _ref$data === void 0 ? {} : _ref$data;
-
-        if (status === 1) {
-          _this.isInit = true; // 设置常量
-
-          for (var key in data) {
-            if (!_this[key]) {
-              _this[key] = data[key];
-            }
-          } // 执行ready
-
-
-          _this.__readyArr__.forEach(function (fn) {
-            return fn();
-          });
-
-          _this.__readyArr__ = [];
-        }
-      });
-    } // -- end
-    ;
-
-    return {
-      F: WebSDK,
-      d: [{
-        kind: "field",
-        key: "version",
-        value: function value() {
-          return '1.0.0';
-        }
-      }, {
-        kind: "method",
-        key: "ready",
-        value: function value(fn) {
-          if (this.isInit) {
-            fn && fn();
-          } else {
-            this.__readyArr__.push(fn);
-          }
-        }
-      }, {
-        kind: "method",
-        key: "onError",
-        value: function value(fn) {
-          // this.useJSBridgeFn('on', '_error_', fn);
-          window.addEventListener('_error_', function (e) {
-            fn && fn(e.data);
-          });
-        }
-      }, {
-        kind: "method",
-        key: "useJSBridgeFn",
-        value: function value(key) {
-          var arguments$1 = arguments;
-
-          var fn = window.WYAJSBridge ? window.WYAJSBridge[key] : undefined;
-          var msg = 'WYAJSBridge API未注入';
-          !fn && throwError(msg); // 异常处理
-
-          for (var _len = arguments.length, rest = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-            rest[_key - 1] = arguments$1[_key];
-          }
-
-          return fn ? fn.apply(WYAJSBridge, rest) : key === 'invoke' ? Promise.reject({
-            msg: msg
-          }) : undefined;
-        }
-      }, {
-        kind: "method",
-        key: "invoke",
-        value: function value(eventName, param) {
-          return this.useJSBridgeFn('invoke', eventName, param);
-        }
-      }, {
-        kind: "method",
-        key: "on",
-        value: function value() {
-          var arguments$1 = arguments;
-
-          for (var _len2 = arguments.length, rest = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-            rest[_key2] = arguments$1[_key2];
-          }
-
-          return this.useJSBridgeFn.apply(this, ['on'].concat(rest));
-        }
-      }, {
-        kind: "method",
-        key: "once",
-        value: function value() {
-          var arguments$1 = arguments;
-
-          for (var _len3 = arguments.length, rest = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-            rest[_key3] = arguments$1[_key3];
-          }
-
-          return this.useJSBridgeFn.apply(this, ['once'].concat(rest));
-        }
-      }, {
-        kind: "method",
-        key: "first",
-        value: function value() {
-          var arguments$1 = arguments;
-
-          for (var _len4 = arguments.length, rest = new Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-            rest[_key4] = arguments$1[_key4];
-          }
-
-          return this.useJSBridgeFn.apply(this, ['first'].concat(rest));
-        }
-      }, {
-        kind: "method",
-        key: "last",
-        value: function value() {
-          var arguments$1 = arguments;
-
-          for (var _len5 = arguments.length, rest = new Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-            rest[_key5] = arguments$1[_key5];
-          }
-
-          return this.useJSBridgeFn.apply(this, ['last'].concat(rest));
-        }
-      }, {
-        kind: "method",
-        key: "off",
-        value: function value(eventName) {
-          return this.useJSBridgeFn('off', eventName);
-        }
-      }]
-    };
-  });
-
-  var web = new WebSDK();
-
-  return web;
-
-})));
+!function(e,t){ true?module.exports=t():undefined}(this,function(){"use strict";function o(e){return(o="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function i(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}var c=function(e,t){var n;"function"==typeof document.CustomEvent?n=new document.CustomEvent(e,{bubbles:!0,cancelable:!0}):"function"==typeof document.createEvent&&(n=document.createEvent("Event")).initEvent(e,!0,!0),t&&n&&(n.data=t),n?window.dispatchEvent(n):console.error("Bridge Error: dispatchEvent")},s=function(o){for(var e=1;e<arguments.length;e++){var i=null!=arguments[e]?arguments[e]:{},t=Object.keys(i);"function"==typeof Object.getOwnPropertySymbols&&(t=t.concat(Object.getOwnPropertySymbols(i).filter(function(e){return Object.getOwnPropertyDescriptor(i,e).enumerable}))),t.forEach(function(e){var t,n,r;t=o,r=i[n=e],n in t?Object.defineProperty(t,n,{value:r,enumerable:!0,configurable:!0,writable:!0}):t[n]=r})}return o}({},{navigator:["push","pop"],app:["install","uninstall","open","reboot","has"],clipboard:["set","get"],storage:["set","get","remove","getAllKeys"],record:["start","stop"],audio:["start","stop"],video:["start","open"],box:["show","hide"],photo:["get","save"],notification:["set","cancel"],system:["sms","mail","contacts","call"],sensor:["start","stop"],download:["start","stop"],upload:["start","stop"],cache:["get","clear"],space:["total","free"],location:["start","stop","get"],screen:["orientate","keep","home"],style:["win","bar","badge"]});return new(function(){function e(){var a=this;!function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e),this.version="1.0.0",Object.defineProperty(this,"__readyArr__",{value:[],writable:!0}),Object.keys(s).forEach(function(e){return a.registerModule(e,s[e])}),this.isInit=!1,window.addEventListener("_ready_",function(e){var t=e.data||{},n=t.status,r=t.data,o=void 0===r?{}:r;if(1===n){for(var i in a.isInit=!0,o)a[i]||(a[i]=o[i]);a.__readyArr__.forEach(function(e){return e()}),a.__readyArr__=[]}})}var t,n,r;return t=e,(n=[{key:"ready",value:function(e){this.isInit?e&&e():this.__readyArr__.push(e)}},{key:"onError",value:function(t){window.addEventListener("_error_",function(e){t&&t(e.data)})}},{key:"useJSBridgeFn",value:function(e){var t,n,r=arguments,o=window.WYAJSBridge?window.WYAJSBridge[e]:void 0,i="WYAJSBridge API未注入";!o&&(c("_error_",t=i),n&&n({status:0,msg:t}));for(var a=arguments.length,s=new Array(1<a?a-1:0),u=1;u<a;u++)s[u-1]=r[u];return o?o.apply(WYAJSBridge,s):"invoke"===e?Promise.reject({msg:i}):void 0}},{key:"invoke",value:function(e,t){return this.useJSBridgeFn("invoke",e,t)}},{key:"on",value:function(){for(var e=arguments,t=arguments.length,n=new Array(t),r=0;r<t;r++)n[r]=e[r];return this.useJSBridgeFn.apply(this,["on"].concat(n))}},{key:"once",value:function(){for(var e=arguments,t=arguments.length,n=new Array(t),r=0;r<t;r++)n[r]=e[r];return this.useJSBridgeFn.apply(this,["once"].concat(n))}},{key:"first",value:function(){for(var e=arguments,t=arguments.length,n=new Array(t),r=0;r<t;r++)n[r]=e[r];return this.useJSBridgeFn.apply(this,["first"].concat(n))}},{key:"last",value:function(){for(var e=arguments,t=arguments.length,n=new Array(t),r=0;r<t;r++)n[r]=e[r];return this.useJSBridgeFn.apply(this,["last"].concat(n))}},{key:"off",value:function(e){return this.useJSBridgeFn("off",e)}},{key:"requireModule",value:function(e){return this[e]}},{key:"registerModule",value:function(n,e){var r=this;if(!this[n]&&e){if(e instanceof Array){var t=e.reduce(function(e,t){return e[t]=r.invoke.bind(r,"".concat(n,"/").concat(t)),e},{});return this[n]=t}return"object"===o(e)?(this[n]=methods,e):void 0}}}])&&i(t.prototype,n),r&&i(t,r),e}())});
 
 
 /***/ }),
@@ -8689,7 +7981,7 @@ exports.push([module.i, "", ""]);
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js?!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/index.js?!./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=d2fed65e&lang=scss&scoped=true&":
+/***/ "./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js?!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/index.js?!./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=5ad2fca2&lang=scss&scoped=true&":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
@@ -8697,7 +7989,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, ".fixed[data-v-d2fed65e] {\n  position: fixed;\n  width: 100%;\n  opacity: .96;\n  z-index: 10;\n}\n.fixed-placeholder[data-v-d2fed65e] {\n  height: 44px;\n}\n.title[data-v-d2fed65e] {\n  font-size: 18px;\n  margin: 0 auto;\n  padding: 13px 0;\n  text-align: center;\n  display: block;\n  line-height: 1;\n  margin-bottom: 10px;\n  background: white;\n  border-bottom: 1px solid #edeef0;\n}\n.back[data-v-d2fed65e] {\n  display: inline-block;\n  position: absolute;\n  left: 12px;\n  width: 44px;\n  height: 44px;\n  text-align: center;\n}\n.back i[data-v-d2fed65e] {\n    font-size: 24px;\n    line-height: 40px;\n}\n.arrow-left[data-v-d2fed65e] {\n  border: 2px solid #333;\n  border-bottom-width: 0;\n  border-right-width: 0;\n  content: \" \";\n  top: 50%;\n  right: 20px;\n  position: absolute;\n  width: 10px;\n  height: 10px;\n  -webkit-transform: translateY(-50%) rotate(-45deg);\n          transform: translateY(-50%) rotate(-45deg);\n}\n", ""]);
+exports.push([module.i, ".fixed[data-v-5ad2fca2] {\n  position: fixed;\n  width: 100%;\n  opacity: .96;\n  z-index: 10;\n}\n.fixed-placeholder[data-v-5ad2fca2] {\n  height: 44px;\n}\n.title[data-v-5ad2fca2] {\n  font-size: 18px;\n  margin: 0 auto;\n  padding: 13px 0;\n  text-align: center;\n  display: block;\n  line-height: 1;\n  margin-bottom: 10px;\n  background: white;\n  border-bottom: 1px solid #edeef0;\n}\n.back[data-v-5ad2fca2] {\n  display: inline-block;\n  position: absolute;\n  left: 12px;\n  width: 44px;\n  height: 44px;\n  text-align: center;\n}\n.back i[data-v-5ad2fca2] {\n    font-size: 24px;\n    line-height: 40px;\n}\n.arrow-left[data-v-5ad2fca2] {\n  border: 2px solid #333;\n  border-bottom-width: 0;\n  border-right-width: 0;\n  content: \" \";\n  top: 50%;\n  right: 20px;\n  position: absolute;\n  width: 10px;\n  height: 10px;\n  -webkit-transform: translateY(-50%) rotate(-45deg);\n      -ms-transform: translateY(-50%) rotate(-45deg);\n          transform: translateY(-50%) rotate(-45deg);\n}\n", ""]);
 
 // exports
 
@@ -8712,7 +8004,7 @@ exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/cs
 
 
 // module
-exports.push([module.i, ".vcm-toast .__bg[data-v-7d27da40] {\n  position: fixed;\n  background: rgba(0, 0, 0, 0.4);\n  z-index: 3999;\n  height: 100%;\n  width: 100%;\n  left: 0;\n  right: 0;\n  margin: 0 auto;\n  bottom: 0;\n  opacity: 0;\n}\n.vcm-toast .__fixed[data-v-7d27da40] {\n  position: fixed;\n  left: 50%;\n  top: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n  z-index: 4001;\n  max-width: 50%;\n  height: auto;\n  background: rgba(58, 58, 58, 0.9);\n  padding: 9px 15px;\n  border-radius: 3px;\n  line-height: 1.5;\n  color: #fff;\n  text-align: center;\n  transition: opacity 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);\n}\n.fade-enter[data-v-7d27da40], .fade-leave-active[data-v-7d27da40] {\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, ".vcm-toast .__bg[data-v-7d27da40] {\n  position: fixed;\n  background: rgba(0, 0, 0, 0.4);\n  z-index: 3999;\n  height: 100%;\n  width: 100%;\n  left: 0;\n  right: 0;\n  margin: 0 auto;\n  bottom: 0;\n  opacity: 0;\n}\n.vcm-toast .__fixed[data-v-7d27da40] {\n  position: fixed;\n  left: 50%;\n  top: 50%;\n  -webkit-transform: translate(-50%, -50%);\n      -ms-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n  z-index: 4001;\n  max-width: 50%;\n  height: auto;\n  background: rgba(58, 58, 58, 0.9);\n  padding: 9px 15px;\n  border-radius: 3px;\n  line-height: 1.5;\n  color: #fff;\n  text-align: center;\n  -webkit-transition: opacity 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);\n  transition: opacity 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);\n}\n.fade-enter[data-v-7d27da40], .fade-leave-active[data-v-7d27da40] {\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -9560,18 +8852,18 @@ var update = add("25335737", content, true, {});
 
 /***/ }),
 
-/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js?!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/index.js?!./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=d2fed65e&lang=scss&scoped=true&":
+/***/ "./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js?!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/index.js?!./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=5ad2fca2&lang=scss&scoped=true&":
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js?!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/index.js?!./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=d2fed65e&lang=scss&scoped=true&");
+var content = __webpack_require__("./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js?!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/index.js?!./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=5ad2fca2&lang=scss&scoped=true&");
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
 var add = __webpack_require__("./node_modules/vue-style-loader/lib/addStylesClient.js").default
-var update = add("b99bb424", content, true, {});
+var update = add("3ed21487", content, true, {});
 
 /***/ }),
 
@@ -9654,14 +8946,14 @@ var update = add("2535254a", content, true, {});
 
 /***/ }),
 
-/***/ "./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=d2fed65e&lang=scss&scoped=true&":
+/***/ "./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=5ad2fca2&lang=scss&scoped=true&":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_2_2_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_set_title_vue_vue_type_style_index_0_id_d2fed65e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js?!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/index.js?!./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=d2fed65e&lang=scss&scoped=true&");
-/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_2_2_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_set_title_vue_vue_type_style_index_0_id_d2fed65e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_2_2_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_set_title_vue_vue_type_style_index_0_id_d2fed65e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_2_2_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_set_title_vue_vue_type_style_index_0_id_5ad2fca2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("./node_modules/vue-style-loader/index.js!./node_modules/css-loader/index.js!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/lib/index.js?!./node_modules/sass-loader/lib/loader.js!./node_modules/vue-loader/lib/index.js?!./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=5ad2fca2&lang=scss&scoped=true&");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_2_2_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_set_title_vue_vue_type_style_index_0_id_5ad2fca2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_2_2_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_set_title_vue_vue_type_style_index_0_id_5ad2fca2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0__);
 /* unused harmony reexport * */
- /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_2_2_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_set_title_vue_vue_type_style_index_0_id_d2fed65e_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_node_modules_css_loader_index_js_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_lib_index_js_ref_2_2_node_modules_sass_loader_lib_loader_js_node_modules_vue_loader_lib_index_js_vue_loader_options_set_title_vue_vue_type_style_index_0_id_5ad2fca2_lang_scss_scoped_true___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -9861,12 +9153,12 @@ var vue_esm = __webpack_require__("./node_modules/vue/dist/vue.esm.js");
 // EXTERNAL MODULE: ./node_modules/vue-router/dist/vue-router.esm.js
 var vue_router_esm = __webpack_require__("./node_modules/vue-router/dist/vue-router.esm.js");
 
-// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/_common/set-title/set-title.vue?vue&type=template&id=d2fed65e&scoped=true&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"g-reset"},[_c('div',{staticClass:"fixed"},[(_vm.visible && _vm.isShowBack)?_c('div',{staticClass:"back",on:{"click":_vm.handleClick}},[_c('div',{staticClass:"arrow-left"})]):_vm._e(),_vm._v(" "),_c('h1',{staticClass:"title"},[_vm._v(_vm._s(_vm.title))])]),_vm._v(" "),_c('div',{staticClass:"fixed-placeholder"}),_vm._v(" "),_c('better-scroll',{ref:"bs",style:({ height: _vm.height + 'px' })},[_vm._t("default")],2)],1)}
+// CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/_common/set-title/set-title.vue?vue&type=template&id=5ad2fca2&scoped=true&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"g-reset"},[_c('div',{staticClass:"fixed"},[(_vm.visible && _vm.isShowBack)?_c('div',{staticClass:"back",on:{"click":_vm.handleClick}},[_c('div',{staticClass:"arrow-left"})]):_vm._e(),_vm._v(" "),_c('h1',{staticClass:"title"},[_vm._v(_vm._s(_vm.title))])]),_vm._v(" "),_c('div',{staticClass:"fixed-placeholder"}),_vm._v(" "),_c('better-scroll',{ref:"bs",style:({ height: _vm.height + 'px' }),attrs:{"bs-opts":_vm.bsOpts}},[_vm._t("default")],2)],1)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/pages/components/_common/set-title/set-title.vue?vue&type=template&id=d2fed65e&scoped=true&
+// CONCATENATED MODULE: ./src/pages/components/_common/set-title/set-title.vue?vue&type=template&id=5ad2fca2&scoped=true&
 
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/pages/components/_common/better-scroll/better-scroll.vue?vue&type=template&id=81a13332&scoped=true&
 var better_scrollvue_type_template_id_81a13332_scoped_true_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"betterWrapper",staticStyle:{"overflow":"'hidden'","position":"relative"}},[_c('div',{attrs:{"className":"__scroller"}},[_vm._t("default")],2)])}
@@ -12213,7 +11505,8 @@ var oldPos = {// [this.$route.path] : {
     offset: {
       type: Number,
       default: -45
-    }
+    },
+    bsOpts: Object
   },
   data: function data() {
     return {
@@ -12258,8 +11551,8 @@ var oldPos = {// [this.$route.path] : {
 });
 // CONCATENATED MODULE: ./src/pages/components/_common/set-title/set-title.vue?vue&type=script&lang=js&
  /* harmony default export */ var set_title_set_titlevue_type_script_lang_js_ = (set_titlevue_type_script_lang_js_); 
-// EXTERNAL MODULE: ./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=d2fed65e&lang=scss&scoped=true&
-var set_titlevue_type_style_index_0_id_d2fed65e_lang_scss_scoped_true_ = __webpack_require__("./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=d2fed65e&lang=scss&scoped=true&");
+// EXTERNAL MODULE: ./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=5ad2fca2&lang=scss&scoped=true&
+var set_titlevue_type_style_index_0_id_5ad2fca2_lang_scss_scoped_true_ = __webpack_require__("./src/pages/components/_common/set-title/set-title.vue?vue&type=style&index=0&id=5ad2fca2&lang=scss&scoped=true&");
 
 // CONCATENATED MODULE: ./src/pages/components/_common/set-title/set-title.vue
 
@@ -12276,7 +11569,7 @@ var set_title_component = Object(componentNormalizer["a" /* default */])(
   staticRenderFns,
   false,
   null,
-  "d2fed65e",
+  "5ad2fca2",
   null
   
 )
@@ -12619,12 +11912,11 @@ wya_umd_default.a.ready(function () {
 wya_umd_default.a.onError(function (error) {
   _typeof(error) === 'object' ? JSON.stringify(error) : error;
   var msg = "\u5168\u5C40\u5F02\u5E38\u6355\u83B7\uFF1A ".concat(error); // Toasts.info(msg);
-});
-window.addEventListener('keypress', function (e) {
-  if (e.keyCode == 114) {
-    location.reload();
-  }
-});
+}); // window.addEventListener('keypress', (e) => {
+// 	if (e.keyCode == 114) {
+// 		location.reload();
+// 	}
+// });
 // CONCATENATED MODULE: ./src/pages/router/router.dist.js
 /**
  * dist 未来用于服务端渲染

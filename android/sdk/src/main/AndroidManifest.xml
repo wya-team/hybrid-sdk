@@ -30,29 +30,6 @@
 		android:supportsRtl="true"
 		tools:ignore="GoogleAppIndexingWarning">
 		<activity android:name=".nativeUI.CameraActivity"></activity>
-		<!-- 监听网络切换 receiver -->
-		<receiver android:name=".control.NetworkReceiver">
-			<intent-filter>
-				<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-				<action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-				<action android:name="android.net.wifi.STATE_CHANGE" />
-			</intent-filter>
-		</receiver>
-		<receiver android:name=".control.BatteryReceiver">
-			<intent-filter>
-				<action android:name="android.content.Intent.ACTION_BATTERY_LOW" />
-				<action android:name="android.content.Intent.ACTION_BATTERY_OKAY" />
-				<action android:name="android.content.Intent.ACTION_BATTERY_CHANGED" />
-			</intent-filter>
-		</receiver>
-		<receiver android:name=".control.ScreenReceiver">
-			<intent-filter>
-				<action android:name="android.content.Intent.ACTION_SCREEN_ON" />
-				<action android:name="android.content.Intent.ACTION_SCREEN_OFF" />
-				<action android:name="android.content.Intent.ACTION_USER_PRESENT" />
-			</intent-filter>
-		</receiver>
-
 		<service
 			android:name=".localserver.LocalService"
 			android:exported="false" />
