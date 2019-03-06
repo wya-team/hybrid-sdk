@@ -129,96 +129,258 @@
 
 ## 三、方法
 
+### 模块
+ 
+- `navigator`
 
 方法 | 说明 | 开发 | Android | iOS
 ---|---|---|---|---
-[push][push] | 打开window  | 1 | 0 | 0 
-[pop][pop] | 关闭 window  | 1 | 0 | 0  
-[setWinAttr][setWinAttr] | 设置 window 属性  | 0 | 0 | 0  
-[installApp][installApp] | 安装应用，如果是苹果的AppStore应用地址，将会跳转到AppStore应用详情页  | 1 | 0 | 0  
-[uninstallApp][uninstallApp] | 卸载应用，只支持Android  | 0 | 0 | 0  
-[openApp][openApp] | 打开手机上其它应用，可以传递参数  | 1 | 0 | 0  
-[appInstalled][appInstalled] | 判断设备上面是否已安装指定应用  | 1 | 0 | 0  
-[rebootApp][rebootApp] | 重启应用，云修复完成后可以调用此方法来重启应用使云修复生效  | 0 | 0 | 0  
-[download][download] | 下载文件  | 1 | 0 | 0  
-[cancelDownload][cancelDownload] | 取消文件下载  | 1 | 0 | 0  
-[clearCache][clearCache] | 清除缓存，包括下载的文件、拍照临时文件、网页缓存文件等，清除时可能需要消耗一定时间。  | 1 | 0 | 0
-[getCacheSize][getCacheSize] | 获取缓存占用空间大小，缓存包括下载的缓存文件、拍照临时文件以及网页缓存文件等，计算可能需要花费一些时间  | 1 | 0 | 0
-[getTotalSpace][getTotalSpace] | 获取总存储空间大小  | 1 | 0 | 0
-[getFreeDiskSpace][getFreeDiskSpace] | 获取剩余存储空间大小  | 1 | 0 | 0
-[notification][notification] | 向用户发出震动、声音提示、灯光闪烁、手机状态栏通知等提示行为，支持闹钟功能。如果是状态栏通知，当用户点击该通知，页面可以通过监听 noticeclick 事件获取该通知相关内容  | 1 | 0 | 0
-[cancelNotification][cancelNotification] | 取消本应用弹出到状态栏的某个或所有通知，也可以清除设定的闹铃  | 1 | 0 | 0
-[startLocation][startLocation] | 调用系统自带定位功能，开始定位  | 0 | 0 | 0
-[stopLocation][stopLocation] | 停止定位  | 0 | 0 | 0
-[getLocation][getLocation] | 之前已通过 startLocation() 方法进行定位，则直接返回上次定位的数据，否则使用默认设置进行定位  | 0 | 0 | 0
-[startSensor][startSensor] | 开启传感器  | 0 | 0 | 0
-[stopSensor][stopSensor] | 停止传感器  | 0 | 0 | 0
-[sms][sms] | 调用系统短信界面发送短信，或者后台直接发送短信  | 1 | 0 | 0
-[mail][mail] | 发送邮件  | 0 | 0 | 0
-[call][call] | 拨打电话或进行faceTime  | 0 | 0 | 0
-[openContacts][openContacts] | 在应用内打开系统通讯录界面选择联系人  | 1 | 0 | 0
-[setStatusBarStyle][setStatusBarStyle] | 设置状态栏样式为白色（适用于深色背景）或黑色（适用于浅色背景）  | 1 | 0 | 0
-[setScreenOrientation][setScreenOrientation] | 设置屏幕旋转方向  | 1 | 0 | 0
-[setKeepScreenOn][setKeepScreenOn] | 设置是否禁止屏幕休眠  | 1 | 0 | 0
-[toLauncher][toLauncher] | 回到系统桌面 | 1 | 0 | 0
-[setAppIconBadge][setAppIconBadge] | 如小米和三星的某些型号，不支持的设备，表现结果为调用该接口无任何效果  | 0 | 0 | 0
-[showFloatBox][showFloatBox] | 展示一个悬浮框，浮动在屏幕上。  | 1 | 0 | 0
-[getPicture][getPicture] | 通过调用系统默认相机或者图库应用，获取图片以及视频媒体文件。  | 1 | 0 | 0
-[saveMediaToAlbum][saveMediaToAlbum] | 保存图片和视频到系统相册  | 1 | 0 | 0
-[startRecord][startRecord] | 录制amr格式音频  | 1 | 0 | 0
-[stopRecord][stopRecord] | 停止录音  | 1 | 0 | 0
-[startPlay][startPlay] | 播放本地音频，支持amr格式  | 1 | 0 | 0
-[stopPlay][stopPlay] | 停止播放音频  | 1 | 0 | 0
-[openVideo][openVideo] | 打开系统视频播放器  | 1 | 0 | 0
-[require][require] | 引用模块(wya.require("bMap"))  | 0 | 0 | 0
+[push][navigatorPush] | 打开window  | 1 | 0 | 0 
+[pop][navigatorPop] | 关闭 window  | 1 | 0 | 0 
 
-[push]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/push.md
-[pop]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/pop.md
-[setWinAttr]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/setWinAttr.md
-[installApp]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/installApp.md
-[uninstallApp]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/uninstallApp.md
-[openApp]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/openApp.md
-[appInstalled]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/appInstalled.md
-[rebootApp]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/rebootApp.md
-[download]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/download.md
-[cancelDownload]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/cancelDownload.md
-[clearCache]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/clearCache.md
-[getCacheSize]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/getCacheSize.md
-[getTotalSpace]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/getTotalSpace.md
-[getFreeDiskSpace]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/getFreeDiskSpace.md
-[notification]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/notification.md
-[cancelNotification]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/cancelNotification.md
-[startLocation]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/startLocation.md
-[stopLocation]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/stopLocation.md
-[getLocation]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/getLocation.md
-[startSensor]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/startSensor.md
-[stopSensor]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/stopSensor.md
-[sms]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/sms.md
-[mail]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/mail.md
-[call]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/call.md
-[openContacts]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/openContacts.md
-[setStatusBarStyle]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/setStatusBarStyle.md
-[setScreenOrientation]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/setScreenOrientation.md
-[setKeepScreenOn]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/setKeepScreenOn.md
-[toLauncher]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/toLauncher.md
-[setAppIconBadge]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/setAppIconBadge.md
-[showFloatBox]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/showFloatBox.md
-[getPicture]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/getPicture.md
-[saveMediaToAlbum]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/saveMediaToAlbum.md
-[startRecord]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/startRecord.md
-[stopRecord]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/stopRecord.md
-[startPlay]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/startPlay.md
-[stopPlay]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/stopPlay.md
-[openVideo]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/openVideo.md
-[require]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/require.md
+- `app`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[install][appInstall] | 安装应用，如果是苹果的AppStore应用地址，将会跳转到AppStore应用详情页  | 1 | 0 | 0  
+[uninstall][appUninstall] | 卸载应用，只支持Android  | 0 | 0 | 0  
+[open][appOpen] | 打开手机上其它应用，可以传递参数  | 1 | 0 | 0  
+[reboot][appReboot] | 重启应用，云修复完成后可以调用此方法来重启应用使云修复生效  | 0 | 0 | 0  
+[has][appHas] | 判断设备上面是否已安装指定应用  | 0 | 0 | 0  
+
+
+- `clipboard`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[get][clipboardGet] | 黏贴板内容  | 0 | 0 | 0  
+[set][clipboardSet] | 复制 | 0 | 0 | 0  
+
+
+- `storage`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[get][storageGet] | -  | 0 | 0 | 0  
+[set][storageSet] | - | 0 | 0 | 0  
+[remove][storageRemove] | - | 0 | 0 | 0  
+[clear][storageClear] | - | 0 | 0 | 0  
+[getAllKeys][storageGetAllKeys] | - | 0 | 0 | 0 
+
+- `photo`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[get][photoGet] | 通过调用系统默认相机或者图库应用，获取图片以及视频媒体文件。  | 1 | 0 | 0
+[save][photoSave] | 保存图片和视频到系统相册  | 1 | 0 | 0
+ 
+
+- `notification`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[add][notificationAdd] | 向用户发出震动、声音提示、灯光闪烁、手机状态栏通知等提示行为，支持闹钟功能。如果是状态栏通知，当用户点击该通知，页面可以通过监听 noticeclick 事件获取该通知相关内容  | 1 | 0 | 0
+[remove][notificationRemove] | 取消本应用弹出到状态栏的某个或所有通知，也可以清除设定的闹铃  | 1 | 0 | 0
+
+- `floatBall`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[show][floatBallShow] | 展示一个悬浮框，浮动在屏幕上。  | 1 | 0 | 0
+[hide][floatBallHide] | 隐藏一个悬浮框 | 1 | 0 | 0
+
+
+- `system`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[sms][systemSms] | 调用系统短信界面发送短信，或者后台直接发送短信  | 1 | 0 | 0
+[mail][systeMail] | 发送邮件  | 0 | 0 | 0
+[call][systemCall] | 拨打电话或进行faceTime  | 0 | 0 | 0
+[contacts][systemContacts] | 在应用内打开系统通讯录界面选择联系人  | 1 | 0 | 0
+[getBattery][systemGetBattery] | -  | 0 | 0 | 0
+[getNetwork][systemGetNetwork] | -  | 0 | 0 | 0
+
+- `screen`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[orientate][screenOrientate] | 设置屏幕旋转方向  | 1 | 0 | 0
+[keepOn][screenKeepOn] | 设置是否禁止屏幕休眠  | 1 | 0 | 0
+[toLauncher][screenToLauncher] | 回到系统桌面 | 1 | 0 | 0
+
+- `style`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[setWin][styleSetWin] | 设置 window 属性  | 0 | 0 | 0  
+[setStatusBar][styleSetStatusBar] | 设置状态栏样式为白色（适用于深色背景）或黑色（适用于浅色背景）  | 1 | 0 | 0
+[setBadge][styleSetBadge] | 如小米和三星的某些型号，不支持的设备，表现结果为调用该接口无任何效果  | 0 | 0 | 0
+
+- `memory`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[clearCache][memoryClearCache] | 清除缓存，包括下载的文件、拍照临时文件、网页缓存文件等，清除时可能需要消耗一定时间。  | 1 | 0 | 0
+[getCache][memoryGetCache] | 获取缓存占用空间大小，缓存包括下载的缓存文件、拍照临时文件以及网页缓存文件等，计算可能需要花费一些时间  | 1 | 0 | 0
+[getTotal][memoryGetTotal] | 获取总存储空间大小  | 1 | 0 | 0
+[getFree][memoryGetFree] | 获取剩余存储空间大小  | 1 | 0 | 0
+
+- `record`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[start][recordStart] | 录制amr格式音频  | 1 | 0 | 0
+[stop][recordStop] | 停止录音  | 1 | 0 | 0
+[pause][recordPause] | -  | 0 | 0 | 0
+[resume][recordResume] | -  | 0 | 0 | 0
+[restart][recordRestart] | -  | 0 | 0 | 0
+
+
+- `audio`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[start][audioStart] | 播放本地音频，支持amr格式  | 1 | 0 | 0
+[stop][audioStop] | 停止播放音频  | 1 | 0 | 0
+[pause][audioPause] | -  | 0 | 0 | 0
+[resume][audioResume] | -  | 0 | 0 | 0
+[restart][audioRestart] | -  | 0 | 0 | 0
+
+
+- `download`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[start][downloadStart] | 下载文件  | 1 | 0 | 0
+[cancel][downloadCancel] | 取消文件下载  | 1 | 0 | 0
+[pause][downloadPause] | -  | 0 | 0 | 0
+[resume][downloadResume] | -  | 0 | 0 | 0
+[restart][downloadRestart] | -  | 0 | 0 | 0
+
+
+- `upload`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[start][uploadStart] | 上传文件  | 0 | 0 | 0
+[cancel][uploadCancel] | 取消文件上传  | 0 | 0 | 0
+[pause][uploadPause] | -  | 0 | 0 | 0
+[resume][uploadResume] | -  | 0 | 0 | 0
+[restart][uploadRestart] | -  | 0 | 0 | 0
+
+- `location`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[open][locationOpen] | 调用系统自带定位功能，开始定位  | 0 | 0 | 0
+[close][locationClose] | 停止定位  | 0 | 0 | 0
+[get][locationGet] | 之前已通过 startLocation() 方法进行定位，则直接返回上次定位的数据，否则使用默认设置进行定位  | 0 | 0 | 0
+
+
+- `sensor`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[open][sensorOpen] | 开启传感器  | 0 | 0 | 0
+[close][sensorClose] | 停止传感器  | 0 | 0 | 0
+
+- `video`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+[open][videoOpen] | 打开系统视频播放器  | 1 | 0 | 0
+
+- `wifi`
+- `bluetooth`
+- `nfc`
+
+### 内部模块
+
+- `debugger`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+invoke | -  | 1 | 0 | 0
+
+- `event`
+
+方法 | 说明 | 开发 | Android | iOS
+---|---|---|---|---
+add | -  | 1 | 0 | 0
+remove | -  | 1 | 0 | 0
+
+
+
+[navigatorPush]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/navigatorPush.md
+[navigatorPop]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/navigatorPop.md
+[appInstall]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/appInstall.md
+[appUninstall]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/appUninstall.md
+[appOpen]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/appOpen.md
+[appReboot]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/appReboot.md
+[appHas]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/appHas.md
+[clipboardGet]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/clipboardGet.md
+[clipboardSet]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/clipboardSet.md
+[storageGet]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/storageGet.md
+[storageSet]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/storageSet.md
+[storageRemove]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/storageRemove.md
+[storageClear]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/storageClear.md
+[storageGetAllKeys]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/storageGetAllKeys.md
+[photoGet]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/photoGet.md
+[photoSave]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/photoSave.md
+[notificationAdd]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/notificationAdd.md
+[notificationRemove]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/notificationRemove.md
+[floatBallShow]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/floatBallShow.md
+[floatBallHide]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/floatBallHide.md
+[systemSms]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/systemSms.md
+[systeMail]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/systeMail.md
+[systemCall]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/systemCall.md
+[systemContacts]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/systemContacts.md
+[systemGetBattery]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/systemGetBattery.md
+[systemGetNetwork]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/systemGetNetwork.md
+[screenOrientate]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/screenOrientate.md
+[screenKeepOn]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/screenKeepOn.md
+[screenToLauncher]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/screenToLauncher.md
+[styleSetWin]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/styleSetWin.md
+[styleSetStatusBar]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/styleSetStatusBar.md
+[styleSetBadge]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/styleSetBadge.md
+[memoryClearCache]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/memoryClearCache.md
+[memoryGetCache]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/memoryGetCache.md
+[memoryGetTotal]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/memoryGetTotal.md
+[memoryGetFree]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/memoryGetFree.md
+[recordStart]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/recordStart.md
+[recordStop]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/recordStop.md
+[recordPause]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/recordPause.md
+[recordResume]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/recordResume.md
+[recordRestart]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/recordRestart.md
+[audioStart]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/audioStart.md
+[audioStop]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/audioStop.md
+[audioPause]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/audioPause.md
+[audioResume]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/audioResume.md
+[audioRestart]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/audioRestart.md
+[downloadStart]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/downloadStart.md
+[downloadCancel]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/downloadCancel.md
+[downloadPause]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/downloadPause.md
+[downloadResume]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/downloadResume.md
+[downloadRestart]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/downloadRestart.md
+[uploadStart]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/uploadStart.md
+[uploadCancel]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/uploadCancel.md
+[uploadPause]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/uploadPause.md
+[uploadResume]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/uploadResume.md
+[uploadRestart]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/uploadRestart.md
+[locationOpen]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/locationOpen.md
+[locationClose]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/locationClose.md
+[locationGet]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/locationGet.md
+[sensorOpen]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/sensorOpen.md
+[sensorClose]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/sensorClose.md
+[videoOpen]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/methods/videoOpen.md
+
 
 
 ## 其他
 
-- h5 注册方法 `registerMethod`
-- native 注册方法 `registerMethod`
-- 思考事件的注册方式由用户决定
-- 思考 `registerMethod` -> `registerModule`
+- h5 注册方法 `registerModule`
+- native 注册方法 `registerModule`文档, 注册事件`registerEvent`文档
 - 思考 h5/native `Components`, 以及`registerComponents`
 - Android 内核调整方案
 
