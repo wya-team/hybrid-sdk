@@ -17,11 +17,13 @@ wya.onError((error) => {
 	typeof error === 'object' ? JSON.stringify(error) : error;
 	let msg = `全局异常捕获： ${error}`;
 	// Toasts.info(msg);
+	console.log(msg);
 });
 wya.onLog((res) => {
 	typeof res === 'object' ? JSON.stringify(res) : res;
 	let msg = `全局日志捕获： ${res}`;
-	// Toasts.info(msg);
+	Toasts.info(msg);
+	console.log(msg);
 });
 
 // window.addEventListener('keypress', (e) => {
