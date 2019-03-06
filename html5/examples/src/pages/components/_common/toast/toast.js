@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Toasts from './toasts.vue';
+import Toasts from './toast.vue';
 
 const RcInstance = {
 	APIS: {}
