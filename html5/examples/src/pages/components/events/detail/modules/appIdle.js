@@ -28,7 +28,7 @@ const invoke = {
 export default {
 	to: '/events/appIdle',
 	title: 'appIdle',
-	label: '',
+	label: '多长时间不操作后触发',
 	invoke,
 	markdown
 };
