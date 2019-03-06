@@ -35,11 +35,11 @@
 			android:exported="false" />
 
 		<activity
-			android:name=".methods.openwin.OpenWinActivity"
+			android:name=".methods.bean.openwin.OpenWinActivity"
 			android:theme="@style/Theme.AppCompat.NoActionBar" />
 
 		<receiver
-			android:name=".methods.notification.AlarmReceiver"
+			android:name=".methods.bean.notification.AlarmReceiver"
 			android:process=":remote">
 			<intent-filter android:priority="1000">
 				<action android:name="com.start" />
@@ -47,7 +47,7 @@
 		</receiver>
 
 		<service
-			android:name=".methods.notification.AlarmService"
+			android:name=".methods.bean.notification.AlarmService"
 			android:enabled="true"
 			android:process="system"></service>
 
