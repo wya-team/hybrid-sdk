@@ -78,20 +78,20 @@ import com.wya.hybrid.floatwindow.IFloatWindow;
 import com.wya.hybrid.floatwindow.MoveType;
 import com.wya.hybrid.floatwindow.PermissionUtil;
 import com.wya.hybrid.floatwindow.Screen;
-import com.wya.hybrid.methods.cache.CacheData;
-import com.wya.hybrid.methods.cache.SpaceData;
-import com.wya.hybrid.methods.closewin.CloseWinData;
-import com.wya.hybrid.methods.installapp.InstallAppData;
-import com.wya.hybrid.methods.installed.InstalledData;
-import com.wya.hybrid.methods.notification.AlarmReceiver;
-import com.wya.hybrid.methods.notification.bean.NotificationData;
-import com.wya.hybrid.methods.notification.bean.NotificationEmit;
-import com.wya.hybrid.methods.notification.bean.NotificationsUtils;
-import com.wya.hybrid.methods.notification.bean.Notify;
-import com.wya.hybrid.methods.openapp.OpenAppData;
-import com.wya.hybrid.methods.openwin.OpenWinActivity;
-import com.wya.hybrid.methods.openwin.bean.OpenWinData;
-import com.wya.hybrid.methods.sms.Sms;
+import com.wya.hybrid.methods.bean.cache.CacheData;
+import com.wya.hybrid.methods.bean.cache.SpaceData;
+import com.wya.hybrid.methods.bean.closewin.CloseWinData;
+import com.wya.hybrid.methods.bean.installapp.InstallAppData;
+import com.wya.hybrid.methods.bean.installed.InstalledData;
+import com.wya.hybrid.methods.bean.notification.AlarmReceiver;
+import com.wya.hybrid.methods.bean.notification.bean.NotificationData;
+import com.wya.hybrid.methods.bean.notification.bean.NotificationEmit;
+import com.wya.hybrid.methods.bean.notification.bean.NotificationsUtils;
+import com.wya.hybrid.methods.bean.notification.bean.Notify;
+import com.wya.hybrid.methods.bean.openapp.OpenAppData;
+import com.wya.hybrid.methods.bean.openwin.OpenWinActivity;
+import com.wya.hybrid.methods.bean.openwin.bean.OpenWinData;
+import com.wya.hybrid.methods.bean.sms.Sms;
 import com.wya.hybrid.nativeUI.CameraActivity;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.log.DebugLogger;
@@ -914,82 +914,82 @@ public class HybridManager implements JsCallBack {
 				}
 				debuggerEvent(registerEvent.getEventName());
 				break;
-			case "push":
+			case "navigator/push":
 				push(name, id, data);
 				break;
-			case "pop":
+			case "navigator/pop":
 				pop(name, id, data);
 				break;
-			case "openVideo":
+			case "video/open":
 				openVideo(data, id, name);
 				break;
-			case "startPlay":
+			case "audio/start":
 				startPlay(data, id, name);
 				break;
-			case "stopPlay":
+			case "audio/stop":
 				stopPlay(data, id, name);
 				break;
-			case "startRecord":
+			case "record/start":
 				startRecording(data, id, name);
 				break;
-			case "stopRecord":
+			case "record/stop":
 				stopRecording(data, id, name);
 				break;
-			case "saveMediaToAlbum":
+			case "photo/save":
 				savePicture(data, id, name);
 				break;
-			case "getPicture":
+			case "photo/get":
 				getPicture(data, id, name);
 				break;
-			case "showFloatBox":
+			case "floatBall/show":
 				showFloatBox(data, id, name);
 				break;
-			case "toLauncher":
+			case "screen/toLauncher":
 				toLauncher(data, id, name);
 				break;
-			case "setKeepScreenOn":
+			case "screen/keepOn":
 				setKeepScreenOn(data, id, name);
 				break;
-			case "setScreenOrientation":
+			case "screen/orientate":
 				setScreenOrientation(data, id, name);
 				break;
-			case "setStatusBarStyle":
+			case "style/setStatusBar":
 				setStatusBarStyle(data, id, name);
 				break;
-			case "openContacts":
+			case "system/contacts":
 				openContacts(data, id, name);
 				break;
-			case "installApp":
+			case "app/install":
 				installApp(name, id, data);
 				break;
-			case "openApp":
+			case "app/open":
 				openApp(name, id, data);
 				break;
-			case "appInstalled":
+			case "app/has":
 				appInstalled(name, id, data);
 				break;
-			case "clearCache":
+			case "memory/clearCache":
 				clearCache(name, id, data);
 				break;
-			case "getCacheSize":
+			case "memory/getCache":
 				getCacheSize(name, id, data);
 				break;
-			case "getTotalSpace":
+			case "memory/getTotal":
 				getTotalSpace(name, id, data);
 				break;
-			case "getFreeDiskSpace":
+			case "memory/getFree":
 				getFreeDiskSpace(name, id, data);
 				break;
-			case "notification":
+			case "notification/add":
 				notification(name, id, data);
 				break;
-			case "cancelNotification":
+			case "notification/remove":
 				cancelNotification(name, id, data);
 				break;
-			case "sms":
+			case "system/sms":
 				sms(name, id, data);
 				break;
-			case "mail":
+			case "system/mail":
 				mail(name, id, data);
 				break;
 			default:
