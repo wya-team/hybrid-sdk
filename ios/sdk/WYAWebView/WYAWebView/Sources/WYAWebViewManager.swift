@@ -34,8 +34,8 @@ class WYAWebViewManager: NSObject {
     let netManager = NetworkReachabilityManager(host: "www.apple.com")
     var audioRecorder = WYAAudioRecoder()
 
-    // 方法配置表
-    let actionParams: [String: Selector] = {
+    // 模块方法配置表
+    let actionModuleParams: [String: Selector] = {
         var params = [String: Selector]()
         // 模拟js触发原生方法（动态配置需要方法前加@objc）
         params.updateValue(#selector(openWinWithParams(outParams:)), forKey: "push")
@@ -156,12 +156,12 @@ class WYAWebViewManager: NSObject {
     }
 }
 
-// MARK: - js调用原生方法,方法需要在actionParams里注册
+// MARK: - js调用原生方法,方法需要在actionModuleParams里注册
 
 extension WYAWebViewManager: MFMessageComposeViewControllerDelegate, MFMailComposeViewControllerDelegate {
     func nativeAction(_ method: String, params: [String: Any]) {
-        if self.actionParams.keys.contains(method) {
-            let sel = actionParams[method]
+        if self.actionModuleParams.keys.contains(method) {
+            let sel = actionModuleParams[method]
             print(sel!)
             performSelector(inBackground: sel!, with: params)
         }
@@ -1402,5 +1402,247 @@ extension Notification.Name {
 extension WYAWebViewManager {
     func callBackJsonData(_ status: Int, _ msg: String) -> Dictionary<String, Any> {
         return ["status": status, "msg": msg, "data": NSNull()]
+    }
+}
+
+// MARK:模块方法配置表
+// MARK:导航模块
+extension WYAWebViewManager{
+
+    /// navigator方法表配置
+    func navigatorDictionary()->Dictionary<String, Any>  {
+
+        var navigatorDictionary = Dictionary<String, Any>()
+
+        var params = [String:Selector]()
+
+        params.updateValue(#selector(openWinWithParams(outParams:)), forKey: "push")
+
+        params.updateValue(#selector(closeWinWithParams(outParams:)), forKey: "pop")
+
+        navigatorDictionary.updateValue(params, forKey: "navigator")
+
+        return navigatorDictionary
+    }
+
+}
+
+// MARK:app模块
+extension WYAWebViewManager{
+
+    /// app方法配置表
+    func appDictionary() ->Dictionary<String, Any>  {
+
+        var appDictionary = Dictionary<String, Any>()
+
+        var params = [String:Selector]()
+
+        params.updateValue(#selector(installAppWithParams(outParams:)), forKey: "install")
+
+        params.updateValue(#selector(openAppWithParams(outParams:)), forKey: "open")
+
+        params.updateValue(#selector(appInstalledWithParams(outParams:)), forKey: "has")
+
+        appDictionary.updateValue(params, forKey: "app")
+
+        return appDictionary
+    }
+}
+
+// MARK:clipboard 剪切板
+extension WYAWebViewManager{
+
+    /// clipboard方法配置表
+    func clipboardDictionary() ->Dictionary<String, Any>  {
+
+        var clipboardDictionary = Dictionary<String, Any>()
+
+        var params = [String:Selector]()
+
+        params.updateValue(#selector(setClipBoard(outParams:)), forKey: "get")
+
+        params.updateValue(#selector(getClipBoard(outParams:)), forKey: "set")
+
+        clipboardDictionary.updateValue(params, forKey: "clipboard")
+
+        return clipboardDictionary
+    }
+    /// 设置剪切板内容
+    @objc func setClipBoard(outParams: [String: Any]){}
+    /// 得到剪切板内容
+    @objc func getClipBoard(outParams: [String: Any]){}
+}
+
+// MARK: photo 模块
+extension WYAWebViewManager{
+
+    /// photo方法配置表
+    func photoDictionary() -> Dictionary<String, Any> {
+
+        var photoDictionary = Dictionary<String, Any>()
+
+        var params = [String:Selector]()
+
+        params.updateValue(#selector(getPictureWithParams(outParams:)), forKey: "get")
+
+        params.updateValue(#selector(saveMediaToAlbumWithParams(outParams:)), forKey: "save")
+
+        photoDictionary.updateValue(params, forKey: "photo")
+
+        return photoDictionary
+    }
+}
+
+// MARK: notification 模块
+extension WYAWebViewManager{
+
+    /// notification方法配置表
+    func notificationDictionary() -> Dictionary<String, Any> {
+
+        var notificationDictionary = Dictionary<String, Any>()
+
+        var params = [String:Selector]()
+
+        params.updateValue(#selector(notificationWithParams(outParams:)), forKey: "add")
+
+        params.updateValue(#selector(cancelNotificationWithParams(outParams:)), forKey: "remove")
+
+        notificationDictionary.updateValue(params, forKey: "notification")
+
+        return notificationDictionary
+    }
+}
+
+// MARK: floatBall 悬浮球模块
+extension WYAWebViewManager{
+    /// notification方法配置表
+    func floatBallDictionary() -> Dictionary<String, Any> {
+
+        var floatBallDictionary = Dictionary<String, Any>()
+
+        var params = [String:Selector]()
+
+        params.updateValue(#selector(showFloatBoxWithParams(outParams:)), forKey: "show")
+
+        params.updateValue(#selector(hideFloatBoxWithParams(outParams:)), forKey: "hide")
+
+        floatBallDictionary.updateValue(params, forKey: "floatBall")
+
+        return floatBallDictionary
+    }
+
+    @objc func hideFloatBoxWithParams(outParams:[String:Any]){}
+}
+
+// MARK: system 系统模块
+extension WYAWebViewManager{
+    /// system方法配置表
+    func systemDictionary() -> Dictionary<String, Any> {
+        var systemDictionary = Dictionary<String, Any>()
+
+        var params = [String:Selector]()
+
+        params.updateValue(#selector(smsWithParams(outParams:)), forKey: "sms")
+
+        params.updateValue(#selector(mailWithParams(outParams:)), forKey: "mail")
+
+        params.updateValue(#selector(callWithParams(outParams:)), forKey: "call")
+
+        params.updateValue(#selector(openContactsWithParams(outParams:)), forKey: "contacts")
+
+//        params.updateValue(#selector(openContactsWithParams(outParams:)), forKey: "getBattery")
+//        params.updateValue(#selector(openContactsWithParams(outParams:)), forKey: "getNetwork")
+        systemDictionary.updateValue(params, forKey: "system")
+
+        return systemDictionary
+    }
+
+}
+
+// MARK: screen 屏幕模块
+extension WYAWebViewManager{
+    /// screen方法配置表
+    func screenDictionary() -> Dictionary<String, Any> {
+
+        var screenDictionary = Dictionary<String, Any>()
+
+        var params = [String:Selector]()
+
+        params.updateValue(#selector(setScreenOrientationWithParams(outParams:)), forKey: "orientation")
+
+        params.updateValue(#selector(setKeepScreenOnWithParams(outParams:)), forKey: "keepOn")
+
+        screenDictionary.updateValue(params, forKey: "screen")
+
+        return screenDictionary
+    }
+
+}
+
+// MARK: style 样式模块
+extension WYAWebViewManager{
+    /// style方法配置表
+    func styleDictionary() -> [String:Any] {
+
+        var styleDictionary = [String:Any]()
+
+        var params = [String:Selector]()
+
+//        params.updateValue(#selector(setScreenOrientationWithParams(outParams:)), forKey: "setWin")
+//        params.updateValue(#selector(setScreenOrientationWithParams(outParams:)), forKey: "setBadge")
+
+        params.updateValue(#selector(setStatusBarStyleWithParams(outParams:)), forKey: "setStatusBar")
+
+        styleDictionary.updateValue(params, forKey: "screen")
+
+        return styleDictionary
+    }
+
+}
+
+// MARK: memory 缓存模块
+
+extension WYAWebViewManager{
+
+    func memoryDicaionary() -> [String:Any] {
+        var memoryDicaionary = Dictionary<String, Any>()
+
+        var params = [String:Selector]()
+
+        params.updateValue(#selector(clearCacheWithParams(outParams:)), forKey: "clearCache")
+
+        params.updateValue(#selector(getCacheSizeWithParams(outParams:)), forKey: "getCache")
+
+        params.updateValue(#selector(getTotalSpaceWithParams(outParams:)), forKey: "getTotal")
+        
+        params.updateValue(#selector(getFreeDiskSpaceWithParams(outParams:)), forKey: "getFree")
+
+        memoryDicaionary.updateValue(params, forKey: "screen")
+
+        return memoryDicaionary
+    }
+}
+
+// MARK: storage (数据库)模块
+extension WYAWebViewManager{
+
+    /// 待定
+    func storageDictionary() -> [String:Any] {
+        var storageDictionary = Dictionary<String, Any>()
+
+        var params = [String:Selector]()
+
+        params.updateValue(#selector(setClipBoard(outParams:)), forKey: "get")
+
+        params.updateValue(#selector(getClipBoard(outParams:)), forKey: "set")
+
+        params.updateValue(#selector(getClipBoard(outParams:)), forKey: "remove")
+
+        params.updateValue(#selector(getClipBoard(outParams:)), forKey: "clear")
+
+        params.updateValue(#selector(getClipBoard(outParams:)), forKey: "getAllKeys")
+
+        storageDictionary.updateValue(params, forKey: "storage")
+        return storageDictionary
     }
 }
