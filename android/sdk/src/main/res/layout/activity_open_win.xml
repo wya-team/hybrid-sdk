@@ -3,7 +3,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".methods.openwin.OpenWinActivity">
+	tools:context=".methods.bean.openwin.OpenWinActivity">
 
 	<com.wya.hybrid.WYAWebView
 		android:id="@+id/webView"

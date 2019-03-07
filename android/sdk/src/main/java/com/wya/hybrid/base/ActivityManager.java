@@ -5,8 +5,8 @@ import android.app.Application;
 import android.os.Bundle;
 
 import com.wya.hybrid.R;
-import com.wya.hybrid.methods.closewin.CloseWinData;
-import com.wya.hybrid.methods.openwin.bean.ActivityData;
+import com.wya.hybrid.methods.bean.closewin.CloseWinData;
+import com.wya.hybrid.methods.bean.openwin.bean.ActivityData;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

@@ -17,7 +17,7 @@ const tpl = (category, filename, scheme) => {
 			/* eslint-disable no-template-curly-in-string */
 			contents += '		// 强制执行\n';
 			contents += `		wya.invoke('debugger/invoke', {\n`;
-			contents += `			eventName: 'appIdle'\n`;
+			contents += `			eventName: '${filename}'\n`;
 			contents += `		}).then((res) => {\n`;
 			contents += `			Toasts.info('执行成功', 0);\n`;
 			contents += `		}).catch((res = {}) => {\n`;
@@ -59,7 +59,7 @@ module.exports = (category, filename) => {
 
 	let contents = '';
 	contents += `import wya from 'wya-js-sdk';\n`;
-	contents += `import Toasts from '@common/toasts/toasts';\n`;
+	contents += `import Toasts from '@common/toast/toast';\n`;
 	contents += `import markdown from '@docs/${category}/${filename}.md';\n`;
 	contents += `\n`;
 	contents += tpl(category, filename, scheme);
