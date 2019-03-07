@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -20,6 +21,8 @@ import com.wya.utils.utils.PhoneUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.os.Environment.MEDIA_MOUNTED;
 
 /**
  * @date: 2019/1/17 10:05
@@ -96,6 +99,13 @@ public class WYAWebView extends WebView {
 		initBean.setScreenHeight(PhoneUtil.getInstance().getPhoneHeight(mContext));
 		initBean.setDebug(true);
 		initBean.setJailbreak(BridgeUtil.checkSuFile());
+		initBean.setDevicePixelRatio(mContext.getResources().getDisplayMetrics().density);
+		if (Environment.getExternalStorageState().equals(MEDIA_MOUNTED)) {
+			initBean.setLibraryDir(mContext.getExternalCacheDir().getAbsolutePath());
+			initBean.setDocumentsDir(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + AppUtil.getAppName(mContext));
+		} else {
+			initBean.setLibraryDir(mContext.getCacheDir().getAbsolutePath());
+		}
 		baseEmitData.setData(initBean);
 	}
 

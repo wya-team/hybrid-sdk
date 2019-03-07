@@ -65,6 +65,7 @@ public class OpenWinActivity extends BaseToolBarActivity {
 				}
 			}
 		});
+		mWebView.getBaseEmitData().getData().setName(mOpenWinData.getName());
 		mWebView.loadUrl(mOpenWinData.getUrl());
 		ActivityManager.getInstance().addOpenWinActivity(mOpenWinData.getName(), this);
 	}

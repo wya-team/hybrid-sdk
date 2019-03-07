@@ -20,12 +20,17 @@ public class InitBean {
 	private String connectionType;
 	private int screenWidth;
 	private int screenHeight;
+	private float devicePixelRatio;
+	private String documentsDir;
+	private String libraryDir;
+	private String name;
+
 
 	// TODO: 2019-01-18 没有理解一下参数
 
-	private String winName;
-	private String winWidth;
-	private String winHeight;
+
+	private String deviceWidth;
+	private String deviceHeight;
 	private String frameName;
 	private String frameWidth;
 	private String frameHeight;
@@ -33,18 +38,76 @@ public class InitBean {
 	private PageParamBean pageParam;
 	private AppParamBean appParam;
 	private boolean  statusBarAppearance;
-	private String wgtRootDir;
-	private String fsDir;
-	private String cacheDir;
 	private boolean debug;
 	private String channel;
 	private boolean jailbreak;
+	private String mediaType;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDocumentsDir() {
+		return documentsDir;
+	}
+
+	public void setDocumentsDir(String documentsDir) {
+		this.documentsDir = documentsDir;
+	}
+
+	public String getLibraryDir() {
+		return libraryDir;
+	}
+
+	public void setLibraryDir(String libraryDir) {
+		this.libraryDir = libraryDir;
+	}
 
 	public static class SafeAreaBean {
 		private int left;
 		private int top;
 		private int right;
 		private int bottom;
+	}
+
+	public float getDevicePixelRatio() {
+		return devicePixelRatio;
+	}
+
+	public void setDevicePixelRatio(float devicePixelRatio) {
+		this.devicePixelRatio = devicePixelRatio;
+	}
+
+	public String getDeviceWidth() {
+		return deviceWidth;
+	}
+
+	public void setDeviceWidth(String deviceWidth) {
+		this.deviceWidth = deviceWidth;
+	}
+
+	public String getDeviceHeight() {
+		return deviceHeight;
+	}
+
+	public void setDeviceHeight(String deviceHeight) {
+		this.deviceHeight = deviceHeight;
+	}
+
+	public boolean isJailbreak() {
+		return jailbreak;
+	}
+
+	public String getMediaType() {
+		return mediaType;
+	}
+
+	public void setMediaType(String mediaType) {
+		this.mediaType = mediaType;
 	}
 
 	public static class PageParamBean {
@@ -171,30 +234,6 @@ public class InitBean {
 		this.screenHeight = screenHeight;
 	}
 
-	public String getWinName() {
-		return winName;
-	}
-
-	public void setWinName(String winName) {
-		this.winName = winName;
-	}
-
-	public String getWinWidth() {
-		return winWidth;
-	}
-
-	public void setWinWidth(String winWidth) {
-		this.winWidth = winWidth;
-	}
-
-	public String getWinHeight() {
-		return winHeight;
-	}
-
-	public void setWinHeight(String winHeight) {
-		this.winHeight = winHeight;
-	}
-
 	public String getFrameName() {
 		return frameName;
 	}
@@ -249,30 +288,6 @@ public class InitBean {
 
 	public void setStatusBarAppearance(boolean statusBarAppearance) {
 		this.statusBarAppearance = statusBarAppearance;
-	}
-
-	public String getWgtRootDir() {
-		return wgtRootDir;
-	}
-
-	public void setWgtRootDir(String wgtRootDir) {
-		this.wgtRootDir = wgtRootDir;
-	}
-
-	public String getFsDir() {
-		return fsDir;
-	}
-
-	public void setFsDir(String fsDir) {
-		this.fsDir = fsDir;
-	}
-
-	public String getCacheDir() {
-		return cacheDir;
-	}
-
-	public void setCacheDir(String cacheDir) {
-		this.cacheDir = cacheDir;
 	}
 
 	public boolean isDebug() {
