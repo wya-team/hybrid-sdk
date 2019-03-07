@@ -49,6 +49,15 @@ class WYAWebViewManager: NSObject {
         return params
     }()
 
+//    var eventAddParams
+//
+//    var eventRemoveParams
+//
+//    var  debuggerInvokeParams
+
+
+
+
     
 
     var smsID: String?
@@ -72,7 +81,7 @@ class WYAWebViewManager: NSObject {
 // MARK: - js调用原生方法,方法需要在methodModuleParams里按照模块注册
 extension WYAWebViewManager{
 
-
+    /// 模块方法调用
     func methodModuleAction(_ methodSelector:Selector, params:[String:Any]) {
         performSelector(inBackground: methodSelector, with: params)
     }

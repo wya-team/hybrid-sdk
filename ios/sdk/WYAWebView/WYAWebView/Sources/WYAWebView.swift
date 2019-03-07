@@ -253,10 +253,12 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                                 self.webManager?.methodModuleAction(tempDict![methodName]!, params: allParams)
                             }else{
                                 // 模块没有该方法，通知native端扩展
+
                             }
 
                         }else{
                             // 不存在，通知native端扩展
+                            
                         }
                     }
 
