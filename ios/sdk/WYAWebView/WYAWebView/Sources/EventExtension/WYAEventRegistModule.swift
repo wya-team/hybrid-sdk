@@ -46,61 +46,14 @@ extension WYAWebViewManager {
             listenAction(actionType, params)
         }
 
-        self.netManager?.listener = { status in
-            print("网络状态: \(status)")
+       
 
-            let inParams = [String: Any]()
-            var actionType: String
 
-            if (self.netManager?.isReachable)! {
-                actionType = "online"
-            } else {
-                actionType = "offline"
-            }
-            assemblyParams(actionType, inParams)
-        }
-        self.netManager?.startListening()
 
-        note.addObserver(forName: NSNotification.Name.UIDeviceBatteryLevelDidChange, object: nil, queue: OperationQueue.main) { _ in
-            print("电池电量变化")
 
-            var subParams = [String: Any]()
 
-            if device.batteryLevel <= 0.2 {
-                subParams.updateValue(device.batteryLevel * 100, forKey: "level")
-                switch device.batteryState {
-                case .unknown: break
-                case .unplugged: subParams.updateValue(false, forKey: "isPlugged"); break
-                case .charging: subParams.updateValue(true, forKey: "isPlugged"); break
-                case .full: subParams.updateValue(false, forKey: "isPlugged"); break
-                }
-                assemblyParams("batteryStatus", subParams)
-            }
-        }
 
-        note.addObserver(forName: NSNotification.Name.UIDeviceBatteryStateDidChange, object: nil, queue: OperationQueue.main) { _ in
-            print("电池状态")
 
-            var subParams = [String: Any]()
-            subParams.updateValue(device.batteryLevel * 100, forKey: "level")
-            switch device.batteryState {
-            case .unknown: subParams.updateValue(false, forKey: "isPlugged"); break
-            case .unplugged: subParams.updateValue(false, forKey: "isPlugged"); break
-            case .charging: subParams.updateValue(true, forKey: "isPlugged"); break
-            case .full: subParams.updateValue(false, forKey: "isPlugged"); break
-            }
-            assemblyParams("batteryStatus", subParams)
-        }
-
-        note.addObserver(forName: NSNotification.Name.UIApplicationDidEnterBackground, object: nil, queue: OperationQueue.main) { _ in
-            print("后台")
-            assemblyParams("pause", [String: Any]())
-        }
-
-        note.addObserver(forName: NSNotification.Name.UIApplicationDidBecomeActive, object: nil, queue: OperationQueue.main) { _ in
-            print("前台")
-            assemblyParams("resume", [String: Any]())
-        }
 
         note.addObserver(forName: NSNotification.Name.UIApplicationWillResignActive, object: nil, queue: OperationQueue.main) { _ in
             print("休眠")
