@@ -2,62 +2,31 @@ package com.wya.hybrid;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.KeyguardManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
-import android.os.StatFs;
 import android.os.Vibrator;
-import android.provider.ContactsContract;
-import android.support.v4.content.FileProvider;
-import android.telephony.SmsManager;
-import android.text.TextUtils;
-import android.text.format.Formatter;
-import android.util.Log;
-import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.webkit.MimeTypeMap;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.arialyy.aria.core.download.DownloadTask;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
-import com.wya.hardware.camera.WYACameraView;
 import com.wya.hybrid.base.ActivityManager;
 import com.wya.hybrid.base.BaseApp;
 import com.wya.hybrid.bean.AppIdle;
 import com.wya.hybrid.bean.BaseEmitData;
 import com.wya.hybrid.bean.Battery;
-import com.wya.hybrid.bean.ContactsBean;
 import com.wya.hybrid.bean.Foreground;
 import com.wya.hybrid.bean.KeyBack;
 import com.wya.hybrid.bean.Keyboard;
 import com.wya.hybrid.bean.NetState;
 import com.wya.hybrid.bean.PictureBean;
-import com.wya.hybrid.bean.RecordBean;
 import com.wya.hybrid.bean.RegisterEvent;
-import com.wya.hybrid.bean.ReturnPictureBean;
 import com.wya.hybrid.bean.Shake;
 import com.wya.hybrid.bean.TakeScreenshot;
 import com.wya.hybrid.bean.VolumeDown;
@@ -70,62 +39,44 @@ import com.wya.hybrid.data.event.AppIdleEvent;
 import com.wya.hybrid.data.event.BatteryEvent;
 import com.wya.hybrid.data.event.ForegroundEvent;
 import com.wya.hybrid.data.event.NetEvent;
+import com.wya.hybrid.data.event.PhotoResultEvent;
 import com.wya.hybrid.data.event.ShakeEvent;
 import com.wya.hybrid.data.sp.BatterySp;
 import com.wya.hybrid.data.sp.ForegroundStateSp;
-import com.wya.hybrid.floatwindow.FloatWindow;
-import com.wya.hybrid.floatwindow.IFloatWindow;
-import com.wya.hybrid.floatwindow.MoveType;
-import com.wya.hybrid.floatwindow.PermissionUtil;
-import com.wya.hybrid.floatwindow.Screen;
+import com.wya.hybrid.methods.App;
+import com.wya.hybrid.methods.Audio;
+import com.wya.hybrid.methods.FloatBall;
+import com.wya.hybrid.methods.Memory;
+import com.wya.hybrid.methods.Navigator;
+import com.wya.hybrid.methods.Notification;
+import com.wya.hybrid.methods.Photo;
+import com.wya.hybrid.methods.Record;
+import com.wya.hybrid.methods.Screen;
+import com.wya.hybrid.methods.Style;
+import com.wya.hybrid.methods.SystemMethod;
+import com.wya.hybrid.methods.Video;
 import com.wya.hybrid.methods.bean.cache.CacheData;
-import com.wya.hybrid.methods.bean.cache.SpaceData;
 import com.wya.hybrid.methods.bean.closewin.CloseWinData;
 import com.wya.hybrid.methods.bean.installapp.InstallAppData;
 import com.wya.hybrid.methods.bean.installed.InstalledData;
-import com.wya.hybrid.methods.bean.notification.AlarmReceiver;
 import com.wya.hybrid.methods.bean.notification.bean.NotificationData;
-import com.wya.hybrid.methods.bean.notification.bean.NotificationEmit;
-import com.wya.hybrid.methods.bean.notification.bean.NotificationsUtils;
-import com.wya.hybrid.methods.bean.notification.bean.Notify;
 import com.wya.hybrid.methods.bean.openapp.OpenAppData;
-import com.wya.hybrid.methods.bean.openwin.OpenWinActivity;
 import com.wya.hybrid.methods.bean.openwin.bean.OpenWinData;
 import com.wya.hybrid.methods.bean.sms.Sms;
-import com.wya.hybrid.nativeUI.CameraActivity;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.log.DebugLogger;
-import com.wya.uikit.dialog.WYACustomDialog;
-import com.wya.uikit.imagepicker.ImagePickerCreator;
-import com.wya.uikit.imagepicker.PickerConfig;
-import com.wya.uikit.toolbar.StatusBarUtil;
-import com.wya.utils.utils.DataCleanUtil;
 import com.wya.utils.utils.FileManagerUtil;
 import com.wya.utils.utils.LogUtil;
-import com.wya.utils.utils.PhoneUtil;
 import com.wya.utils.utils.ScreenUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import static android.app.Activity.RESULT_OK;
-import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
-import static android.content.Context.ALARM_SERVICE;
 import static com.wya.uikit.toolbar.StatusBarUtil.getStatusBarHeight;
-import static com.wya.utils.utils.FileManagerUtil.TASK_COMPLETE;
-import static com.wya.utils.utils.FileManagerUtil.TASK_FAIL;
 
 /**
  * @author :
@@ -210,6 +161,8 @@ public class HybridManager implements JsCallBack {
     private boolean saveToPhotoAlbum;
     private String recordPath;
     private PictureBean mPictureBean;
+    private Audio mAudio;
+    private Record mRecord;
 
     public HybridManager(Activity context, WYAWebView webView) {
         if (!CheckUtil.isValidate(context)) {
@@ -915,19 +868,25 @@ public class HybridManager implements JsCallBack {
                 debuggerEvent(registerEvent.getEventName());
                 break;
             case "navigator/push":
-                push(name, id, data);
+//                push(name, id, data);
+                new Navigator(mContext, mWebView).push(id, data);
                 break;
             case "navigator/pop":
-                pop(name, id, data);
+                new Navigator(mContext, mWebView).pop(id, data);
+//                pop(name, id, data);
                 break;
             case "video/open":
-                openVideo(data, id, name);
+                new Video(mContext,mWebView).openVideo(id,data);
+//                openVideo(data, id, name);
                 break;
             case "audio/start":
-                startPlay(data, id, name);
+                mAudio = new Audio(mContext, mWebView);
+                mAudio.startPlay(id,data);
+//                startPlay(data, id, name);
                 break;
             case "audio/stop":
-                stopPlay(data, id, name);
+                mAudio.stopPlay(id,data);
+//                stopPlay(data, id, name);
                 break;
             case "audio/pause":
                 break;
@@ -936,10 +895,11 @@ public class HybridManager implements JsCallBack {
             case "audio/restart":
                 break;
             case "record/start":
-                startRecording(data, id, name);
+                mRecord = new Record(mContext, mWebView);
+                mRecord.startRecording(id,data);
                 break;
             case "record/stop":
-                stopRecording(data, id, name);
+                mRecord.stopRecording(id,data);
                 break;
             case "record/pause":
                 break;
@@ -948,71 +908,71 @@ public class HybridManager implements JsCallBack {
             case "record/restart":
                 break;
             case "photo/save":
-                savePicture(data, id, name);
+                new Photo(mContext,mWebView).savePicture(id,data);
                 break;
             case "photo/get":
-                getPicture(data, id, name);
+                new Photo(mContext,mWebView).getPicture(id,data);
                 break;
             case "floatBall/show":
-                showFloatBox(data, id, name);
+                new FloatBall(mContext,mWebView).showFloatBox(id,data);
                 break;
             case "floatBall/hide":
                 break;
             case "screen/toLauncher":
-                toLauncher(data, id, name);
+                new Screen(mContext,mWebView).toLauncher(id,data);
                 break;
             case "screen/keepOn":
-                setKeepScreenOn(data, id, name);
+                new Screen(mContext,mWebView).setKeepScreenOn(id,data);
                 break;
             case "screen/orientate":
-                setScreenOrientation(data, id, name);
+                new Screen(mContext,mWebView).setScreenOrientation(id,data);
                 break;
             case "style/setStatusBar":
-                setStatusBarStyle(data, id, name);
+                new Style(mContext,mWebView).setStatusBarStyle(id,name);
                 break;
             case "style/setWin":
                 break;
             case "style/setBadge":
                 break;
             case "app/install":
-                installApp(name, id, data);
+                new App(mContext,mWebView).installApp(id,data);
                 break;
             case "app/open":
-                openApp(name, id, data);
+                new App(mContext,mWebView).openApp(id,data);
                 break;
             case "app/has":
-                appInstalled(name, id, data);
+                new App(mContext,mWebView).appInstalled(id,data);
                 break;
             case "app/uninstall":
                 break;
             case "app/reboot":
                 break;
             case "memory/clearCache":
-                clearCache(name, id, data);
+                new Memory(mContext,mWebView).clearCache(id,data);
                 break;
             case "memory/getCache":
-                getCacheSize(name, id, data);
+                new Memory(mContext, mWebView).getCacheSize(id, data);
                 break;
             case "memory/getTotal":
-                getTotalSpace(name, id, data);
+                new Memory(mContext, mWebView).getTotalSpace(id, data);
                 break;
             case "memory/getFree":
-                getFreeDiskSpace(name, id, data);
+                new Memory(mContext,mWebView).getFreeDiskSpace(id,data);
                 break;
             case "notification/add":
-                notification(name, id, data);
+                new Notification(mContext,mWebView).notification(id,data);
                 break;
             case "notification/remove":
-                cancelNotification(name, id, data);
+                new Notification(mContext,mWebView).cancelNotification(id,data);
                 break;
             case "system/contacts":
-                openContacts(data, id, name);
+                new SystemMethod(mContext,mWebView).openContacts(id,name);
                 break;
             case "system/sms":
-                sms(name, id, data);
+                new SystemMethod(mContext,mWebView).sms(id,name);
                 break;
             case "system/mail":
-                mail(name, id, data);
+                new SystemMethod(mContext,mWebView).mail(id,name);
                 break;
             case "storage/get":
                 break;
@@ -1078,1121 +1038,10 @@ public class HybridManager implements JsCallBack {
         }
     }
 
-    /**
-     * 联系人
-     *
-     * @param data
-     * @param id
-     * @param name
-     */
-    private void openContacts(String data, int id, String name) {
-        mEventMap.put(name, id);
 
-        ContactsBean contactsBean = new ContactsBean();
-        List<ContactsBean.Contacts> list = new ArrayList<>();
-        Cursor cursor = mContext.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, "display_name COLLATE LOCALIZED");
-        while (cursor.moveToNext()) {
-            String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
-            Cursor phones = mContext.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + contactId, null, null);
-            String displayName = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-            Log.i("test", "response: " + displayName);
-            if (phones.moveToFirst()) {
-                do {
-                    String phonesNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                    ContactsBean.Contacts contacts = new ContactsBean.Contacts();
-                    contacts.setName(displayName);
-                    contacts.setPhone(phonesNumber);
-                    list.add(contacts);
-                    Log.i("test", "response: " + phonesNumber);
-                } while (phones.moveToNext());
-            }
-        }
-
-        contactsBean.setList(list);
-        setEmitData(1, "响应成功", contactsBean);
-        send(name, getEmitData());
-    }
-
-    private void showFloatBox(String data, int id, String name) {
-        mEventMap.put(name, id);
-        startFloat();
-        setEmitData(1, "响应成功", null);
-        send(name, getEmitData());
-    }
-
-    private void startFloat() {
-        if (PermissionUtil.hasPermission(mContext)) {
-            IFloatWindow old = FloatWindow.get("old");
-            if (old == null) {
-                IFloatWindow cancel2 = FloatWindow.get("cancel2");
-                if (cancel2 == null) {
-                    FloatWindow
-                            .with(mContext.getApplicationContext())
-                            .setTag("cancel2")
-                            .setView(R.layout.layout_window)
-                            .setCancelParam2(320)
-                            .setMoveType(MoveType.inactive, 0, 0)
-                            .setDesktopShow(false)
-                            .build();
-                }
-                IFloatWindow cancel = FloatWindow.get("cancel");
-                if (cancel == null) {
-                    FloatWindow
-                            .with(mContext.getApplicationContext())
-                            .setTag("cancel")
-                            .setView(R.layout.layout_window)
-                            .setCancelParam2(300)
-                            .setMoveType(MoveType.inactive, 0, 0)
-                            .setDesktopShow(false)
-                            .build();
-                }
-
-                ImageView imageView = new ImageView(mContext);
-                RequestOptions requestOptions = RequestOptions.circleCropTransform();
-                Glide.with(mContext.getApplicationContext())
-                        .load("http://pic43.nipic.com/20140711/19187786_140828149528_2.jpg")
-                        .apply(requestOptions).into(imageView);
-
-                FloatWindow
-                        .with(mContext.getApplicationContext())
-                        .setTag("old")
-                        .setView(imageView)
-                        .setMoveType(MoveType.slide, 0, 0)
-                        .setWidth(60)
-                        .setFilter(false, mContext.getClass())
-                        .setHeight(60)
-                        .setX(Screen.width, 0.8f)
-                        .setY(ScreenUtil.getScreenHeight(mContext) / 3)
-                        .setParentHeight(ScreenUtil.getScreenHeight(mContext))
-                        .setMoveStyle(300, new AccelerateInterpolator())
-                        .setDesktopShow(false)
-                        .build();
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        v.getContext().startActivity(new Intent(mContext.getApplicationContext(), mContext.getClass()));
-                    }
-                });
-                mContext.finish();
-            } else {
-                mContext.finish();
-            }
-        } else {
-            Toast.makeText(mContext, "没有浮窗权限！", Toast.LENGTH_SHORT).show();
-            Intent localIntent = new Intent();
-            localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if (Build.VERSION.SDK_INT >= 9) {
-                localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                localIntent.setData(Uri.fromParts("package", mContext.getPackageName(), null));
-            } else if (Build.VERSION.SDK_INT <= 8) {
-                localIntent.setAction(Intent.ACTION_VIEW);
-                localIntent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
-                localIntent.putExtra("com.android.settings.ApplicationPkgName", mContext.getPackageName());
-            }
-            mContext.startActivity(localIntent);
-        }
-    }
-
-    /**
-     * 保持屏幕亮度
-     *
-     * @param data
-     * @param id
-     * @param name
-     */
-    private void setKeepScreenOn(String data, int id, String name) {
-        boolean keepOn = false;
-        try {
-            JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
-            keepOn = jsonObject.getBoolean("keepOn");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mEventMap.put(name, id);
-        if (keepOn) {
-            mContext.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        }
-        setEmitData(1, "响应成功", null);
-        send(name, getEmitData());
-    }
-
-    private void getPicture(String data, int id, String name) {
-        mEventMap.put(name, id);
-        mPictureBean = new Gson().fromJson(data.replaceAll("\\\\", ""), PictureBean.class);
-//		PictureBean pictureBean = new PictureBean();
-        saveToPhotoAlbum = mPictureBean.isSaveToPhotoAlbum();
-        if ("camera".equals(mPictureBean.getSourceType())) {
-            switch (mPictureBean.getMediaValue()) {
-                case "pic":
-                    Intent intent = new Intent(mContext, CameraActivity.class);
-                    intent.putExtra("state", WYACameraView.BUTTON_STATE_ONLY_CAPTURE);
-                    intent.putExtra("duration", 1000);
-                    intent.putExtra("direction", mPictureBean.isDirection());
-                    intent.putExtra("videoQuality", mPictureBean.getVideoQuality());
-                    mContext.startActivityForResult(intent, CAMERA_PIC_REQUEST);
-                    break;
-                case "video":
-                    Intent intent2 = new Intent(mContext, CameraActivity.class);
-                    intent2.putExtra("state", WYACameraView.BUTTON_STATE_ONLY_RECORDER);
-                    intent2.putExtra("duration", 10000);
-                    intent2.putExtra("direction", mPictureBean.isDirection());
-                    intent2.putExtra("videoQuality", mPictureBean.getVideoQuality());
-                    mContext.startActivityForResult(intent2, CAMERA_VIDEO_REQUEST);
-                    break;
-                default:
-                    break;
-            }
-        } else {
-
-            switch (mPictureBean.getMediaValue()) {
-                case "pic":
-                    ImagePickerCreator
-                            .create(mContext)
-                            .setMediaType(PickerConfig.MEDIA_IMAGE)
-                            .maxImages(1)
-                            .forResult(ALBUM_PIC_REQUEST);
-                    break;
-                case "video":
-                    ImagePickerCreator
-                            .create(mContext)
-                            .setMediaType(PickerConfig.MEDIA_VIDEO)
-                            .maxImages(1)
-                            .forResult(ALBUM_VIDEO_REQUEST);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-    }
-
-    /**
-     * 保存图片或视频
-     *
-     * @param data
-     * @param id
-     * @param name
-     */
-    private void savePicture(String data, int id, String name) {
-        //参数残缺，缺少判断是否是图片的字段
-        String url = null;
-        String groupName = null;
-        try {
-            JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
-            url = jsonObject.getString("url");
-            groupName = jsonObject.getString("groupName");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-//		"http://pic43.nipic.com/20140711/19187786_140828149528_2.jpg"
-//		Environment.getExternalStorageDirectory().getPath() + "/Recordings/test.jpg"
-        mEventMap.put(name, id);
-        mFileManagerUtil = new FileManagerUtil();
-        mFileManagerUtil.getDownloadReceiver().
-                load(url).
-                setFilePath(groupName).start();
-        mFileManagerUtil.setOnDownLoaderListener(new FileManagerUtil.OnDownLoaderListener() {
-            @Override
-            public void onDownloadState(int state, DownloadTask task, Exception e) {
-                if (state == TASK_COMPLETE) {
-                    setEmitData(1, "响应成功", null);
-                    send(name, getEmitData());
-                } else if (state == TASK_FAIL) {
-                    Toast.makeText(mContext, "无效的地址,无法保存", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }
-
-    /**
-     * 设置状态栏颜色
-     *
-     * @param data
-     * @param id
-     * @param name
-     */
-    private void setStatusBarStyle(String data, int id, String name) {
-        String color = null;
-        try {
-            JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
-            color = jsonObject.getString("color");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mEventMap.put(name, id);
-        StatusBarUtil.setColor(mContext, Color.parseColor(color));
-        setEmitData(1, "响应成功", null);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 设置屏幕旋转方向
-     *
-     * @param data
-     * @param id
-     * @param name
-     */
-    private void setScreenOrientation(String data, int id, String name) {
-        mEventMap.put(name, id);
-        String orientation = null;
-        try {
-            JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
-            orientation = jsonObject.getString("orientation");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        switch (orientation) {
-            case "portraitUp":
-            case "portraitDown":
-                mContext.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                break;
-            case "landscapeLeft":
-            case "landscapeRight":
-                mContext.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                break;
-            default:
-                break;
-        }
-        setEmitData(1, "响应成功", null);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 回到手机桌面
-     *
-     * @param data
-     * @param id
-     * @param name
-     */
-    private void toLauncher(String data, int id, String name) {
-        mEventMap.put(name, id);
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        mContext.startActivity(intent);
-        setEmitData(1, "响应成功", null);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 打开系统视频播放器
-     *
-     * @param data
-     * @param id
-     * @param name
-     */
-    private void openVideo(String data, int id, String name) {
-        mEventMap.put(name, id);
-        String url = "";
-        try {
-            JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
-            url = jsonObject.getString("url");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        if (url.startsWith("http://") || url.startsWith("https://")) {
-
-            String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-            Intent mediaIntent = new Intent(Intent.ACTION_VIEW);
-            mediaIntent.setDataAndType(Uri.parse(url), mimeType);
-            mContext.startActivity(mediaIntent);
-        } else {
-            Uri uri;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                uri = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".fileprovider", new File(url));
-            } else {
-                uri = Uri.fromFile(new File(url));
-            }
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(uri, "video/*");
-            mContext.startActivity(intent);
-        }
-
-        setEmitData(1, "响应成功", null);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 开始录音
-     */
-    private void startRecording(String data, int id, String name) {
-        mEventMap.put(name, id);
-        String path = null;
-        try {
-            JSONObject jsonObject = new JSONObject(data);
-            path = jsonObject.getString("url");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        path = TextUtils.isEmpty(path) ? "/storage/emulated/0/Recordings/" + System.currentTimeMillis() + ".amr"
-                : path + System.currentTimeMillis() + ".amr";
-
-        mRecorder = new MediaRecorder();
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        //设置封装格式
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        mRecorder.setOutputFile(path);
-        //设置编码格式
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        try {
-            mRecorder.prepare();
-        } catch (IOException e) {
-//			Log.e(TAG, "prepare() failed");
-        }
-        //录音
-        mRecorder.start();
-
-        recordPath = path;
-        RecordBean recordBean = new RecordBean();
-        recordBean.setPath(path);
-        setEmitData(1, "响应成功", recordBean);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 停止录音
-     */
-    private void stopRecording(String data, int id, String name) {
-        if (mRecorder == null) {
-            return;
-        }
-        mEventMap.put(name, id);
-        mRecorder.stop();
-        mRecorder.release();
-        mRecorder = null;
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        try {
-            mediaPlayer.setDataSource(recordPath);
-            mediaPlayer.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        int duration = mediaPlayer.getDuration();
-
-        RecordBean recordBean = new RecordBean();
-        recordBean.setPath(recordPath);
-        recordBean.setDuration(duration);
-        setEmitData(1, "响应成功", recordBean);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 停止播放本地音频
-     */
-    private void stopPlay(String data, int id, String name) {
-        if (mMediaPlayer == null) {
-            return;
-        }
-        mEventMap.put(name, id);
-        mMediaPlayer.stop();
-        mMediaPlayer.release();
-        mMediaPlayer = null;
-        setEmitData(1, "响应成功", null);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 播放本地音频
-     */
-    private void startPlay(String data, int id, String name) {
-        mEventMap.put(name, id);
-        String path = null;
-        try {
-            JSONObject jsonObject = new JSONObject(data.replaceAll("\\\\", ""));
-            path = jsonObject.getString("path");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        mMediaPlayer = new MediaPlayer();
-        try {
-            mMediaPlayer.setDataSource(path);
-            mMediaPlayer.prepareAsync();
-            mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mMediaPlayer.start();
-                }
-            });
-        } catch (Exception e) {
-            Toast.makeText(mContext, "无效的音频地址", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-        setEmitData(1, "响应成功", null);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 发送邮件
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void mail(String name, int id, String data) {
-        mEventMap.put(name, id);
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:"));
-        intent.putExtra(Intent.EXTRA_SUBJECT, "");
-        intent.putExtra(Intent.EXTRA_TEXT, "");
-        mContext.startActivity(intent);
-        setEmitData(1, "响应成功", null);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 发送短信
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void sms(String name, int id, String data) {
-        mEventMap.put(name, id);
-        sms = new Gson().fromJson(data, Sms.class);
-        if (sms != null && sms.isSilent()) {
-            // 后台直接发送
-            for (int i = 0; i < sms.getNumbers().size(); i++) {
-                // 获取短信管理器
-                SmsManager smsManager = SmsManager.getDefault();
-                // 拆分短信内容（手机短信长度限制）
-                List<String> divideContents = smsManager.divideMessage(sms.getText());
-                for (String text : divideContents) {
-                    smsManager.sendTextMessage(sms.getNumbers().get(i), null, text, null, null);
-                }
-            }
-        } else if (sms != null) {
-            // 调用系统的短信发送页面
-            sendSms(sms);
-            setEmitData(1, "响应成功", null);
-            send(name, getEmitData());
-        }
-    }
-
-    /**
-     * 调起系统发短信功能,多机型通用，兼容VIVO
-     *
-     * @param sms
-     */
-    public void sendSms(Sms sms) {
-        String phoneNumber = "";
-        for (String response : sms.getNumbers()) {
-            phoneNumber = phoneNumber + response + ";";
-        }
-        Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-        smsIntent.setData(Uri.parse("smsto:"));
-        smsIntent.setType("vnd.android-dir/mms-sms");
-        smsIntent.putExtra("address", phoneNumber);
-        smsIntent.putExtra("sms_body", sms.getText());
-        mContext.startActivity(smsIntent);
-    }
-
-    /**
-     * 取消通知
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void cancelNotification(String name, int id, String data) {
-        mEventMap.put(name, id);
-        Intent intent = new Intent(mContext, AlarmReceiver.class);
-        PendingIntent pi = PendingIntent.getBroadcast(mContext, id, intent, FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
-        am.cancel(pi);
-        setEmitData(1, "取消通知" + id + "成功", null);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 设置通知
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void notification(String name, int id, String data) {
-        mEventMap.put(name, id);
-        mNotificationData = new Gson().fromJson(data, NotificationData.class);
-        mNotificationData.setVibrate(new long[]{0, 1300, 800, 300});
-        mNotificationData.setSound("default");
-        mNotificationData.setLight(false);
-        mNotificationData.setTimestamp(System.currentTimeMillis() + 10000);
-        Notify notify = new Notify();
-        notify.setTitle(id + "");
-        notify.setContent(mNotificationData.getTimestamp() + "");
-        notify.setCover(true);
-        mNotificationData.setNotify(notify);
-        if (!NotificationsUtils.isNotificationEnabled(mContext)) {
-            WYACustomDialog notificationDialog = new WYACustomDialog.Builder(mContext)
-                    .title("提示")
-                    .message("检测到您没有打开通知权限，是否去打开")
-                    .width(ScreenUtil.getScreenWidth(mContext) * 3 / 4)
-                    .build();
-            notificationDialog.setNoClickListener(new WYACustomDialog.NoClickListener() {
-                @Override
-                public void onNoClick() {
-                    notificationDialog.dismiss();
-                }
-            });
-            notificationDialog.setYesClickListener(new WYACustomDialog.YesClickListener() {
-                @Override
-                public void onYesClick() {
-                    Intent localIntent = new Intent();
-                    localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    if (Build.VERSION.SDK_INT >= 9) {
-                        localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                        localIntent.setData(Uri.fromParts("package", mContext.getPackageName(), null));
-                    } else if (Build.VERSION.SDK_INT <= 8) {
-                        localIntent.setAction(Intent.ACTION_VIEW);
-                        localIntent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
-                        localIntent.putExtra("com.android.settings.ApplicationPkgName", mContext.getPackageName());
-                    }
-                    mContext.startActivity(localIntent);
-                }
-            });
-            notificationDialog.show();
-        } else {
-            //AlarmReceiver.class为广播接受者
-            Intent intent = new Intent(mContext, AlarmReceiver.class);
-            Bundle bundle = new Bundle();
-            bundle.putInt("id", id);
-            bundle.putString("title", mNotificationData.getNotify().getTitle());
-            bundle.putString("content", mNotificationData.getNotify().getContent());
-            bundle.putString("sound", mNotificationData.getSound());
-            bundle.putBoolean("cover", mNotificationData.getNotify().isCover());
-            bundle.putLongArray("vibrate", mNotificationData.getVibrate());
-            intent.putExtras(bundle);
-            PendingIntent pi = PendingIntent.getBroadcast(mContext, id, intent, FLAG_UPDATE_CURRENT);
-            //得到AlarmManager实例
-            AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(ALARM_SERVICE);
-            /**
-             * 单次提醒
-             * mCalendar.getTimeInMillis() 上面设置的15点21分0秒的时间点
-             */
-            alarmManager.set(AlarmManager.RTC_WAKEUP, mNotificationData.getTimestamp(), pi);
-            NotificationEmit notificationEmit = new NotificationEmit();
-            notificationEmit.setId(id);
-            setEmitData(1, "响应成功", notificationEmit);
-            send(name, getEmitData());
-        }
-    }
-
-    /**
-     * `
-     * 获取剩余存储空间
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void getFreeDiskSpace(String name, int id, String data) {
-        mEventMap.put(name, id);
-        mCacheData = new Gson().fromJson(data, CacheData.class);
-        if (mCacheData != null && mCacheData.getType() != null && !mCacheData.getType().equals("")) {
-            long freeDiskSpace = 0;
-            SpaceData freeDiskSpaceData = new SpaceData();
-            switch (mCacheData.getType()) {
-                case "dataDir":
-                    freeDiskSpace = getAvailableInternalMemorySize(mContext);
-                    freeDiskSpaceData.setSize(String.valueOf(freeDiskSpace));
-                    freeDiskSpaceData.setLabel(Formatter.formatFileSize(mContext, freeDiskSpace));
-                    setEmitData(1, "响应成功", freeDiskSpaceData);
-                    send(name, getEmitData());
-                    break;
-                case "storageDir":
-                    if (isExternalStorageAvailable()) {
-                        freeDiskSpace = getAvailableExternalMemorySize(mContext);
-                        freeDiskSpaceData.setSize(String.valueOf(freeDiskSpace));
-                        freeDiskSpaceData.setLabel(Formatter.formatFileSize(mContext, freeDiskSpace));
-                        setEmitData(1, "响应成功", freeDiskSpaceData);
-                        send(name, getEmitData());
-                    } else {
-                        setEmitData(0, "SD卡异常", null);
-                        send(name, getEmitData());
-                    }
-                    break;
-                case "total":
-                    freeDiskSpace = getAvailableExternalMemorySize(mContext) + getAvailableInternalMemorySize(mContext);
-                    freeDiskSpaceData.setSize(String.valueOf(freeDiskSpace));
-                    freeDiskSpaceData.setLabel(Formatter.formatFileSize(mContext, freeDiskSpace));
-                    setEmitData(1, "响应成功", freeDiskSpaceData);
-                    send(name, getEmitData());
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            setEmitData(0, "路径错误", null);
-            send(name, getEmitData());
-        }
-    }
-
-    /**
-     * 获取总存储空间大小
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void getTotalSpace(String name, int id, String data) {
-        mEventMap.put(name, id);
-        mCacheData = new Gson().fromJson(data, CacheData.class);
-        if (mCacheData != null && mCacheData.getType() != null && !mCacheData.getType().equals("")) {
-            long totalSpace = 0;
-            SpaceData totalSpaceData = new SpaceData();
-            switch (mCacheData.getType()) {
-                case "dataDir":
-                    totalSpace = getInternalMemorySize(mContext);
-                    totalSpaceData.setSize(String.valueOf(totalSpace));
-                    totalSpaceData.setLabel(Formatter.formatFileSize(mContext, totalSpace));
-                    setEmitData(1, "响应成功", totalSpaceData);
-                    send(name, getEmitData());
-                    break;
-                case "storageDir":
-                    if (isExternalStorageAvailable()) {
-                        totalSpace = getExternalMemorySize(mContext);
-                        totalSpaceData.setSize(String.valueOf(totalSpace));
-                        totalSpaceData.setLabel(Formatter.formatFileSize(mContext, totalSpace));
-                        setEmitData(1, "响应成功", totalSpaceData);
-                        send(name, getEmitData());
-                    } else {
-                        setEmitData(0, "SD卡异常", null);
-                        send(name, getEmitData());
-                    }
-                    break;
-                case "total":
-                    totalSpace = getExternalMemorySize(mContext) + getInternalMemorySize(mContext);
-                    totalSpaceData.setSize(String.valueOf(totalSpace));
-                    totalSpaceData.setLabel(Formatter.formatFileSize(mContext, totalSpace));
-                    setEmitData(1, "响应成功", totalSpaceData);
-                    send(name, getEmitData());
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            setEmitData(0, "路径错误", null);
-            send(name, getEmitData());
-        }
-    }
-
-    /**
-     * 判断sd卡是否可用
-     */
-    private boolean isExternalStorageAvailable() {
-        return Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED);
-    }
-
-    /**
-     * 获取手机内部存储空间
-     *
-     * @param context
-     * @return 以B为单位的容量
-     */
-    private long getInternalMemorySize(Context context) {
-        File file = Environment.getDataDirectory();
-        StatFs statFs = new StatFs(file.getPath());
-        long blockSizeLong = statFs.getBlockSizeLong();
-        long blockCountLong = statFs.getBlockCountLong();
-        long size = blockCountLong * blockSizeLong;
-        return size;
-    }
-
-    /**
-     * 获取手机内部可用存储空间
-     *
-     * @param context
-     * @return 以B为单位的容量
-     */
-    private long getAvailableInternalMemorySize(Context context) {
-        File file = Environment.getDataDirectory();
-        StatFs statFs = new StatFs(file.getPath());
-        long availableBlocksLong = statFs.getAvailableBlocksLong();
-        long blockSizeLong = statFs.getBlockSizeLong();
-        long size = availableBlocksLong * blockSizeLong;
-        return size;
-    }
-
-    /**
-     * 获取手机外部存储空间
-     *
-     * @param context
-     * @return 以B为单位的容量
-     */
-    public long getExternalMemorySize(Context context) {
-        File file = Environment.getExternalStorageDirectory();
-        StatFs statFs = new StatFs(file.getPath());
-        long blockSizeLong = statFs.getBlockSizeLong();
-        long blockCountLong = statFs.getBlockCountLong();
-        long size = blockSizeLong * blockCountLong;
-        return size;
-    }
-
-    /**
-     * 获取手机外部可用存储空间
-     *
-     * @param context
-     * @return 以B单位的容量
-     */
-    private long getAvailableExternalMemorySize(Context context) {
-        File file = Environment.getExternalStorageDirectory();
-        StatFs statFs = new StatFs(file.getPath());
-        long availableBlocksLong = statFs.getAvailableBlocksLong();
-        long blockSizeLong = statFs.getBlockSizeLong();
-        long size = blockSizeLong * availableBlocksLong;
-        return size;
-    }
-
-    /**
-     * 获取缓存占用空间大小
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void getCacheSize(String name, int id, String data) {
-        mEventMap.put(name, id);
-        mCacheData = new Gson().fromJson(data, CacheData.class);
-        if (mCacheData != null && mCacheData.getPath() != null && !mCacheData.getPath().equals("")) {
-            File file = new File(mCacheData.getPath());
-            if (file.exists()) {
-                long size = DataCleanUtil.getFolderSize(file);
-                setEmitData(1, "响应成功", null);
-                send(name, getEmitData());
-            } else {
-                setEmitData(0, "文件不存在", null);
-                send(name, getEmitData());
-            }
-        } else {
-            setEmitData(0, "路径错误", null);
-            send(name, getEmitData());
-        }
-    }
-
-    /**
-     * 清理缓存
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void clearCache(String name, int id, String data) {
-        mEventMap.put(name, id);
-        mCacheData = new Gson().fromJson(data, CacheData.class);
-        if (mCacheData != null && mCacheData.getPath() != null && !mCacheData.getPath().equals("")) {
-            DataCleanUtil.cleanCustomCache(mCacheData.getPath());
-            setEmitData(1, "响应成功", null);
-            send(name, getEmitData());
-        } else {
-            setEmitData(0, "路径错误", null);
-            send(name, getEmitData());
-        }
-    }
-
-    /**
-     * 判断app是否下载
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void appInstalled(String name, int id, String data) {
-        boolean isAppInstalled = false;
-        mEventMap.put(name, id);
-        mInstalledAppData = new Gson().fromJson(data, InstalledData.class);
-        mInstalledAppData.setScheme("com.wya.shanda");
-        if (mInstalledAppData != null && mInstalledAppData.getScheme() != null && !mInstalledAppData.getScheme().equals("")) {
-            isAppInstalled = PhoneUtil.getInstance().isApkInstalled(mContext, mInstalledAppData.getScheme());
-        }
-        setEmitData(1, "响应成功", null);
-        send(name, getEmitData());
-    }
-
-    /**
-     * 打开app
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void openApp(String name, int id, String data) {
-        mEventMap.put(name, id);
-        mOpenAppData = new Gson().fromJson(data, OpenAppData.class);
-        if (mOpenAppData != null && mOpenAppData.getScheme() != null && !mOpenAppData.getScheme().equals("")) {
-            Intent intent = mContext.getPackageManager().getLaunchIntentForPackage(mOpenAppData.getScheme());
-            if (intent != null) {
-                mContext.startActivity(intent);
-                setEmitData(1, "响应成功", null);
-                send(name, getEmitData());
-            } else {
-                setEmitData(0, "未安装应用", null);
-                send(name, getEmitData());
-            }
-        } else {
-            setEmitData(0, "响应失败", null);
-            send(name, getEmitData());
-        }
-    }
-
-    /**
-     * 下载app
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void installApp(String name, int id, String data) {
-        mEventMap.put(name, id);
-        mInstallAppData = new Gson().fromJson(data, InstallAppData.class);
-        mFileManagerUtil = new FileManagerUtil();
-        if (mInstallAppData != null && mInstallAppData.getUrl() != null && !mInstallAppData.getUrl().equals("") && mInstallAppData.getUrl().contains(".apk")) {
-            String fileName = mInstallAppData.getUrl().split("/")[mInstallAppData.getUrl().split("/").length - 1];
-            mFileManagerUtil.getDownloadReceiver().load(mInstallAppData.getUrl()).setFilePath(fileRootPath + "/" + fileName).start();
-            mFileManagerUtil.setOnDownLoaderListener(new FileManagerUtil.OnDownLoaderListener() {
-                @Override
-                public void onDownloadState(int state, DownloadTask task, Exception e) {
-                    if (state == TASK_COMPLETE) {
-                        installAPK(fileRootPath + "/" + fileName);
-                        setEmitData(1, "响应成功", null);
-                        send(name, getEmitData());
-                    } else if (state == TASK_FAIL) {
-                        setEmitData(0, "下载失败", null);
-                        send(name, getEmitData());
-                    }
-                }
-            });
-        } else {
-            setEmitData(0, "下载地址不正确", null);
-            send(name, getEmitData());
-        }
-    }
-
-    /**
-     * 下载到本地后执行安装
-     */
-    private void installAPK(String filePath) {
-        File apkFile = new File(filePath);
-        if (!apkFile.exists()) {
-            return;
-        }
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        // 安装完成后，启动app（源码中少了这句话）
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Uri uri = Uri.parse("file://" + apkFile.toString());
-        intent.setDataAndType(uri, "application/vnd.android.package-archive");
-        mContext.startActivity(intent);
-    }
-
-    /**
-     * 关闭到页面到某个界面
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void pop(String name, int id, String data) {
-        mEventMap.put(name, id);
-        mCloseWinData = new Gson().fromJson(data, CloseWinData.class);
-        boolean success;
-        if (mCloseWinData != null && mCloseWinData.getName() != null && !mCloseWinData.getName().equals("")) {
-            success = ActivityManager.getInstance().closeToWinByName(mCloseWinData);
-        } else {
-            success = ActivityManager.getInstance().finishTopActivity();
-        }
-        if (success) {
-            setEmitData(1, "响应成功", null);
-        } else {
-            setEmitData(0, "响应失败", null);
-        }
-        send(name, getEmitData());
-    }
-
-    /**
-     * 打开新页面
-     *
-     * @param name
-     * @param id
-     * @param data
-     */
-    private void push(String name, int id, String data) {
-        mEventMap.put(name, id);
-        mOpenWinData = new Gson().fromJson(data, OpenWinData.class);
-        if (mOpenWinData != null && mOpenWinData.getName() != null && !mOpenWinData.getName().equals("")) {
-            Intent intent = new Intent(mContext, OpenWinActivity.class);
-            intent.putExtra("mOpenWinData", mOpenWinData);
-            mContext.startActivity(intent);
-            if (mOpenWinData.getAnimation() != null) {
-                if (mOpenWinData.getAnimation().equals("card")) {
-                    mContext.overridePendingTransition(R.anim.card_anim_enter, R.anim.card_anim_exit);
-                } else if (mOpenWinData.getAnimation().equals("modal")) {
-                    mContext.overridePendingTransition(R.anim.modal_anim_enter, R.anim.modal_anim_exit);
-                }
-            }
-            if (mOpenWinData.isReplace()) {
-                mContext.finish();
-            }
-            setEmitData(1, "响应成功", null);
-            send(name, getEmitData());
-        } else {
-            setEmitData(0, "参数错误", null);
-            send(name, getEmitData());
-        }
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case CAMERA_PIC_REQUEST:
-                if (resultCode == RESULT_OK) {
-                    String path = data.getStringExtra("path");
-
-                    if (saveToPhotoAlbum) {
-                        final File file = new File(path);
-                        mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-                    }
-
-                    ReturnPictureBean returnPictureBean = new ReturnPictureBean();
-                    ReturnPictureBean.PictureUrl pictureUrl = new ReturnPictureBean.PictureUrl();
-                    pictureUrl.setUrl(saveTransferImage(path));
-                    List<ReturnPictureBean.PictureUrl> list = new ArrayList<>();
-                    list.add(pictureUrl);
-                    returnPictureBean.setList(list);
-                    setEmitData(1, "响应成功", returnPictureBean);
-                    send("getPicture", getEmitData());
-                }
-                break;
-            case CAMERA_VIDEO_REQUEST:
-                if (resultCode == RESULT_OK) {
-                    String path = data.getStringExtra("url");
-                    if (saveToPhotoAlbum) {
-                        final File file = new File(path);
-                        mContext.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-                    }
-                    ReturnPictureBean returnPictureBean = new ReturnPictureBean();
-                    ReturnPictureBean.PictureUrl pictureUrl = new ReturnPictureBean.PictureUrl();
-                    pictureUrl.setUrl(path);
-                    MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-                    metadataRetriever.setDataSource(path);
-                    String duration = metadataRetriever.extractMetadata(android.media.MediaMetadataRetriever
-                            .METADATA_KEY_DURATION);
-                    pictureUrl.setDuration(Long.parseLong(duration));
-                    metadataRetriever.release();
-                    List<ReturnPictureBean.PictureUrl> list = new ArrayList<>();
-                    list.add(pictureUrl);
-                    returnPictureBean.setList(list);
-                    setEmitData(1, "响应成功", returnPictureBean);
-                    send("getPicture", getEmitData());
-                }
-                break;
-            case ALBUM_PIC_REQUEST:
-                if (resultCode == RESULT_OK) {
-                    if (data != null && data.hasExtra(PickerConfig.IMAGE_SELECTED)) {
-                        Bundle extras = data.getExtras();
-                        ArrayList<String> lists = extras.getStringArrayList(PickerConfig.IMAGE_SELECTED);
-
-                        ReturnPictureBean returnPictureBean = new ReturnPictureBean();
-                        ReturnPictureBean.PictureUrl pictureUrl = new ReturnPictureBean.PictureUrl();
-                        List<ReturnPictureBean.PictureUrl> list = new ArrayList<>();
-                        for (String path : lists) {
-                            pictureUrl.setUrl(saveTransferImage(path));
-                            list.add(pictureUrl);
-                        }
-                        returnPictureBean.setList(list);
-                        setEmitData(1, "响应成功", returnPictureBean);
-                        send("getPicture", getEmitData());
-                    }
-                }
-                break;
-            case ALBUM_VIDEO_REQUEST:
-                if (resultCode == RESULT_OK) {
-                    if (data != null && data.hasExtra(PickerConfig.IMAGE_SELECTED)) {
-                        Bundle extras = data.getExtras();
-                        ArrayList<String> lists = extras.getStringArrayList(PickerConfig.IMAGE_SELECTED);
-
-                        ReturnPictureBean returnPictureBean = new ReturnPictureBean();
-                        ReturnPictureBean.PictureUrl pictureUrl = new ReturnPictureBean.PictureUrl();
-                        List<ReturnPictureBean.PictureUrl> list = new ArrayList<>();
-
-                        pictureUrl.setUrl(lists.get(0));
-                        list.add(pictureUrl);
-                        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
-                        metadataRetriever.setDataSource(lists.get(0));
-                        String duration = metadataRetriever.extractMetadata(android.media.MediaMetadataRetriever
-                                .METADATA_KEY_DURATION);
-                        pictureUrl.setDuration(Long.parseLong(duration));
-                        metadataRetriever.release();
-                        returnPictureBean.setList(list);
-                        setEmitData(1, "响应成功", returnPictureBean);
-                        send("getPicture", getEmitData());
-                    }
-                }
-                break;
-            default:
-                break;
-        }
+        EventBus.getDefault().post(new PhotoResultEvent(requestCode,resultCode,data));
     }
 
-    private String saveTransferImage(String path) {
-        String encodingType = mPictureBean.getEncodingType();
-        BitmapFactory.Options newOpts = new BitmapFactory.Options();
-        // 开始读入图片，此时把options.inJustDecodeBounds 设回true了
-        newOpts.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(path, newOpts);
-        newOpts.inJustDecodeBounds = false;
-        int w = newOpts.outWidth;
-        int h = newOpts.outHeight;
-        // 现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
-        float hh = Float.parseFloat(mPictureBean.getTargetHeight());
-        float ww = Float.parseFloat(mPictureBean.getTargetWidth());
-        // 缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;
-        if (w > h && w > ww) {
-            be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh) {
-            be = (int) (newOpts.outHeight / hh);
-        }
-        if (be <= 0) {
-            be = 1;
-        }
-        newOpts.inSampleSize = be;
-        // 重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
-        bitmap = BitmapFactory.decodeFile(path, newOpts);
-
-        String changePath = null;
-        try {
-
-            switch (encodingType) {
-                case "png":
-                    File file = new File(Environment.getExternalStorageDirectory().getPath() + "/Recordings/" + System.currentTimeMillis() + ".png");
-                    FileOutputStream out = new FileOutputStream(file);
-                    changePath = file.getPath();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                    out.flush();
-                    out.close();
-                    break;
-                case "jpg":
-                    File file1 = new File(Environment.getExternalStorageDirectory().getPath() + "/Recordings/" + System.currentTimeMillis() + ".jpg");
-                    FileOutputStream out1 = new FileOutputStream(file1);
-                    changePath = file1.getPath();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, mPictureBean.getQuality(), out1);
-                    out1.flush();
-                    out1.close();
-                    break;
-                default:
-                    break;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return changePath;
-    }
 }
