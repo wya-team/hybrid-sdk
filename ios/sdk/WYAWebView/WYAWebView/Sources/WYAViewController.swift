@@ -91,14 +91,14 @@ public class WYAViewController: UIViewController {
         }
         view.addSubview(webView!)
 
-        let button = UIButton(type: .custom)
-        button.frame = CGRect(x: view.cmam_width - 100, y: 88, width: 50, height: 50)
-        button.wya_setBackgroundColor(.red, for: .normal)
-        button.wya_setBackgroundColor(.gray, for: .selected)
-        button.addCallBackAction { _ in
-            self.webView?.webView?.reloadFromOrigin()
-        }
-        view.addSubview(button)
+//        let button = UIButton(type: .custom)
+//        button.frame = CGRect(x: view.cmam_width - 100, y: 88, width: 50, height: 50)
+//        button.wya_setBackgroundColor(.red, for: .normal)
+//        button.wya_setBackgroundColor(.gray, for: .selected)
+//        button.addCallBackAction { _ in
+//            self.webView?.webView?.reloadFromOrigin()
+//        }
+//        view.addSubview(button)
     }
 
     /*

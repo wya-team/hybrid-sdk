@@ -231,8 +231,43 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                     param.updateValue(self.actionID ?? "", forKey: "actionID")
                     allParams.updateValue(params as! [String: Any], forKey: "params")
                     allParams.updateValue(param, forKey: "DevelopParams")
+                    let tempString = dic?["method"] as! String
+                    let tempArray = tempString.components(separatedBy: "/")
+                    let moduleName = tempArray.first ?? " "
+                    let methodName = tempArray.last ?? " "
+
+
+
+                    if tempString.hasPrefix("event"){
+                        // 事件添加或者移除
+
+                    }else if tempString.hasPrefix("debugger"){
+                        // 强制执行事件 id里会包含事件名，key为eventName
+                    }else{
+                        // 方法调用
+                        if (self.webManager?.methodModuleParams.keys.contains(moduleName))!{
+                            // 存在该模块
+                            let tempDict = self.webManager?.methodModuleParams[moduleName]
+                            if (tempDict?.keys.contains(methodName))!{
+                                // 模块拥有方法去执行
+                                self.webManager?.methodModuleAction(tempDict![methodName]!, params: allParams)
+                            }else{
+                                // 模块没有该方法，通知native端扩展
+                            }
+
+                        }else{
+                            // 不存在，通知native端扩展
+                        }
+                    }
+
+
+
+
+
+//debugger/invoke 强制执行事件
+
                     // 获取到参数执行调用原生
-                    self.webManager?.nativeAction(dic?["method"] as! String, params: allParams)
+//                    self.webManager?.nativeAction(dic?["method"] as! String, params: allParams)
                 }
             }
         }
