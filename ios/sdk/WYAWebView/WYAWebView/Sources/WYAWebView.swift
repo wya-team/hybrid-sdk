@@ -122,7 +122,7 @@ extension WYAWebView {
 
     /// GCDWebServer
     @objc public func openLocationHttpServer() {
-        let bund = Bundle(for: classForCoder)
+        let bund = Bundle.main
         let websitePath = bund.path(forResource: "dist", ofType: nil)
 
         // 先设置个默认的handler处理静态文件（比如css、js、图片等）
@@ -236,18 +236,9 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                     let moduleName = tempArray.first ?? " "
                     let methodName = tempArray.last ?? " "
 
-
-
                     if tempString.hasPrefix("event"){
                         let eventNameDict = allParams["params"]
                         let eventName = eventNameDict!["eventName"] as! String
-
-
-                        // 事件添加或者移除
-                        // add{// shifou cun shijian  tongzhi zhuce }
-                        // remove{yichu }
-                        // debuggerinvoke
-
                         if methodName == "add"{
                             print("asdas")
                             if (self.webManager?.eventAddParams.keys.contains(eventName))!{
@@ -258,11 +249,10 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                             }else{
                                 // 事件不存在通知native扩展
                             }
-
                         }else if methodName == "remove"{
 
                         }
-
+                        print("事件添加")
                     }else if tempString.hasPrefix("debugger"){
                         // 强制执行事件 id里会包含事件名，key为eventName
                     }else{
@@ -283,15 +273,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                             
                         }
                     }
-
-
-
-
-
-//debugger/invoke 强制执行事件
-
-                    // 获取到参数执行调用原生
-//                    self.webManager?.nativeAction(dic?["method"] as! String, params: allParams)
                 }
             }
         }

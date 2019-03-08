@@ -62,6 +62,7 @@ class WYAWebViewManager: NSObject {
 
 
     
+    var shake = false
 
     var smsID: String?
     var mailID: String?

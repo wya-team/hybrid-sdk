@@ -171,10 +171,10 @@ public class ExampleActivity extends AppCompatActivity implements PermissionCall
 				mHybridManager.keyBack(keyCode);
 				return super.onKeyDown(keyCode, event);
 			case KeyEvent.KEYCODE_VOLUME_UP:
-				mHybridManager.volumeUp(keyCode);
+				mHybridManager.volume(keyCode);
 				return super.onKeyDown(keyCode, event);
 			case KeyEvent.KEYCODE_VOLUME_DOWN:
-				mHybridManager.volumeDown(keyCode);
+				mHybridManager.volume(keyCode);
 				return super.onKeyDown(keyCode, event);
 			case KeyEvent.KEYCODE_MENU:
 				return super.onKeyDown(keyCode, event);

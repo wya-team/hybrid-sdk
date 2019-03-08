@@ -1,8 +1,6 @@
 module.exports = [
-	'batteryLow',
-	'batteryStatus',
-	'offline',
-	'online',
+	'battery',
+	'network',
 	'pause',
 	'resume',
 	'shake',
@@ -14,9 +12,8 @@ module.exports = [
 	'appIntent',
 	'keyboardShow',
 	'keyboardHide',
-	'safeAreaChange',
+	'safeArea',
 	'keyBack',
 	'keyMenu',
-	'volumeUp',
-	'volumeDown',
+	'volume',
 ];

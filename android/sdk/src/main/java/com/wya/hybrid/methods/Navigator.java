@@ -17,8 +17,6 @@ import com.wya.hybrid.methods.bean.openwin.bean.OpenWinData;
  * @describe :
  */
 public class Navigator extends HybridMethods{
-    private Activity mContext;
-    private WYAWebView mWebView;
 
     /**
      * 打开window
@@ -31,8 +29,6 @@ public class Navigator extends HybridMethods{
 
     public Navigator(Activity activity, WYAWebView webView) {
         super(activity, webView);
-        this.mContext = activity;
-        this.mWebView = webView;
     }
 
     /**
@@ -41,7 +37,7 @@ public class Navigator extends HybridMethods{
      * @param id
      * @param data
      */
-    private void push( int id, String data) {
+    public void push( int id, String data) {
         mOpenWinData = new Gson().fromJson(data, OpenWinData.class);
         if (mOpenWinData != null && mOpenWinData.getName() != null && !mOpenWinData.getName().equals("")) {
             Intent intent = new Intent(mContext, OpenWinActivity.class);
@@ -71,7 +67,7 @@ public class Navigator extends HybridMethods{
      * @param id
      * @param data
      */
-    private void pop( int id, String data) {
+    public void pop( int id, String data) {
         mCloseWinData = new Gson().fromJson(data, CloseWinData.class);
         boolean success;
         if (mCloseWinData != null && mCloseWinData.getName() != null && !mCloseWinData.getName().equals("")) {
