@@ -49,7 +49,10 @@ class WYAWebViewManager: NSObject {
         return params
     }()
 
-//    var eventAddParams
+    lazy  var eventAddParams :[String:Selector] = {
+        let params = self.eventAddDictionary()
+        return params
+    }()
 //
 //    var eventRemoveParams
 //
@@ -85,6 +88,12 @@ extension WYAWebViewManager{
     /// 模块方法调用
     func methodModuleAction(_ methodSelector:Selector, params:[String:Any]) {
         performSelector(inBackground: methodSelector, with: params)
+    }
+
+
+    /// 订阅事件
+    func eventModuleAction(_ eventNameSelector:Selector,params:[String:Any]) {
+        performSelector(inBackground: eventNameSelector, with: params)
     }
 
     func getModel<T>(_ params: [String: Any]) -> T where T: Codable {

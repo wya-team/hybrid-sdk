@@ -45,7 +45,7 @@ public class WYAWebView: UIView {
         super.init(frame: frame)
         self.webManager = WYAWebViewManager()
         self.webManager?.nativeDelegate = self as WebViewDelegate
-        self.webManager?.registerSystemNotice()
+//        self.webManager?.registerSystemNotice()
         self.createWkWebView()
     }
 
@@ -236,10 +236,22 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                     let moduleName = tempArray.first ?? " "
                     let methodName = tempArray.last ?? " "
 
-
-
                     if tempString.hasPrefix("event"){
-                        // 事件添加或者移除
+                        let eventNameDict = allParams["params"]
+                        let eventName = eventNameDict!["eventName"] as! String
+                        if methodName == "add"{
+                            print("asdas")
+                            if (self.webManager?.eventAddParams.keys.contains(eventName))!{
+                                // 注册的事件存在
+                                let tempDict = self.webManager?.eventAddParams[eventName]
+                                self.webManager?.eventModuleAction(tempDict!, params: allParams)
+
+                            }else{
+                                // 事件不存在通知native扩展
+                            }
+                        }else if methodName == "remove"{
+
+                        }
                         print("事件添加")
                     }else if tempString.hasPrefix("debugger"){
                         // 强制执行事件 id里会包含事件名，key为eventName
@@ -261,15 +273,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                             
                         }
                     }
-
-
-
-
-
-//debugger/invoke 强制执行事件
-
-                    // 获取到参数执行调用原生
-//                    self.webManager?.nativeAction(dic?["method"] as! String, params: allParams)
                 }
             }
         }

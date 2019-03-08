@@ -15,13 +15,11 @@ extension WYAWebViewManager{
 
         var params = [String:Selector]()
 
-        params.updateValue(#selector(registerBatterLowWithParams(outParams:)), forKey: "batteryLow")
+        params.updateValue(#selector(registerBatterLowWithParams(outParams:)), forKey: "batteryChange")
 
         params.updateValue(#selector(registerBatterStatusWithParams(outParams:)), forKey: "batteryStatus")
 
-        params.updateValue(#selector(registerNetworkOfflineWithParams(outParams:)), forKey: "offline")
-
-        params.updateValue(#selector(registerNetworkOnlineWithParams(outParams:)), forKey: "online")
+        params.updateValue(#selector(registerNetworkWithParams(outParams:)), forKey: "network")
 
         params.updateValue(#selector(registerPauseWithParams(outParams:)), forKey: "pause")
 
@@ -37,11 +35,12 @@ extension WYAWebViewManager{
 
 //        params.updateValue(#selector(installAppWithParams(outParams:)), forKey: "viewDisappear")
 
-//        params.updateValue(#selector(installAppWithParams(outParams:)), forKey: "appIntent")
 
         params.updateValue(#selector(registerKeyboardShowWithParams(outParams:)), forKey: "keyboardShow")
 
         params.updateValue(#selector(registerKeyboardHideWithParams(outParams:)), forKey: "keyboardHide")
+
+         params.updateValue(#selector(registerVolumeWithParams(outParams:)), forKey: "volume")
 
         return params
     }
@@ -55,33 +54,17 @@ extension WYAWebViewManager{
         listenAction(actionType, params)
     }
 
-    /// 注册网络连接通知
-    @objc func registerNetworkOnlineWithParams(outParams:[String:Any]){
-        let developParams = outParams["DevelopParams"] as! [String: Any]
-        let eventID = developParams["actionID"] as! String
-
-        self.netManager?.listener = { status in
-            print("网络状态: \(status)")
-
-            var inParams = [String: Any]()
-            inParams.updateValue(UIDevice.current.contentType, forKey: "connectionType")
-            if (self.netManager?.isReachable)! {
-                self.assemblyParams("online", "1", "监听成功", inParams)
-            }
-        }
-
-        self.netManager?.startListening()
-        self.assemblyParams(eventID, "1", "添加监听成功", [String: Any]())
-    }
-
     /// 注册网络断开通知
-    @objc func registerNetworkOfflineWithParams(outParams:[String:Any]){
+    @objc func registerNetworkWithParams(outParams:[String:Any]){
         let developParams = outParams["DevelopParams"] as! [String: Any]
         let eventID = developParams["actionID"] as! String
         self.netManager?.listener = { status in
             print("网络状态: \(status)")
 
-            if !(self.netManager?.isReachable)! {
+            if (self.netManager?.isReachable)! {
+                self.assemblyParams("online", "1", "监听成功", [String:Any]())
+            }
+            else {
                 self.assemblyParams("offline", "1", "监听成功", [String: Any]())
             }
         }
@@ -137,20 +120,6 @@ extension WYAWebViewManager{
             }
 
             // 电池状态
-            self.assemblyParams("batteryStatus", "1", "监听成功", subParams)
-        }
-
-        note.addObserver(forName: NSNotification.Name.UIDeviceBatteryLevelDidChange, object: nil, queue: OperationQueue.main) { _ in
-
-            var subParams = [String: Any]()
-
-            subParams.updateValue(device.batteryLevel * 100, forKey: "level")
-            if device.batteryState == .charging {
-                subParams.updateValue(true, forKey: "isPlugged")
-            }else {
-                subParams.updateValue(false, forKey: "isPlugged")
-            }
-            // 电量变化监听回调
             self.assemblyParams("batteryStatus", "1", "监听成功", subParams)
         }
         self.assemblyParams(eventID, "1", "添加监听成功", [String: Any]())
@@ -245,6 +214,7 @@ extension WYAWebViewManager{
         self.assemblyParams(eventID, "1", "添加监听成功", [String: Any]())
     }
 
+
     /// 键盘消失
     @objc func registerKeyboardHideWithParams(outParams:[String:Any]){
         let developParams = outParams["DevelopParams"] as! [String: Any]
@@ -256,52 +226,37 @@ extension WYAWebViewManager{
         self.assemblyParams(eventID, "1", "添加监听成功", [String: Any]())
     }
 
-//    // 音量加
-//    @objc func registerVolumeUpWithParams(outParams:[String:Any]){
-//        do {
-//            try AVAudioSession.sharedInstance().setActive(true)
-//        } catch let error as NSError {
-//            print("\(error)")
-//        }
-//        self.currentVolume = AVAudioSession.sharedInstance().outputVolume
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.changeVolumSlider(notifi:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
-//        UIApplication.shared.beginReceivingRemoteControlEvents()
-//
-//
-//        }
-//    }
-//    /// 音量增大的通知回调
-//    @objc func changeVolumSlider(notifi: NSNotification) {
-//        if let volum: Float = notifi.userInfo?["AVSystemController_AudioVolumeNotificationParameter"] as! Float? {
-//            if volum > self.currentVolume! {
-//                self.nativeDelegate?.getNativeActionResult("volumeUp", "")
-//                print("增大")
-//            }
-//            self.currentVolume = volum
-//    }
-//    /// 音量减
-//
-//    @objc func registerVolumeDownWithParams(outParams:[String:Any]){
-//        do {
-//            try AVAudioSession.sharedInstance().setActive(true)
-//        } catch let error as NSError {
-//            print("\(error)")
-//        }
-//        self.currentVolume = AVAudioSession.sharedInstance().outputVolume
-//        NotificationCenter.default.addObserver(self, selector: #selector(self.changeVolumDownSlider(notifi:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
-//        UIApplication.shared.beginReceivingRemoteControlEvents()
-//    }
-//
-//        /// 音量减小的通知回调
-//        @objc func changeVolumDownSlider(notifi: NSNotification) {
-//            if let volum: Float = notifi.userInfo?["AVSystemController_AudioVolumeNotificationParameter"] as! Float? {
-//                if volum < self.currentVolume! {
-//                    self.nativeDelegate?.getNativeActionResult("voolumeDown", "")
-//                    print("减小")
-//                }
-//                self.currentVolume = volum
-//            }
-//        }
+
+
+
+    // 音量
+    @objc func registerVolumeWithParams(outParams:[String:Any]){
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let error as NSError {
+            print("\(error)")
+        }
+        self.currentVolume = AVAudioSession.sharedInstance().outputVolume
+        NotificationCenter.default.addObserver(self, selector: #selector(self.changeVolumSlider(notifi:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+
+    }
+
+    
+    @objc func changeVolumSlider(notifi: NSNotification) {
+        if let volum: Float = notifi.userInfo?["AVSystemController_AudioVolumeNotificationParameter"] as! Float? {
+            if volum > self.currentVolume! {
+                self.nativeDelegate?.getNativeActionResult("volumeUp", "")
+                print("增大")
+            } else {
+                self.nativeDelegate?.getNativeActionResult("voolumeDown", "")
+                print("减小")
+            }
+            self.currentVolume = volum
+        }
+    }
+
+
 }
 
 extension WYAViewController{
