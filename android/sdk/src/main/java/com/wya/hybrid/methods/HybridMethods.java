@@ -11,11 +11,14 @@ import com.wya.hybrid.bean.BaseEmitData;
  * @describe :
  */
 public class HybridMethods implements MethodsImpl {
+    public Activity mContext;
+    public WYAWebView mWebView;
 
     private BaseEmitData<Object> mBaseEmitData;
 
     public HybridMethods(Activity mContext, WYAWebView webView) {
-
+        this.mContext = mContext;
+        this.mWebView = webView;
     }
 
     @Override

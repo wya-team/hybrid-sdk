@@ -3,14 +3,11 @@ package com.wya.hybrid.bean;
 /**
  * @date: 2019/1/17 15:59
  * @author: Chunjiang Mao
- * @classname: VolumeUp
+ * @classname: Volume
  * @describe: 音量加按钮
  */
-public class VolumeUp {
-	/**
-	 * 音量加按钮
-	 */
-	public static final String EVENT_VOLUME_UP = "volumeUp";
+public class Volume {
+	public static final String EVENT_VOLUME = "volume";
 	private int keyCode;
 	private boolean longPress;
 
