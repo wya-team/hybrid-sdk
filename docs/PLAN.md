@@ -78,10 +78,8 @@
 
 事件 | 说明  | 开发 | Android | iOS
 ---|---|---|---|---
-[batteryLow][batteryLow] | 低电量 | 1 | 0 | 0
-[batteryStatus][batteryStatus] | 电池状态，如电量变化或正在充电 | 1 | 0 | 0
-[offline][offline] | 监听设备断开网络 | 1 | 0 | 0
-[online][online] | 监听设备连接到网络 | 1 | 0 | 0
+[battery][battery] | 电池状态，如电量变化或正在充 | 1 | 0 | 0
+[network][network] | 监听设备连接到网络 | 1 | 0 | 0
 [pause][pause] | 应用进入后台 | 1 | 0 | 0
 [resume][resume] | 应用从后台回到前台 | 1 | 0 | 0
 [shake][shake] | 设备摇动事件 | 1 | 0 | 0
@@ -93,12 +91,10 @@
 [appIntent][appIntent] |  本应用被其他应用调起来  | 1 | 0 | 0
 [keyboardShow][keyboardShow] |  系统键盘弹出的回调 | 1 | 0 | 0
 [keyboardHide][keyboardHide] |  系统键盘隐藏的回调 | 1 | 0 | 0
-[safeAreaChange][safeAreaChange] |  安全区域发生变化的回调(iOS11) | 0 | 0 | 0
+[safeArea][safeArea] |  安全区域发生变化的回调(iOS11) | 0 | 0 | 0
 
-[batteryLow]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/batteryLow.md
-[batteryStatus]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/batteryStatus.md
-[offline]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/offline.md
-[online]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/online.md
+[battery]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/battery.md
+[network]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/network.md
 [pause]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/pause.md
 [resume]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/resume.md
 [shake]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/shake.md
@@ -110,7 +106,7 @@
 [appIntent]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/appIntent.md
 [keyboardShow]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/keyboardShow.md
 [keyboardHide]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/keyboardHide.md
-[safeAreaChange]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/safeAreaChange.md
+[safeArea]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/safeArea.md
 
 
 ### 按键事件 (key) (on)
@@ -119,13 +115,11 @@
 ---|---|---|---|---
 [keyBack][keyBack] | 返回  | 1 | 0 | 0
 [keyMenu][keyMenu] | 菜单键  | 1 | 0 | 0
-[volumeUp][volumeUp] | 音量加键  | 1 | 0 | 0
-[volumeDown][volumeDown] | 音量减键  | 1 | 0 | 0
+[volume][volume] | 音量键  | 1 | 0 | 0
 
 [keyBack]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/keyBack.md
 [keyMenu]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/keyMenu.md
-[volumeUp]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/volumeUp.md
-[volumeDown]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/volumeDown.md
+[volume]: https://github.com/wya-team/hybrid-sdk/blob/master/docs/events/volume.md
 
 ## 三、方法
 
