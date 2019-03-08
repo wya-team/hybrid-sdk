@@ -158,6 +158,7 @@ public class HybridManager implements JsCallBack {
 				int id = mEventRegisterMap.get(event);
 				mWebView.send(id, emitData);
 				DebugLogger.logEvent("WYAEventManager .[register true] id = %s, emitData = %s", id, emitData);
+				mIsRegister = false;
 			}
 		} else if (mIsDebugger) {
 			if (null != mEventMap && CheckUtil.isNotEmpty(event) && mEventMap.containsKey(event)) {
