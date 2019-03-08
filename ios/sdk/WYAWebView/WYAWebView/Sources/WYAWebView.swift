@@ -122,7 +122,7 @@ extension WYAWebView {
 
     /// GCDWebServer
     @objc public func openLocationHttpServer() {
-        let bund = Bundle(for: classForCoder)
+        let bund = Bundle.main
         let websitePath = bund.path(forResource: "dist", ofType: nil)
 
         // 先设置个默认的handler处理静态文件（比如css、js、图片等）
@@ -240,7 +240,7 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
 
                     if tempString.hasPrefix("event"){
                         // 事件添加或者移除
-
+                        print("事件添加")
                     }else if tempString.hasPrefix("debugger"){
                         // 强制执行事件 id里会包含事件名，key为eventName
                     }else{

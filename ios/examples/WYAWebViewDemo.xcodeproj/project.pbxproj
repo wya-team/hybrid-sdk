@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		210F3CD722320FB900C0DA27 /* dist in Resources */ = {isa = PBXBuildFile; fileRef = 210F3CD622320FB900C0DA27 /* dist */; };
 		21FADB552143CD0B00C37689 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FADB542143CD0B00C37689 /* AppDelegate.swift */; };
 		21FADB5A2143CD0B00C37689 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21FADB582143CD0B00C37689 /* Main.storyboard */; };
 		21FADB5C2143CD0C00C37689 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21FADB5B2143CD0C00C37689 /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 		0486B0485816FE862A3DA4D0 /* Pods-WYAWebViewDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WYAWebViewDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		202F696169BF10D084190628 /* Pods-WYAWebViewDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WYAWebViewDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo.release.xcconfig"; sourceTree = "<group>"; };
 		2107734E221A99710060D1B0 /* WYAWebViewDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WYAWebViewDemo.entitlements; sourceTree = "<group>"; };
+		210F3CD622320FB900C0DA27 /* dist */ = {isa = PBXFileReference; lastKnownFileType = folder; path = dist; sourceTree = SOURCE_ROOT; };
 		21FADB512143CD0B00C37689 /* WYAWebViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WYAWebViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FADB542143CD0B00C37689 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		21FADB592143CD0B00C37689 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 		21FADB532143CD0B00C37689 /* WYAWebViewDemo */ = {
 			isa = PBXGroup;
 			children = (
+				210F3CD622320FB900C0DA27 /* dist */,
 				2107734E221A99710060D1B0 /* WYAWebViewDemo.entitlements */,
 				21FADB542143CD0B00C37689 /* AppDelegate.swift */,
 				21FADB582143CD0B00C37689 /* Main.storyboard */,
@@ -210,6 +213,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				210F3CD722320FB900C0DA27 /* dist in Resources */,
 				21FADB5F2143CD0C00C37689 /* LaunchScreen.storyboard in Resources */,
 				21FADB5C2143CD0C00C37689 /* Assets.xcassets in Resources */,
 				21FADB5A2143CD0B00C37689 /* Main.storyboard in Resources */,
@@ -274,7 +278,6 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/WYAKit/WYAKit.bundle",
 				"${PODS_ROOT}/../../../pre-build/wya.umd.js",
 				"${PODS_ROOT}/../../../pre-build/WYAJSBridge.umd.js",
-				"${PODS_ROOT}/../../../pre-build/dist",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WYAWebView/WYAWebView.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -284,7 +287,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WYAKit.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/wya.umd.js",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WYAJSBridge.umd.js",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/dist",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WYAWebView.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -301,6 +303,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-WYAWebViewDemo/Pods-WYAWebViewDemo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/AliyunOSSiOS/AliyunOSSiOS.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/FMDB/FMDB.framework",
 				"${BUILT_PRODUCTS_DIR}/GCDWebServer/GCDWebServer.framework",
@@ -319,6 +322,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AliyunOSSiOS.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FMDB.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GCDWebServer.framework",

@@ -1,0 +1,1 @@
+window.WEBPACK_ASSETS={"common":{"js":"/js/common.ec703ec4.chunk.js"},"main":{"js":"/js/main.ec703ec4.bundle.js","css":"/css/initial.main.ec703ec4.css"}}

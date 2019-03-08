@@ -9,6 +9,7 @@ import Foundation
 import AVKit
 // 订阅事件
 extension WYAWebViewManager{
+
     /// 事件订阅方法配置表
     func eventAddDictionary() -> [String:Selector]  {
 
@@ -26,7 +27,7 @@ extension WYAWebViewManager{
 
         params.updateValue(#selector(registerResumeWithParams(outParams:)), forKey: "resume")
 
-//        params.updateValue(#selector(installAppWithParams(outParams:)), forKey: "shake")
+        params.updateValue(#selector(registerShakeWithParams(outParams:)), forKey: "shake")
 
         params.updateValue(#selector(registerAppIdleWithParams(outParams:)), forKey: "appIdle")
 
@@ -182,18 +183,16 @@ extension WYAWebViewManager{
     }
 
     /// 摇晃事件待定？
-//    func registerShakeWithParams(outParams:[String:Any]) -> Bool{
-//        let developParams = outParams["DevelopParams"] as! [String: Any]
-//        let eventID = developParams["actionID"]
-//        if eventID != nil {
-//            // 订阅成功
-//            self.assemblyParams(eventID as! String, "1", "添加监听成功", [String: Any]())
-//            return true
-//        }else{
-//            return false
-//        }
-//
-//    }
+    @objc func registerShakeWithParams(outParams:[String:Any]) {
+        let developParams = outParams["DevelopParams"] as! [String: Any]
+        let eventID = developParams["actionID"]
+        if eventID != nil {
+            // 订阅成功
+            self.assemblyParams(eventID as! String, "1", "添加监听成功", [String: Any]())
+            self.shake = true
+        }
+
+    }
 
     /// 休眠
     @objc func registerAppIdleWithParams(outParams:[String:Any]){
@@ -305,9 +304,14 @@ extension WYAWebViewManager{
 //        }
 }
 
-//extension WYAViewController{
-//    
-//    public override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
-//        WYAWebViewManager.shared.registerShakeWithParams(outParams: nil)
-//    }
-//}
+extension WYAViewController{
+
+    public override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if WYAWebViewManager.shared.shake {
+            print("aa")
+        }else{
+            print("bbb")
+        }
+    }
+}
+
