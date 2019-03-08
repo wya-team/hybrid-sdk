@@ -123,7 +123,7 @@ extension WYAWebView {
     /// GCDWebServer
     @objc public func openLocationHttpServer() {
         let bund = Bundle.main
-        let websitePath = bund.path(forResource: "dist", ofType: nil)
+        let websitePath = bund.path(forResource: "Web", ofType: nil)
 
         // 先设置个默认的handler处理静态文件（比如css、js、图片等）
         webServer.addGETHandler(forBasePath: "/",
