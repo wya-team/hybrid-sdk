@@ -231,48 +231,8 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                     param.updateValue(self.actionID ?? "", forKey: "actionID")
                     allParams.updateValue(params as! [String: Any], forKey: "params")
                     allParams.updateValue(param, forKey: "DevelopParams")
-                    let tempString = dic?["method"] as! String
-                    let tempArray = tempString.components(separatedBy: "/")
-                    let moduleName = tempArray.first ?? " "
-                    let methodName = tempArray.last ?? " "
 
-                    if tempString.hasPrefix("event"){
-                        let eventNameDict = allParams["params"]
-                        let eventName = eventNameDict!["eventName"] as! String
-                        if methodName == "add"{
-                            print("asdas")
-                            if (self.webManager?.eventAddParams.keys.contains(eventName))!{
-                                // 注册的事件存在
-                                let tempDict = self.webManager?.eventAddParams[eventName]
-                                self.webManager?.eventModuleAction(tempDict!, params: allParams)
-
-                            }else{
-                                // 事件不存在通知native扩展
-                            }
-                        }else if methodName == "remove"{
-
-                        }
-                        print("事件添加")
-                    }else if tempString.hasPrefix("debugger"){
-                        // 强制执行事件 id里会包含事件名，key为eventName
-                    }else{
-                        // 方法调用
-                        if (self.webManager?.methodModuleParams.keys.contains(moduleName))!{
-                            // 存在该模块
-                            let tempDict = self.webManager?.methodModuleParams[moduleName]
-                            if (tempDict?.keys.contains(methodName))!{
-                                // 模块拥有方法去执行
-                                self.webManager?.methodModuleAction(tempDict![methodName]!, params: allParams)
-                            }else{
-                                // 模块没有该方法，通知native端扩展
-
-                            }
-
-                        }else{
-                            // 不存在，通知native端扩展
-                            
-                        }
-                    }
+                    self.invokeWebManagerMethod(dic?["method"] as! String, allParams: allParams)
                 }
             }
         }
@@ -530,5 +490,87 @@ class WYAConnenction: GCDWebServerConnection {
 
     override func abortRequest(_ request: GCDWebServerRequest?, withStatusCode statusCode: Int) {
         return super.abortRequest(request, withStatusCode: statusCode)
+    }
+}
+
+// MARK: 事件、方法调用以及扩展
+extension WYAWebView{
+    /// 根据协议调起原生方法，或者订阅事件、取消订阅
+    func invokeWebManagerMethod(_ protocolString:String, allParams:[String: Dictionary<String, Any>]) {
+
+        let tempArray = protocolString.components(separatedBy: "/")
+        let moduleName = tempArray.first ?? " "
+        let methodName = tempArray.last ?? " "
+
+        if protocolString.hasPrefix("event"){
+
+            self.eventInvokeMethod(methodName, allParams: allParams)
+
+        }else if protocolString.hasPrefix("debugger"){
+
+            self.debuggerInvokeMethod(allParams: allParams)
+
+        }
+        else{
+
+            self.methodInvoke(moduleName, methodName: methodName, allParams: allParams)
+
+        }
+    }
+
+    /// 事件订阅、取消
+    func eventInvokeMethod(_ methodName:String, allParams:[String: Dictionary<String, Any>]) {
+        let eventNameDict = allParams["params"]
+        let eventName = eventNameDict!["eventName"] as! String
+        if methodName == "add"{
+            if (self.webManager?.eventAddParams.keys.contains(eventName))!{
+                // 订阅的事件存在
+                let tempSelector = self.webManager?.eventAddParams[eventName]
+                self.webManager?.eventModuleAction(tempSelector!, params: allParams)
+
+            }else{
+                // 事件不存在通知native扩展
+                NotificationCenter.default.post(name: NSNotification.Name("EVENT_ADD"), object: self, userInfo: ["eventName":eventName,"params":allParams,"targets":self])
+            }
+        }else if methodName == "remove"{
+            if (self.webManager?.eventRemoveParams.keys.contains(eventName))!{
+                // 取消订阅的事件存在
+                let tempSelector = self.webManager?.eventRemoveParams[eventName]
+                self.webManager?.eventRemoveAction(tempSelector!, params: allParams)
+
+            }else{
+                // 事件不存在通知native扩展
+                NotificationCenter.default.post(name: NSNotification.Name("EVENT_REMOVE"), object: self, userInfo: ["eventName":eventName,"params":allParams,"targets":self])
+            }
+        }
+    }
+
+    /// 强制执行事件
+    func debuggerInvokeMethod(allParams:[String: Dictionary<String, Any>]) {
+            // 强制执行事件 id里会包含事件名，key为eventName
+            let eventNameDict = allParams["params"]
+            let eventName = eventNameDict!["eventName"] as! String
+            let tempSelector = self.webManager?.debuggerInvokeParams[eventName]
+            self.webManager?.eventInvokeAction(tempSelector!, params: allParams)
+    }
+
+    /// 调用模块对应的方法
+    func methodInvoke(_ moduleName:String,methodName:String, allParams:[String: Dictionary<String, Any>]) {
+
+        // 方法调用
+        if (self.webManager?.methodModuleParams.keys.contains(moduleName))!{
+            // 存在该模块
+            let tempDict = self.webManager?.methodModuleParams[moduleName]
+            if (tempDict?.keys.contains(methodName))!{
+                // 模块拥有方法去执行
+                self.webManager?.methodModuleAction(tempDict![methodName]!, params: allParams)
+            }else{
+                // 模块没有该方法，通知native端扩展
+                 NotificationCenter.default.post(name: NSNotification.Name("REGIST_MODULE_METHOD"), object: self, userInfo: ["module":moduleName,"methodName":methodName,"params":allParams,"targets":self])
+            }
+        }else{
+            // 不存在，通知native端扩展
+            NotificationCenter.default.post(name: NSNotification.Name("REGIST_MODULE_METHOD"), object: self, userInfo: ["module":moduleName,"methodName":methodName,"params":allParams,"targets":self])
+        }
     }
 }

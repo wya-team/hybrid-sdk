@@ -263,7 +263,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\n";
+			shellScript = "
+";
 		};
 		442650933FFB4BA53F35DC10 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
