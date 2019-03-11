@@ -231,7 +231,6 @@ extension WYAWebView: WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler
                     param.updateValue(self.actionID ?? "", forKey: "actionID")
                     allParams.updateValue(params as! [String: Any], forKey: "params")
                     allParams.updateValue(param, forKey: "DevelopParams")
-
                     self.invokeWebManagerMethod(dic?["method"] as! String, allParams: allParams)
                 }
             }
@@ -323,6 +322,24 @@ extension WYAWebView: UIScrollViewDelegate {
 
     public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
         return true
+    }
+}
+
+// MARK: 负责
+extension WYAWebView{
+    public func getExtensionActionResult(_ type: String, _ obj: [String:Any]) {
+
+    let data = try? JSONSerialization.data(withJSONObject: obj, options: .prettyPrinted)
+    let str = String(data: data!, encoding: String.Encoding.utf8)
+
+        let jsString = "WYAJSBridge.emit(\("'" + type + "'"), \(str!))"
+
+        DispatchQueue.main.async {
+            self.webView?.evaluateJavaScript(jsString, completionHandler: { result, error in
+                print(result ?? "没有结果")
+                print(error ?? "没有错误")
+            })
+        }
     }
 }
 
@@ -530,7 +547,7 @@ extension WYAWebView{
 
             }else{
                 // 事件不存在通知native扩展
-                NotificationCenter.default.post(name: NSNotification.Name("EVENT_ADD"), object: self, userInfo: ["eventName":eventName,"params":allParams,"targets":self])
+                NotificationCenter.default.post(name: NSNotification.Name("EVENT_ADD"), object: self, userInfo: ["eventName":eventName,"allParams":allParams,"targets":self])
             }
         }else if methodName == "remove"{
             if (self.webManager?.eventRemoveParams.keys.contains(eventName))!{
@@ -540,7 +557,7 @@ extension WYAWebView{
 
             }else{
                 // 事件不存在通知native扩展
-                NotificationCenter.default.post(name: NSNotification.Name("EVENT_REMOVE"), object: self, userInfo: ["eventName":eventName,"params":allParams,"targets":self])
+                NotificationCenter.default.post(name: NSNotification.Name("EVENT_REMOVE"), object: self, userInfo: ["eventName":eventName,"allParams":allParams,"targets":self])
             }
         }
     }
@@ -566,11 +583,11 @@ extension WYAWebView{
                 self.webManager?.methodModuleAction(tempDict![methodName]!, params: allParams)
             }else{
                 // 模块没有该方法，通知native端扩展
-                 NotificationCenter.default.post(name: NSNotification.Name("REGIST_MODULE_METHOD"), object: self, userInfo: ["module":moduleName,"methodName":methodName,"params":allParams,"targets":self])
+                 NotificationCenter.default.post(name: NSNotification.Name("REGIST_MODULE_METHOD"), object: self, userInfo: ["moduleName":moduleName,"methodName":methodName,"allParams":allParams,"targets":self])
             }
         }else{
             // 不存在，通知native端扩展
-            NotificationCenter.default.post(name: NSNotification.Name("REGIST_MODULE_METHOD"), object: self, userInfo: ["module":moduleName,"methodName":methodName,"params":allParams,"targets":self])
+            NotificationCenter.default.post(name: NSNotification.Name("REGIST_MODULE_METHOD"), object: self, userInfo: ["moduleName":moduleName,"methodName":methodName,"allParams":allParams,"targets":self])
         }
     }
 }
