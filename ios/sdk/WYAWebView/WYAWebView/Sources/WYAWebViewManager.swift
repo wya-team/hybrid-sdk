@@ -327,8 +327,8 @@ extension WYAWebViewManager {
  func pop(_ animation: Bool) {
  let viewControllers = rootVC.navigationController?.viewControllers
  for vc in viewControllers! {
- if vc is WYAViewController {
- let viewController = vc as! WYAViewController
+ if vc is WYAHybridController {
+ let viewController = vc as! WYAHybridController
  if viewController.model?.name == (vcName as? String) {
  DispatchQueue.main.async {
  rootVC.navigationController?.popToViewController(viewController, animated: true)

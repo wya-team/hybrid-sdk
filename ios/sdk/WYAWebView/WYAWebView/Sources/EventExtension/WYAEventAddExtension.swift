@@ -247,9 +247,9 @@ extension WYAWebViewManager{
 
 }
 
-extension WYAViewController{
+extension WYAHybridController{
 
-    public override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
+    open override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
         if WYAWebViewManager.shared.shake {
             print("aa")
         }else{

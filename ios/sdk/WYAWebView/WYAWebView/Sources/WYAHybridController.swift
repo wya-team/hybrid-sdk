@@ -8,8 +8,8 @@
 import UIKit
 import WYAKit
 
-public class WYAViewController: UIViewController {
-    static let shared = WYAViewController()
+open class WYAHybridController: UIViewController {
+    static let shared = WYAHybridController()
 
     var model: OpenWinModel?
     var orientation: String?
@@ -36,7 +36,7 @@ public class WYAViewController: UIViewController {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -45,17 +45,17 @@ public class WYAViewController: UIViewController {
         webView?.removeFromSuperview()
     }
 
-    public override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
     }
 
-    public override func viewWillDisappear(_ animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
     }
 
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationController?.interactivePopGestureRecognizer?.delegate = self
@@ -112,14 +112,14 @@ public class WYAViewController: UIViewController {
      */
 }
 
-extension WYAViewController {
+extension WYAHybridController {
     // 默认为true
-    public override var shouldAutorotate: Bool {
+    open override var shouldAutorotate: Bool {
         return true
     }
 
     // 支持的旋转方向
-    public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         if orientation == "portraitUp" {
             return .portrait
         } else if orientation == "portraitDown" {
@@ -139,12 +139,12 @@ extension WYAViewController {
     }
 
     // 模态切换的默认方向
-    public override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+    open override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
         return .portraitUpsideDown
     }
 }
 
-extension WYAViewController: WYANavBarDelegate {
+extension WYAHybridController: WYANavBarDelegate {
     public func wya_goBackPressed(_ sender: UIButton) {
         NotificationCenter.default.post(name: NSNotification.Name.closeWin, object: nil)
         if navigationController == nil {
@@ -155,7 +155,7 @@ extension WYAViewController: WYANavBarDelegate {
     }
 }
 
-extension WYAViewController: UIGestureRecognizerDelegate {
+extension WYAHybridController: UIGestureRecognizerDelegate {
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         NotificationCenter.default.post(name: NSNotification.Name.closeWin, object: nil)
         if navigationController?.childViewControllers.count == 1 {

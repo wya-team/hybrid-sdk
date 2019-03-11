@@ -22,7 +22,7 @@ extension WYAWebViewManager{
 
     @objc func setScreenOrientationWithParams(outParams: [String: Any]) {
         let developParams = outParams["DevelopParams"] as! [String: Any]
-        let rootVC = developParams["rootVC"] as! WYAViewController
+        let rootVC = developParams["rootVC"] as! WYAHybridController
 
         let params = outParams["params"] as! [String: Any]
         guard params.count != 0 else {

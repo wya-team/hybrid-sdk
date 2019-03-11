@@ -19,10 +19,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
+
+        /// 全局监听hybrid中的事件订阅取消、方法扩展
+        NotificationCenter.default.addObserver(self, selector: #selector(moduleMethod(nofi:)), name: NSNotification.Name(rawValue: "REGIST_MODULE_METHOD"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(eventAdd(nofi:)), name: NSNotification.Name(rawValue: "EVENT_ADD"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(eventRemove(nofi:)), name: NSNotification.Name(rawValue: "EVENT_REMOVE"), object: nil)
+
         #if DEBUG
         Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection10.bundle")?.load()
         #endif
-        let vc = WYAViewController()
+        let vc = WYAHybridController()
         vc.needLocalService = true
         let nav = UINavigationController(rootViewController: vc)
         window?.rootViewController = nav
@@ -98,4 +104,24 @@ extension UIViewController{
         viewWillAppear(true)
         viewWillDisappear(true)
     }
+}
+
+
+extension AppDelegate{
+    @objc func eventAdd(nofi:Notification) {
+
+    }
+
+    @objc func eventRemove(nofi:Notification) {
+
+    }
+
+    @objc func moduleMethod(nofi:Notification) {
+
+    }
+
+}
+
+extension WYAHybridController{
+
 }
