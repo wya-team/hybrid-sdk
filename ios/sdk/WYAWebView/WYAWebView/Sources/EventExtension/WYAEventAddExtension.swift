@@ -60,10 +60,10 @@ extension WYAWebViewManager{
             print("网络状态: \(status)")
 
             if (self.netManager?.isReachable)! {
-                self.assemblyParams("network", "1", "网络连接", ["type":"online"]())
+                self.assemblyParams("network", "1", "网络连接", ["type":"online"])
             }
             else {
-                self.assemblyParams("network", "1", "网络断开", ["type": "offline"]())
+                self.assemblyParams("network", "1", "网络断开", ["type": "offline"])
             }
         }
 
@@ -234,10 +234,10 @@ extension WYAWebViewManager{
     @objc func changeVolumSlider(notifi: NSNotification) {
         if let volum: Float = notifi.userInfo?["AVSystemController_AudioVolumeNotificationParameter"] as! Float? {
             if volum > self.currentVolume! {
-                self.assemblyParams("volume", "1", "音量改变", ["keyCode": "volumeUp","longPress":false]())
+                self.assemblyParams("volume", "1", "音量改变", ["keyCode": "volumeUp","longPress":false])
                 print("增大")
             } else {
-                self.assemblyParams("volume", "1", "音量改变", ["keyCode": "volumeDown","longPress":false]())
+                self.assemblyParams("volume", "1", "音量改变", ["keyCode": "volumeDown","longPress":false])
                 print("减小")
             }
             self.currentVolume = volum
