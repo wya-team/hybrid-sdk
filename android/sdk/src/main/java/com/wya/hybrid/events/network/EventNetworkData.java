@@ -1,9 +1,9 @@
-package com.wya.hybrid.data.event;
+package com.wya.hybrid.events.network;
 
 /**
  * @author :
  */
-public class NetEvent {
+public class EventNetworkData {
 
     private boolean isOnline;
 

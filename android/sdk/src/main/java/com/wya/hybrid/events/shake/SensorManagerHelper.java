@@ -1,4 +1,4 @@
-package com.wya.hybrid;
+package com.wya.hybrid.events.shake;
 
 import android.content.Context;
 import android.hardware.Sensor;
@@ -9,7 +9,7 @@ import android.hardware.SensorManager;
  * @author :
  */
 public class SensorManagerHelper implements SensorEventListener {
-	
+
 	/**
 	 * 速度阈值，当摇晃速度达到这值后产生作用
 	 */
@@ -18,7 +18,7 @@ public class SensorManagerHelper implements SensorEventListener {
 	 * 两次检测的时间间隔
 	 */
 	private final static int UPTATE_INTERVAL_TIME = 50;
-	
+
 	/**
 	 * 传感器管理器
 	 */
@@ -31,7 +31,7 @@ public class SensorManagerHelper implements SensorEventListener {
 	 * 重力感应监听器
 	 */
 	private OnShakeListener onShakeListener;
-	
+
 	private Context context;
 	/**
 	 * 手机上一个位置时重力感应坐标
@@ -43,12 +43,12 @@ public class SensorManagerHelper implements SensorEventListener {
 	 * 上次检测时间
 	 */
 	private long lastUpdateTime;
-	
+
 	public SensorManagerHelper(Context context) {
 		this.context = context;
 		start();
 	}
-	
+
 	/**
 	 * 开始检测
 	 */
@@ -66,33 +66,33 @@ public class SensorManagerHelper implements SensorEventListener {
 				SensorManager.SENSOR_DELAY_GAME);
 		}
 	}
-	
+
 	/**
 	 * 停止检测
 	 */
 	public void stop() {
 		sensorManager.unregisterListener(this);
 	}
-	
+
 	public interface OnShakeListener {
-		
+
 		/**
 		 * shake
 		 */
 		void onShake();
 	}
-	
+
 	/**
 	 * 设置重力感应监听器
 	 */
 	public void setOnShakeListener(OnShakeListener listener) {
 		onShakeListener = listener;
 	}
-	
+
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 	}
-	
+
 	/**
 	 * 重力感应器感应获得变化数据
 	 * android.hardware.SensorEventListener#onSensorChanged(android.hardware.SensorEvent)

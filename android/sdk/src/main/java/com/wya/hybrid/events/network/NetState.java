@@ -1,11 +1,11 @@
-package com.wya.hybrid.bean;
+package com.wya.hybrid.events.network;
 
 /**
  * @author :
  */
 public class NetState {
 
-	public static final String EVENT_NETWORK = "netWork";
+	public static final String EVENT_NETWORK = "network";
 
     @Override
     public String toString() {

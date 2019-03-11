@@ -1,9 +1,9 @@
-package com.wya.hybrid.data.event;
+package com.wya.hybrid.events.appidle;
 
 /**
  * @author :
  */
-public class AppIdleEvent {
+public class EventAppIdleData {
 
     public boolean stateScreenOn;
 

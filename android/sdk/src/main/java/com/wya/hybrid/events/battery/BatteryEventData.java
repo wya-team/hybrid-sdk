@@ -1,9 +1,9 @@
-package com.wya.hybrid.data.event;
+package com.wya.hybrid.events.battery;
 
 /**
  * @author :
  */
-public class BatteryEvent {
+public class BatteryEventData {
 
     /**
      * 是否低电量

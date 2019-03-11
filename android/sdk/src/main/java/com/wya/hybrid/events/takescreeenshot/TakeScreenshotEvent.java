@@ -1,4 +1,4 @@
-package com.wya.hybrid.data.event;
+package com.wya.hybrid.events.takescreeenshot;
 
 /**
  * @author :

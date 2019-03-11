@@ -1,13 +1,16 @@
-package com.wya.hybrid.bean;
+package com.wya.hybrid.events.keyback;
 
 /**
  * @date: 2019/1/17 15:59
  * @author: Chunjiang Mao
- * @classname: Volume
- * @describe: 音量加按钮
+ * @classname: KeyBack
+ * @describe: 返回
  */
-public class Volume {
-	public static final String EVENT_VOLUME = "volume";
+public class KeyBack {
+	/**
+	 * 返回按钮
+	 */
+	public static final String EVENT_KEY_BACK = "keyBack";
 	private int keyCode;
 	private boolean longPress;
 

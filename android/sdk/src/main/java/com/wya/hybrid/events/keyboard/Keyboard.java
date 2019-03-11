@@ -1,4 +1,4 @@
-package com.wya.hybrid.bean;
+package com.wya.hybrid.events.keyboard;
 
 /**
  * @date: 2019/1/21 11:23

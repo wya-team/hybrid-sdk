@@ -1,11 +1,10 @@
-package com.wya.hybrid.control;
+package com.wya.hybrid.events.battery;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
 
-import com.wya.hybrid.data.event.BatteryEvent;
 import com.wya.hybrid.data.sp.BatterySp;
 import com.wya.hybrid.util.log.DebugLogger;
 
@@ -15,16 +14,16 @@ import org.greenrobot.eventbus.EventBus;
  * @author :
  */
 public class BatteryReceiver extends BroadcastReceiver {
-	
+
 	private static final String KEY_LEVEL = "level";
 	private static final String KEY_SCALE = "scale";
 	private static final String KEY_STATUS = "status";
 	private static final String KEY_HEALTH = "health";
 	private static final int LOW_BATTERY = 20;
-	
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		
+
 		int rawLevel = intent.getIntExtra(KEY_LEVEL, -1);
 		int scale = intent.getIntExtra(KEY_SCALE, -1);
 		int status = intent.getIntExtra(KEY_STATUS, -1);
@@ -33,20 +32,20 @@ public class BatteryReceiver extends BroadcastReceiver {
 		if (rawLevel >= 0 && scale > 0) {
 			level = (rawLevel * 100) / scale;
 		}
-		
+
 		boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING
 			|| status == BatteryManager.BATTERY_STATUS_FULL;
-		
+
 		BatterySp.get().setIsPlugged(isCharging);
 		BatterySp.get().setLevel(level);
-		
+
 		DebugLogger.logBattery("onReceive level = %s", level);
 		DebugLogger.logBattery("onReceive isPlugged = %s", !isCharging);
-		
-		BatteryEvent event = new BatteryEvent();
+
+		BatteryEventData event = new BatteryEventData();
 		event.setIsPlugged(isCharging);
 		event.setLevel(level);
-		
+
 		if (BatteryManager.BATTERY_HEALTH_OVERHEAT == health) {
 			DebugLogger.logBattery(" === BATTERY_HEALTH_OVERHEAT === ");
 		} else {

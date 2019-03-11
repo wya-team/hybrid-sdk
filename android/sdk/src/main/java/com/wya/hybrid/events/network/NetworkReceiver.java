@@ -1,4 +1,4 @@
-package com.wya.hybrid.control;
+package com.wya.hybrid.events.network;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.wya.hybrid.data.event.NetEvent;
 import com.wya.hybrid.data.sp.NetSp;
 import com.wya.hybrid.util.log.DebugLogger;
 
@@ -45,7 +44,7 @@ public class NetworkReceiver extends BroadcastReceiver {
 
                 NetSp.get().setIsOnline(isOnline);
 
-                NetEvent event = new NetEvent();
+                EventNetworkData event = new EventNetworkData();
                 event.setOnline(isOnline);
                 EventBus.getDefault().post(event);
             }

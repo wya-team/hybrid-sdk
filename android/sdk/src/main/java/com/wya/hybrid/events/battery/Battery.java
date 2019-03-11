@@ -1,4 +1,4 @@
-package com.wya.hybrid.bean;
+package com.wya.hybrid.events.battery;
 
 /**
  * @author :

@@ -1,4 +1,4 @@
-package com.wya.hybrid.control;
+package com.wya.hybrid.events.takescreeenshot;
 
 import android.content.Context;
 import android.database.ContentObserver;
@@ -24,7 +24,7 @@ import java.util.List;
  * @author :
  */
 public class ScreenShotListenManager {
-	
+
 	private static final int INTERVAL = 10 * 1000;
 	private static final int INTERVAL_CACHE = 20;
 	/**
@@ -43,7 +43,7 @@ public class ScreenShotListenManager {
 		MediaStore.Images.ImageColumns.WIDTH,
 		MediaStore.Images.ImageColumns.HEIGHT,
 	};
-	
+
 	/**
 	 * 截屏依据中的路径判断关键字
 	 */
@@ -52,7 +52,7 @@ public class ScreenShotListenManager {
 		"screencapture", "screen_capture", "screen-capture", "screen capture",
 		"screencap", "screen_cap", "screen-cap", "screen cap"
 	};
-	
+
 	/**
 	 * 已回调过的路径
 	 */
@@ -61,28 +61,28 @@ public class ScreenShotListenManager {
 	private Context mContext;
 	private OnScreenShotListener mListener;
 	private long mStartListenTime;
-	
+
 	/**
 	 * 内部存储器内容观察者
 	 */
 	private MediaContentObserver mInternalObserver;
-	
+
 	/**
 	 * 外部存储器内容观察者
 	 */
 	private MediaContentObserver mExternalObserver;
-	
+
 	/**
 	 * 运行在 UI 线程的 Handler, 用于运行监听器回调
 	 */
 	private final Handler mUiHandler = new Handler(Looper.getMainLooper());
-	
+
 	private ScreenShotListenManager(Context context) {
 		if (context == null) {
 			throw new IllegalArgumentException("The context must not be null.");
 		}
 		mContext = context;
-		
+
 		// 获取屏幕真实的分辨率
 		if (sScreenRealSize == null) {
 			sScreenRealSize = getRealScreenSize();
@@ -93,26 +93,26 @@ public class ScreenShotListenManager {
 			}
 		}
 	}
-	
+
 	public static ScreenShotListenManager newInstance(Context context) {
 		assertInMainThread();
 		return new ScreenShotListenManager(context);
 	}
-	
+
 	/**
 	 * 启动监听
 	 */
 	public void startListen() {
 		assertInMainThread();
 		sHasCallbackPaths.clear();
-		
+
 		// 记录开始监听的时间戳
 		mStartListenTime = System.currentTimeMillis();
-		
+
 		// 创建内容观察者
 		mInternalObserver = new MediaContentObserver(MediaStore.Images.Media.INTERNAL_CONTENT_URI, mUiHandler);
 		mExternalObserver = new MediaContentObserver(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, mUiHandler);
-		
+
 		// 注册内容观察者
 		mContext.getContentResolver().registerContentObserver(
 			MediaStore.Images.Media.INTERNAL_CONTENT_URI,
@@ -125,13 +125,13 @@ public class ScreenShotListenManager {
 			mExternalObserver
 		);
 	}
-	
+
 	/**
 	 * 停止监听
 	 */
 	public void stopListen() {
 		assertInMainThread();
-		
+
 		// 注销内容观察者
 		if (mInternalObserver != null) {
 			try {
@@ -149,12 +149,12 @@ public class ScreenShotListenManager {
 			}
 			mExternalObserver = null;
 		}
-		
+
 		// 清空数据
 		mStartListenTime = 0;
 		sHasCallbackPaths.clear();
 	}
-	
+
 	/**
 	 * 处理媒体数据库的内容改变
 	 */
@@ -169,7 +169,7 @@ public class ScreenShotListenManager {
 				null,
 				MediaStore.Images.ImageColumns.DATE_ADDED + " desc limit 1"
 			);
-			
+
 			if (cursor == null) {
 				DebugLogger.logScreen("Deviant logic.");
 				return;
@@ -178,7 +178,7 @@ public class ScreenShotListenManager {
 				DebugLogger.logScreen("Cursor no data.");
 				return;
 			}
-			
+
 			// 获取各列的索引
 			int dataIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
 			int dateTakenIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN);
@@ -188,7 +188,7 @@ public class ScreenShotListenManager {
 				widthIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.WIDTH);
 				heightIndex = cursor.getColumnIndex(MediaStore.Images.ImageColumns.HEIGHT);
 			}
-			
+
 			// 获取行数据
 			String data = cursor.getString(dataIndex);
 			long dateTaken = cursor.getLong(dateTakenIndex);
@@ -203,27 +203,27 @@ public class ScreenShotListenManager {
 				width = size.x;
 				height = size.y;
 			}
-			
+
 			// 处理获取到的第一行数据
 			handleMediaRowData(data, dateTaken, width, height);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		} finally {
 			if (cursor != null && !cursor.isClosed()) {
 				cursor.close();
 			}
 		}
 	}
-	
+
 	private Point getImageSize(String imagePath) {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(imagePath, options);
 		return new Point(options.outWidth, options.outHeight);
 	}
-	
+
 	/**
 	 * 处理获取到的一行数据
 	 */
@@ -239,7 +239,7 @@ public class ScreenShotListenManager {
 			DebugLogger.logScreen("Media content changed, but not screenshot: path = " + data + "; size = " + width + " * " + height + "; date = " + dateTaken);
 		}
 	}
-	
+
 	/**
 	 * 判断指定的数据行是否符合截屏条件
 	 */
@@ -251,7 +251,7 @@ public class ScreenShotListenManager {
 		if (dateTaken < mStartListenTime || (System.currentTimeMillis() - dateTaken) > INTERVAL) {
 			return false;
 		}
-		
+
 		/*
 		 * 判断依据二: 尺寸判断
 		 */
@@ -262,7 +262,7 @@ public class ScreenShotListenManager {
 				return false;
 			}
 		}
-		
+
 		/*
 		 * 判断依据三: 路径判断
 		 */
@@ -276,10 +276,10 @@ public class ScreenShotListenManager {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * 判断是否已回调过, 某些手机ROM截屏一次会发出多次内容改变的通知; <br/>
 	 * 删除一个图片也会发通知, 同时防止删除图片时误将上一张符合截屏规则的图片当做是当前截屏.
@@ -297,7 +297,7 @@ public class ScreenShotListenManager {
 		sHasCallbackPaths.add(imagePath);
 		return false;
 	}
-	
+
 	/**
 	 * 获取屏幕分辨率
 	 */
@@ -327,14 +327,14 @@ public class ScreenShotListenManager {
 		}
 		return screenSize;
 	}
-	
+
 	/**
 	 * 设置截屏监听器
 	 */
 	public void setListener(OnScreenShotListener listener) {
 		mListener = listener;
 	}
-	
+
 	public interface OnScreenShotListener {
 		/**
 		 * 截屏
@@ -343,7 +343,7 @@ public class ScreenShotListenManager {
 		 */
 		void onShot(String imagePath);
 	}
-	
+
 	/**
 	 * assertInMainThread
 	 */
@@ -357,24 +357,24 @@ public class ScreenShotListenManager {
 			throw new IllegalStateException("Call the method must be in main thread: " + methodMsg);
 		}
 	}
-	
+
 	/**
 	 * 媒体内容观察者(观察媒体数据库的改变)
 	 */
 	private class MediaContentObserver extends ContentObserver {
-		
+
 		private Uri mContentUri;
-		
+
 		public MediaContentObserver(Uri contentUri, Handler handler) {
 			super(handler);
 			mContentUri = contentUri;
 		}
-		
+
 		@Override
 		public void onChange(boolean selfChange) {
 			super.onChange(selfChange);
 			handleMediaContentChange(mContentUri);
 		}
 	}
-	
+
 }

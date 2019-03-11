@@ -1,10 +1,9 @@
-package com.wya.hybrid.control;
+package com.wya.hybrid.events.appidle;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.wya.hybrid.data.event.AppIdleEvent;
 import com.wya.hybrid.data.sp.ScreenSp;
 import com.wya.hybrid.util.CheckUtil;
 import com.wya.hybrid.util.RxTimerUtil;
@@ -26,7 +25,7 @@ public class ScreenReceiver extends BroadcastReceiver {
         DebugLogger.logScreen(" onReceive ");
         String action = intent.getAction();
         int state = -1;
-        AppIdleEvent event = null;
+        EventAppIdleData event = null;
 
         if (CheckUtil.isNotEmpty(action)) {
             switch (action) {
@@ -34,7 +33,7 @@ public class ScreenReceiver extends BroadcastReceiver {
                     // 屏幕亮
                     DebugLogger.logScreen(" ACTION_SCREEN_ON ");
                     state = KEY_STATE_SCREEN_ON;
-                    event = new AppIdleEvent();
+                    event = new EventAppIdleData();
                     event.stateScreenOn = true;
                     break;
 
@@ -42,7 +41,7 @@ public class ScreenReceiver extends BroadcastReceiver {
                     //  屏幕锁定
                     DebugLogger.logScreen(" ACTION_SCREEN_OFF ");
                     state = KEY_STATE_SCREEN_OFF;
-                    event = new AppIdleEvent();
+                    event = new EventAppIdleData();
                     event.stateScreenOff = true;
                     break;
 
@@ -50,7 +49,7 @@ public class ScreenReceiver extends BroadcastReceiver {
                     // 屏幕解锁了且可以使用
                     DebugLogger.logScreen(" ACTION_USER_PRESENT ");
                     state = KEY_STATE_USER_PERSENT;
-                    event = new AppIdleEvent();
+                    event = new EventAppIdleData();
                     event.stateUserPresent = true;
                     break;
 
@@ -60,7 +59,7 @@ public class ScreenReceiver extends BroadcastReceiver {
         }
         ScreenSp.get().setScreenState(state);
         if (event != null) {
-            AppIdleEvent finalEvent = event;
+            EventAppIdleData finalEvent = event;
             RxTimerUtil.timer(3000L, aLong -> EventBus.getDefault().post(finalEvent));
         }
     }
