@@ -15,9 +15,7 @@ extension WYAWebViewManager{
 
         var params = [String:Selector]()
 
-        params.updateValue(#selector(registerBatterLowWithParams(outParams:)), forKey: "batteryChange")
-
-        params.updateValue(#selector(registerBatterStatusWithParams(outParams:)), forKey: "batteryStatus")
+        params.updateValue(#selector(registerBatterWithParams(outParams:)), forKey: "battery")
 
         params.updateValue(#selector(registerNetworkWithParams(outParams:)), forKey: "network")
 
@@ -62,10 +60,10 @@ extension WYAWebViewManager{
             print("网络状态: \(status)")
 
             if (self.netManager?.isReachable)! {
-                self.assemblyParams("online", "1", "监听成功", [String:Any]())
+                self.assemblyParams("network", "1", "网络连接", ["type":"online"]())
             }
             else {
-                self.assemblyParams("offline", "1", "监听成功", [String: Any]())
+                self.assemblyParams("network", "1", "网络断开", ["type": "offline"]())
             }
         }
 
@@ -73,13 +71,27 @@ extension WYAWebViewManager{
         self.assemblyParams(eventID, "1", "添加监听成功", [String: Any]())
     }
 
-    /// 监听低电量
-    @objc func registerBatterLowWithParams(outParams:[String:Any]){
+    /// 监听电量、电池状态合二为一
+    @objc func registerBatterWithParams(outParams:[String:Any]){
         let developParams = outParams["DevelopParams"] as! [String: Any]
         let eventID = developParams["actionID"] as! String
-
         let device = UIDevice.current
         device.isBatteryMonitoringEnabled = true
+
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIDeviceBatteryStateDidChange, object: nil, queue: OperationQueue.main) { _ in
+            print("电池状态")
+            var subParams = [String: Any]()
+            subParams.updateValue(device.batteryLevel * 100, forKey: "level")
+            if device.batteryState == .charging {
+                subParams.updateValue(true, forKey: "isPlugged")
+            }else {
+                subParams.updateValue(false, forKey: "isPlugged")
+            }
+
+            // 电池状态
+            self.assemblyParams("battery", "1", "状态改变", subParams)
+        }
+
         NotificationCenter.default.addObserver(forName: NSNotification.Name.UIDeviceBatteryLevelDidChange, object: nil, queue: OperationQueue.main) { _ in
             print("电池电量变化")
 
@@ -92,38 +104,12 @@ extension WYAWebViewManager{
                 }else {
                     subParams.updateValue(false, forKey: "isPlugged")
                 }
-
-                // 监听回调
-                self.assemblyParams("batteryLow", "1", "监听成功", subParams)
+                self.assemblyParams("battery", "1", "电量改变", subParams)
             }
         }
+
         //// 传入id 订阅成功emit
         self.assemblyParams(eventID, "1", "添加监听成功", [String: Any]())
-    }
-
-    /// 电池状态
-
-     @objc func registerBatterStatusWithParams(outParams:[String:Any]){
-        let developParams = outParams["DevelopParams"] as! [String: Any]
-        let eventID = developParams["actionID"] as! String
-        let note = NotificationCenter.default
-        let device = UIDevice.current
-        device.isBatteryMonitoringEnabled = true
-        note.addObserver(forName: NSNotification.Name.UIDeviceBatteryStateDidChange, object: nil, queue: OperationQueue.main) { _ in
-            print("电池状态")
-            var subParams = [String: Any]()
-            subParams.updateValue(device.batteryLevel * 100, forKey: "level")
-            if device.batteryState == .charging {
-                subParams.updateValue(true, forKey: "isPlugged")
-            }else {
-                subParams.updateValue(false, forKey: "isPlugged")
-            }
-
-            // 电池状态
-            self.assemblyParams("batteryStatus", "1", "监听成功", subParams)
-        }
-        self.assemblyParams(eventID, "1", "添加监听成功", [String: Any]())
-
     }
 
     /// 进入后台
@@ -231,6 +217,8 @@ extension WYAWebViewManager{
 
     // 音量
     @objc func registerVolumeWithParams(outParams:[String:Any]){
+        let developParams = outParams["DevelopParams"] as! [String: Any]
+        let eventID = developParams["actionID"] as! String
         do {
             try AVAudioSession.sharedInstance().setActive(true)
         } catch let error as NSError {
@@ -239,17 +227,17 @@ extension WYAWebViewManager{
         self.currentVolume = AVAudioSession.sharedInstance().outputVolume
         NotificationCenter.default.addObserver(self, selector: #selector(self.changeVolumSlider(notifi:)), name: NSNotification.Name(rawValue: "AVSystemController_SystemVolumeDidChangeNotification"), object: nil)
         UIApplication.shared.beginReceivingRemoteControlEvents()
-
+        self.assemblyParams(eventID, "1", "添加监听成功", [String: Any]())
     }
 
     
     @objc func changeVolumSlider(notifi: NSNotification) {
         if let volum: Float = notifi.userInfo?["AVSystemController_AudioVolumeNotificationParameter"] as! Float? {
             if volum > self.currentVolume! {
-                self.nativeDelegate?.getNativeActionResult("volumeUp", "")
+                self.assemblyParams("volume", "1", "音量改变", ["keyCode": "volumeUp","longPress":false]())
                 print("增大")
             } else {
-                self.nativeDelegate?.getNativeActionResult("voolumeDown", "")
+                self.assemblyParams("volume", "1", "音量改变", ["keyCode": "volumeDown","longPress":false]())
                 print("减小")
             }
             self.currentVolume = volum
