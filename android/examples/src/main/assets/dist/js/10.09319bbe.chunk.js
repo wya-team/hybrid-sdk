@@ -3,21 +3,21 @@
 /***/ "../../docs/assists/error.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n异常信息捕获\n\n#### 2. Client传递参数给Native\n\n```javascript\n// 不需要传递\n```\n#### 3. Native 传递参数给 Client\n\n```javascript\n// 直接返回异常信息\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.onError((msg) => {\n\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.on('_error_', (msg) => {\n\n})\n// 或者\nwindow.addEventListener('_error_', () => {\n\n})\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('_error_', '@String')\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n";
+module.exports = "#### 1. 说明\n\n异常信息捕获\n\n#### 2. Client传递参数给Native\n\n```javascript\n// 不需要传递\n```\n#### 3. Native 传递参数给 Client\n\n```javascript\n// 直接返回异常信息\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from '@wya/js-sdk';\n\nwya.onError((msg) => {\n\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.on('_error_', (msg) => {\n\n})\n// 或者\nwindow.addEventListener('_error_', () => {\n\n})\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('_error_', '@String')\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n";
 
 /***/ }),
 
 /***/ "../../docs/assists/log.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\nNative日志信息捕获\n\n#### 2. Client传递参数给Native\n\n```javascript\n// 不需要传递\n```\n#### 3. Native 传递参数给 Client\n\n```javascript\n// 直接返回信息\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.onLog((msg) => {\n\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.on('_log_', (msg) => {\n\n})\n// 或者\nwindow.addEventListener('_log_', () => {\n\n})\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('_log_', '@String')\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n";
+module.exports = "#### 1. 说明\n\nNative日志信息捕获\n\n#### 2. Client传递参数给Native\n\n```javascript\n// 不需要传递\n```\n#### 3. Native 传递参数给 Client\n\n```javascript\n// 直接返回信息\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from '@wya/js-sdk';\n\nwya.onLog((msg) => {\n\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nWYAJSBridge.on('_log_', (msg) => {\n\n})\n// 或者\nwindow.addEventListener('_log_', () => {\n\n})\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('_log_', '@String')\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n";
 
 /***/ }),
 
 /***/ "../../docs/assists/ready.md":
 /***/ (function(module, exports) {
 
-module.exports = "#### 1. 说明\n\n初始化后执行\n\n#### 2. Client传递参数给Native\n\n```javascript\n// 不需要传递\n```\n#### 3. Native 传递参数给 Client\n\n```javascript\n// 返回常量\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from 'wya-js-sdk';\n\nwya.ready(() => {\n\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nwindow.addEventListener('_ready_', (e) => {\n\t// 这个只被允许执行一次\n})\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('_ready_', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
+module.exports = "#### 1. 说明\n\n初始化后执行\n\n#### 2. Client传递参数给Native\n\n```javascript\n// 不需要传递\n```\n#### 3. Native 传递参数给 Client\n\n```javascript\n// 返回常量\n```\n\n#### 4. Client端示例代码\n\n```javascript\nimport wya from '@wya/js-sdk';\n\nwya.ready(() => {\n\n});\n```\n\n#### 5. 不引入sdk示例代码\n\n```javascript\nwindow.addEventListener('_ready_', (e) => {\n\t// 这个只被允许执行一次\n})\n```\n\n#### 6. Native端示例代码\n\n```javascript\nWYAJSBridge.emit('_ready_', '@Object');\n```\n\n#### 7. 可用性\n\niOS系统，Android系统\n\n---------\n\n";
 
 /***/ }),
 

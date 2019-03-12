@@ -32,7 +32,7 @@ path | 缓存路径 | str | app的缓存路径 | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let memory = wya.requireModule('memory')
 memory.clearCache({
@@ -44,7 +44,7 @@ memory.clearCache({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.memory.clearCache({
 	// ...

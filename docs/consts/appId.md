@@ -5,7 +5,7 @@
 ##### 2. 示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let appId = wya.appId; // 比如： A6980386445546
 ```

@@ -33,7 +33,7 @@ animated | 是否有动画效果，只iOS有效 | bool | true | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let style = wya.requireModule('style')
 style.setStatusBar({
@@ -45,7 +45,7 @@ style.setStatusBar({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.style.setStatusBar({
 	// ...

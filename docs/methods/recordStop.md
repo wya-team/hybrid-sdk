@@ -26,7 +26,7 @@
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let record = wya.requireModule('record')
 record.stop({
@@ -38,7 +38,7 @@ record.stop({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.record.stop({
 	// ...

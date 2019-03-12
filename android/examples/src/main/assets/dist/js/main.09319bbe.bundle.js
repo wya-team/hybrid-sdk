@@ -63,7 +63,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + "." + "eb30cc72" + ".chunk.js"
+/******/ 		return __webpack_require__.p + "js/" + ({}[chunkId]||chunkId) + "." + "09319bbe" + ".chunk.js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -11907,7 +11907,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 (typeof window === "undefined" ? "undefined" : _typeof(window)) === "object" ? window._global = {} : undefined._global = {};
 _global.version = '1.0';
 wya_umd_default.a.ready(function () {
-  toast["a" /* default */].info("wya-js-sdk: 载入成功");
+  toast["a" /* default */].info("@wya/js-sdk: 载入成功");
 });
 wya_umd_default.a.onError(function (error) {
   _typeof(error) === 'object' ? JSON.stringify(error) : error;

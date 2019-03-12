@@ -32,7 +32,7 @@ silent | 是否后台发送，只支持Android | bool | false | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let system = wya.requireModule('system')
 system.sms({
@@ -44,7 +44,7 @@ system.sms({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.system.sms({
 	// ...

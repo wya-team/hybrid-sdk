@@ -31,7 +31,7 @@ groupName | 保存图片到自定义分组相册目录，相册不存在则会�
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let photo = wya.requireModule('photo')
 photo.save({
@@ -43,7 +43,7 @@ photo.save({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.photo.save({
 	// ...

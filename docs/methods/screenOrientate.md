@@ -39,7 +39,7 @@ autoLandscape // 屏幕根据重力感应在横屏间自动切换
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let screen = wya.requireModule('screen')
 screen.orientate({
@@ -51,7 +51,7 @@ screen.orientate({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.screen.orientate({
 	// ...

@@ -30,7 +30,7 @@ scheme | scheme 或 包名 | str | - | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let app = wya.requireModule('app')
 app.open({
@@ -42,7 +42,7 @@ app.open({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.app.open({
 	// ...

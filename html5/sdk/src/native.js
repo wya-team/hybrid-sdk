@@ -1,4 +1,4 @@
-import { EventStore } from 'wya-ps';
+import { EventStore } from '@wya/ps';
 import { useDispatchEvent, throwError } from './utils/utils';
 
 class WYAJSBridge {

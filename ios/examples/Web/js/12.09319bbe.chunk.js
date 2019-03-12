@@ -45,8 +45,8 @@ var update = add("f25e28ba", content, true, {});
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var wya_js_sdk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("../sdk/dist/wya.umd.js");
-/* harmony import */ var wya_js_sdk__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(wya_js_sdk__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wya_js_sdk__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("../sdk/dist/wya.umd.js");
+/* harmony import */ var _wya_js_sdk__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wya_js_sdk__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _babel_standalone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("./node_modules/@babel/standalone/babel.js");
 /* harmony import */ var _babel_standalone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_standalone__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _common_toast_toast__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("./src/pages/components/_common/toast/toast.js");
@@ -58,7 +58,7 @@ var update = add("f25e28ba", content, true, {});
  * eval
  */
 
-window.wya = wya_js_sdk__WEBPACK_IMPORTED_MODULE_0___default.a;
+window.wya = _wya_js_sdk__WEBPACK_IMPORTED_MODULE_0___default.a;
 window.Toasts = _common_toast_toast__WEBPACK_IMPORTED_MODULE_2__[/* default */ "a"];
 
 var stringify = function stringify(output) {

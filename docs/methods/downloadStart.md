@@ -35,7 +35,7 @@ path | 存储路径，不传时使用自动创建的路径 | str | - | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let download = wya.requireModule('download')
 download.start({
@@ -47,7 +47,7 @@ download.start({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.download.start({
 	// ...

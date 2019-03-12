@@ -32,7 +32,7 @@ id | 调用 notification 方法时返回的 id | num,str | 0 | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let notification = wya.requireModule('notification')
 notification.remove({
@@ -44,7 +44,7 @@ notification.remove({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.notification.remove({
 	// ...

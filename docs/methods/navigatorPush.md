@@ -45,7 +45,7 @@ replace | 是否先执行pop操作 | bool | false | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let navigator = wya.requireModule('navigator')
 navigator.push({
@@ -57,7 +57,7 @@ navigator.push({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.navigator.push({
 	// ...

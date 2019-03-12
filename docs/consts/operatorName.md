@@ -5,7 +5,7 @@
 ##### 2. 示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let operatorName = wya.operatorName;  // 比如：中国移动
 ```

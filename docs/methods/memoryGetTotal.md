@@ -32,7 +32,7 @@ storageType | `` | str | total, dataDir, storageDir | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let memory = wya.requireModule('memory')
 memory.getTotal({
@@ -44,7 +44,7 @@ memory.getTotal({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.memory.getTotal({
 	// ...

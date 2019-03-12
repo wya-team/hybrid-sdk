@@ -25,7 +25,7 @@
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let location = wya.requireModule('location')
 location.get({
@@ -37,7 +37,7 @@ location.get({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.location.get({
 	// ...

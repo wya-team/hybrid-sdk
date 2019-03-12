@@ -1,5 +1,5 @@
 {
-  "name": "wya-js-sdk",
+  "name": "@wya/js-sdk",
   "version": "0.1.0",
   "description": "",
   "main": "dist/wya.umd.js",
@@ -21,6 +21,7 @@
     "all": "npm-run-all --parallel --race --continue-on-error lint:watch serve",
     "lint-staged": "lint-staged",
     "pre-commit:install": "cp .hooks/* .git/hooks/",
+    "pub": "npm publish --access public",
     "test": "cross-env BABEL_ENV=default jest --config ./tests/config/jest.config.js --watch"
   },
   "author": "wya-team",
@@ -33,7 +34,7 @@
     "url": "https://github.com/wya-team/hybrid-sdk/issues"
   },
   "dependencies": {
-    "wya-ps": "^0.1.8"
+    "@wya/ps": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -45,6 +46,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-syntax-jsx": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
+    "@babel/runtime": "^7.3.4",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.1.0",
     "cp-cli": "^1.1.2",

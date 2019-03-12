@@ -1,4 +1,4 @@
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 import { transform, transformFromAst } from '@babel/standalone';
 import Toasts from '@common/toast/toast';
 /**
