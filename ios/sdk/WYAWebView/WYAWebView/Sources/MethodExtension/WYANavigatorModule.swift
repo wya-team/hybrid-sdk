@@ -55,7 +55,7 @@ extension WYAWebViewManager{
 
         guard rootVC.navigationController != nil else { return }
 
-        let centerVC = WYAViewController()
+        let centerVC = WYAHybridController()
         centerVC.model = model
 
         switch model.animation {
@@ -81,8 +81,8 @@ extension WYAWebViewManager{
             if vcName != nil, (vcName?.count)! > 0 {
                 let viewControllers = rootVC.navigationController?.viewControllers
                 for vc in viewControllers! {
-                    if vc is WYAViewController {
-                        let viewController = vc as! WYAViewController
+                    if vc is WYAHybridController {
+                        let viewController = vc as! WYAHybridController
                         if viewController.model?.name == vcName {
                             DispatchQueue.main.async {
                                 rootVC.navigationController?.popToViewController(viewController, animated: animation)

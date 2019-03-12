@@ -8,6 +8,8 @@
 import Foundation
 import WYAKit
 
+
+
 // MARK: photo 模块
 extension WYAWebViewManager{
 
@@ -205,4 +207,16 @@ extension WYAWebViewManager{
         }
     }
 
+}
+
+extension WYAWebViewManager {
+    /// 保存网络视频到本地相册
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "downloadState" {
+            let prog = change![.newKey] as! WYADownloadState.RawValue
+            if prog == 4 {
+                self.callback()
+            }
+        }
+    }
 }
