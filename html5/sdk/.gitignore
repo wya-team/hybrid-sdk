@@ -45,3 +45,16 @@ Thumbs.db
 # others
 tests/coverage
 
+# error
+yarn-error.log
+npm-error.log
+
+# user config
+routes.dev.js
+user.config.js
+
+# lock
+yarn.lock
+package-lock.json
+
+

@@ -5,7 +5,7 @@ fs: //协议对应地真实目录，字符串类型
 ##### 2. 示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let fsDir = wya.fsDir; 
 /* 

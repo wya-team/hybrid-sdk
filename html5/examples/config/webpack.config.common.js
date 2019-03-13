@@ -55,7 +55,7 @@ const webpackConfig = {
 			 * 而如果要使用 template 这个属性的话就一定要用 compiler.js，那么，引入 vue.js 是最恰当的
 			 */
 			'vue$': 'vue/dist/vue.esm.js',
-			'wya-js-sdk': path.resolve(APP_ROOT, '../sdk/dist/wya.umd.js'),
+			'@wya/js-sdk': path.resolve(APP_ROOT, '../sdk/dist/wya.umd.js'),
 			'@components': path.resolve(APP_ROOT, './src/pages/components'),
 			'@constants': path.resolve(APP_ROOT, './src/pages/constants'),
 			'@extends': path.resolve(APP_ROOT, './src/pages/extends'),

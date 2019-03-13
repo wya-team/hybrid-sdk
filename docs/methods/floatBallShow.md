@@ -34,7 +34,7 @@ duration | 自动消隐时长。在该时长内不发生触摸悬浮框行为，
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let float = wya.requireModule('float')
 float.ballShow({
@@ -46,7 +46,7 @@ float.ballShow({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.float.ballShow({
 	// ...

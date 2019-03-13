@@ -32,7 +32,7 @@ module.exports = (name) => {
 	contents += `#### 4. Client端示例代码\n\n`;
 
 	contents += '```javascript\n';
-	contents += `import wya from 'wya-js-sdk';\n\n`;
+	contents += `import wya from '@wya/js-sdk';\n\n`;
 	contents += `let ${moduleName} = wya.requireModule('${moduleName}')\n`;
 	contents += `${moduleName}.${methodName}({\n`;
 	contents += `	// ...\n`;
@@ -43,7 +43,7 @@ module.exports = (name) => {
 	contents += `});\n\n`;
 
 	contents += `// 或者\n`;
-	contents += `import wya from 'wya-js-sdk';\n\n`;
+	contents += `import wya from '@wya/js-sdk';\n\n`;
 	contents += `wya.${moduleName}.${methodName}({\n`;
 	contents += `	// ...\n`;
 	contents += `}).then(() => {\n`;

@@ -5,7 +5,7 @@
 ##### 2. 示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let appVersion = wya.appVersion; // 比如： 1.0.0
 ```

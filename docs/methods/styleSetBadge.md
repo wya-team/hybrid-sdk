@@ -25,7 +25,7 @@
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let style = wya.requireModule('style')
 style.setBadge({
@@ -37,7 +37,7 @@ style.setBadge({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.style.setBadge({
 	// ...

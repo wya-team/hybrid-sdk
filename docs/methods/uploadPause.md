@@ -25,7 +25,7 @@
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let upload = wya.requireModule('upload')
 upload.pause({
@@ -37,7 +37,7 @@ upload.pause({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.upload.pause({
 	// ...

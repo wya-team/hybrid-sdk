@@ -32,7 +32,7 @@ url | 本地文件路径（支持fs://路径协议）或者网络资源地址 | 
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let video = wya.requireModule('video')
 video.open({
@@ -44,7 +44,7 @@ video.open({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.video.open({
 	// ...

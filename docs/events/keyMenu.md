@@ -21,7 +21,7 @@
 #### 3. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 // on / once / last / first / off
 wya.on('keyMenu', () => {

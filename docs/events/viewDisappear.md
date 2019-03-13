@@ -21,7 +21,7 @@ Window 离开屏幕的事件，字符串类型。收到 viewdisappear 事件回�
 #### 3. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 // on / once / last / first / off
 wya.on('viewDisappear', () => {

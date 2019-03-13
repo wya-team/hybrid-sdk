@@ -7,7 +7,7 @@ module.exports = (name) => {
 	contents += `#### 2. 示例代码\n\n`;
 
 	contents += '```javascript\n';
-	contents += `import wya from 'wya-js-sdk';\n\n`;
+	contents += `import wya from '@wya/js-sdk';\n\n`;
 
 	contents += `let ${name} = wya.${name}; // 比如： ~\n`;
 	contents += '```\n\n';

@@ -33,7 +33,7 @@ body | 邮件内容 | str | - | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let system = wya.requireModule('system')
 system.mail({
@@ -45,7 +45,7 @@ system.mail({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.system.mail({
 	// ...

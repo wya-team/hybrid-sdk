@@ -25,7 +25,7 @@
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let float = wya.requireModule('float')
 float.ballHide({
@@ -37,7 +37,7 @@ float.ballHide({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.float.ballHide({
 	// ...

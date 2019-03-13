@@ -52,7 +52,7 @@ album // 相册
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let photo = wya.requireModule('photo')
 photo.get({
@@ -64,7 +64,7 @@ photo.get({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.photo.get({
 	// ...
