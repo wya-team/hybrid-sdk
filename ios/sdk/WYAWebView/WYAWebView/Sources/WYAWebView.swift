@@ -17,13 +17,13 @@ import WYAKit
 fileprivate let jsBuildVersion = 0.1
 
 public class WYAWebView: UIView {
-    public override var canResignFirstResponder: Bool {
-        return false
-    }
-
-    public override var canBecomeFirstResponder: Bool {
-        return true
-    }
+//    public override var canResignFirstResponder: Bool {
+//        return false
+//    }
+//
+//    public override var canBecomeFirstResponder: Bool {
+//        return true
+//    }
 
     var webServer = GCDWebServer()
     var webManager: WYAWebViewManager?
@@ -43,7 +43,7 @@ public class WYAWebView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.webManager = WYAWebViewManager()
+        self.webManager = WYAWebViewManager.shared
         self.webManager?.nativeDelegate = self as WebViewDelegate
 //        self.webManager?.registerSystemNotice()
         self.createWkWebView()
@@ -386,31 +386,31 @@ extension WYAWebView: WebViewDelegate {
     }
 }
 
-// MARK: - 摇晃事件回调（摇晃需要self成为第一响应者，才能响应）
-
-extension WYAWebView {
-    public override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
-        print("开始摇晃")
-
-        var params = [String: Any]()
-        params.updateValue("1", forKey: "status")
-        params.updateValue("调用成功", forKey: "msg")
-
-        let inParams = [String: Any]()
-        params.updateValue(inParams, forKey: "data")
-        let string = webManager?.dicTosJsonString(params)
-
-        getNativeActionResult("shake", string!)
-    }
-
-    public override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        print("结束摇晃")
-    }
-
-    public override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
-        print("取消摇晃")
-    }
-}
+//// MARK: - 摇晃事件回调（摇晃需要self成为第一响应者，才能响应）
+//
+//extension WYAWebView {
+//    public override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
+//        print("开始摇晃")
+//
+//        var params = [String: Any]()
+//        params.updateValue("1", forKey: "status")
+//        params.updateValue("调用成功", forKey: "msg")
+//
+//        let inParams = [String: Any]()
+//        params.updateValue(inParams, forKey: "data")
+//        let string = webManager?.dicTosJsonString(params)
+//
+//        getNativeActionResult("shake", string!)
+//    }
+//
+//    public override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+//        print("结束摇晃")
+//    }
+//
+//    public override func motionCancelled(_ motion: UIEventSubtype, with event: UIEvent?) {
+//        print("取消摇晃")
+//    }
+//}
 
 // MARK: - 加载注入本地js文件
 
@@ -514,7 +514,7 @@ class WYAConnenction: GCDWebServerConnection {
     override func overrideResponse(_ response: GCDWebServerResponse, for request: GCDWebServerRequest) -> GCDWebServerResponse {
         if response.statusCode == 404 {
             let bund = Bundle(for: classForCoder)
-            let jsString = bund.path(forResource: "dist/index", ofType: "html")
+            let jsString = bund.path(forResource: "Web/index", ofType: "html")
 
             var jsPath: String?
             do {
