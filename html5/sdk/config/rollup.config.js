@@ -16,8 +16,7 @@ import { eslint } from 'rollup-plugin-eslint';
 const plugins = [
 	// 使用amd模块引入，第三方模块支持
 	resolve({
-		jsnext: true,
-		main: true,
+		mainFields: ['module', 'jsnext:main', 'main'],
 		browser: true,
 	}),
 	// 提花全局字段ENV为....
