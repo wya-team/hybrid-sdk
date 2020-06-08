@@ -581,6 +581,7 @@ extension WYAWebView{
             if (tempDict?.keys.contains(methodName))!{
                 // 模块拥有方法去执行
                 self.webManager?.methodModuleAction(tempDict![methodName]!, params: allParams)
+//                 NotificationCenter.default.post(name: NSNotification.Name("REGIST_MODULE_METHOD"), object: self, userInfo: ["moduleName":moduleName,"methodName":methodName,"allParams":allParams,"targets":self])
             }else{
                 // 模块没有该方法，通知native端扩展
                  NotificationCenter.default.post(name: NSNotification.Name("REGIST_MODULE_METHOD"), object: self, userInfo: ["moduleName":moduleName,"methodName":methodName,"allParams":allParams,"targets":self])

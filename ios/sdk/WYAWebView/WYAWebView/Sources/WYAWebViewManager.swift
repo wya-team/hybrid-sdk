@@ -34,7 +34,7 @@ class WYAWebViewManager: NSObject {
                       "storage":self.storageDictionary(),
                       "photo":self.photoDictionary(),
                       "notification":self.notificationDictionary(),
-                      "floatBall":self.floatBallDictionary(),
+                      "float":self.floatBallDictionary(),
                       "sysytem":self.systemDictionary(),
                       "screen":self.screenDictionary(),
                       "style":self.styleDictionary(),
@@ -70,7 +70,9 @@ class WYAWebViewManager: NSObject {
     
     var shake = false
 
+    /// 用于短信代理中emit使用
     var smsID: String?
+    /// 用于邮件代理中emit使用
     var mailID: String?
     var currentVolume: Float?
     var recorderPath: String?

@@ -15,70 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    deinit {
-        // 移除扩展监听的通知
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "REGIST_MODULE_METHOD"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "EVENT_ADD"), object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "EVENT_REMOVE"), object: nil)
-
-    }
-
-    /// 订阅
-    @objc func eventAdd(nofi:Notification) {
-        let nofiParam = nofi.userInfo
-        print("事件订阅\(nofiParam!)")
-        UIView.wya_showCenterToast(withMessage: "订阅事件")
-    }
-
-    /// 取消订阅
-    @objc func eventRemove(nofi:Notification) {
-          let nofiParam = nofi.userInfo
-        print("事件取消订阅\(nofiParam!)")
-        UIView.wya_showCenterToast(withMessage: "取消订阅事件")
-
-    }
-
-    /// 调用方法
-    @objc func moduleMethod(nofi:Notification) {
-
-        let nofiParam = nofi.userInfo
-        let module = nofiParam!["moduleName"] as! String // 模块名
-        let method = nofiParam!["methodName"] as! String // 方法名
-        let allParams = nofiParam!["allParams"] as! [String:[String:Any]]
-        let developParams = allParams["DevelopParams"] // 自定义参数
-        let hybridObj = developParams!["webView"] as! WYAWebView// emit方法调用对象
-        let params = allParams["params"] // H5传递的方法参数
-        let actionId = developParams!["actionID"] as! String
-
-        if module == "memory"{
-            if method == "clearCache"{
-                print("方法的名字\(params!["path"] ?? " ")")
-                hybridObj.getExtensionActionResult(actionId, ["status": 1, "msg": "调用成功", "data":NSNull()])
-            }
-        }
-        print("方法扩展\(nofiParam!)")
-        UIView.wya_showCenterToast(withMessage: "模块方法扩展")
-
-    }
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
-        /// 全局监听hybrid中的事件订阅取消、方法扩展
-        NotificationCenter.default.addObserver(self, selector: #selector(moduleMethod(nofi:)), name: NSNotification.Name(rawValue: "REGIST_MODULE_METHOD"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(eventAdd(nofi:)), name: NSNotification.Name(rawValue: "EVENT_ADD"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(eventRemove(nofi:)), name: NSNotification.Name(rawValue: "EVENT_REMOVE"), object: nil)
-        
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
+        window?.backgroundColor = UIColor.white
         #if DEBUG
         Bundle(path: "/Applications/InjectionIII.app/Contents/Resources/iOSInjection10.bundle")?.load()
         #endif
-        let vc = WYAHybridController()
-        vc.needLocalService = true
-        let nav = UINavigationController(rootViewController: vc)
+
+        let nav = UINavigationController(rootViewController: HomeViewController())
         window?.rootViewController = nav
-        window?.makeKey()
+        window?.makeKeyAndVisible()
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.sound,.badge]) { (success, error) in
                 if success {
@@ -95,6 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
 
+        // 设置悬浮球
+
+        WYAFloatBallManager.wya_addFloatVcS(["WYAHybridController","HybridViewController"])
 
         return true
     }
