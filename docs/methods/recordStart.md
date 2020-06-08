@@ -28,7 +28,7 @@ path | 文件路径，支持fs://、widget://等文件路径协议 | str | - | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let record = wya.requireModule('record')
 record.start({
@@ -40,7 +40,7 @@ record.start({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.record.start({
 	// ...

@@ -31,7 +31,7 @@ animation | 动画参数 | str | card,modal,none | ``
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let navigator = wya.requireModule('navigator')
 navigator.pop({
@@ -43,7 +43,7 @@ navigator.pop({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.navigator.pop({
 	// ...

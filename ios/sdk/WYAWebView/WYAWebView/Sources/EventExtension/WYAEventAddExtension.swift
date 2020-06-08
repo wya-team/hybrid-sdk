@@ -29,10 +29,9 @@ extension WYAWebViewManager{
 
         params.updateValue(#selector(registerTakeScreenshotWithParams(outParams:)), forKey: "takeScreenshot")
 
-//        params.updateValue(#selector(installAppWithParams(outParams:)), forKey: "viewAppear")
+        params.updateValue(#selector(registerViewAppearWithParams(outParams:)), forKey: "viewAppear")
 
-//        params.updateValue(#selector(installAppWithParams(outParams:)), forKey: "viewDisappear")
-
+        params.updateValue(#selector(registerviewDisappearWithParams(outParams:)), forKey: "viewDisappear")
 
         params.updateValue(#selector(registerKeyboardShowWithParams(outParams:)), forKey: "keyboardShow")
 
@@ -137,7 +136,7 @@ extension WYAWebViewManager{
         self.assemblyParams(eventID, "1", "添加监听成功", [String: Any]())
     }
 
-    /// 摇晃事件待定？
+    /// 摇晃事件
     @objc func registerShakeWithParams(outParams:[String:Any]) {
         let developParams = outParams["DevelopParams"] as! [String: Any]
         let eventID = developParams["actionID"]
@@ -182,6 +181,30 @@ extension WYAWebViewManager{
             self.assemblyParams("takeScreenshot", "1", "监听成功", inParams)
         }
         self.assemblyParams(eventID, "1", "添加监听成功", [String: Any]())
+    }
+
+    /// 视图出现
+    @objc func registerViewAppearWithParams(outParams:[String:Any]) {
+        let developParams = outParams["DevelopParams"] as! [String: Any]
+        let eventID = developParams["actionID"]
+        if eventID != nil {
+            // 订阅成功
+            self.assemblyParams(eventID as! String, "1", "添加监听成功", [String: Any]())
+            self.viewAppear = true
+        }
+
+    }
+
+    /// 视图消失
+    @objc func registerviewDisappearWithParams(outParams:[String:Any]) {
+        let developParams = outParams["DevelopParams"] as! [String: Any]
+        let eventID = developParams["actionID"]
+        if eventID != nil {
+            // 订阅成功
+            self.assemblyParams(eventID as! String, "1", "添加监听成功", [String: Any]())
+            self.viewDisappear = true
+        }
+
     }
 
     /// 键盘出现
@@ -251,9 +274,21 @@ extension WYAHybridController{
 
     open override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
         if WYAWebViewManager.shared.shake {
-            print("aa")
-        }else{
-            print("bbb")
+            WYAWebViewManager.shared.assemblyParams("shake", "1", "开始摇晃", [String: Any]())
+        }
+    }
+
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if WYAWebViewManager.shared.viewAppear {
+            WYAWebViewManager.shared.assemblyParams("viewAppear", "1", "开始摇晃", [String: Any]())
+        }
+    }
+
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        if WYAWebViewManager.shared.viewDisappear {
+            WYAWebViewManager.shared.assemblyParams("viewDisappea", "1", "开始摇晃", [String: Any]())
         }
     }
 }

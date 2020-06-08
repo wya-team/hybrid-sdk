@@ -6,7 +6,7 @@
 ##### 2. 示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let appName = wya.appName; // 比如： 微信
 ```

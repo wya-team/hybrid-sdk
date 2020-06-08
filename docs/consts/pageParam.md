@@ -8,7 +8,7 @@
 ##### 2. 示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let pageParam = wya.pageParam; //比如： {"name" : "tans-con"}
 ```

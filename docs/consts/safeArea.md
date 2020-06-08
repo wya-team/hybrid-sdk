@@ -29,7 +29,7 @@ footer.style.paddingBottom = wya.safeArea.bottom + 'px';
 ##### 2. 示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let safeArea = wya.safeArea;        // JSON对象，如{top:20, left:0, bottom:0, right:0}
 ```

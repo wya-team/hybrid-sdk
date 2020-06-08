@@ -30,15 +30,12 @@ public class FloatBall extends HybridMethods {
         super(mContext, webView);
     }
 
+    /**
+     * 显示悬浮球
+     * @param id
+     * @param data
+     */
     public void showFloatBox(int id, String data) {
-        startFloat();
-        setData(1, "响应成功", null);
-        mWebView.send(id, getData());
-    }
-    public void hideFloatBox(int id, String data) {
-    }
-
-    private void startFloat() {
         if (PermissionUtil.hasPermission(mContext)) {
             IFloatWindow old = FloatWindow.get("old");
             if (old == null) {
@@ -95,6 +92,8 @@ public class FloatBall extends HybridMethods {
             } else {
                 mContext.finish();
             }
+            setData(1, "响应成功", null);
+            mWebView.send(id, getData());
         } else {
             Toast.makeText(mContext, "没有浮窗权限！", Toast.LENGTH_SHORT).show();
             Intent localIntent = new Intent();
@@ -109,5 +108,8 @@ public class FloatBall extends HybridMethods {
             }
             mContext.startActivity(localIntent);
         }
+
+    }
+    public void hideFloatBox(int id, String data) {
     }
 }

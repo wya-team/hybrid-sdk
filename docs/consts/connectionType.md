@@ -15,7 +15,7 @@ none            // 无网络
 ##### 2. 示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let connectionType = wya.connectionType;  //比如： wifi
 ```

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 import { hljs } from '@extends/directives/hljs';
 import { md } from '@extends/directives/md';
 import * as rootConfig from './modules/root';

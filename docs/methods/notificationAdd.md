@@ -45,7 +45,7 @@ timestamp | 设置时间戳，单位ms | number | - | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let notification = wya.requireModule('notification')
 notification.add({
@@ -57,7 +57,7 @@ notification.add({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.notification.add({
 	// ...

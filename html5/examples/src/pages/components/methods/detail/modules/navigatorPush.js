@@ -1,4 +1,4 @@
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 import Toasts from '@common/toast/toast';
 import markdown from '@docs/methods/navigatorPush.md';
 

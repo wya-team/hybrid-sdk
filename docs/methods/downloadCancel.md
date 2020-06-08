@@ -30,7 +30,7 @@ url | 下载地址 | str | - | -
 #### 4. Client端示例代码
 
 ```javascript
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 let download = wya.requireModule('download')
 download.cancel({
@@ -42,7 +42,7 @@ download.cancel({
 });
 
 // 或者
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 
 wya.download.cancel({
 	// ...

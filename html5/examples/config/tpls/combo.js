@@ -58,7 +58,7 @@ module.exports = (category, filename) => {
 	}
 
 	let contents = '';
-	contents += `import wya from 'wya-js-sdk';\n`;
+	contents += `import wya from '@wya/js-sdk';\n`;
 	contents += `import Toasts from '@common/toast/toast';\n`;
 	contents += `import markdown from '@docs/${category}/${filename}.md';\n`;
 	contents += `\n`;

@@ -69,6 +69,8 @@ class WYAWebViewManager: NSObject {
 
     
     var shake = false
+    var viewAppear = false
+    var viewDisappear = false
 
     /// 用于短信代理中emit使用
     var smsID: String?

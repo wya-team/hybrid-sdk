@@ -1,4 +1,4 @@
-import wya from 'wya-js-sdk';
+import wya from '@wya/js-sdk';
 import Toasts from '@common/toast/toast';
 
 /**
@@ -10,7 +10,7 @@ typeof window === "object" ? window._global = {} : this._global = {};
 _global.version = '1.0';
 
 wya.ready(() => {
-	Toasts.info("wya-js-sdk: 载入成功");
+	Toasts.info("@wya/js-sdk: 载入成功");
 });
 
 wya.onError((error) => {

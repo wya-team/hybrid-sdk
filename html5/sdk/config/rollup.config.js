@@ -14,6 +14,11 @@ import { uglify } from 'rollup-plugin-uglify';
 import { eslint } from 'rollup-plugin-eslint';
 
 const plugins = [
+	// 使用amd模块引入，第三方模块支持
+	resolve({
+		mainFields: ['module', 'jsnext:main', 'main'],
+		browser: true,
+	}),
 	// 提花全局字段ENV为....
 	replace({
 		exclude: 'node_modules/**',
@@ -26,14 +31,12 @@ const plugins = [
 	babel(),
 	// 使用buble
 	buble(),
-	// 使用amd模块引入，第三方模块支持
-	resolve({
-		jsnext: true,
-		main: true,
-		browser: true,
-	}),
 	// 使用cjs模块引入
-	commonjs(),
+	commonjs({
+		namedExports: {
+			'node_modules/@wya/ps/lib/index.js': [ 'EventStore' ]
+		}
+	}),
 	// 是否压缩代码
 	(!ENV_IS_DEV && uglify())
 ];
